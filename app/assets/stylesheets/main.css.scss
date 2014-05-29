@@ -1,0 +1,33 @@
+body {
+  font-size:12px;
+  margin: 0px;
+  padding:0px;
+  text-align: center;
+}
+
+svg#main{
+  border:2px solid blue;
+  width:98%;
+  margin:0px auto;
+  height:400px;
+  background-color: #efefef;
+
+  &.create:hover{
+    cursor: crosshair;
+  }
+  &.shift-true{
+    border: 2px dotted green;  
+    opacity: 0.95;  
+  }
+}
+
+div.options{
+  text-align: left;
+  ul{
+    display: inline-block;
+    li{
+      display: inline-block;
+    }
+  }  
+}
+
