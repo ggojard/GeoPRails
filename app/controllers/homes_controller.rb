@@ -12,6 +12,23 @@ class HomesController < ApplicationController
   def show
   end
 
+
+  def upload
+    # if params[:file]
+      # decode_image
+    # end
+    # @f = params[:file]
+
+    uploaded_io = params[:file]
+    
+    @f = 'uploads/' + uploaded_io.original_filename
+    File.open(Rails.root.join('app/assets/images', @f), 'wb') do |file|
+      file.write(uploaded_io.read)
+    end    
+    render json: @f
+
+  end
+
   # GET /homes/new
   def new
     @home = Home.new

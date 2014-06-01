@@ -2,6 +2,8 @@ GeoP::Application.routes.draw do
   resources :homes
 
   root 'homes#home'
+  post 'upload' => 'homes#upload'
+  get 'upload' => 'homes#upload'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

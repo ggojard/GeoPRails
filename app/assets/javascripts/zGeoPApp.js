@@ -1,82 +1,21 @@
-angular.module('GeoP', []).controller('GeoPCtrl', function($scope) {
-// angular.module('GeoP', ['angularFileUpload']).controller('GeoPCtrl', function($scope, $fileUploader) {
+var app = angular.module('GeoP', ['angularFileUpload']);
 
-// var GeoPCtrl = function($scope){
+app.config(["$httpProvider",
+  function(provider) {
+    provider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
+  }
+]);
 
-  // if ($scope === void 0){
-  //   return;
-  // }
+app.controller('GeoPCtrl', function($scope, $upload) {
 
-  // console.log('$scope', $scope);
-
-  // // create a uploader with options
-  // var uploader = $scope.uploader = $fileUploader.create({
-  //   scope: $scope, // to automatically update the html. Default: $rootScope
-  //   url: 'upload.php'
-  // });
-  // // ADDING FILTERS
-
-  // uploader.filters.push(function(item /*{File|HTMLInput}*/ ) { // user filter
-  //   console.info('filter1');
-  //   return true;
-  // });
-
-  // // REGISTER HANDLERS
-
-  // uploader.bind('afteraddingfile', function(event, item) {
-  //   console.info('After adding a file', item);
-  // });
-
-  // uploader.bind('whenaddingfilefailed', function(event, item) {
-  //   console.info('When adding a file failed', item);
-  // });
-
-  // uploader.bind('afteraddingall', function(event, items) {
-  //   console.info('After adding all files', items);
-  // });
-
-  // uploader.bind('beforeupload', function(event, item) {
-  //   console.info('Before upload', item);
-  // });
-
-  // uploader.bind('progress', function(event, item, progress) {
-  //   console.info('Progress: ' + progress, item);
-  // });
-
-  // uploader.bind('success', function(event, xhr, item, response) {
-  //   console.info('Success', xhr, item, response);
-  // });
-
-  // uploader.bind('cancel', function(event, xhr, item) {
-  //   console.info('Cancel', xhr, item);
-  // });
-
-  // uploader.bind('error', function(event, xhr, item, response) {
-  //   console.info('Error', xhr, item, response);
-  // });
-
-  // uploader.bind('complete', function(event, xhr, item, response) {
-  //   console.info('Complete', xhr, item, response);
-  // });
-
-  // uploader.bind('progressall', function(event, progress) {
-  //   console.info('Total progress: ' + progress);
-  // });
-
-  // uploader.bind('completeall', function(event, items) {
-  //   console.info('Complete all', items);
-  // });
-
-
-  // -------------------------------
-
-
-  // var controller = $scope.controller = {
-  //   isImage: function(item) {
-  //     var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-  //     return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-  //   }
-  // };
+  $scope.isShift = false;
+  $scope.camera = {
+    scale: 1,
+    x: 0,
+    y: 0
+  };
+  $scope.importBackground = false;
+  $scope.importBackgroundImage = null;
 
   function handleKey(e) {
     var key, isShift;
@@ -97,6 +36,11 @@ angular.module('GeoP', []).controller('GeoPCtrl', function($scope) {
   var editor = new GeoP.SvgEditor("#main", $scope);
   $scope.mode = 'normal';
 
+  $scope.applyTransform = function() {
+    editor.canvas.transform(["scale(", $scope.camera.scale, ") translate(", $scope.camera.x, ' ', $scope.camera.y, ')'].join(''));
+  }
+
+
   $scope.createPolyline = function() {
     $scope.mode = 'create';
     var opts = editor.createPolyline($scope);
@@ -111,7 +55,7 @@ angular.module('GeoP', []).controller('GeoPCtrl', function($scope) {
   var importBackground = {
     label: 'import background',
     action: function(e) {
-      // $scope.importBackground = true;
+      $scope.importBackground = !$scope.importBackground;
     }
   };
 
@@ -120,8 +64,30 @@ angular.module('GeoP', []).controller('GeoPCtrl', function($scope) {
     $scope.mode = 'normal';
   };
 
-
   $scope.buttons = [createPolyline, importBackground];
   $scope.currentOptions = [];
-// };
+
+  $scope.onFileSelect = function($files) {
+    console.log('select');
+
+    var progress = function(evt) {
+      console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total, 10));
+    };
+    var success = function(data, status, headers, config) {
+      $scope.importBackgroundImage = '/assets/' + data;
+      $scope.importBackground = false;
+      console.log('import', editor.bg, $scope.importBackgroundImage);
+      editor.bg.animate({
+        'src': $scope.importBackgroundImage
+      });
+    };
+
+    for (var i = 0; i < $files.length; i++) {
+      var file = $files[i];
+      $scope.upload = $upload.upload({
+        url: 'upload',
+        file: file
+      }).progress(progress).success(success);
+    }
+  };
 });

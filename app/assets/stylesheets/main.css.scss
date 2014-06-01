@@ -1,16 +1,26 @@
 body {
-  font-size:12px;
   margin: 0px;
   padding:0px;
   text-align: center;
 }
 
+body, label, button, input, #upload-file, input[type="file"]{
+    font-family: arial;
+    font-size:12px;
+}
+
 svg#main{
   border:2px solid blue;
-  width:98%;
+  width:800px;
   margin:0px auto;
   height:400px;
-  background-color: #efefef;
+  // background-color: #efefef;
+  // background: url('/assets/uploads/plan1.jpg');
+  // background-opacity:0.5;
+  // 
+  image.bg{
+    opacity: 0.25;
+  }
 
   &.create:hover{
     cursor: crosshair;
@@ -18,6 +28,15 @@ svg#main{
   &.shift-true{
     border: 2px dotted green;  
     opacity: 0.95;  
+  }
+}
+
+div.dropbox{
+  border: 1px dotted green;  
+  height: 60px;
+  line-height: 60px;
+  &.dropbox-drag{
+    border: 1px solid green;  
   }
 }
 

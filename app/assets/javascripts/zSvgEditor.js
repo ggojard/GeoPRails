@@ -13,6 +13,10 @@
     this.createPolylinePolyline = null;
     this.newPoint = null;
     this.items = [];
+    this.canvas = this.paper.g();
+    this.bg = this.canvas.image('/assets/uploads/plan1.jpg', 0, 0, 881, 779);
+    this.bg.node.className.baseVal = 'bg';
+    this.canvas.transform('scale(' + $scope.camera.scale + ')');
 
     // function mousewheel(e) {
     //   console.log('mousewheel', e);
@@ -42,9 +46,13 @@
   };
 
   SvgEditor.prototype.createPolylineMode = function(e) {
+    var scale = this.$scope.camera.scale;
+    var tX = -this.$scope.camera.x;
+    var tY = -this.$scope.camera.y;
+
     if (this.createPolylinePolyline === null) {
       this.createPolylinePolyline = new geoP.Polyline(this);
-      this.createPolylinePolyline.create(e.offsetX, e.offsetY);
+      this.createPolylinePolyline.create(e.offsetX / scale + tX, e.offsetY / scale + tY);
     } else {
       this.createPolylinePolyline.appendPoint(this.newPoint.x, this.newPoint.y);
     }
@@ -109,16 +117,20 @@
   }
 
   SvgEditor.prototype.drawToMousePosition = function(e) {
+    var scale = this.$scope.camera.scale;
+    var tX = -this.$scope.camera.x;
+    var tY = -this.$scope.camera.y;
     if (this.createPolylinePolyline !== null) {
       var lastPoint = this.createPolylinePolyline.getLastPoint();
       if (lastPoint !== null) {
         if (this.createPolylineLine === null) {
-          this.createPolylineLine = this.paper.line(lastPoint.x, lastPoint.y, e.offsetX, e.offsetY);
+          console.log('cl',lastPoint.x, lastPoint.y, e.offsetX /scale, e.offsetY /scale);
+          this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, e.offsetX /scale, e.offsetY /scale);
           this.stroke(this.createPolylineLine, 'green');
         } else {
           this.newPoint = {
-            x: e.offsetX,
-            y: e.offsetY
+            x: e.offsetX / scale + tX,
+            y: e.offsetY / scale + tY
           };
 
           updateNewPositionIfShift(this.$scope, this.newPoint, lastPoint);

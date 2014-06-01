@@ -16,7 +16,7 @@
 
   Polyline.prototype.create = function(x, y) {
     var point = this.createSvgPoint(x, y);
-    this.element = this.svgEditor.paper.polyline(point.x, point.y);
+    this.element = this.svgEditor.canvas.polyline(point.x, point.y);
     this.element.attr({
       fill: 'transparent',
       stroke: GeoP.Colors.Drawing
