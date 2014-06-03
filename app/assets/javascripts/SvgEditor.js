@@ -18,6 +18,14 @@
     this.bg.node.className.baseVal = 'bg';
     this.canvas.transform('scale(' + $scope.camera.scale + ')');
 
+    var b = new geoP.Polyline(this);
+    b.create(20, 20);
+    b.appendPoint(50, 50);
+    b.appendPoint(10, 250);
+    b.close($scope);
+
+    // b.element.animate({x:400});
+
     // function mousewheel(e) {
     //   console.log('mousewheel', e);
     // }
@@ -40,7 +48,8 @@
     var that = this;
     for (var i = 0; i < that.items.length; i++) {
       var item = that.items[i];
-      that.stroke(item.element, GeoP.Colors.NotSelected);
+      item.stroke(GeoP.Colors.NotSelected);
+      item.setColorsToMovePoints('transparent');
     };
 
   };
@@ -124,9 +133,9 @@
       var lastPoint = this.createPolylinePolyline.getLastPoint();
       if (lastPoint !== null) {
         if (this.createPolylineLine === null) {
-          console.log('cl',lastPoint.x, lastPoint.y, e.offsetX /scale, e.offsetY /scale);
-          this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, e.offsetX /scale, e.offsetY /scale);
-          this.stroke(this.createPolylineLine, 'green');
+          // console.log('cl', lastPoint.x, lastPoint.y, e.offsetX / scale, e.offsetY / scale);
+          this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, e.offsetX / scale, e.offsetY / scale);
+          this.createPolylineLine.stroke('green');
         } else {
           this.newPoint = {
             x: e.offsetX / scale + tX,
@@ -146,12 +155,6 @@
     }
   };
 
-
-  SvgEditor.prototype.stroke = function(r, c) {
-    r.attr({
-      'stroke': c
-    });
-  };
 
   SvgEditor.prototype.createPolyline = function($scope) {
     var that = this;

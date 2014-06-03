@@ -68,15 +68,15 @@ app.controller('GeoPCtrl', function($scope, $upload) {
   $scope.currentOptions = [];
 
   $scope.onFileSelect = function($files) {
-    console.log('select');
+    // console.log('select');
 
     var progress = function(evt) {
-      console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total, 10));
+      // console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total, 10));
     };
     var success = function(data, status, headers, config) {
       $scope.importBackgroundImage = '/assets/' + data;
       $scope.importBackground = false;
-      console.log('import', editor.bg, $scope.importBackgroundImage);
+      // console.log('import', editor.bg, $scope.importBackgroundImage);
       editor.bg.animate({
         'src': $scope.importBackgroundImage
       });
