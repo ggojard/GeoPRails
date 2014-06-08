@@ -5,6 +5,15 @@
 
   var a = Snap;
 
+  function getMousePos(e) {
+    var x = e.hasOwnProperty('offsetX') ? e.offsetX : e.layerX;
+    var y = e.hasOwnProperty('offsetY') ? e.offsetY : e.layerY;
+    return {
+      x: x,
+      y: y
+    };
+  }
+
   var SvgEditor = function(svgId, $scope) {
     var that = this;
     this.paper = a(svgId);
@@ -61,7 +70,10 @@
 
     if (this.createPolylinePolyline === null) {
       this.createPolylinePolyline = new geoP.Polyline(this);
-      this.createPolylinePolyline.create(e.offsetX / scale + tX, e.offsetY / scale + tY);
+
+      var mouse = getMousePos(e);
+
+      this.createPolylinePolyline.create(mouse.x / scale + tX, mouse.y / scale + tY);
     } else {
       this.createPolylinePolyline.appendPoint(this.newPoint.x, this.newPoint.y);
     }
@@ -133,9 +145,10 @@
       var lastPoint = this.createPolylinePolyline.getLastPoint();
       if (lastPoint !== null) {
         if (this.createPolylineLine === null) {
-          // console.log('cl', lastPoint.x, lastPoint.y, e.offsetX / scale, e.offsetY / scale);
-          this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, e.offsetX / scale, e.offsetY / scale);
-          this.createPolylineLine.stroke('green');
+          var mouse = getMousePos(e);
+          this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, mouse.x / scale, mouse.y / scale);
+          // debugger;
+          // this.createPolylineLine.stroke('green');
         } else {
           this.newPoint = {
             x: e.offsetX / scale + tX,

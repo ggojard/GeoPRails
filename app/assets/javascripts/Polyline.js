@@ -5,6 +5,7 @@
 
   var Polyline = function(svgEditor) {
     geoP.extend(geoP.Shape, this, svgEditor);
+    console.log(this);
     this.moveCircles = [];
     this.pointIndex = 0;
   };
@@ -18,7 +19,7 @@
 
   Polyline.prototype.create = function(x, y) {
     var point = this.createSvgPoint(x, y);
-    this.element = this.svgEditor.canvas.polyline(point.x, point.y);
+    this.element = this.svgEditor.canvas.polygon(point.x, point.y);
     this.element.attr({
       fill: 'transparent',
       stroke: GeoP.Colors.Drawing
@@ -78,6 +79,10 @@
 
   Polyline.prototype.remove = function() {
     this.element.remove();
+    for (var i = 0; i < this.moveCircles.length; i++) {
+      var c =this.moveCircles[i];
+      c.remove();
+    };
   };
 
   Polyline.prototype.appendPoint = function(x, y) {
@@ -109,7 +114,7 @@
     var that = this;
 
     var p = this.element.node.points[0];
-    this.appendPoint(p.x, p.y);
+    // this.appendPoint(p.x, p.y);
 
     this.stroke(GeoP.Colors.NotSelected);
     this.group.drag();
