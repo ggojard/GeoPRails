@@ -17,6 +17,9 @@
   var SvgEditor = function(svgId, $scope) {
     var that = this;
     this.paper = a(svgId);
+    if (this.paper === null){
+      return;
+    }
     this.$scope = $scope;
     this.createPolylineLine = null;
     this.createPolylinePolyline = null;
