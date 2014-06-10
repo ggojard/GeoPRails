@@ -29,7 +29,6 @@
     this.bg = this.canvas.image('/assets/uploads/plan1.jpg', 0, 0, 881, 779);
     this.bg.node.className.baseVal = 'bg';
     this.canvas.transform('scale(' + $scope.camera.scale + ')');
-    $scope['view-info'] = false;
 
     var b = new geoP.Polyline(this);
     b.create(384, 102);
@@ -151,11 +150,15 @@
     if (this.createPolylinePolyline !== null) {
       var lastPoint = this.createPolylinePolyline.getLastPoint();
       if (lastPoint !== null) {
+        // debugger;
         if (this.createPolylineLine === null) {
           var mouse = getMousePos(e);
           this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, mouse.x / scale, mouse.y / scale);
           // debugger;
-          // this.createPolylineLine.stroke('green');
+          this.createPolylineLine.attr({
+            stroke : 'orange',
+            'stroke-dasharray' : [5, 5]
+          });
         } else {
           this.newPoint = {
             x: e.offsetX / scale + tX,
