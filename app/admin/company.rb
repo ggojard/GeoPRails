@@ -1,6 +1,5 @@
 ActiveAdmin.register Company do
   show do |c|
-
     attributes_table do
       row "Nom" do c.name end
     end

@@ -29,12 +29,16 @@
     this.bg = this.canvas.image('/assets/uploads/plan1.jpg', 0, 0, 881, 779);
     this.bg.node.className.baseVal = 'bg';
     this.canvas.transform('scale(' + $scope.camera.scale + ')');
+    $scope['view-info'] = false;
 
     var b = new geoP.Polyline(this);
-    b.create(20, 20);
-    b.appendPoint(50, 50);
-    b.appendPoint(10, 250);
+    b.create(384, 102);
+    b.appendPoint(384, 155);
+    b.appendPoint(489, 155);
+    b.appendPoint(489, 90);
     b.close($scope);
+    this.canvas.text(419, 130, 'B-210');
+    that.items.push(b);
 
     // b.element.animate({x:400});
 

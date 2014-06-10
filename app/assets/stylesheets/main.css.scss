@@ -50,3 +50,34 @@ div.options{
   }  
 }
 
+
+svg.normal + div{
+  visibility: hidden;
+}
+
+table.info{
+  width:400px;
+  margin:0px auto;
+  border:1px solid blue;
+  border-collapse: collapse;
+
+  td,th,&{
+    border:1px solid blue;
+  }
+}
+
+table.inventaire{
+  width:800px;
+  th{
+    text-align: center;
+  }
+}
+
+div.properties{
+  text-align: left;
+}
+
+h2{
+  margin:20px;
+  // text-align: left;
+}

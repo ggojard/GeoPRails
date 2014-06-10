@@ -5,7 +5,7 @@
 
   var Polyline = function(svgEditor) {
     geoP.extend(geoP.Shape, this, svgEditor);
-    console.log(this);
+    // console.log(this);
     this.moveCircles = [];
     this.pointIndex = 0;
   };
@@ -24,7 +24,7 @@
       fill: 'transparent',
       stroke: GeoP.Colors.Drawing
     });
-    this.group = this.svgEditor.paper.group(this.element);
+    this.group = this.svgEditor.canvas.group(this.element);
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 

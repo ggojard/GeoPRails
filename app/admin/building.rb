@@ -11,8 +11,6 @@ ActiveAdmin.register Building do
     end
   end
 
-
-
   form do |f|
     f.inputs "Details" do
       f.input :name

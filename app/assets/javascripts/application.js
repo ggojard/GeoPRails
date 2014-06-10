@@ -10,6 +10,10 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require vendor/angular
+//= require vendor/angular-resource.min
+//= require vendor/angular-file-upload
+//= require vendor/jquery-2.1.1.min
 //= require snap.svg-min
 //= require GeoP
 //= require_tree .

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  organization_type_id: 
+  organization_id: 
+
+two:
+  name: MyString
+  organization_type_id: 
+  organization_id: 
