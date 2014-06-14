@@ -4,7 +4,6 @@ class CreateRooms < ActiveRecord::Migration
       t.string :name
       t.references :room_type, index: true
       t.references :floor, index: true
-
       t.timestamps
     end
   end

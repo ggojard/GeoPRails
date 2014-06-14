@@ -17,7 +17,7 @@
   var SvgEditor = function(svgId, $scope) {
     var that = this;
     this.paper = a(svgId);
-    if (this.paper === null){
+    if (this.paper === null) {
       return;
     }
     this.$scope = $scope;
@@ -30,25 +30,12 @@
     this.bg.node.className.baseVal = 'bg';
     this.canvas.transform('scale(' + $scope.camera.scale + ')');
 
-    var b = new geoP.Polyline(this);
-    b.create(384, 102);
-    b.appendPoint(384, 155);
-    b.appendPoint(489, 155);
-    b.appendPoint(489, 90);
-    b.close($scope);
-    this.canvas.text(419, 130, 'B-210');
-    that.items.push(b);
-
-    // b.element.animate({x:400});
-
     // function mousewheel(e) {
-    //   console.log('mousewheel', e);
     // }
     // this.paper.node.addEventListener("mousewheel", mousewheel, false);
     // this.paper.node.addEventListener("DOMMouseScroll", mousewheel, false);
 
     this.paper.click(function(e) {
-      // console.log($scope.mode);
       if (geoP.currentEvent === null && $scope.mode !== 'create') {
 
         that.unSelectItems();
@@ -59,14 +46,29 @@
     });
   };
 
+  SvgEditor.prototype.createRoomFromJson = function(json) {
+    var b = new geoP.Polyline(this);
+    b.loadFromJson(json);
+    this.items.push(b);
+  };
+
+
+  SvgEditor.prototype.loadRooms = function($http) {
+    var that = this;
+    $http.get('/admin/rooms.json').success(function(rooms) {
+      for (var i = 0; i < rooms.length; i++) {
+        var r = rooms[i];
+        that.createRoomFromJson(r);
+      }
+    });
+  };
+
   SvgEditor.prototype.unSelectItems = function() {
     var that = this;
     for (var i = 0; i < that.items.length; i++) {
       var item = that.items[i];
-      item.stroke(GeoP.Colors.NotSelected);
-      item.setColorsToMovePoints('transparent');
-    };
-
+      item.unSelect();
+    }
   };
 
   SvgEditor.prototype.createPolylineMode = function(e) {
@@ -150,23 +152,19 @@
     if (this.createPolylinePolyline !== null) {
       var lastPoint = this.createPolylinePolyline.getLastPoint();
       if (lastPoint !== null) {
-        // debugger;
         if (this.createPolylineLine === null) {
           var mouse = getMousePos(e);
           this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, mouse.x / scale, mouse.y / scale);
-          // debugger;
           this.createPolylineLine.attr({
-            stroke : 'orange',
-            'stroke-dasharray' : [5, 5]
+            stroke: 'orange',
+            'stroke-dasharray': [5, 5]
           });
         } else {
           this.newPoint = {
             x: e.offsetX / scale + tX,
             y: e.offsetY / scale + tY
           };
-
           updateNewPositionIfShift(this.$scope, this.newPoint, lastPoint);
-
           this.createPolylineLine.animate({
             x1: lastPoint.x,
             y1: lastPoint.y,

@@ -6,18 +6,18 @@ app.config(["$httpProvider",
   }
 ]);
 
-app.controller('GeoPCtrl', function($scope, $upload) {
+app.controller('GeoPCtrl', function($scope, $upload, $http) {
 
   $scope.isShift = false;
   $scope.camera = {
-    scale: 1,
+    scale: 2,
     x: 0,
     y: 0
   };
   $scope.importBackground = false;
   $scope.importBackgroundImage = null;
 
-  function handleKey(e) {
+  function handleKey(ev) {
     var key, isShift;
     if (window.event) {
       key = window.event.keyCode;
@@ -34,6 +34,7 @@ app.controller('GeoPCtrl', function($scope, $upload) {
   document.onkeyup = handleKey;
 
   var editor = new GeoP.SvgEditor("#main", $scope);
+  editor.loadRooms($http);
   $scope.mode = 'normal';
 
   $scope.applyTransform = function() {
@@ -68,15 +69,11 @@ app.controller('GeoPCtrl', function($scope, $upload) {
   $scope.currentOptions = [];
 
   $scope.onFileSelect = function($files) {
-    // console.log('select');
-
     var progress = function(evt) {
-      // console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total, 10));
     };
     var success = function(data, status, headers, config) {
       $scope.importBackgroundImage = '/assets/' + data;
       $scope.importBackground = false;
-      // console.log('import', editor.bg, $scope.importBackgroundImage);
       editor.bg.animate({
         'src': $scope.importBackgroundImage
       });
