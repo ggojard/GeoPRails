@@ -14,13 +14,14 @@
     };
   }
 
-  var SvgEditor = function(svgId, $scope) {
+  var SvgEditor = function(svgId, $scope, $http) {
     var that = this;
     this.paper = a(svgId);
     if (this.paper === null) {
       return;
     }
     this.$scope = $scope;
+    this.$http = $http;
     this.createPolylineLine = null;
     this.createPolylinePolyline = null;
     this.newPoint = null;
@@ -65,6 +66,7 @@
 
   SvgEditor.prototype.unSelectItems = function() {
     var that = this;
+    console.log('unSelectItems');
     for (var i = 0; i < that.items.length; i++) {
       var item = that.items[i];
       item.unSelect();

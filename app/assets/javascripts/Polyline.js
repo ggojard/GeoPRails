@@ -7,7 +7,7 @@
     geoP.extend(geoP.Shape, this, svgEditor);
     this.moveCircles = [];
     this.pointIndex = 0;
-    this.isSelected = false;
+    // this.isSelected = false;
     this.json = {};
   };
 
@@ -162,15 +162,65 @@
     }
   };
 
+
+  Polyline.prototype.updateHashCode = function() {
+    this.hashCode = this.getHash();
+  };
+
+  Polyline.prototype.getHash = function() {
+    var bbox = JSON.stringify(this.group.node.getBBox());
+    var transform = JSON.stringify(this.group.node.getCTM());
+    return geoP.hashCode(bbox + transform);
+  };
+
+
+  Polyline.prototype.save = function() {
+    console.log('Save', this.json.name);
+    var points = [];
+
+    var ctm = this.group.node.getCTM();
+    var scale = this.svgEditor.$scope.camera.scale;
+    var x = ctm.e / scale;
+    var y = ctm.f / scale;
+    for (var i = 0; i < this.element.node.points.length; i++) {
+      var p = this.element.node.points[i];
+      points.push({
+        x: p.x + x,
+        y: p.y + y
+      });
+    }
+    console.log(points);
+    var data = {
+      id: this.json.id,
+      'room': {
+        'points': JSON.stringify(points)
+      }
+    };
+
+
+    this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function(d) {
+      console.log('success', d)
+    }).error(function(data, status, headers, config) {
+      // console.error(data, status, headers, config);
+      // called asynchronously if an error occurs
+      // or server returns response with an error status.
+    });
+  };
+
   Polyline.prototype.unSelect = function() {
+    // console.log('unSelect', this.json.name, this.isSelected);
     this.stroke(GeoP.Colors.NotSelected);
     this.setColorsToMovePoints('transparent');
 
-    if (this.isSelected === true) {
-
+    // if (this.isSelected === true) {
+    var currentHash = this.getHash();
+    // console.log(currentHash, this.hashCode);
+    if (this.hashCode !== currentHash) {
+      this.save();
     }
+    // }
 
-    this.isSelected = false;
+    // this.isSelected = false;
   };
 
   Polyline.prototype.close = function($scope) {
@@ -179,8 +229,9 @@
     var p = this.element.node.points[0];
     this.stroke(GeoP.Colors.NotSelected);
     this.group.drag();
+    this.updateHashCode();
     this.element.click(function(e) {
-      that.isSelected = true;
+      // that.isSelected = true;
       if ($scope.mode !== 'create') {
         that.svgEditor.unSelectItems();
         that.setColorsToMovePoints('red');

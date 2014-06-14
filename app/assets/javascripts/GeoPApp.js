@@ -10,7 +10,7 @@ app.controller('GeoPCtrl', function($scope, $upload, $http) {
 
   $scope.isShift = false;
   $scope.camera = {
-    scale: 2,
+    scale: 1,
     x: 0,
     y: 0
   };
@@ -33,7 +33,7 @@ app.controller('GeoPCtrl', function($scope, $upload, $http) {
   document.onkeydown = handleKey;
   document.onkeyup = handleKey;
 
-  var editor = new GeoP.SvgEditor("#main", $scope);
+  var editor = new GeoP.SvgEditor("#main", $scope, $http);
   editor.loadRooms($http);
   $scope.mode = 'normal';
 
