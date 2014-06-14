@@ -9,6 +9,19 @@ class RoomsController < ApplicationController
   def show
   end
 
+  # POST /rooms
+  # POST /rooms.json
+  def create
+    @room = Room.new(room_params)
+    # respond_to do |format|
+      if @room.save
+        render json: {}
+      else
+        format.json { render json: @room.errors, status: :unprocessable_entity }
+      end
+    # end
+  end
+
   # PATCH/PUT /rooms/1
   # PATCH/PUT /rooms/1.json
   def update
@@ -29,7 +42,7 @@ class RoomsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def room_params
-    params.require(:room).permit(:name)
+    params.require(:room).permit(:name, :points)
   end
 
 end

@@ -38,7 +38,6 @@
 
     this.paper.click(function(e) {
       if (geoP.currentEvent === null && $scope.mode !== 'create') {
-
         that.unSelectItems();
         $scope.cleanCurrentOptions();
         $scope.$apply();
@@ -66,7 +65,6 @@
 
   SvgEditor.prototype.unSelectItems = function() {
     var that = this;
-    console.log('unSelectItems');
     for (var i = 0; i < that.items.length; i++) {
       var item = that.items[i];
       item.unSelect();
@@ -211,6 +209,7 @@
       action: function() {
         if (that.createPolylinePolyline !== null) {
           that.createPolylinePolyline.close($scope);
+          that.createPolylinePolyline.save();
           that.items.push(that.createPolylinePolyline);
         }
         finishCreateMode();

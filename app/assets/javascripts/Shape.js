@@ -9,9 +9,11 @@
 
 
   Shape.prototype.stroke = function(c) {
-    this.element.attr({
-      'stroke': c
-    });
+    if (this.element !== void 0) {
+      this.element.attr({
+        'stroke': c
+      });
+    }
   };
 
   Shape.prototype.fill = function(c) {

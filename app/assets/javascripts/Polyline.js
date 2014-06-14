@@ -8,7 +8,7 @@
     this.moveCircles = [];
     this.pointIndex = 0;
     // this.isSelected = false;
-    this.json = {};
+    this.json = null;
   };
 
   Polyline.prototype.createSvgPoint = function(x, y) {
@@ -130,13 +130,16 @@
 
   Polyline.prototype.loadFromJson = function(json) {
     this.json = json;
-    var points = JSON.parse(json.points);
-    for (var i = 0; i < points.length; i++) {
-      var p = points[i];
-      if (i === 0) {
-        this.create(p.x, p.y);
-      } else {
-        this.appendPoint(p.x, p.y);
+
+    if (json.points !== null) {
+      var points = JSON.parse(json.points);
+      for (var i = 0; i < points.length; i++) {
+        var p = points[i];
+        if (i === 0) {
+          this.create(p.x, p.y);
+        } else {
+          this.appendPoint(p.x, p.y);
+        }
       }
     }
     this.close(this.svgEditor.$scope);
@@ -174,8 +177,7 @@
   };
 
 
-  Polyline.prototype.save = function() {
-    console.log('Save', this.json.name);
+  Polyline.prototype.getPointsData = function() {
     var points = [];
 
     var ctm = this.group.node.getCTM();
@@ -189,32 +191,41 @@
         y: p.y + y
       });
     }
-    console.log(points);
+    return JSON.stringify(points);
+  };
+
+  Polyline.prototype.save = function(callback) {
+
+    if (this.json === null) {
+      var data = {
+        'points': this.getPointsData()
+      };
+      this.svgEditor.$http.post('/rooms.json', data).success(function(d) {
+        return callback && callback();
+      }).error(function(data, status, headers, config) {
+        console.error('impossible to create new');
+      });
+
+    }
     var data = {
-      id: this.json.id,
+      'id': this.json.id,
       'room': {
-        'points': JSON.stringify(points)
+        'points': this.getPointsData()
       }
     };
-
-
     this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function(d) {
-      console.log('success', d)
+      return callback && callback();
     }).error(function(data, status, headers, config) {
-      // console.error(data, status, headers, config);
-      // called asynchronously if an error occurs
-      // or server returns response with an error status.
+      console.error('impossible to update');
     });
   };
 
   Polyline.prototype.unSelect = function() {
-    // console.log('unSelect', this.json.name, this.isSelected);
     this.stroke(GeoP.Colors.NotSelected);
     this.setColorsToMovePoints('transparent');
 
     // if (this.isSelected === true) {
     var currentHash = this.getHash();
-    // console.log(currentHash, this.hashCode);
     if (this.hashCode !== currentHash) {
       this.save();
     }
@@ -226,13 +237,14 @@
   Polyline.prototype.close = function($scope) {
     var that = this;
 
-    var p = this.element.node.points[0];
     this.stroke(GeoP.Colors.NotSelected);
     this.group.drag();
     this.updateHashCode();
     this.element.click(function(e) {
       // that.isSelected = true;
       if ($scope.mode !== 'create') {
+        $scope.room = that.json;
+
         that.svgEditor.unSelectItems();
         that.setColorsToMovePoints('red');
         that.stroke(GeoP.Colors.Selected);
