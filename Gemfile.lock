@@ -27,6 +27,10 @@ GEM
       erubis (~> 2.7.0)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
+    activeadmin-translate (0.2.2)
+      activeadmin
+      globalize3
+      railties
     activemodel (4.0.4)
       activesupport (= 4.0.4)
       builder (~> 3.1.0)
@@ -67,6 +71,9 @@ GEM
     execjs (2.1.0)
     formtastic (2.3.0.rc3)
       actionpack (>= 3.0)
+    globalize3 (0.1.0)
+      activemodel (>= 3.0.0)
+      activerecord (>= 3.0.0)
     has_scope (0.6.0.rc)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
@@ -168,6 +175,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin!
+  activeadmin-translate
   coffee-rails (~> 4.0.0)
   devise
   formtastic

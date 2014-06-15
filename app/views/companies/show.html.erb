@@ -1,0 +1,12 @@
+<script>
+ var G_Company = JSON.parse(<%=@json.to_s.html_safe%>)
+</script>
+<div ng-controller="CompanyCtrl" class="home">
+    <h1> {{company.name}}</h1>
+    <div ng-repeat="b in company.buildings">
+      <h2><a href="{{b.url}}">{{b.name}}</a></h2>
+      <ul>
+        <li ng-repeat="f in b.floors"><a href="{{f.url}}">{{f.name}}</a></li>
+      </ul>
+    </div>
+<div>

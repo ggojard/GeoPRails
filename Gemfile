@@ -49,4 +49,6 @@ gem 'rails_12factor', group: :production
 gem 'formtastic'
 gem 'devise'
 gem 'activeadmin', github: 'gregbell/active_admin'
+gem 'activeadmin-translate'
+
 

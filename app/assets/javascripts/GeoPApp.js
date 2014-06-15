@@ -6,12 +6,18 @@ app.config(["$httpProvider",
   }
 ]);
 
-app.controller('CompanyCtrl', function($scope, $http){
-  $http.get('/companies.json').success(function(d){
-    console.log(d);
-    $scope.companies = d;
-  });
+app.controller('RootCtrl', function($scope){
+  $scope.root = G_RootJson;
+});
 
+app.controller('GlobalCtrl', function($scope){
+  $scope.company = G_Company;
+});
+
+
+
+app.controller('CompanyCtrl', function($scope, $http){
+  $scope.company = G_Company;
 });
 
 app.controller('GeoPCtrl', function($scope, $upload, $http) {

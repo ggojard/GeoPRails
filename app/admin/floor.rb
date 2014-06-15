@@ -1,4 +1,4 @@
-ActiveAdmin.register Floor do
+ActiveAdmin.register Floor , :as => "Etage" do
 
  
 

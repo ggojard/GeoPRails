@@ -1,7 +1,7 @@
 body {
-  margin: 0px;
-  padding:0px;
-  text-align: center;
+  // margin: 0px;
+  // padding:0px;
+  // text-align: center;
 }
 
 body, label, button, input, #upload-file, input[type="file"]{
@@ -77,4 +77,20 @@ div.properties{
 h2{
   margin:20px;
   // text-align: left;
+}
+
+.main-container{
+  margin-top:51px;
+}
+
+a.logo{
+  float:left;
+  margin-right: 20px;
+ &, img{
+    width: 36px;
+  height: 36px;
+ }
+ img{
+    margin:5px;
+ }
 }

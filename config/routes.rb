@@ -1,15 +1,21 @@
 GeoP::Application.routes.draw do
+  get "buildings/show"
+  get "floors/show"
+  get "rooms/show"
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   resources :homes
   resources :rooms
   resources :companies
 
+
+  get '/buildings/:id' => 'buildings#show'
+  get '/floors/:id' => 'floors#show'
+
   # root 'homes#home'
   root 'companies#index'
   post 'upload' => 'homes#upload'
   get 'upload' => 'homes#upload'
-
 
 
   # The priority is based upon order of creation: first created -> highest priority.

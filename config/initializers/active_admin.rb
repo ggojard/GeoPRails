@@ -10,14 +10,14 @@ ActiveAdmin.setup do |config|
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.
   #
-  # config.site_title_link = "/"
+  config.site_title_link = "/"
 
   # Set an optional image to be displayed for the header
   # instead of a string (overrides :site_title)
   #
   # Note: Aim for an image that's 21px high so it fits in the header.
   #
-  # config.site_title_image = "logo.png"
+  config.site_title_image = "/assets/logo-mdm.png"
 
   # == Default Namespace
   #
@@ -239,5 +239,26 @@ ActiveAdmin.setup do |config|
   # You can enable or disable them for all resources here.
   #
   # config.filters = true
+
+  # config.namespace :admin do |admin|
+  #   admin.build_menu :utility_navigation do |menu|
+  #     menu.add :label => "Languages" do |lang|
+  #       lang.add :label => "Français",:url => proc {  url_for(:locale => 'fr') }, id: 'i18n-fr', :priority => 1
+  #       lang.add :label => "English",:url => proc { url_for(:locale => 'en') }, id: 'i18n-en', :priority => 2
+  #       lang.add :label => "Spanish",:url => proc {  url_for(:locale => 'es') }, id: 'i18n-es', :priority => 3
+  #     end
+  #     menu.add :label => proc{ display_name current_active_admin_user},
+  #     :url => '#',
+  #     :id => 'current_user',
+  #     :if => proc{ current_active_admin_user? }
+  #     admin.add_logout_button_to_menu menu
+  #   end
+  # end
+  #
+  # ActiveAdmin.setup do |config|
+  #   config.before_filter do
+  #     I18n.locale = 'fr'
+  #   end
+  # end
 
 end

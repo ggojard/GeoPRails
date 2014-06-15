@@ -1,4 +1,4 @@
-ActiveAdmin.register Company do
+ActiveAdmin.register Company , :as => "Entreprise" do
   show do |c|
     attributes_table do
       row "Nom" do c.name end
@@ -10,6 +10,14 @@ ActiveAdmin.register Company do
         column "Plan" do |b| link_to b.name, [:admin, b] end
       end
     end
+  end
+
+
+  index do
+    selectable_column
+    id_column 
+    column "Nom", :name
+    actions
   end
 
 

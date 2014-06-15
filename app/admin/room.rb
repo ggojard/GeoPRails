@@ -1,4 +1,4 @@
-ActiveAdmin.register Room do
+ActiveAdmin.register Room, :as => "Piece"  do
 
   
   # See permitted parameters documentation:

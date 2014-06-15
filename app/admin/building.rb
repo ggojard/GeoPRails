@@ -1,4 +1,4 @@
-ActiveAdmin.register Building do
+ActiveAdmin.register Building, :as => "Batiment" do
   show do |f|
     attributes_table do
       row "Nom" do f.name end
@@ -10,6 +10,15 @@ ActiveAdmin.register Building do
       end
     end
   end
+
+  index do
+    selectable_column
+    id_column 
+    column "Nom", :name
+    column "Entreprise", :company
+    actions
+  end
+
 
   form do |f|
     f.inputs "Details" do

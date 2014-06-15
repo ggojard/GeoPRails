@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html ng-app='GeoP' id='ng-app'>
 <head>
-  <title>GeoP</title>
-  
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
+<title>GeoP</title>
+
+
+<%= stylesheet_link_tag '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css' %>
+<%= stylesheet_link_tag '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css' %>
+
+<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+<%= csrf_meta_tags %>
+
+<%= javascript_include_tag '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js' %>
 </head>
 <body>
 
-<%= yield %>
+  <%= render 'layouts/menu_top' %>
+
+    <div class="container-fluid main-container">
+      
+      <%= yield %>
+    
+      </div>
+<!-- </div> -->
+
 
 </body>
 </html>

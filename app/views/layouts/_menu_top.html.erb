@@ -1,0 +1,71 @@
+
+<!-- <div class="container"> -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="GlobalCtrl">
+      <div class="container-fluid">
+        <div class="navbar-header">
+<!--           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>           -->
+
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>          
+
+          <a class="logo" href="/"><img src="http://www.medecinsdumonde.be/sites/www.doktersvandewereld.be/themes/custom/doktersvdw/images/fr_logo@2x.png"></a>
+          <a class="navbar-brand" href="/">{{company.name}}</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+            <li class="dropdown" ng-repeat="b in company.buildings">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{b.name}} <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li ng-repeat="f in b.floors"><a href="{{f.url}}">{{f.name}}</a></li>
+              <li class="divider"></li>
+              <li><a href="{{b.url}}">{{b.name}}</a></li>
+            </ul>
+            </li>
+
+            <!-- <li><a href="#about">About</a></li> -->
+            <!-- <li><a href="#contact">Contact</a></li> -->
+            
+
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/admin/buildings">Buildings</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/admin/organizations">Organization</a></li>
+                  <li><a href="/admin/person">People</a></li>
+<!--                  <li class="divider"></li>
+                   <li class="dropdown-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li> -->
+                </ul>
+              </li>
+
+              <li class=""><a href="/admin">Base de donnée</a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><%= current_admin_user.email %></a></li>
+            <li><a href="/admin/logout">Logout</a></li>
+          </ul>
+
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+
+
+
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>

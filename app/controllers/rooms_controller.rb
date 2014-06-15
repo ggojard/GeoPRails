@@ -7,6 +7,7 @@ class RoomsController < ApplicationController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
+    @json = @room.to_builder.target!.to_json
   end
 
   # POST /rooms

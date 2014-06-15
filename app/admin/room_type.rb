@@ -1,4 +1,4 @@
-ActiveAdmin.register RoomType do
+ActiveAdmin.register RoomType , :as => "Type de piece" do
 
   
   # See permitted parameters documentation:
