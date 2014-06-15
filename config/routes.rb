@@ -3,10 +3,14 @@ GeoP::Application.routes.draw do
   ActiveAdmin.routes(self)
   resources :homes
   resources :rooms
+  resources :companies
 
-  root 'homes#home'
+  # root 'homes#home'
+  root 'companies#index'
   post 'upload' => 'homes#upload'
   get 'upload' => 'homes#upload'
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

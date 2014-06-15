@@ -6,6 +6,14 @@ app.config(["$httpProvider",
   }
 ]);
 
+app.controller('CompanyCtrl', function($scope, $http){
+  $http.get('/companies.json').success(function(d){
+    console.log(d);
+    $scope.companies = d;
+  });
+
+});
+
 app.controller('GeoPCtrl', function($scope, $upload, $http) {
 
   $scope.isShift = false;
