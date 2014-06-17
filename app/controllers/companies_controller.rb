@@ -1,4 +1,4 @@
-class CompaniesController < ApplicationController
+class CompaniesController < GeopController
   before_action :set_company, only: [:show]
 
   def index

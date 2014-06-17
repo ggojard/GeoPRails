@@ -1,4 +1,4 @@
-class FloorsController < ApplicationController
+class FloorsController < GeopController
   before_action :set, only: [:show]
 
   def show

@@ -1,4 +1,4 @@
-class RoomsController < ApplicationController
+class RoomsController < GeopController
   before_action :set_room, only: [:show, :update]
 
   def index

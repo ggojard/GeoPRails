@@ -1,0 +1,19 @@
+  <div class="options">
+    <ul>
+      <li ng-repeat="b in buttons" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}</button></li>
+    </ul>
+    <ul>
+      <li ng-repeat="b in currentOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}</button></li>
+    </ul>
+    <ul>
+      <li>
+       <label for="scale">Zoom : </label> <input name="scale" type="number" value="camera.scale" ng-model="camera.scale" ng-change="applyTransform()" step="0.1" min="0"/>
+      </li>
+      <li>
+       <label for="x">X :</label> <input name="x" type="number" value="camera.x" ng-model="camera.x" ng-change="applyTransform()" step="10"/>
+      </li>      
+      <li>
+       <label for="y">Y :</label> <input name="y" type="number" value="camera.y" ng-model="camera.y" ng-change="applyTransform()" step="10"/>
+      </li>            
+    </ul>
+  </div>

@@ -1,6 +1,11 @@
 <script>
  var G_RootJson = JSON.parse(<%=@json.to_s.html_safe%>)
 </script>
-<div ng-controller="RootCtrl">
-<h1>{{root.name}}</h1>
+<div ng-controller="GeoPCtrl">
+  <h1>{{root.name}}</h1>
+
+  <%=  render 'options' %> 
+  <div class="home">
+    <svg id="main" ng-class="[mode, 'shift-' + isShift]" />
+  </div>
 </div>

@@ -53,14 +53,12 @@
   };
 
 
-  SvgEditor.prototype.loadRooms = function($http) {
+  SvgEditor.prototype.loadRooms = function(roomJson) {
     var that = this;
-    $http.get('/admin/rooms.json').success(function(rooms) {
-      for (var i = 0; i < rooms.length; i++) {
-        var r = rooms[i];
-        that.createRoomFromJson(r);
-      }
-    });
+    for (var i = 0; i < roomJson.rooms.length; i++) {
+      var r = roomJson.rooms[i];
+      that.createRoomFromJson(r);
+    }
   };
 
   SvgEditor.prototype.unSelectItems = function() {
@@ -205,7 +203,8 @@
     }
 
     return [{
-      label: 'close',
+      label: 'Fermer',
+      classes: 'btn-success',
       action: function() {
         if (that.createPolylinePolyline !== null) {
           that.createPolylinePolyline.close($scope);
@@ -215,7 +214,8 @@
         finishCreateMode();
       }
     }, {
-      label: 'cancel',
+      label: 'Annuler',
+      classes: 'btn-warning',
       action: cancelCurrentPolyline
     }];
   };

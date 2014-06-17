@@ -10,8 +10,8 @@ body, label, button, input, #upload-file, input[type="file"]{
 }
 
 svg#main{
-  border:2px solid blue;
-  width:90%;
+  border:2px solid #1dc8fe;
+  width:100%;
   margin:0px auto;
   height:400px;
   image.bg{
@@ -22,7 +22,7 @@ svg#main{
     cursor: crosshair;
   }
   &.shift-true{
-    border: 2px dotted green;  
+    border: 2px dotted #00e567;  
     opacity: 0.95;  
   }
 }

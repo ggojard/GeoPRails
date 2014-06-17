@@ -14,8 +14,6 @@ app.controller('GlobalCtrl', function($scope){
   $scope.company = G_Company;
 });
 
-
-
 app.controller('CompanyCtrl', function($scope, $http){
   $scope.company = G_Company;
 });
@@ -48,7 +46,7 @@ app.controller('GeoPCtrl', function($scope, $upload, $http) {
   document.onkeyup = handleKey;
 
   var editor = new GeoP.SvgEditor("#main", $scope, $http);
-  editor.loadRooms($http);
+  editor.loadRooms(G_RootJson);
   $scope.mode = 'normal';
 
   $scope.applyTransform = function() {
@@ -63,12 +61,14 @@ app.controller('GeoPCtrl', function($scope, $upload, $http) {
   };
 
   var createPolyline = {
-    label: 'create polyline',
-    action: $scope.createPolyline
+    label: 'Créer pièce',
+    action: $scope.createPolyline,
+    classes : 'btn-default'
   };
 
   var importBackground = {
-    label: 'import background',
+    label: 'Importer image',
+    classes : 'btn-default',
     action: function(e) {
       $scope.importBackground = !$scope.importBackground;
     }
