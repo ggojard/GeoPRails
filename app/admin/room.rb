@@ -13,6 +13,18 @@ ActiveAdmin.register Room, :as => "Piece"  do
   #  permitted << :other if resource.something?
   #  permitted
   # end
+  # 
+
+  index do
+    selectable_column
+    id_column 
+    column "Etage", :floor
+    column "Nom", :name
+    column "Polyline", :points
+    actions
+  end
+
+
    controller do
     def permitted_params
       params.permit!

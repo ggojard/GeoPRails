@@ -15,17 +15,18 @@
   }
 
   function mouseWheel(e) {
-    e.preventDefault();
-    var factor = 1;
-    if (e.wheelDelta < 0) {
-      factor = -1;
+    if (this.$scope.isShift === true) {
+      e.preventDefault();
+      var factor = 1;
+      if (e.wheelDelta < 0) {
+        factor = -1;
+      }
+      this.$scope.camera.scale += (factor * 0.01);
+      if (this.$scope.camera.scale < 0.05) {
+        this.$scope.camera.scale = 0.05;
+      }
+      this.applyTransform();
     }
-    this.$scope.camera.scale += (factor * 0.01);
-    if (this.$scope.camera.scale < 0.05) {
-      this.$scope.camera.scale = 0.05;
-    }
-    var mp = getMousePos(e);
-    this.applyTransform();
   }
 
   function mouseMove(ev) {
@@ -70,10 +71,10 @@
     this.lastMovePosition = null;
 
     var bgBox = {
-      x : 0,
-      y : 0, 
-      w : 881,
-      h : 779
+      x: 0,
+      y: 0,
+      w: 881,
+      h: 779
     };
 
     // bgBox.w /= 2;
@@ -82,8 +83,8 @@
     this.bg = this.canvas.image('/assets/uploads/plan1.jpg', bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     var border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     border.attr({
-      fill : 'transparent',
-      stroke : '#ffcf00'
+      fill: 'transparent',
+      stroke: '#ffcf00'
     });
 
     this.bg.node.className.baseVal = 'bg';

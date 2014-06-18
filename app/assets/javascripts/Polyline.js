@@ -200,13 +200,13 @@
         'points': this.getPointsData()
       };
       this.svgEditor.$http.post('/rooms.json', data).success(function(d) {
-        geoP.notifications.done('La pièce ' + that.json.name + ' a été crée.');
+        geoP.notifications.done('La nouvelle pièce a été crée.');
         that.updateHashCode();
         return callback && callback();
       }).error(function(data, status, headers, config) {
         console.error('impossible to create new');
       });
-
+      return null; 
     }
     var data = {
       'id': this.json.id,
