@@ -94,3 +94,20 @@ a.logo{
     margin:5px;
  }
 }
+
+#notifications{
+  position: fixed;
+  top:0;
+  right: 0;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  z-index: 1031;
+  li{
+    list-style: none;
+    padding: 10px;
+  }
+  li.done{
+    background-color: #57cc64;
+  }
+}

@@ -14,6 +14,46 @@
     };
   }
 
+  function mouseWheel(e) {
+    e.preventDefault();
+    var factor = 1;
+    if (e.wheelDelta < 0) {
+      factor = -1;
+    }
+    this.$scope.camera.scale += (factor * 0.01);
+    if (this.$scope.camera.scale < 0.05) {
+      this.$scope.camera.scale = 0.05;
+    }
+    var mp = getMousePos(e);
+    this.applyTransform();
+  }
+
+  function mouseMove(ev) {
+    if (this.$scope.isShift === true && this.lastMovePosition !== null) {
+      var diff = {
+        x: this.lastMovePosition.x - ev.x,
+        y: this.lastMovePosition.y - ev.y
+      };
+      this.$scope.camera.x += diff.x;
+      this.$scope.camera.y += diff.y;
+      this.applyTransform();
+    }
+
+    this.lastMovePosition = {
+      x: ev.x,
+      y: ev.y
+    };
+  }
+
+  function mouseClick(e) {
+    if (geoP.currentEvent === null && this.$scope.mode !== 'create') {
+      this.unSelectItems();
+      this.$scope.cleanCurrentOptions();
+      this.$scope.$apply();
+    }
+    geoP.currentEvent = null;
+  }
+
   var SvgEditor = function(svgId, $scope, $http) {
     var that = this;
     this.paper = a(svgId);
@@ -27,23 +67,40 @@
     this.newPoint = null;
     this.items = [];
     this.canvas = this.paper.g();
-    this.bg = this.canvas.image('/assets/uploads/plan1.jpg', 0, 0, 881, 779);
-    this.bg.node.className.baseVal = 'bg';
-    this.canvas.transform('scale(' + $scope.camera.scale + ')');
+    this.lastMovePosition = null;
 
-    // function mousewheel(e) {
-    // }
-    // this.paper.node.addEventListener("mousewheel", mousewheel, false);
-    // this.paper.node.addEventListener("DOMMouseScroll", mousewheel, false);
+    var bgBox = {
+      x : 0,
+      y : 0, 
+      w : 881,
+      h : 779
+    };
 
-    this.paper.click(function(e) {
-      if (geoP.currentEvent === null && $scope.mode !== 'create') {
-        that.unSelectItems();
-        $scope.cleanCurrentOptions();
-        $scope.$apply();
-      }
-      geoP.currentEvent = null;
+    // bgBox.w /= 2;
+    // bgBox.h /= 2;
+
+    this.bg = this.canvas.image('/assets/uploads/plan1.jpg', bgBox.x, bgBox.y, bgBox.w, bgBox.h);
+    var border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
+    border.attr({
+      fill : 'transparent',
+      stroke : '#ffcf00'
     });
+
+    this.bg.node.className.baseVal = 'bg';
+
+    this.applyTransform();
+
+    this.paper.node.addEventListener("mousewheel", mouseWheel.bind(this), false);
+    this.paper.node.addEventListener("DOMMouseScroll", mouseWheel.bind(this), false);
+
+    this.paper.mousemove(mouseMove.bind(this));
+    this.paper.click(mouseClick.bind(this));
+  };
+
+
+
+  SvgEditor.prototype.applyTransform = function() {
+    this.canvas.transform(["scale(", this.$scope.camera.scale, ") translate(", this.$scope.camera.x, ' ', this.$scope.camera.y, ')'].join(''));
   };
 
   SvgEditor.prototype.createRoomFromJson = function(json) {

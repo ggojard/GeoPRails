@@ -50,7 +50,7 @@ app.controller('GeoPCtrl', function($scope, $upload, $http) {
   $scope.mode = 'normal';
 
   $scope.applyTransform = function() {
-    editor.canvas.transform(["scale(", $scope.camera.scale, ") translate(", $scope.camera.x, ' ', $scope.camera.y, ')'].join(''));
+    editor.applyTransform();
   }
 
 

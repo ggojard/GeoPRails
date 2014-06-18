@@ -172,35 +172,37 @@
 
   Polyline.prototype.getHash = function() {
     var bbox = JSON.stringify(this.group.node.getBBox());
-    var transform = JSON.stringify(this.group.node.getCTM());
-    return geoP.hashCode(bbox + transform);
+    var h = [bbox];
+    h.push(JSON.stringify(this.group._.transform));
+    return geoP.hashCode(h.join(''));
   };
-
 
   Polyline.prototype.getPointsData = function() {
     var points = [];
-
+    var camera = this.svgEditor.$scope.camera;
     var ctm = this.group.node.getCTM();
-    var scale = this.svgEditor.$scope.camera.scale;
+    var scale = camera.scale;
     var x = ctm.e / scale;
     var y = ctm.f / scale;
     for (var i = 0; i < this.element.node.points.length; i++) {
       var p = this.element.node.points[i];
       points.push({
-        x: p.x + x,
-        y: p.y + y
+        x: p.x + x - camera.x,
+        y: p.y + y - camera.y
       });
     }
     return JSON.stringify(points);
   };
 
   Polyline.prototype.save = function(callback) {
-
+    var that = this;
     if (this.json === null) {
       var data = {
         'points': this.getPointsData()
       };
       this.svgEditor.$http.post('/rooms.json', data).success(function(d) {
+        geoP.notifications.done('La pièce ' + that.json.name + ' a été crée.');
+        that.updateHashCode();
         return callback && callback();
       }).error(function(data, status, headers, config) {
         console.error('impossible to create new');
@@ -214,6 +216,8 @@
       }
     };
     this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function(d) {
+      geoP.notifications.done('La pièce ' + that.json.name + ' a été sauvegardée.');
+      that.updateHashCode();
       return callback && callback();
     }).error(function(data, status, headers, config) {
       console.error('impossible to update');
@@ -251,7 +255,8 @@
         geoP.currentEvent = e;
         $scope.mode = 'edit';
         $scope.currentOptions = [{
-          label: 'remove',
+          label: 'Supprimer ' + that.json.name,
+          classes: 'btn-warning',
           action: function() {
             that.remove();
             $scope.cleanCurrentOptions();
