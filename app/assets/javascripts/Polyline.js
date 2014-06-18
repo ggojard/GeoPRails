@@ -69,14 +69,14 @@
     var that = this;
     var movePointCircle = this.svgEditor.canvas.circle(x, y, 5);
     movePointCircle.attr({
-      stroke: 'transparent',
-      fill: 'transparent'
+      stroke: 'red',
+      fill: 'transparent',
+      visibility : 'hidden'
     });
     this.group.add(movePointCircle);
     this.moveCircles.push(movePointCircle);
 
     movePointCircle.drag(function(cx, cy, x, y, e) {
-
       var scale = that.svgEditor.$scope.camera.scale;
       var tX = -that.svgEditor.$scope.camera.x;
       var tY = -that.svgEditor.$scope.camera.y;
@@ -154,13 +154,12 @@
     });
   };
 
-  Polyline.prototype.setColorsToMovePoints = function(color) {
+  Polyline.prototype.setMovePointsToVisibility = function(visibility) {
     var that = this;
     for (var i = 0; i < that.moveCircles.length; i++) {
       var movePointCircle = that.moveCircles[i];
       movePointCircle.attr({
-        stroke: color,
-        fill: 'transparent'
+        visibility : visibility
       });
     }
   };
@@ -226,7 +225,7 @@
 
   Polyline.prototype.unSelect = function() {
     this.stroke(GeoP.Colors.NotSelected);
-    this.setColorsToMovePoints('transparent');
+    this.setMovePointsToVisibility('hidden');
 
     // if (this.isSelected === true) {
     var currentHash = this.getHash();
@@ -250,7 +249,7 @@
         $scope.room = that.json;
 
         that.svgEditor.unSelectItems();
-        that.setColorsToMovePoints('red');
+        that.setMovePointsToVisibility('visible');
         that.stroke(GeoP.Colors.Selected);
         geoP.currentEvent = e;
         $scope.mode = 'edit';
