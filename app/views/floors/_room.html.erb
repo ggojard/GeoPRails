@@ -1,0 +1,14 @@
+
+<div ng-if='room != null' >
+  <a class="btn btn-default" href="/admin/pieces/{{room.json.id}}/edit">Modifier la pièce</a>
+  <table class='room'>
+    <tr>
+      <th>Nom</th><td>{{room.json.name}}</td>
+      <th>Type</th><td>{{room.json.room_type.name}}</td>    
+    </tr>
+    <tr>
+      <th>Surface</th><td>{{room.getArea()}} m²</td>
+      <td colspan="2"></td>
+    </tr>
+  </table>
+</div>

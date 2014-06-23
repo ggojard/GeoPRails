@@ -26,8 +26,28 @@
       area = area + (X[j] + X[i]) * (Y[j] - Y[i]);
       j = i; //j is previous vertex to i
     }
-    return area / 2;
+    return area / 2 / 10;
   }
+
+  Polyline.prototype.updateArea = function() {
+    this.areaText.node.innerHTML = this.getArea() + ' m²';
+  };
+
+
+  Polyline.prototype.getArea = function() {
+    var xs = [],
+      ys = [];
+    for (var i = 0; i < this.element.node.points.length; i++) {
+      var p = this.element.node.points[i];
+      xs.push(p.x);
+      ys.push(p.y);
+    }
+    var l = polygonArea(xs, ys, this.element.node.points.length);
+    l = Math.abs(l);
+    l /= this.svgEditor.scaleFactor;
+    l = parseFloat(l, 10).toFixed(1);
+    return l;
+  };
 
   Polyline.prototype.create = function(x, y) {
     var that = this;
@@ -50,19 +70,20 @@
     });
   };
 
-  Polyline.prototype.updateTextPosition = function() {
+  Polyline.prototype.updateTextPosition = function(textSvg, yTranslate) {
     var bbox = this.element.node.getBBox();
-    var textBbox = this.text.node.getBBox();
-    this.text.attr({
+    var textBbox = textSvg.node.getBBox();
+    textSvg.attr({
       x: bbox.x + bbox.width / 2 - textBbox.width / 2,
-      y: bbox.y + bbox.height / 2 + textBbox.height / 2,
+      y: bbox.y + bbox.height / 2 + yTranslate * textBbox.height,
     });
   };
 
-  Polyline.prototype.addText = function(text) {
-    this.text = this.svgEditor.canvas.text(0, 0, text);
-    this.updateTextPosition();
-    this.group.add(this.text);
+  Polyline.prototype.addText = function(text, yTranslate) {
+    var t = this.svgEditor.canvas.text(0, 0, text);
+    this.updateTextPosition(t, yTranslate);
+    this.group.add(t);
+    return t;
   };
 
   Polyline.prototype.addAndGetMovePoint = function(x, y, pointIndex) {
@@ -71,15 +92,15 @@
     movePointCircle.attr({
       stroke: 'red',
       fill: 'transparent',
-      visibility : 'hidden'
+      visibility: 'hidden'
     });
     this.group.add(movePointCircle);
     this.moveCircles.push(movePointCircle);
 
     movePointCircle.drag(function(cx, cy, x, y, e) {
-      var scale = that.svgEditor.$scope.camera.scale;
-      var tX = -that.svgEditor.$scope.camera.x;
-      var tY = -that.svgEditor.$scope.camera.y;
+      var scale = that.svgEditor.camera.scale;
+      var tX = -that.svgEditor.camera.x;
+      var tY = -that.svgEditor.camera.y;
 
       var mx = (e.offsetX / scale) - movePointCircle.node.cx.baseVal.value;
       var my = (e.offsetY / scale) - movePointCircle.node.cy.baseVal.value;
@@ -93,7 +114,10 @@
       var p = that.element.node.points[pointIndex];
       p.x += mx;
       p.y += my;
-      that.updateTextPosition();
+
+      that.updateArea();
+      that.updateTextPosition(that.text, 0);
+      that.updateTextPosition(that.areaText, 1);
     });
 
     movePointCircle.hover(function() {
@@ -120,6 +144,8 @@
       var c = this.moveCircles[i];
       c.remove();
     };
+    this.text.remove();
+    this.areaText.remove();
   };
 
   Polyline.prototype.appendPoint = function(x, y) {
@@ -128,11 +154,18 @@
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 
+
+
+  Polyline.prototype.setTexts = function() {
+    this.text = this.addText(this.json.name, 0);
+    this.areaText = this.addText(this.getArea() + ' m²', 1);
+  };
+
   Polyline.prototype.loadFromJson = function(json) {
     this.json = json;
 
-    if (json.points !== null) {
-      var points = JSON.parse(json.points);
+    if (this.json.points !== null) {
+      var points = JSON.parse(this.json.points);
       for (var i = 0; i < points.length; i++) {
         var p = points[i];
         if (i === 0) {
@@ -143,7 +176,15 @@
       }
     }
     this.close(this.svgEditor.$scope);
-    this.addText(json.name);
+
+    this.setTexts();
+
+    if (G_Room && G_Room.id === this.json.id) {
+      this.element.attr({
+        fill: '#1dc8fe'
+      });
+      this.svgEditor.$scope.room = this;
+    }
   };
 
   Polyline.prototype.registerHover = function() {
@@ -159,7 +200,7 @@
     for (var i = 0; i < that.moveCircles.length; i++) {
       var movePointCircle = that.moveCircles[i];
       movePointCircle.attr({
-        visibility : visibility
+        visibility: visibility
       });
     }
   };
@@ -178,7 +219,7 @@
 
   Polyline.prototype.getPointsData = function() {
     var points = [];
-    var camera = this.svgEditor.$scope.camera;
+    var camera = this.svgEditor.camera;
     var ctm = this.group.node.getCTM();
     var scale = camera.scale;
     var x = ctm.e / scale;
@@ -197,16 +238,20 @@
     var that = this;
     if (this.json === null) {
       var data = {
-        'points': this.getPointsData()
+        'points': this.getPointsData(),
+        'floor_id': this.svgEditor.json.id,
+        'name' : 'B?'
       };
       this.svgEditor.$http.post('/rooms.json', data).success(function(d) {
         geoP.notifications.done('La nouvelle pièce a été crée.');
+        that.json = d;
+        that.setTexts();
         that.updateHashCode();
         return callback && callback();
       }).error(function(data, status, headers, config) {
         console.error('impossible to create new');
       });
-      return null; 
+      return null;
     }
     var data = {
       'id': this.json.id,
@@ -241,29 +286,42 @@
     var that = this;
 
     this.stroke(GeoP.Colors.NotSelected);
-    this.group.drag();
     this.updateHashCode();
-    this.element.click(function(e) {
-      // that.isSelected = true;
-      if ($scope.mode !== 'create') {
-        $scope.room = that.json;
 
-        that.svgEditor.unSelectItems();
-        that.setMovePointsToVisibility('visible');
-        that.stroke(GeoP.Colors.Selected);
-        geoP.currentEvent = e;
-        $scope.mode = 'edit';
-        $scope.currentOptions = [{
-          label: 'Supprimer ' + that.json.name,
-          classes: 'btn-warning',
-          action: function() {
-            that.remove();
-            $scope.cleanCurrentOptions();
+    switch (G_Mode) {
+      case 'edit':
+        this.group.drag();
+
+        this.element.click(function(e) {
+          // that.isSelected = true;
+          if ($scope.mode !== 'create') {
+            $scope.room = that;
+
+            that.svgEditor.unSelectItems();
+            that.setMovePointsToVisibility('visible');
+            that.stroke(GeoP.Colors.Selected);
+            geoP.currentEvent = e;
+            $scope.mode = 'edit';
+            $scope.currentOptions = [{
+              label: 'Supprimer ' + that.json.name,
+              classes: 'btn-warning',
+              action: function() {
+                that.remove();
+                $scope.cleanCurrentOptions();
+              }
+            }];
+            $scope.$apply();
           }
-        }];
-        $scope.$apply();
-      }
-    });
+        });
+        break;
+      case 'show':
+        this.element.click(function(e) {
+          document.location.href = '/floors/' + G_RootJson.id + '/room/' + that.json.id;
+        });
+        break;
+    }
+
+
   };
 
   geoP.Polyline = Polyline;

@@ -16,7 +16,7 @@ class RoomsController < GeopController
     @room = Room.new(room_params)
     # respond_to do |format|
     if @room.save
-      render json: {}
+      render json: @room.to_builder.target!
     else
       format.json { render json: @room.errors, status: :unprocessable_entity }
     end
@@ -43,7 +43,7 @@ class RoomsController < GeopController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def room_params
-    params.require(:room).permit(:name, :points)
+    params.require(:room).permit(:name, :floor_id, :points)
   end
 
 end

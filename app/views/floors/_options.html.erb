@@ -1,11 +1,16 @@
   <div class="options">
     <ul>
       <li ng-repeat="b in buttons" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}</button></li>
+      <li ng-if="G_Mode == 'edit'">
+       <label for="mapScale">Echelle (mètre): </label> <input name="mapScale" type="number" step="any" ng-model="mapScale.length" ng-change="mapScale.updateMapScale()"/>      
+      </li>
     </ul>
     <ul>
       <li ng-repeat="b in currentOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}</button></li>
     </ul>
-    <ul>
+
+
+<!--     <ul>
       <li>
        <label for="scale">Zoom : </label> <input name="scale" type="number" value="camera.scale" ng-model="camera.scale" ng-change="applyTransform()" step="0.1" min="0"/>
       </li>
@@ -15,5 +20,5 @@
       <li>
        <label for="y">Y :</label> <input name="y" type="number" value="camera.y" ng-model="camera.y" ng-change="applyTransform()" step="10"/>
       </li>            
-    </ul>
+    </ul> -->
   </div>

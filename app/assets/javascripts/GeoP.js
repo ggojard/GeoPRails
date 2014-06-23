@@ -3,9 +3,9 @@ var GeoP = {};
 GeoP.currentEvent = null;
 
 GeoP.Colors = {};
-GeoP.Colors.Selected = 'red';
-GeoP.Colors.NotSelected = 'blue';
-GeoP.Colors.Drawing = 'green';
+GeoP.Colors.Selected = '#ff9000';
+GeoP.Colors.NotSelected = '#0b6aff';
+GeoP.Colors.Drawing = '#00e567';
 
 GeoP.extend = function(Parent, child) {
   function construct(constructor, args) {

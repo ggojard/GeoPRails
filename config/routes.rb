@@ -11,6 +11,9 @@ GeoP::Application.routes.draw do
 
   get '/buildings/:id' => 'buildings#show'
   get '/floors/:id' => 'floors#show'
+  get '/floors/:id/edit' => 'floors#edit'
+  get '/floors/:id/room/:room_id' => 'floors#show'
+  put '/floors/:id' => 'floors#update'
 
   # root 'homes#home'
   root 'companies#index'

@@ -14,6 +14,27 @@
     };
   }
 
+  function registerCamera(floorId, camera) {
+    if (localStorage) {
+      localStorage['floor-' + floorId + '-camera'] = JSON.stringify(camera);
+    }
+  }
+
+  function loadCamera(floorId) {
+    if (localStorage) {
+      var c = localStorage['floor-' + floorId + '-camera'];
+      if (c !== void 0) {
+        return JSON.parse(c);
+      } else {
+        return {
+          scale: 1,
+          x: 0,
+          y: 0
+        };
+      }
+    }
+  }
+
   function mouseWheel(e) {
     if (this.$scope.isShift === true) {
       e.preventDefault();
@@ -21,9 +42,9 @@
       if (e.wheelDelta < 0) {
         factor = -1;
       }
-      this.$scope.camera.scale += (factor * 0.01);
-      if (this.$scope.camera.scale < 0.05) {
-        this.$scope.camera.scale = 0.05;
+      this.camera.scale += (factor * 0.01);
+      if (this.camera.scale < 0.05) {
+        this.camera.scale = 0.05;
       }
       this.applyTransform();
     }
@@ -35,8 +56,8 @@
         x: this.lastMovePosition.x - ev.x,
         y: this.lastMovePosition.y - ev.y
       };
-      this.$scope.camera.x += diff.x;
-      this.$scope.camera.y += diff.y;
+      this.camera.x -= diff.x / this.camera.scale;
+      this.camera.y -= diff.y / this.camera.scale;
       this.applyTransform();
     }
 
@@ -55,20 +76,24 @@
     geoP.currentEvent = null;
   }
 
-  var SvgEditor = function(svgId, $scope, $http) {
+  var SvgEditor = function(svgId, floorJson, $scope, $http) {
     var that = this;
     this.paper = a(svgId);
     if (this.paper === null) {
       return;
     }
+    this.json = floorJson;
     this.$scope = $scope;
     this.$http = $http;
+    this.camera = loadCamera(this.json.id);
     this.createPolylineLine = null;
     this.createPolylinePolyline = null;
     this.newPoint = null;
     this.items = [];
     this.canvas = this.paper.g();
     this.lastMovePosition = null;
+    this.scaleFactor = 1;
+
 
     var bgBox = {
       x: 0,
@@ -96,12 +121,45 @@
 
     this.paper.mousemove(mouseMove.bind(this));
     this.paper.click(mouseClick.bind(this));
+
+    this.mapScale = new geoP.MapScale(this);
+    this.mapScale.loadFromFloor(this.json);
+    this.$scope.mapScale = this.mapScale;
+    this.mapScale.updateEditorScaleFactor();
+
+
+    switch (G_Mode) {
+      case 'show':
+      this.mapScale.hide();
+        break;
+    }
   };
 
 
+  SvgEditor.prototype.drag = function(e, node, moveMethod) {
+    var scale = this.camera.scale;
+    var tX = -this.camera.x;
+    var tY = -this.camera.y;
+    if (e.offsetX < 0 || e.offsetY < 0) {
+      return;
+    }
+    var mx = (e.offsetX / scale) - node.cx.baseVal.value;
+    var my = (e.offsetY / scale) - node.cy.baseVal.value;
+
+    var ctm = this.canvas.node.getCTM();
+    mx -= ctm.e / scale;
+    my -= ctm.f / scale;
+
+    node.cx.baseVal.value += mx;
+    node.cy.baseVal.value += my;
+
+    return moveMethod(mx, my);
+  };
+
 
   SvgEditor.prototype.applyTransform = function() {
-    this.canvas.transform(["scale(", this.$scope.camera.scale, ") translate(", this.$scope.camera.x, ' ', this.$scope.camera.y, ')'].join(''));
+    this.canvas.transform(["scale(", this.camera.scale, ") translate(", this.camera.x, ' ', this.camera.y, ')'].join(''));
+    registerCamera(this.json.id, this.camera);
   };
 
   SvgEditor.prototype.createRoomFromJson = function(json) {
@@ -111,10 +169,10 @@
   };
 
 
-  SvgEditor.prototype.loadRooms = function(roomJson) {
+  SvgEditor.prototype.loadRooms = function() {
     var that = this;
-    for (var i = 0; i < roomJson.rooms.length; i++) {
-      var r = roomJson.rooms[i];
+    for (var i = 0; i < this.json.rooms.length; i++) {
+      var r = this.json.rooms[i];
       that.createRoomFromJson(r);
     }
   };
@@ -128,9 +186,9 @@
   };
 
   SvgEditor.prototype.createPolylineMode = function(e) {
-    var scale = this.$scope.camera.scale;
-    var tX = -this.$scope.camera.x;
-    var tY = -this.$scope.camera.y;
+    var scale = this.camera.scale;
+    var tX = -this.camera.x;
+    var tY = -this.camera.y;
 
     if (this.createPolylinePolyline === null) {
       this.createPolylinePolyline = new geoP.Polyline(this);
@@ -202,9 +260,9 @@
   }
 
   SvgEditor.prototype.drawToMousePosition = function(e) {
-    var scale = this.$scope.camera.scale;
-    var tX = -this.$scope.camera.x;
-    var tY = -this.$scope.camera.y;
+    var scale = this.camera.scale;
+    var tX = -this.camera.x;
+    var tY = -this.camera.y;
     if (this.createPolylinePolyline !== null) {
       var lastPoint = this.createPolylinePolyline.getLastPoint();
       if (lastPoint !== null) {
