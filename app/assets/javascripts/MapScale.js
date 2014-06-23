@@ -56,6 +56,21 @@
   };
 
   mapScale.prototype.loadFromFloor = function(floorJson) {
+    // console.log(floorJson);
+
+    if (floorJson.map_scale_x1 === null){
+      floorJson.map_scale_x1 = 0;
+    }
+    if (floorJson.map_scale_y1 === null){
+      floorJson.map_scale_y1 = 0;
+    }
+    if (floorJson.map_scale_x2 === null){
+      floorJson.map_scale_x2 = 50;
+    }
+    if (floorJson.map_scale_y2 === null){
+      floorJson.map_scale_y2 = 50;
+    }
+
     this.create(floorJson.map_scale_x1, floorJson.map_scale_y1, floorJson.map_scale_x2, floorJson.map_scale_y2);
     this.length = floorJson.map_scale_length;
   };
