@@ -1,6 +1,6 @@
-ActiveAdmin.register RoomType , :as => "Type de piece" do
+ActiveAdmin.register RoomType do
+  menu :label => "Type de pièce"
 
-  
   # See permitted parameters documentation:
   # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
@@ -13,7 +13,7 @@ ActiveAdmin.register RoomType , :as => "Type de piece" do
   #  permitted << :other if resource.something?
   #  permitted
   # end
-    controller do
+  controller do
     def permitted_params
       params.permit!
     end

@@ -1,6 +1,7 @@
-ActiveAdmin.register Floor , :as => "Etage" do
+ActiveAdmin.register Floor do
+  menu :label => "Etages"
 
-permit_params :name, :image
+  permit_params :name, :image
 
   index do
     selectable_column

@@ -1,13 +1,15 @@
-ActiveAdmin.register Company , :as => "Entreprise" do
+ActiveAdmin.register Company do
+  menu :label => "Entreprises"
+
   show do |c|
     attributes_table do
       row "Nom" do c.name end
     end
 
     panel "Buildings" do
-      table_for company.buildings do
-        column "Nom" do |b| link_to b.name, [:admin, b] end
-        column "Plan" do |b| link_to b.name, [:admin, b] end
+      table_for c.buildings do
+        column "Nom" do |b| link_to b.name ,[:admin, b] end
+        # column "Plan" do |b| link_to ("a", "v") end
       end
     end
   end
@@ -15,7 +17,7 @@ ActiveAdmin.register Company , :as => "Entreprise" do
 
   index do
     selectable_column
-    id_column 
+    id_column
     column "Nom", :name
     actions
   end

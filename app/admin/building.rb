@@ -1,4 +1,6 @@
-ActiveAdmin.register Building, :as => "Batiment" do
+ActiveAdmin.register Building do
+  menu :label => "Bâtiments"
+
   show do |f|
     attributes_table do
       row "Nom" do f.name end
@@ -13,7 +15,7 @@ ActiveAdmin.register Building, :as => "Batiment" do
 
   index do
     selectable_column
-    id_column 
+    id_column
     column "Nom", :name
     column "Entreprise", :company
     actions
