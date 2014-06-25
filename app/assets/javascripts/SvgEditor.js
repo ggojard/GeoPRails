@@ -92,20 +92,24 @@
     this.items = [];
     this.canvas = this.paper.g();
     this.lastMovePosition = null;
-    this.scaleFactor = 1;
 
+
+    // console.log(this.json);
+    var dim = JSON.parse(this.json.image_dimensions);
 
     var bgBox = {
       x: 0,
       y: 0,
-      w: 881,
-      h: 779
+      w: dim.w,
+      h: dim.h
     };
+
+    // console.log(bgBox);
 
     // bgBox.w /= 2;
     // bgBox.h /= 2;
 
-    this.bg = this.canvas.image('/assets/uploads/plan1.jpg', bgBox.x, bgBox.y, bgBox.w, bgBox.h);
+    this.bg = this.canvas.image(this.json.image, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     var border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     border.attr({
       fill: 'transparent',
@@ -125,7 +129,6 @@
     this.mapScale = new geoP.MapScale(this);
     this.mapScale.loadFromFloor(this.json);
     this.$scope.mapScale = this.mapScale;
-    this.mapScale.updateEditorScaleFactor();
 
 
     switch (G_Mode) {

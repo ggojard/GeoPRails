@@ -18,15 +18,29 @@
     return point;
   };
 
-  function polygonArea(X, Y, numPoints) {
-    var area = 0; // Accumulates area in the loop
-    var j = numPoints - 1; // The last vertex is the 'previous' one to the first
 
-    for (var i = 0; i < numPoints; i++) {
-      area = area + (X[j] + X[i]) * (Y[j] - Y[i]);
-      j = i; //j is previous vertex to i
+  function polygonArea(points) {
+    var l = points.length
+    var det = 0
+
+    points = points.map(normalize);
+    points = points.concat(points[0]);
+
+    for (var i = 0; i < l; i++) {
+      det += points[i].x * points[i + 1].y - points[i].y * points[i + 1].x
     }
-    return area / 2 / 10;
+    return Math.abs(det) / 2
+  }
+
+  function normalize(point) {
+    if (Array.isArray(point)) {
+      return {
+        x: point[0],
+        y: point[1]
+      }
+    } else {
+      return point;
+    }
   }
 
   Polyline.prototype.updateArea = function() {
@@ -35,16 +49,24 @@
 
 
   Polyline.prototype.getArea = function() {
-    var xs = [],
-      ys = [];
+    var points = [];
+
+    var scaleLen = this.svgEditor.mapScale.length;
+    var scaleDim = this.svgEditor.mapScale.getLength();
+
+
     for (var i = 0; i < this.element.node.points.length; i++) {
       var p = this.element.node.points[i];
-      xs.push(p.x);
-      ys.push(p.y);
+      var a = {
+        x: p.x,
+        y: p.y
+      };
+      a.x = a.x * scaleLen / scaleDim;
+      a.y = a.y * scaleLen / scaleDim;
+      points.push(a);
     }
-    var l = polygonArea(xs, ys, this.element.node.points.length);
-    l = Math.abs(l);
-    l /= this.svgEditor.scaleFactor;
+
+    var l = polygonArea(points);
     l = parseFloat(l, 10).toFixed(1);
     return l;
   };
@@ -240,7 +262,7 @@
       var data = {
         'points': this.getPointsData(),
         'floor_id': this.svgEditor.json.id,
-        'name' : 'B?'
+        'name': 'B?'
       };
       this.svgEditor.$http.post('/rooms.json', data).success(function(d) {
         geoP.notifications.done('La nouvelle pièce a été crée.');

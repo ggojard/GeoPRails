@@ -26,29 +26,21 @@
 
   mapScale.prototype.hide = function() {
     var hidden = {
-      visibility : 'hidden'
+      visibility: 'hidden'
     };
     this.c1.attr(hidden);
     this.c2.attr(hidden);
     this.line.attr(hidden);
   };
 
-  mapScale.prototype.getScaleFactor = function() {
-    return this.getLength() / this.length;
-  };
-
-  mapScale.prototype.updateEditorScaleFactor = function() {
-    this.editor.scaleFactor = this.getScaleFactor();
-  };
 
   mapScale.prototype.updateMapScale = function() {
     var that = this;
     var data = {
       'map_scale_length': this.length
     };
-    that.updateEditorScaleFactor();
-    that.editor.$http.put('/floors/' + that.editor.json.id + '.json', data).success(function(d) {      
-      that.editor.items.map(function(i){
+    that.editor.$http.put('/floors/' + that.editor.json.id + '.json', data).success(function(d) {
+      that.editor.items.map(function(i) {
         i.updateArea();
       });
 
@@ -58,16 +50,16 @@
   mapScale.prototype.loadFromFloor = function(floorJson) {
     // console.log(floorJson);
 
-    if (floorJson.map_scale_x1 === null){
+    if (floorJson.map_scale_x1 === null) {
       floorJson.map_scale_x1 = 0;
     }
-    if (floorJson.map_scale_y1 === null){
+    if (floorJson.map_scale_y1 === null) {
       floorJson.map_scale_y1 = 0;
     }
-    if (floorJson.map_scale_x2 === null){
+    if (floorJson.map_scale_x2 === null) {
       floorJson.map_scale_x2 = 50;
     }
-    if (floorJson.map_scale_y2 === null){
+    if (floorJson.map_scale_y2 === null) {
       floorJson.map_scale_y2 = 50;
     }
 
@@ -97,14 +89,12 @@
     }, function() {}, function() {
 
       var length = that.getLength();
-      var data = {
-      };
+      var data = {};
 
       data['map_scale_x' + index] = that.line.node['x' + index].baseVal.value;
       data['map_scale_y' + index] = that.line.node['y' + index].baseVal.value;
 
-      that.editor.$http.put('/floors/' + that.editor.json.id + '.json', data).success(function(d) {
-      });
+      that.editor.$http.put('/floors/' + that.editor.json.id + '.json', data).success(function(d) {});
     });
 
   };

@@ -8,6 +8,7 @@ ActiveAdmin.register Floor do
     column "Bâtiment", :building
     id_column
     column "Nom", :name
+    column "Image Dimensions", :image_dimensions
     actions
   end
 
@@ -22,12 +23,23 @@ ActiveAdmin.register Floor do
 
   show do |ad|
     attributes_table do
-      row :name
-      row :building
+      row "Nom" do :name end
+      row "Bâtiment" do  :building end
+      # "Image Plan",
       row :image do
         image_tag(ad.image.url(:thumb))
       end
-      # Will display the image on show object page
+
+      panel "Pièces" do
+        # if ad.rooms != nil do
+        # table_for ad.rooms do
+
+        #   column "Nom" do |b| link_to b.name ,[:admin, b] end
+        #   column "Type" do |b| b.room_type.name end
+        # end
+        # end
+      end
+
     end
   end
 

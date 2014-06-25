@@ -6,7 +6,7 @@ ActiveAdmin.register Company do
       row "Nom" do c.name end
     end
 
-    panel "Buildings" do
+    panel "Bâtiments" do
       table_for c.buildings do
         column "Nom" do |b| link_to b.name ,[:admin, b] end
         # column "Plan" do |b| link_to ("a", "v") end
