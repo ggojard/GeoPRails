@@ -2,8 +2,12 @@ class CompaniesController < GeopController
   before_action :set_company, only: [:show]
 
   def index
-    @c = Company.find(current_admin_user.company_id)
-    redirect_to company_url(@c)
+    if current_admin_user != nil
+      @c = Company.find(current_admin_user.company_id)
+      redirect_to company_url(@c)
+    else
+      render 'login/login'
+    end
   end
 
   def show

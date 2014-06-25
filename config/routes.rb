@@ -9,6 +9,9 @@ GeoP::Application.routes.draw do
   resources :companies
 
 
+  get '/login_page' => 'login#login'
+
+
   get '/buildings/:id' => 'buildings#show'
   get '/floors/:id' => 'floors#show'
   get '/floors/:id/edit' => 'floors#edit'
@@ -19,6 +22,9 @@ GeoP::Application.routes.draw do
   root 'companies#index'
   post 'upload' => 'homes#upload'
   get 'upload' => 'homes#upload'
+
+  # get "/logout" => :to "admin/logout" # Add a custom sing out route for user sign out
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

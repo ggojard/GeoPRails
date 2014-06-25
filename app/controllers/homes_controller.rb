@@ -12,6 +12,10 @@ class HomesController < ApplicationController
   def show
   end
 
+  def login_page
+    
+  end
+
 
   def upload
     # if params[:file]

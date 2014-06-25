@@ -111,6 +111,7 @@ ActiveAdmin.setup do |config|
   #
   # Default:
   # config.root_to = 'dashboard#index'
+  config.root_to = 'companies#index'
 
 
   # == Admin Comments
