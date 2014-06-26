@@ -15,14 +15,34 @@ ActiveAdmin.register Room do
   # end
   #
 
+  show do |c|
+    attributes_table do
+      row "Etage" do c.floor end
+      row "Nom" do c.name end
+      row "Type" do c.room_type end
+    end
+  end
+
+
   index do
     selectable_column
     id_column
     column "Etage", :floor
     column "Nom", :name
+    column "Type", :room_type
     # column "Polyline", :points
     actions
   end
+
+  form do |f|
+    f.inputs "Details" do
+      f.input :floor, label: "Etage"
+      f.input :name , label: "Nom"
+      f.input :room_type, label: "Type"
+    end
+    f.actions
+  end
+
 
 
   controller do

@@ -8,12 +8,14 @@
   <h1>{{root.name}}</h1>
 
   <%=  render 'room_type_filter' %> 
-  <%=  render 'options' %> 
   
   <div class="home" ng-controller="GeoPCtrl">
+    <%=  render 'options' %> 
+
     <svg id="main" ng-class="[mode, 'shift-' + isShift, 'mode-' + G_Mode]" />
+    <%= render 'room' %>
   </div>
 
-  <%= render 'room' %>
+  
 
 </div>

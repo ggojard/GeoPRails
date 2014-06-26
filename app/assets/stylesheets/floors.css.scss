@@ -21,11 +21,13 @@ svg.mode-show{
 
 ul.room-types{
   padding: 0px;
+  margin: 0px;
   li{
     list-style: none;
     display: inline-block;
     margin-right: 10px;
     padding: 5px;
     padding-top:0px;
+    border-radius: 5px;
   }
 }
