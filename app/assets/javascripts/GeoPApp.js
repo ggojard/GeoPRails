@@ -1,11 +1,23 @@
 (function() {
-  var app = angular.module('GeoP', ['angularFileUpload']);
+  var app = angular.module('GeoP', []);
 
   app.config(["$httpProvider",
     function(provider) {
       provider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
     }
   ]);
+
+  app.controller('RoomTypesFilterCtrl', function($scope, $rootScope) {
+    
+    $scope.roomTypeFilterStateChange = function(roomType, e){
+      $rootScope.$emit('RoomTypeFilters.StateChange', roomType);
+    };
+
+    $rootScope.$on('updateRoomTypes', function(e, roomTypes) {
+      $scope.roomTypes = roomTypes;
+    });
+  });
+
 
   app.controller('RootCtrl', function($scope) {
     $scope.root = G_RootJson;
@@ -19,15 +31,9 @@
     $scope.company = G_Company;
   });
 
-  app.controller('GeoPCtrl', function($scope, $upload, $http) {
-
-    $scope.v = 5;
-
+  app.controller('GeoPCtrl', function($scope, $http, $rootScope) {
     $scope.G_Mode = G_Mode;
-
     $scope.isShift = false;
-    $scope.importBackground = false;
-    $scope.importBackgroundImage = null;
 
     function handleKey(ev) {
       var key, isShift;
@@ -42,13 +48,13 @@
       $scope.$apply();
     }
 
+
     document.onkeydown = handleKey;
     document.onkeyup = handleKey;
 
-    var editor = new GeoP.SvgEditor("#main", G_RootJson, $scope, $http);
+    var editor = new GeoP.SvgEditor("#main", G_RootJson, $scope, $http, $rootScope);
     editor.loadRooms();
     $scope.mode = 'normal';
-
 
     $scope.editModeAction = function() {
       document.location.href = '/floors/' + G_RootJson.id + '/edit';
@@ -72,21 +78,12 @@
       classes: 'btn-default'
     };
 
-
     var stopEditMode = {
       label: 'Arrêter la modification',
-      action: function(){
+      action: function() {
         document.location.href = '/floors/' + G_RootJson.id;
       },
       classes: 'btn-default'
-    };
-
-    var importBackground = {
-      label: 'Importer image',
-      classes: 'btn-default',
-      action: function(e) {
-        $scope.importBackground = !$scope.importBackground;
-      }
     };
 
     $scope.cleanCurrentOptions = function() {
@@ -94,36 +91,16 @@
       $scope.mode = 'normal';
     };
 
-
-    switch (G_Mode){
-      case 'edit' :
-        $scope.buttons = [stopEditMode, createPolyline, importBackground];
-      break;
+    switch (G_Mode) {
+      case 'edit':
+        $scope.buttons = [stopEditMode, createPolyline];
+        break;
       case 'show':
         $scope.buttons = [editMode];
-      break;
+        break;
     }
 
-    
     $scope.currentOptions = [];
 
-    $scope.onFileSelect = function($files) {
-      var progress = function(evt) {};
-      var success = function(data, status, headers, config) {
-        $scope.importBackgroundImage = '/assets/' + data;
-        $scope.importBackground = false;
-        editor.bg.animate({
-          'src': $scope.importBackgroundImage
-        });
-      };
-
-      for (var i = 0; i < $files.length; i++) {
-        var file = $files[i];
-        $scope.upload = $upload.upload({
-          url: 'upload',
-          file: file
-        }).progress(progress).success(success);
-      }
-    };
   });
 }());

@@ -7,7 +7,7 @@ class RoomsController < GeopController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
-    @json = @room.to_builder.target!.to_json
+    @json = @room.to_builder.target!
   end
 
   # POST /rooms

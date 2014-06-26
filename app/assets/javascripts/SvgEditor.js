@@ -36,6 +36,8 @@
   }
 
   function mouseWheel(e) {
+    /*jshint validthis:true */
+
     if (this.$scope.isShift === true) {
       e.preventDefault();
       var factor = 1;
@@ -51,6 +53,8 @@
   }
 
   function mouseMove(ev) {
+    /*jshint validthis:true */
+
     if (this.$scope.isShift === true && this.lastMovePosition !== null) {
       var diff = {
         x: this.lastMovePosition.x - ev.x,
@@ -68,6 +72,8 @@
   }
 
   function mouseClick(e) {
+    /*jshint validthis:true */
+
     if (geoP.currentEvent === null && this.$scope.mode !== 'create') {
       this.unSelectItems();
       this.$scope.cleanCurrentOptions();
@@ -76,7 +82,7 @@
     geoP.currentEvent = null;
   }
 
-  var SvgEditor = function(svgId, floorJson, $scope, $http) {
+  var SvgEditor = function(svgId, floorJson, $scope, $http, $rootScope) {
     var that = this;
     this.paper = a(svgId);
     if (this.paper === null) {
@@ -85,6 +91,7 @@
     this.json = floorJson;
     this.$scope = $scope;
     this.$http = $http;
+    this.$rootScope = $rootScope;
     this.camera = loadCamera(this.json.id);
     this.createPolylineLine = null;
     this.createPolylinePolyline = null;
@@ -118,6 +125,9 @@
 
     this.bg.node.className.baseVal = 'bg';
 
+
+    this.loadRoomTypes();
+
     this.applyTransform();
 
     this.paper.node.addEventListener("mousewheel", mouseWheel.bind(this), false);
@@ -133,7 +143,7 @@
 
     switch (G_Mode) {
       case 'show':
-      this.mapScale.hide();
+        this.mapScale.hide();
         break;
     }
   };
@@ -171,6 +181,39 @@
     this.items.push(b);
   };
 
+  function getRoomTypesAvailable(floorJson) {
+    var roomTypesObject = {};
+    for (var i = 0; i < floorJson.rooms.length; i++) {
+      var room = floorJson.rooms[i];
+      if (room.room_type !== null) {
+        roomTypesObject[room.room_type.id] = room.room_type;
+        roomTypesObject[room.room_type.id].state = true;
+      }
+    }
+    return roomTypesObject;
+  }
+
+  SvgEditor.prototype.loadRoomTypes = function() {
+    var that = this;
+    this.roomTypeFilters = getRoomTypesAvailable(this.json);
+    this.$rootScope.$emit('updateRoomTypes', this.roomTypeFilters);
+
+    this.$rootScope.$on('RoomTypeFilters.StateChange', function(e, roomType) {
+      that.roomTypeFilters[roomType.id]= roomType;
+      that.fillRoomsWithType();
+    });
+  };
+
+  SvgEditor.prototype.fillRoomsWithType = function() {
+    this.mapOnItems('fillWithRoomType');
+  };
+
+  SvgEditor.prototype.mapOnItems = function(methodName) {
+    for (var i = 0; i < this.items.length; i++) {
+      this.items[i][methodName]();
+    };
+  };
+
 
   SvgEditor.prototype.loadRooms = function() {
     var that = this;
@@ -181,11 +224,12 @@
   };
 
   SvgEditor.prototype.unSelectItems = function() {
-    var that = this;
-    for (var i = 0; i < that.items.length; i++) {
-      var item = that.items[i];
-      item.unSelect();
-    }
+    this.mapOnItems('unSelect');
+    // var that = this;
+    // for (var i = 0; i < that.items.length; i++) {
+    //   var item = that.items[i];
+    //   item.unSelect();
+    // }
   };
 
   SvgEditor.prototype.createPolylineMode = function(e) {
@@ -212,7 +256,7 @@
     var dx = ex - cx;
     var dy = ey - cy;
     var theta = Math.atan2(dy, dx);
-    theta *= 180 / Math.PI // rads to degs
+    theta *= 180 / Math.PI; // rads to degs
     return theta;
   }
 

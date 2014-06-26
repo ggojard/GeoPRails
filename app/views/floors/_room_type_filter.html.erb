@@ -1,0 +1,14 @@
+<div ng-controller="RoomTypesFilterCtrl">
+<form class="form-horizontal">
+
+<ul class="room-types">
+  <li ng-repeat="(id, rt) in roomTypes" style="background-color: {{rt.color}}">
+
+  <div class="checkbox">
+    <label><input type="checkbox" ng-model="rt.state" ng-change="roomTypeFilterStateChange(rt)">{{rt.name}}</label>
+  </div>
+
+    </li>
+</ul>
+</form>
+</div>

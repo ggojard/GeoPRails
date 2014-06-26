@@ -1,5 +1,5 @@
 <script>
- var G_RootJson = JSON.parse(<%=@json.to_s.html_safe%>)
+ var G_RootJson = <%=@json.html_safe%>
 </script>
 <div ng-controller="RootCtrl">
 <h1>{{root.name}}</h1>

@@ -9,7 +9,8 @@
 <%= csrf_meta_tags %>
 
 <script>
- var G_Company = JSON.parse(<%=@global_company_json.to_s.html_safe%>)
+ var G_Company = <%=@global_company_json.html_safe%>
+ var G_RoomTypes = <%= @global_room_types.html_safe%>
 </script>
 
 </head>

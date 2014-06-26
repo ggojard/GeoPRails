@@ -183,6 +183,21 @@
     this.areaText = this.addText(this.getArea() + ' m²', 1);
   };
 
+  Polyline.prototype.fillWithRoomType = function() {
+    var color = 'transparent';
+    if (this.json.room_type !== null) {
+      var roomType = this.svgEditor.roomTypeFilters[this.json.room_type.id];
+      if (roomType.state === true) {
+        color = roomType.color;
+      } else {
+        color = 'transparent';
+      }
+      this.element.attr({
+        fill: color
+      });
+    }
+  };
+
   Polyline.prototype.loadFromJson = function(json) {
     this.json = json;
 
@@ -200,7 +215,7 @@
     this.close(this.svgEditor.$scope);
 
     this.setTexts();
-
+    this.fillWithRoomType();
     if (G_Room && G_Room.id === this.json.id) {
       this.element.attr({
         fill: '#1dc8fe'

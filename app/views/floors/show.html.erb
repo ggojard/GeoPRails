@@ -1,15 +1,16 @@
 <script>
- var G_RootJson = JSON.parse(<%=@json.to_s.html_safe%>)
+ var G_RootJson = <%=@json.html_safe%>
  var G_Mode = '<%= @G_Mode %>'
- var G_Room = JSON.parse(<%=@G_Room.to_s.html_safe%>)
+ var G_Room = <%=@G_Room.html_safe%>
 
 </script>
-<div ng-controller="GeoPCtrl">
+<div >
   <h1>{{root.name}}</h1>
 
+  <%=  render 'room_type_filter' %> 
   <%=  render 'options' %> 
   
-  <div class="home">
+  <div class="home" ng-controller="GeoPCtrl">
     <svg id="main" ng-class="[mode, 'shift-' + isShift, 'mode-' + G_Mode]" />
   </div>
 

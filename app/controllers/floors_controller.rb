@@ -3,13 +3,13 @@ class FloorsController < GeopController
   # before_action :floor_params, only: [:uodate]
 
   def show
-    @json = @floor.to_builder.target!.to_json
+    @json = @floor.to_builder.target!
     @G_Mode = 'show';
     
   end
 
   def edit
-    @json = @floor.to_builder.target!.to_json
+    @json = @floor.to_builder.target!
     @G_Mode = 'edit';
     render 'show'
   end
@@ -30,9 +30,9 @@ class FloorsController < GeopController
   def set
     @floor = Floor.find(params[:id])
     if (params[:room_id])
-      @G_Room = Room.find(params[:room_id]).to_builder.target!.to_json
+      @G_Room = Room.find(params[:room_id]).to_builder.target!
     else 
-      @G_Room = '"{}"'
+      @G_Room = "{}".to_json
     end
 
   end

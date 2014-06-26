@@ -11,7 +11,7 @@ class CompaniesController < GeopController
   end
 
   def show
-    @json = @company.to_builder.target!.to_json
+    @json = @company.to_builder.target!
   end
 
   private

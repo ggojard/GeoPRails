@@ -48,7 +48,6 @@
   };
 
   mapScale.prototype.loadFromFloor = function(floorJson) {
-    // console.log(floorJson);
 
     if (floorJson.map_scale_x1 === null) {
       floorJson.map_scale_x1 = 0;
