@@ -152,6 +152,12 @@
   };
 
 
+  SvgEditor.prototype.getFloorFullName = function() {
+    var n = this.json.building.name + '-' + this.json.name;
+    n = n.replace(/ /g, '_');
+    return n;
+  };
+
   SvgEditor.prototype.drag = function(e, node, moveMethod) {
     var scale = this.camera.scale;
     var tX = -this.camera.x;
