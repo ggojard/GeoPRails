@@ -3,6 +3,7 @@
 (function(geoP) {
   "use strict";
 
+
   var a = Snap;
 
   function getMousePos(e) {
@@ -12,33 +13,6 @@
       x: x,
       y: y
     };
-  }
-
-  function registerCamera(floorId, camera) {
-    if (localStorage) {
-      localStorage['floor-' + floorId + '-camera'] = JSON.stringify(camera);
-    }
-  }
-
-  function loadCamera(floorId) {
-    return {
-      scale: 1,
-      x: 0,
-      y: 0
-    };
-
-    if (false && localStorage) {
-      var c = localStorage['floor-' + floorId + '-camera'];
-      if (c !== void 0) {
-        return JSON.parse(c);
-      } else {
-        return {
-          scale: 1,
-          x: 0,
-          y: 0
-        };
-      }
-    }
   }
 
   function mouseWheel(e) {
@@ -98,7 +72,7 @@
     this.$scope = $scope;
     this.$http = $http;
     this.$rootScope = $rootScope;
-    this.camera = loadCamera(this.json.id);
+    this.loadCamera();
     this.createPolylineLine = null;
     this.createPolylinePolyline = null;
     this.newPoint = null;
@@ -107,7 +81,6 @@
     this.lastMovePosition = null;
 
 
-    // console.log(this.json);
     var dim = JSON.parse(this.json.image_dimensions);
 
     var bgBox = {
@@ -118,10 +91,8 @@
     };
 
     this.bgBox = bgBox;
-    // bgBox.w /= 2;
-    // bgBox.h /= 2;
-
-    this.bg = this.canvas.image('http://localhost:3000/' + this.json.image, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
+    var imagePath = 'http://' + window.location.host + this.json.image;
+    this.bg = this.canvas.image(imagePath, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     this.bg.node.style.cssText = 'opacity: 0.25';
     var border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     border.attr({
@@ -143,14 +114,12 @@
     this.mapScale.loadFromFloor(this.json);
     this.$scope.mapScale = this.mapScale;
 
-
     switch (G_Mode) {
       case 'show':
         this.mapScale.hide();
         break;
     }
   };
-
 
   SvgEditor.prototype.getFloorFullName = function() {
     var n = this.json.building.name + '-' + this.json.name;
@@ -176,12 +145,6 @@
     node.cy.baseVal.value += my;
 
     return moveMethod(mx, my);
-  };
-
-
-  SvgEditor.prototype.applyTransform = function() {
-    this.canvas.transform(["scale(", this.camera.scale, ") translate(", this.camera.x, ' ', this.camera.y, ')'].join(''));
-    registerCamera(this.json.id, this.camera);
   };
 
   SvgEditor.prototype.createRoomFromJson = function(json) {
@@ -234,11 +197,6 @@
 
   SvgEditor.prototype.unSelectItems = function() {
     this.mapOnItems('unSelect');
-    // var that = this;
-    // for (var i = 0; i < that.items.length; i++) {
-    //   var item = that.items[i];
-    //   item.unSelect();
-    // }
   };
 
   SvgEditor.prototype.createPolylineMode = function(e) {

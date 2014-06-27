@@ -25,7 +25,6 @@
   };
 
   mapScale.prototype.hide = function() {
-    return;
     var hidden = {
       visibility: 'hidden'
     };

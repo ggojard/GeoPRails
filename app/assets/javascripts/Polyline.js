@@ -113,7 +113,6 @@
   };
 
   Polyline.prototype.addAndGetMovePoint = function(x, y, pointIndex) {
-    return;
     var that = this;
     var movePointCircle = this.svgEditor.canvas.circle(x, y, 5);
     movePointCircle.attr({
@@ -180,7 +179,6 @@
     this.element.node.points.appendItem(point);
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
-
 
 
   Polyline.prototype.setTexts = function() {
