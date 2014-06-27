@@ -15,5 +15,6 @@
 //= require vendor/jquery-2.1.1.min
 //= require vendor/bootstrap.min
 //= require vendor/snap.svg-min
+//= require vendor/d3.v3.min
 //= require GeoP
 //= require_tree .

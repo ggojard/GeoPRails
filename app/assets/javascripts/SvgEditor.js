@@ -21,7 +21,13 @@
   }
 
   function loadCamera(floorId) {
-    if (localStorage) {
+    return {
+      scale: 1,
+      x: 0,
+      y: 0
+    };
+
+    if (false && localStorage) {
       var c = localStorage['floor-' + floorId + '-camera'];
       if (c !== void 0) {
         return JSON.parse(c);
@@ -111,20 +117,17 @@
       h: dim.h
     };
 
-    // console.log(bgBox);
-
+    this.bgBox = bgBox;
     // bgBox.w /= 2;
     // bgBox.h /= 2;
 
-    this.bg = this.canvas.image(this.json.image, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
+    this.bg = this.canvas.image('http://localhost:3000/' + this.json.image, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
+    this.bg.node.style.cssText = 'opacity: 0.25';
     var border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     border.attr({
       fill: 'transparent',
       stroke: '#ffcf00'
     });
-
-    this.bg.node.className.baseVal = 'bg';
-
 
     this.loadRoomTypes();
 
@@ -199,7 +202,7 @@
     this.$rootScope.$emit('updateRoomTypes', this.roomTypeFilters);
 
     this.$rootScope.$on('RoomTypeFilters.StateChange', function(e, roomType) {
-      that.roomTypeFilters[roomType.id]= roomType;
+      that.roomTypeFilters[roomType.id] = roomType;
       that.fillRoomsWithType();
     });
   };

@@ -12,7 +12,8 @@
   <div class="home" ng-controller="GeoPCtrl">
     <%=  render 'options' %> 
 
-    <svg id="main" ng-class="[mode, 'shift-' + isShift, 'mode-' + G_Mode]" />
+    <canvas id="canvas-0"></canvas>
+    <svg id="main" ng-class="[mode, 'shift-' + isShift, 'mode-' + G_Mode]" xmlns:xlink="http://www.w3.org/1999/xlink" />
     <%= render 'room' %>
   </div>
 

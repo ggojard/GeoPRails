@@ -14,9 +14,9 @@ svg#main{
   width:100%;
   margin:0px auto;
   height:400px;
-  image.bg{
-    opacity: 0.25;
-  }
+  // image.bg{
+  //   opacity: 0.25;
+  // }
 
   &.create:hover{
     cursor: crosshair;
@@ -106,3 +106,6 @@ a.logo{
     background-color: #57cc64;
   }
 }
+
+
+

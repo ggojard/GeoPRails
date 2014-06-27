@@ -103,12 +103,17 @@
 
   Polyline.prototype.addText = function(text, yTranslate) {
     var t = this.svgEditor.canvas.text(0, 0, text);
+    t.attr({
+      fill: 'black'
+    });
+    t.node.style.cssText = 'font-size:12px;font-family:arial';
     this.updateTextPosition(t, yTranslate);
     this.group.add(t);
     return t;
   };
 
   Polyline.prototype.addAndGetMovePoint = function(x, y, pointIndex) {
+    return;
     var that = this;
     var movePointCircle = this.svgEditor.canvas.circle(x, y, 5);
     movePointCircle.attr({
