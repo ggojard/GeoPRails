@@ -68,7 +68,6 @@
 
     var image = new Image();
     image.src = imgsrc;
-    context.drawImage(image, 0, 0);
     image.onload = function() {
 
       setTimeout(function() {
@@ -88,7 +87,7 @@
 
         $svgDiv.remove();
         $c.remove();
-      }, 500);
+      }, 5000);
 
 
     };
