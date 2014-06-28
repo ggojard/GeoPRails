@@ -30,7 +30,6 @@
       y: editor.camera.y
     };
 
-
     editor.camera = geoP.DefaultCamera;
 
     editor.applyTransform();
@@ -71,21 +70,26 @@
     image.src = imgsrc;
     context.drawImage(image, 0, 0);
     image.onload = function() {
-      context.fillStyle = 'white';
-      context.fillRect(0, 0, image.width, image.height);
-      context.drawImage(image, 0, 0);
 
-      var canvasdata = canvas.toDataURL("image/png");
-      var pngimg = 'png<img src="' + canvasdata + '">';
-      d3.select("#svgdataurl").html(pngimg);
+      setTimeout(function() {
 
-      var a = document.createElement("a");
-      a.download = imageName + ".png";
-      a.href = getBlobUrl(canvasdata);
-      a.click();
+        context.fillStyle = 'white';
+        context.fillRect(0, 0, image.width, image.height);
+        context.drawImage(image, 0, 0);
 
-      $svgDiv.remove();
-      $c.remove();
+        var canvasdata = canvas.toDataURL("image/png");
+        var pngimg = 'png<img src="' + canvasdata + '">';
+        d3.select("#svgdataurl").html(pngimg);
+
+        var a = document.createElement("a");
+        a.download = imageName + ".png";
+        a.href = getBlobUrl(canvasdata);
+        a.click();
+
+        $svgDiv.remove();
+        $c.remove();
+      }, 500);
+
 
     };
 

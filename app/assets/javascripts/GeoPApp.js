@@ -1,5 +1,8 @@
 (function() {
-  var app = angular.module('GeoP', []);
+  var app = angular.module('GeoP', []).run(function($rootScope) { // instance-injector
+
+    $rootScope.filters = [];
+  });
 
   app.config(["$httpProvider",
     function(provider) {
@@ -7,15 +10,34 @@
     }
   ]);
 
+  // function unCheckAllFilters($rootScope) {
+    // for (var i = 0; i < $rootScope.filters.length; i++) {
+    //   var $scope = $rootScope.filters[i];
+    //   $scope.checkAll = false;
+      // for (var j = 0; j < $scope.filters.length; j++) {
+      //   var filters = $scope.filters[j];
+      //   for (var key in filters) {
+      //     if (filters.hasOwnProperty(key)) {
+      //       filters[key].state = false;
+      //     }
+      //   }
+      // }
+    // }
+  // }
+
 
   function registerFilterCtrl($scope, $rootScope, filterName) {
     $scope.checkAll = false;
+
 
     $scope['filterStateChange'] = function(filter, e) {
       $rootScope.$emit(filterName + '_filters.StateChange', filter);
     };
 
+
     $scope.CheckAll = function() {
+      // unCheckAllFilters($rootScope);
+
       for (var key in $scope.filters) {
         if ($scope.filters.hasOwnProperty(key)) {
           var filter = $scope.filters[key];
@@ -41,7 +63,6 @@
 
   app.controller('RootCtrl', function($scope) {
     $scope.root = G_RootJson;
-    console.log(G_RootJson);
   });
 
   app.controller('GlobalCtrl', function($scope) {
@@ -49,7 +70,6 @@
   });
 
   app.controller('CompanyCtrl', function($scope, $http) {
-    console.log(G_Company);
     $scope.company = G_Company;
   });
 
