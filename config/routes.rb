@@ -1,4 +1,5 @@
 GeoP::Application.routes.draw do
+  get "organizations/show"
   get "buildings/show"
   get "floors/show"
   get "rooms/show"
@@ -22,6 +23,8 @@ GeoP::Application.routes.draw do
   root 'companies#index'
   post 'upload' => 'homes#upload'
   get 'upload' => 'homes#upload'
+
+  get '/organizations/:id' => 'organizations#show'
 
   # get "/logout" => :to "admin/logout" # Add a custom sing out route for user sign out
 

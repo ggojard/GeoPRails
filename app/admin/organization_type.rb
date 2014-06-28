@@ -1,7 +1,6 @@
-ActiveAdmin.register Organization do
-
-
-  permit_params :name, :organization_id, :organization_type_id, :company_id
+ActiveAdmin.register OrganizationType do
+  permit_params :name
+  
   # See permitted parameters documentation:
   # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #

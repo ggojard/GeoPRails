@@ -72,6 +72,7 @@
     this.$scope = $scope;
     this.$http = $http;
     this.$rootScope = $rootScope;
+    this.filters = {};
     this.loadCamera();
     this.createPolylineLine = null;
     this.createPolylinePolyline = null;
@@ -153,27 +154,59 @@
     this.items.push(b);
   };
 
-  function getRoomTypesAvailable(floorJson) {
-    var roomTypesObject = {};
-    for (var i = 0; i < floorJson.rooms.length; i++) {
-      var room = floorJson.rooms[i];
-      if (room.room_type !== null) {
-        roomTypesObject[room.room_type.id] = room.room_type;
-        roomTypesObject[room.room_type.id].state = true;
+
+
+  function getBelongsToAvailable(floorJson, belongsToNameList, belongsToName) {
+    var itemsObject = {};
+    for (var i = 0; i < floorJson[belongsToNameList].length; i++) {
+      var item = floorJson[belongsToNameList][i];
+      if (item[belongsToName] !== null) {
+        itemsObject[item[belongsToName].id] = item[belongsToName];
+        itemsObject[item[belongsToName].id].state = true;
       }
     }
-    return roomTypesObject;
+    return itemsObject;
+  }
+
+  SvgEditor.prototype.loadBelongsToFilter = function(belongsToName, callback) {
+    var that = this;
+    this.filters[belongsToName] = getRoomTypesAvailable(this.json);
+    this.$rootScope.$emit(belongsToName + 'Filters.Update', this.filters[belongsToName]);
+
+    this.$rootScope.$on(belongsToName + 'Filters.StateChange', function(e, item) {
+      that.filters[belongsToName][item.id] = item;
+      return callback(e, item);
+    });
+  };
+
+  function getRoomTypesAvailable(floorJson) {
+    return getBelongsToAvailable(floorJson, 'rooms', 'room_type');
+    // var roomTypesObject = {};
+    // for (var i = 0; i < floorJson.rooms.length; i++) {
+    //   var room = floorJson.rooms[i];
+    //   if (room.room_type !== null) {
+    //     roomTypesObject[room.room_type.id] = room.room_type;
+    //     roomTypesObject[room.room_type.id].state = true;
+    //   }
+    // }
+    // return roomTypesObject;
   }
 
   SvgEditor.prototype.loadRoomTypes = function() {
     var that = this;
-    this.roomTypeFilters = getRoomTypesAvailable(this.json);
-    this.$rootScope.$emit('updateRoomTypes', this.roomTypeFilters);
-
-    this.$rootScope.$on('RoomTypeFilters.StateChange', function(e, roomType) {
-      that.roomTypeFilters[roomType.id] = roomType;
+    this.loadBelongsToFilter('RoomType', function(e, item) {
       that.fillRoomsWithType();
     });
+
+
+
+    // this.roomTypeFilters = getRoomTypesAvailable(this.json);
+    // this.$rootScope.$emit('updateRoomTypes', this.roomTypeFilters);
+
+    // this.$rootScope.$on('RoomTypeFilters.StateChange', function(e, roomType) {
+    //   that.roomTypeFilters[roomType.id] = roomType;
+    //   that.fillRoomsWithType();
+    // });
   };
 
   SvgEditor.prototype.fillRoomsWithType = function() {

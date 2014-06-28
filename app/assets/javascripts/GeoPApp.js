@@ -13,7 +13,8 @@
       $rootScope.$emit('RoomTypeFilters.StateChange', roomType);
     };
 
-    $rootScope.$on('updateRoomTypes', function(e, roomTypes) {
+    $rootScope.$on('RoomTypeFilters.Update', function(e, roomTypes) {
+      console.log(roomTypes);
       $scope.roomTypes = roomTypes;
     });
   });
@@ -21,6 +22,7 @@
 
   app.controller('RootCtrl', function($scope) {
     $scope.root = G_RootJson;
+    console.log(G_RootJson);
   });
 
   app.controller('GlobalCtrl', function($scope) {
@@ -28,6 +30,7 @@
   });
 
   app.controller('CompanyCtrl', function($scope, $http) {
+    console.log(G_Company);
     $scope.company = G_Company;
   });
 
@@ -91,7 +94,6 @@
       label: 'Sauvegarder l\'étage en image',
       action: function() {
         editor.exportToImage('main');
-
       },
       classes: 'btn-default'
     };

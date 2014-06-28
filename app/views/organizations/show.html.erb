@@ -1,0 +1,15 @@
+<script>
+ var G_RootJson = <%=@json.html_safe%>
+</script>
+<div ng-controller="RootCtrl">
+<h1>{{root.name}}</h1>
+
+
+<div ng-if="root.organizations.length > 0">
+<!-- Organizations -->
+<ul>
+  <li ng-repeat="o in root.organizations"><a href="{{o.url}}">{{o.name}}</a></li>
+</ul>
+</div>
+
+</div>

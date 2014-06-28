@@ -189,7 +189,7 @@
   Polyline.prototype.fillWithRoomType = function() {
     var color = 'transparent';
     if (this.json.room_type !== null) {
-      var roomType = this.svgEditor.roomTypeFilters[this.json.room_type.id];
+      var roomType = this.svgEditor.filters.RoomType[this.json.room_type.id];
       if (roomType.state === true) {
         color = roomType.color;
       } else {

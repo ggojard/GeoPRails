@@ -20,6 +20,7 @@ ActiveAdmin.register Room do
       row "Etage" do c.floor end
       row "Nom" do c.name end
       row "Type" do c.room_type end
+      row "Organisation" do c.organization end
     end
   end
 
@@ -30,7 +31,7 @@ ActiveAdmin.register Room do
     column "Etage", :floor
     column "Nom", :name
     column "Type", :room_type
-    # column "Polyline", :points
+    column "Organisation", :organization
     actions
   end
 
@@ -39,6 +40,7 @@ ActiveAdmin.register Room do
       f.input :floor, label: "Etage"
       f.input :name , label: "Nom"
       f.input :room_type, label: "Type"
+      f.input :organization, label: "Organisation"
     end
     f.actions
   end

@@ -5,5 +5,18 @@
       <ul>
         <li ng-repeat="f in b.floors"><a href="{{f.url}}">{{f.name}}</a></li>
       </ul>
+      <h2>Directions</h2>
+      <ul>
+        <li ng-repeat="o in company.organizations"><a href="{{o.url}}">{{o.name}}</a>
+
+      <ul>
+        <li ng-repeat="o1 in o.organizations"><a href="{{o1.url}}">{{o1.name}}</a>
+
+
+        </li>
+      </ul>
+
+        </li>
+      </ul>
     </div>
 <div>
