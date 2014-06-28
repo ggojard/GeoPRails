@@ -4,8 +4,7 @@ class FloorsController < GeopController
 
   def show
     @json = @floor.to_builder.target!
-    @G_Mode = 'show';
-    
+    @G_Mode = 'show';    
   end
 
   def edit

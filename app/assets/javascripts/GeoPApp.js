@@ -7,17 +7,36 @@
     }
   ]);
 
-  app.controller('RoomTypesFilterCtrl', function($scope, $rootScope) {
 
-    $scope.roomTypeFilterStateChange = function(roomType, e) {
-      $rootScope.$emit('RoomTypeFilters.StateChange', roomType);
+  function registerFilterCtrl($scope, $rootScope, filterName) {
+    $scope.checkAll = false;
+
+    $scope['filterStateChange'] = function(filter, e) {
+      $rootScope.$emit(filterName + '_filters.StateChange', filter);
     };
 
-    $rootScope.$on('RoomTypeFilters.Update', function(e, roomTypes) {
-      console.log(roomTypes);
-      $scope.roomTypes = roomTypes;
+    $scope.CheckAll = function() {
+      for (var key in $scope.filters) {
+        if ($scope.filters.hasOwnProperty(key)) {
+          var filter = $scope.filters[key];
+          filter.state = $scope.checkAll;
+          $rootScope.$emit(filterName + '_filters.StateChange', filter);
+        }
+      }
+    }
+    $rootScope.$on(filterName + '_filters.Update', function(e, filters) {
+      $scope.filters = filters;
     });
+  }
+
+  app.controller('RoomTypesFilterCtrl', function($scope, $rootScope) {
+    registerFilterCtrl($scope, $rootScope, 'room_type');
   });
+
+  app.controller('OrganizationFilterCtrl', function($scope, $rootScope) {
+    registerFilterCtrl($scope, $rootScope, 'organization');
+  });
+
 
 
   app.controller('RootCtrl', function($scope) {

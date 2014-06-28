@@ -102,6 +102,7 @@
     });
 
     this.loadRoomTypes();
+    this.loadOrganizations();
 
     this.applyTransform();
 
@@ -156,69 +157,48 @@
 
 
 
-  function getBelongsToAvailable(floorJson, belongsToNameList, belongsToName) {
+  function getBelongsToAvailable(floorJson, belongsToNameList, belongsToKeyName) {
     var itemsObject = {};
     for (var i = 0; i < floorJson[belongsToNameList].length; i++) {
       var item = floorJson[belongsToNameList][i];
-      if (item[belongsToName] !== null) {
-        itemsObject[item[belongsToName].id] = item[belongsToName];
-        itemsObject[item[belongsToName].id].state = true;
+      if (item[belongsToKeyName] !== null) {
+        itemsObject[item[belongsToKeyName].id] = item[belongsToKeyName];
+        itemsObject[item[belongsToKeyName].id].state = false;
       }
     }
     return itemsObject;
   }
 
-  SvgEditor.prototype.loadBelongsToFilter = function(belongsToName, callback) {
+  SvgEditor.prototype.loadBelongsToFilter = function(belongsToNameList, belongsToKeyName, callback) {
     var that = this;
-    this.filters[belongsToName] = getRoomTypesAvailable(this.json);
-    this.$rootScope.$emit(belongsToName + 'Filters.Update', this.filters[belongsToName]);
+    this.filters[belongsToKeyName] = getBelongsToAvailable(this.json, belongsToNameList, belongsToKeyName);
+    this.$rootScope.$emit(belongsToKeyName + '_filters.Update', this.filters[belongsToKeyName]);
 
-    this.$rootScope.$on(belongsToName + 'Filters.StateChange', function(e, item) {
-      that.filters[belongsToName][item.id] = item;
+    this.$rootScope.$on(belongsToKeyName + '_filters.StateChange', function(e, item) {
+      that.filters[belongsToKeyName][item.id] = item;
       return callback(e, item);
     });
   };
 
-  function getRoomTypesAvailable(floorJson) {
-    return getBelongsToAvailable(floorJson, 'rooms', 'room_type');
-    // var roomTypesObject = {};
-    // for (var i = 0; i < floorJson.rooms.length; i++) {
-    //   var room = floorJson.rooms[i];
-    //   if (room.room_type !== null) {
-    //     roomTypesObject[room.room_type.id] = room.room_type;
-    //     roomTypesObject[room.room_type.id].state = true;
-    //   }
-    // }
-    // return roomTypesObject;
-  }
-
   SvgEditor.prototype.loadRoomTypes = function() {
     var that = this;
-    this.loadBelongsToFilter('RoomType', function(e, item) {
-      that.fillRoomsWithType();
+    this.loadBelongsToFilter('rooms', 'room_type', function(e, item) {
+      that.mapOnItems('fillFromFilterColor', 'room_type');
     });
-
-
-
-    // this.roomTypeFilters = getRoomTypesAvailable(this.json);
-    // this.$rootScope.$emit('updateRoomTypes', this.roomTypeFilters);
-
-    // this.$rootScope.$on('RoomTypeFilters.StateChange', function(e, roomType) {
-    //   that.roomTypeFilters[roomType.id] = roomType;
-    //   that.fillRoomsWithType();
-    // });
   };
 
-  SvgEditor.prototype.fillRoomsWithType = function() {
-    this.mapOnItems('fillWithRoomType');
+  SvgEditor.prototype.loadOrganizations = function() {
+    var that = this;
+    this.loadBelongsToFilter('rooms', 'organization', function(e, item) {
+      that.mapOnItems('fillFromFilterColor', 'organization');
+    });
   };
 
-  SvgEditor.prototype.mapOnItems = function(methodName) {
+  SvgEditor.prototype.mapOnItems = function(methodName, a1, a2) {
     for (var i = 0; i < this.items.length; i++) {
-      this.items[i][methodName]();
+      this.items[i][methodName](a1, a2);
     };
   };
-
 
   SvgEditor.prototype.loadRooms = function() {
     var that = this;

@@ -29,7 +29,6 @@ ActiveAdmin.register RoomType do
     actions
   end
 
-
   # f.input :name, input_html: { class: 'colorpicker' }
 
   form do |f|

@@ -1,6 +1,5 @@
 class Floor < ActiveRecord::Base
   belongs_to :building
-  belongs_to :organization
   has_many :rooms, :dependent => :destroy
   accepts_nested_attributes_for :rooms, :allow_destroy => true
 
