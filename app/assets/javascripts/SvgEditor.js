@@ -151,8 +151,10 @@
 
   SvgEditor.prototype.createRoomFromJson = function(json) {
     var b = new geoP.Polyline(this);
-    b.loadFromJson(json);
-    this.items.push(b);
+    if (b.points.length > 0) {
+      b.loadFromJson(json);
+      this.items.push(b);
+    }
   };
 
 
