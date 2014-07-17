@@ -42,6 +42,10 @@ ActiveAdmin.register Room do
       f.input :room_type, label: "Type"
       f.input :organization, label: "Organisation"
     end
+    f.inputs "Visualiser" do
+      f.input :id, label: "Ouvrir", input_html: { class: 'room-link' }
+      # f.input :floor_id, input_html: { class: 'floor-id' }
+    end
     f.actions
   end
 

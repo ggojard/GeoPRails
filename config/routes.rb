@@ -18,6 +18,8 @@ GeoP::Application.routes.draw do
   get '/floors/:id/edit' => 'floors#edit'
   get '/floors/:id/room/:room_id' => 'floors#show'
   put '/floors/:id' => 'floors#update'
+  get '/floors/images/:id' => 'floors#image'
+
 
   # root 'homes#home'
   root 'companies#index'
@@ -25,6 +27,9 @@ GeoP::Application.routes.draw do
   get 'upload' => 'homes#upload'
 
   get '/organizations/:id' => 'organizations#show'
+
+  # map.connect ':controller/:action/:id'
+
 
   # get "/logout" => :to "admin/logout" # Add a custom sing out route for user sign out
 

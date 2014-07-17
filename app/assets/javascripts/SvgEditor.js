@@ -18,7 +18,7 @@
   function mouseWheel(e) {
     /*jshint validthis:true */
 
-    if (this.$scope.isShift === true) {
+    if (this.$scope.isCtrlKeyDown === true) {
       e.preventDefault();
       var factor = 1;
       if (e.wheelDelta < 0) {
@@ -35,7 +35,7 @@
   function mouseMove(ev) {
     /*jshint validthis:true */
 
-    if (this.$scope.isShift === true && this.lastMovePosition !== null) {
+    if (this.$scope.isCtrlKeyDown === true && this.lastMovePosition !== null) {
       var diff = {
         x: this.lastMovePosition.x - ev.x,
         y: this.lastMovePosition.y - ev.y

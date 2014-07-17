@@ -13,6 +13,13 @@ class FloorsController < GeopController
     render 'show'
   end
 
+
+  def image
+    @f = FloorsImage.find(params[:id])
+    # render json: {a:@f}
+    render :text => @f.file_contents, :content_type => 'image/png'
+  end
+
   def update
     # @floor = Room.find(params[:id])
     # respond_to do |format|

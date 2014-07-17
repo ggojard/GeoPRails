@@ -8,5 +8,12 @@ jQuery( function($) {
       bg = $td.text();
       $td.css('background-color', bg);
     });
+    var $rl = $('.room-link');
+    var $div = $('<div class="room-link-container"></div>');
+    $rl.wrap($div);
+
+    // console.log($rl.val());
+    var link = '/rooms/' + $rl.val();
+    $('.room-link-container').html('<a href="' + link + '">Lien</a>');
 });
 

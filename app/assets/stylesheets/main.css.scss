@@ -14,9 +14,6 @@ svg#main{
   width:100%;
   margin:0px auto;
   height:400px;
-  // image.bg{
-  //   opacity: 0.25;
-  // }
 
   &.create:hover{
     cursor: crosshair;
@@ -25,6 +22,10 @@ svg#main{
     border: 2px dotted #00e567;  
     opacity: 0.95;  
   }
+  &.ctrl-true{
+    border: 2px dotted red;  
+    opacity: 0.95;  
+  }  
 }
 
 div.dropbox{

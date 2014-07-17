@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.1.1'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.4'
 
@@ -51,6 +53,8 @@ gem 'devise'
 gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'activeadmin-translate'
 gem 'paperclip'
+gem "paperclip_database"
+
 
 gem 'jquery-minicolors-rails'
 

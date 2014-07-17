@@ -11,18 +11,18 @@
   ]);
 
   // function unCheckAllFilters($rootScope) {
-    // for (var i = 0; i < $rootScope.filters.length; i++) {
-    //   var $scope = $rootScope.filters[i];
-    //   $scope.checkAll = false;
-      // for (var j = 0; j < $scope.filters.length; j++) {
-      //   var filters = $scope.filters[j];
-      //   for (var key in filters) {
-      //     if (filters.hasOwnProperty(key)) {
-      //       filters[key].state = false;
-      //     }
-      //   }
-      // }
-    // }
+  // for (var i = 0; i < $rootScope.filters.length; i++) {
+  //   var $scope = $rootScope.filters[i];
+  //   $scope.checkAll = false;
+  // for (var j = 0; j < $scope.filters.length; j++) {
+  //   var filters = $scope.filters[j];
+  //   for (var key in filters) {
+  //     if (filters.hasOwnProperty(key)) {
+  //       filters[key].state = false;
+  //     }
+  //   }
+  // }
+  // }
   // }
 
 
@@ -76,17 +76,21 @@
   app.controller('GeoPCtrl', function($scope, $http, $rootScope) {
     $scope.G_Mode = G_Mode;
     $scope.isShift = false;
+    $scope.isCtrlKeyDown = false;
 
     function handleKey(ev) {
-      var key, isShift;
+      var key, isShift, isCtrlKeyDown;
       if (window.event) {
         key = window.event.keyCode;
         isShift = window.event.shiftKey ? true : false;
+        isCtrlKeyDown = window.event.ctrlKey ? true : false;
       } else {
         key = ev.which;
         isShift = ev.shiftKey ? true : false;
+        isCtrlKeyDown = ev.ctrlKey ? true : false;
       }
       $scope.isShift = isShift;
+      $scope.isCtrlKeyDown = isCtrlKeyDown;
       $scope.$apply();
     }
 

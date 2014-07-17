@@ -4,7 +4,7 @@ class Floor < ActiveRecord::Base
   accepts_nested_attributes_for :rooms, :allow_destroy => true
 
 
-  has_attached_file :image,:styles => { :thumb => "200x200#" }
+  has_attached_file :image,:styles => { :thumb => "200x200#" }, :storage => :database, :database_table => 'floors_images'
   validates_attachment :image, content_type: { content_type:     ["image/jpg", "image/jpeg", "image/png"] }
   before_save :extract_dimensions
   serialize :image_dimensions

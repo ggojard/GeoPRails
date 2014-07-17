@@ -113,6 +113,9 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
+    paperclip_database (2.2.2)
+      paperclip (>= 2.3.0)
+      rails (>= 3.0.0)
     pg (0.17.1)
     polyamorous (1.0.0)
       activerecord (>= 3.0)
@@ -195,6 +198,7 @@ DEPENDENCIES
   jquery-minicolors-rails
   jquery-rails
   paperclip
+  paperclip_database
   pg
   rails (= 4.0.4)
   rails_12factor
