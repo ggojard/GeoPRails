@@ -251,10 +251,13 @@
   };
 
   Polyline.prototype.getHash = function() {
-    var bbox = JSON.stringify(this.group.node.getBBox());
-    var h = [bbox];
-    h.push(JSON.stringify(this.group._.transform));
-    return geoP.hashCode(h.join(''));
+    if (this.group !== void 0) {
+      var bbox = JSON.stringify(this.group.node.getBBox());
+      var h = [bbox];
+      h.push(JSON.stringify(this.group._.transform));
+      return geoP.hashCode(h.join(''));
+    }
+    return 0;
   };
 
   Polyline.prototype.getPointsData = function() {
