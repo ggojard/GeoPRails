@@ -46,6 +46,10 @@ ActiveAdmin.register Room do
       f.input :id, label: "Ouvrir", input_html: { class: 'room-link' }
       # f.input :floor_id, input_html: { class: 'floor-id' }
     end
+    f.inputs "Géométrie" do
+      f.input :points, label: "Points"
+    end    
+
     f.actions
   end
 
