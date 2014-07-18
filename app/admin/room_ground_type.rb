@@ -1,6 +1,6 @@
-ActiveAdmin.register OrganizationType do
-  permit_params :name
-  menu :parent => "Types", :label => "Typologie des organizations"
+ActiveAdmin.register RoomGroundType do
+  menu :parent => "Types", :label => "Nature des sols"
+
   
   # See permitted parameters documentation:
   # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters

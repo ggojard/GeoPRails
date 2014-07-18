@@ -151,21 +151,24 @@
 
   SvgEditor.prototype.createRoomFromJson = function(json) {
     var b = new geoP.Polyline(this);
-    // if (b.points.length > 0) {
-      b.loadFromJson(json);
-      this.items.push(b);
-    // }
+    b.loadFromJson(json);
+    this.items.push(b);
   };
-
-
 
   function getBelongsToAvailable(floorJson, belongsToNameList, belongsToKeyName) {
     var itemsObject = {};
     for (var i = 0; i < floorJson[belongsToNameList].length; i++) {
       var item = floorJson[belongsToNameList][i];
       if (item[belongsToKeyName] !== null) {
-        itemsObject[item[belongsToKeyName].id] = item[belongsToKeyName];
-        itemsObject[item[belongsToKeyName].id].state = false;
+        var targetItem = item[belongsToKeyName];
+        if (itemsObject[targetItem.id] === void 0) {
+          itemsObject[targetItem.id] = targetItem;
+          itemsObject[targetItem.id].state = false;
+          itemsObject[targetItem.id].count = 0;
+          itemsObject[targetItem.id].areaSum = 0;
+        } else {}
+        itemsObject[targetItem.id].count += 1;
+        itemsObject[targetItem.id].areaSum += item.area;
       }
     }
     return itemsObject;

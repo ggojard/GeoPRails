@@ -1,5 +1,5 @@
 ActiveAdmin.register RoomType do
-  menu :label => "Type de pièce"
+  menu :parent => "Types", :label => "Typologie des pièces"
 
   # See permitted parameters documentation:
   # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters

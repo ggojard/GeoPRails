@@ -59,8 +59,6 @@
     registerFilterCtrl($scope, $rootScope, 'organization');
   });
 
-
-
   app.controller('RootCtrl', function($scope) {
     $scope.root = G_RootJson;
   });
@@ -72,6 +70,12 @@
   app.controller('CompanyCtrl', function($scope, $http) {
     $scope.company = G_Company;
   });
+
+  app.controller('FloorHeaderCtrl', function($scope, $http, $rootScope) {
+    $scope.floorJson = G_RootJson;
+    $scope.roomJson = G_Room;
+  });
+
 
   app.controller('GeoPCtrl', function($scope, $http, $rootScope) {
     $scope.G_Mode = G_Mode;
@@ -96,6 +100,8 @@
 
     document.onkeydown = handleKey;
     document.onkeyup = handleKey;
+
+    $scope.floorJson = G_RootJson;
 
     var editor = new GeoP.SvgEditor("#main", G_RootJson, $scope, $http, $rootScope);
     editor.loadRooms();

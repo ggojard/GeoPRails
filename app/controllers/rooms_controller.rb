@@ -32,7 +32,7 @@ class RoomsController < GeopController
   def update
     @room = Room.find(params[:id])
     # respond_to do |format|
-    if @room.update_attributes(params.require(:room).permit(:points))
+    if @room.update_attributes(params.require(:room).permit(:points, :area))
       render json: {}
     else
       render :action => "edit"
@@ -47,7 +47,7 @@ class RoomsController < GeopController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def room_params
-    params.require(:room).permit(:name, :floor_id, :points)
+    params.require(:room).permit(:name, :floor_id, :points, :area)
   end
 
 end

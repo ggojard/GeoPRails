@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140628173632) do
+ActiveRecord::Schema.define(version: 20140718183626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,6 +116,33 @@ ActiveRecord::Schema.define(version: 20140628173632) do
   add_index "organizations", ["organization_id"], name: "index_organizations_on_organization_id", using: :btree
   add_index "organizations", ["organization_type_id"], name: "index_organizations_on_organization_type_id", using: :btree
 
+  create_table "people", force: true do |t|
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "monitorreference"
+    t.string   "computerreference"
+    t.string   "telephone"
+    t.string   "cellphone"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "person_state_id"
+    t.integer  "organization_id"
+    t.integer  "room_id"
+  end
+
+  create_table "person_states", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "room_ground_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "color"
+  end
+
   create_table "room_types", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -131,6 +158,8 @@ ActiveRecord::Schema.define(version: 20140628173632) do
     t.datetime "updated_at"
     t.text     "points"
     t.integer  "organization_id"
+    t.integer  "room_ground_type_id"
+    t.float    "area"
   end
 
   add_index "rooms", ["floor_id"], name: "index_rooms_on_floor_id", using: :btree

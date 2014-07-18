@@ -68,6 +68,8 @@
 
     var l = polygonArea(points);
     l = parseFloat(l, 10).toFixed(1);
+    // reparse to handle toFixed to float
+    l = parseFloat(l, 10);
     return l;
   };
 
@@ -183,7 +185,7 @@
 
   Polyline.prototype.setTexts = function() {
     this.text = this.addText(this.json.name, 0);
-    this.areaText = this.addText(this.getArea() + ' m²', 1);
+    this.areaText = this.addText(this.json.area + ' m²', 1);
   };
 
   Polyline.prototype.fillFromFilterColor = function(filterName) {
@@ -215,6 +217,9 @@
           this.appendPoint(p.x, p.y);
         }
       }
+    }
+    if (points.length === 0){
+      return;
     }
     this.close(this.svgEditor.$scope);
 
@@ -282,6 +287,7 @@
     if (this.json === null) {
       var data = {
         'points': this.getPointsData(),
+        'area' : this.getArea(),
         'floor_id': this.svgEditor.json.id,
         'name': 'B?'
       };
@@ -299,7 +305,8 @@
     var data = {
       'id': this.json.id,
       'room': {
-        'points': this.getPointsData()
+        'points': this.getPointsData(),
+        'area' : this.getArea()
       }
     };
     this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function(d) {

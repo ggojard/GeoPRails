@@ -21,6 +21,9 @@ ActiveAdmin.register Room do
       row "Nom" do c.name end
       row "Type" do c.room_type end
       row "Organisation" do c.organization end
+      row "Aire" do c.area end
+      row "Visualiser" do link_to("Ouvrir",'/rooms/' + c.id.to_s, {}) end
+
     end
   end
 
