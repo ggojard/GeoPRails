@@ -1,15 +1,30 @@
 
-<div ng-if='room != null' >
-  <a class="btn btn-default" href="/admin/rooms/{{room.json.id}}/edit">Modifier la pièce</a>
-  <table class='room'>
+<div class="panel panel-default panel-room" ng-if='room != null'>
+  <div class="panel-heading">
+    <h3 class="panel-title">{{room.json.name}}</h3>
+    <a class="btn btn-default" href="/admin/rooms/{{room.json.id}}/edit">Modifier la pièce</a>
+  </div>
+  <div class="panel-body">
+      <table class='room'>
     <tr>
       <th>Nom</th><td>{{room.json.name}}</td>
       <th>Type</th><td>{{room.json.room_type.name}}</td>    
     </tr>
     <tr>
-      <th>Surface</th><td>{{room.getArea()}} m²</td>
+      <th>Surface</th><td>{{room.json.area}} m²</td>
       <th>Organization</th><td>{{room.json.organization.name}} [{{room.json.organization.organization_type.name}}]</td>      
-      <!-- <td colspan="2"></td> -->
     </tr>
+    <tr>
+      <th>Nature des sols</th><td colspan="3">{{room.json.room_ground_type.name}}</td>
+      <!-- <th>Organization</th><td>{{room.json.organization.name}} [{{room.json.organization.organization_type.name}}]</td>       -->
+    </tr>
+
   </table>
+
+  </div>
 </div>
+
+
+
+
+  

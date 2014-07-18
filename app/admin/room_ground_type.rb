@@ -14,5 +14,36 @@ ActiveAdmin.register RoomGroundType do
   #  permitted << :other if resource.something?
   #  permitted
   # end
+
+  show do |c|
+    attributes_table do
+      row "Nom" do c.name end
+      row "Couleur" do c.color end
+    end
+  end
+  #
+  index do
+    selectable_column
+    id_column
+    column "Nom", :name
+    column "Couleur", :color, class: 'color-display'
+    actions
+  end
+
+  # f.input :name, input_html: { class: 'colorpicker' }
+
+  form do |f|
+    f.inputs "Details" do
+      f.input :name , label: "Nom"
+      f.input :color, input_html: { class: 'colorpicker' }, label: "Couleur"
+    end
+    f.actions
+  end
+
+  controller do
+    def permitted_params
+      params.permit!
+    end
+  end
   
 end

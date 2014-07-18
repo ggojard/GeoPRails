@@ -17,13 +17,13 @@ ActiveAdmin.register Room do
 
   show do |c|
     attributes_table do
+      row "Visualiser" do link_to("Ouvrir",'/rooms/' + c.id.to_s, {}) end
       row "Etage" do c.floor end
       row "Nom" do c.name end
       row "Type" do c.room_type end
       row "Organisation" do c.organization end
-      row "Aire" do c.area end
-      row "Visualiser" do link_to("Ouvrir",'/rooms/' + c.id.to_s, {}) end
-
+      row "Aire" do c.area.to_s + ' m²' end
+      row "Nature des sols" do c.room_ground_type end
     end
   end
 
@@ -35,6 +35,7 @@ ActiveAdmin.register Room do
     column "Nom", :name
     column "Type", :room_type
     column "Organisation", :organization
+    column "Nature des sol", :room_ground_type
     actions
   end
 
@@ -44,6 +45,7 @@ ActiveAdmin.register Room do
       f.input :name , label: "Nom"
       f.input :room_type, label: "Type"
       f.input :organization, label: "Organisation"
+      f.input :room_ground_type, label: "Nature des sol"
     end
     f.inputs "Visualiser" do
       f.input :id, label: "Ouvrir", input_html: { class: 'room-link' }
@@ -51,7 +53,7 @@ ActiveAdmin.register Room do
     end
     f.inputs "Géométrie" do
       f.input :points, label: "Points"
-    end    
+    end
 
     f.actions
   end

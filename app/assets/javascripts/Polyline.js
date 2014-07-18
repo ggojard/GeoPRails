@@ -193,14 +193,26 @@
     if (this.json[filterName] !== null) {
       var item = this.svgEditor.filters[filterName][this.json[filterName].id];
       if (item.state === true) {
-        color = item.color;
+        this.element.attr({
+          fill: item.color
+        });
       } else {
-        color = 'transparent';
+        this.element.attr({
+          fill: 'transparent'
+        });
+        this.setDefaultColorIfRequired();
       }
-      this.element.attr({
-        fill: color
-      });
     }
+  };
+
+  Polyline.prototype.setDefaultColorIfRequired = function() {
+    if (G_Room && G_Room.id === this.json.id) {
+      this.element.attr({
+        fill: '#1dc8fe'
+      });
+      this.svgEditor.$scope.room = this;
+    }
+
   };
 
 
@@ -218,18 +230,13 @@
         }
       }
     }
-    if (points.length === 0){
+    if (points.length === 0) {
       return;
     }
     this.close(this.svgEditor.$scope);
 
     this.setTexts();
-    if (G_Room && G_Room.id === this.json.id) {
-      this.element.attr({
-        fill: '#1dc8fe'
-      });
-      this.svgEditor.$scope.room = this;
-    }
+    this.setDefaultColorIfRequired();
   };
 
   Polyline.prototype.registerHover = function() {
@@ -287,7 +294,7 @@
     if (this.json === null) {
       var data = {
         'points': this.getPointsData(),
-        'area' : this.getArea(),
+        'area': this.getArea(),
         'floor_id': this.svgEditor.json.id,
         'name': 'B?'
       };
@@ -306,7 +313,7 @@
       'id': this.json.id,
       'room': {
         'points': this.getPointsData(),
-        'area' : this.getArea()
+        'area': this.getArea()
       }
     };
     this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function(d) {

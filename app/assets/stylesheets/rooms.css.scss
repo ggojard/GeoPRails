@@ -5,11 +5,11 @@
 
 table.room{
   width:100%;
-  margin-top:10px;
+  margin-top:0;
   border-collapse: collapse;
 
   th, td, &{
-    border:2px solid #1dc8fe;
+    border:1px solid #eee;
   }
   th, td{
     padding: 5px;

@@ -101,8 +101,7 @@
       stroke: '#ffcf00'
     });
 
-    this.loadRoomTypes();
-    this.loadOrganizations();
+    this.loadFilters();
 
     this.applyTransform();
 
@@ -185,18 +184,16 @@
     });
   };
 
-  SvgEditor.prototype.loadRoomTypes = function() {
+  SvgEditor.prototype.loadFilters = function() {
     var that = this;
-    this.loadBelongsToFilter('rooms', 'room_type', function(e, item) {
-      that.mapOnItems('fillFromFilterColor', 'room_type');
-    });
-  };
-
-  SvgEditor.prototype.loadOrganizations = function() {
-    var that = this;
-    this.loadBelongsToFilter('rooms', 'organization', function(e, item) {
-      that.mapOnItems('fillFromFilterColor', 'organization');
-    });
+    var filtersNames = GeoP.filtersNames;
+    for (var i = 0; i < filtersNames.length; i++) {
+      (function(filterName) {
+        that.loadBelongsToFilter('rooms', filterName, function(e, item) {
+          that.mapOnItems('fillFromFilterColor', filterName);
+        });
+      }(filtersNames[i].name));
+    }
   };
 
   SvgEditor.prototype.mapOnItems = function(methodName, a1, a2) {

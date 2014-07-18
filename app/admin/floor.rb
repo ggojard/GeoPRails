@@ -18,6 +18,7 @@ ActiveAdmin.register Floor do
       f.input :building
       f.input :image, :required => false, :as => :file
     end
+
     f.actions
   end
 
@@ -30,7 +31,14 @@ ActiveAdmin.register Floor do
         image_tag(ad.image.url(:thumb))
       end
 
-      panel "Pièces" do
+    panel "Pièces" do
+      table_for floor.rooms do
+        column "Nom de la pièce" do |b| link_to b.name, [:admin, b] end
+      end
+    end
+
+
+
         # if ad.rooms != nil do
         # table_for ad.rooms do
 
@@ -38,7 +46,7 @@ ActiveAdmin.register Floor do
         #   column "Type" do |b| b.room_type.name end
         # end
         # end
-      end
+      
 
     end
   end

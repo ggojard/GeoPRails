@@ -12,16 +12,30 @@
   </div>
   
   
-  <%=  render 'organization_filter' %> 
-  <%=  render 'room_type_filter' %> 
+  <%=  render 'filters' %> 
+  
   
   <div class="home" ng-controller="GeoPCtrl">
 
-    <%=  render 'options' %> 
 
-    <div class="resizable-svg" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]">
+  <div class="panel panel-default panel-map" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]">
+    <div class="panel-heading">
+      <div class="panel-title">
+      <h3 class="panel-title">Plan</h3>
+      <%=  render 'options' %> 
+      </div>
+      
+    </div>
+    <div class="panel-body">
+      <div class="resizable-svg" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]">
 
-    <svg id="main" ng-class="[mode,'shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]" xmlns:xlink="http://www.w3.org/1999/xlink" />
+      <svg id="main" ng-class="[mode,'shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]" xmlns:xlink="http://www.w3.org/1999/xlink" />
+    </div>
+  </div>
+
+    
+
+
 
     </div>
     <%= render 'room' %>

@@ -2,11 +2,12 @@ class Room < ActiveRecord::Base
   belongs_to :room_type
   belongs_to :floor
   belongs_to :organization
+  belongs_to :room_ground_type
 
   def to_builder
 
     Jbuilder.new do |b|
-      b.(self, :name, :id, :room_type, :floor, :points, :area)
+      b.(self, :name, :id, :room_type, :floor, :points, :area, :room_ground_type)
       b.url "/rooms/" + self.id.to_s
       # b.org self.organization_id
       if self.organization_id != nil

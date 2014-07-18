@@ -33,3 +33,23 @@ GeoP.hashCode = function(s) {
     return a & a
   }, 0);
 }
+
+GeoP.filtersNames = [{
+  name: 'room_type',
+  label: "Typologie des pièces"
+}, {
+  name: 'organization',
+  label: "Organisations"
+}, {
+  name: 'room_ground_type',
+  label: "Nature des sols"
+}];
+
+$(function() {
+  setTimeout(function() {
+    $('#myTab a').click(function(e) {
+      e.preventDefault()
+      $(this).tab('show');
+    });
+  }, 1000);
+});
