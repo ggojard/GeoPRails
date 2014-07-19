@@ -1,12 +1,26 @@
 (function() {
+
+  $(function() {
+    // rescroll if loaded scroll !== of current scroll (because of browser jump ?)
+    var $w = $(window);
+    $w.on('scroll', function(e) {
+      try {
+        var scrollLoaded = loadScroll(G_FloorJson.id);
+        var scrollTop = $(window).scrollTop();
+        if (scrollTop !== scrollLoaded) {
+          $w.scrollTop(scrollLoaded);
+        }
+      } catch (e) {}
+    });
+
+  });
+
   var app = angular.module('GeoP', []).run(function($rootScope) { // instance-injector
     $rootScope.filters = [];
 
     try {
       var scrollTop = loadScroll(G_FloorJson.id);
-      setTimeout(function() {
-        $(window).scrollTop(scrollTop);
-      }, 0);
+      $(window).scrollTop(scrollTop);
     } catch (e) {}
 
   });
@@ -23,7 +37,7 @@
     if (localStorage) {
       var c = localStorage['floor-' + floorId + '-scroll-top'];
       if (c !== void 0) {
-        return c;
+        return parseInt(c, 10);
       }
     }
     return 0;
