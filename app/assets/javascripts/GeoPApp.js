@@ -1,8 +1,13 @@
 (function() {
   var app = angular.module('GeoP', []).run(function($rootScope) { // instance-injector
     $rootScope.filters = [];
-    var scrollTop = loadScroll(G_FloorJson.id);
-    $(window).scrollTop(scrollTop);
+
+    try {
+      var scrollTop = loadScroll(G_FloorJson.id);
+      $(window).scrollTop(scrollTop);
+    } 
+    catch (e) {}
+
   });
 
 
@@ -152,7 +157,7 @@
     var mapZoomDefault = {
       label: 'Centrer le plan',
       icon: 'fa-crosshairs',
-      action: function(){
+      action: function() {
         editor.centerMap();
       },
       classes: 'btn-default'
