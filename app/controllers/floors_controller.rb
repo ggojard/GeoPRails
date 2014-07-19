@@ -20,29 +20,12 @@ class FloorsController < GeopController
       @s = 'original'
     end
     id = params[:id]
-    # render json: {a:id}
 
     @f = FloorsImage.where(floor_id:id, style: @s)
-    # path = File.expand_path "#{Dir.tmpdir}/image#{id}.png"
-    # path = File.expand_path "~/Documents/dev/image#{id}.png"
-    
-    # assets = Rails.root.join("app", "assets")
-    # path = File.expand_path "#{assets}/images/image#{id}.png"
-
-
-    # File.open(path, "wb") { |file| file.write @f[0].file_contents}
-
-
     response.headers['Cache-Control'] = "public, max-age=#{12.hours.to_i}"
     response.headers['Content-Type'] = 'image/png'
     response.headers['Content-Disposition'] = 'inline'
-    # render :text => open(path).read
-
-    # render file: path, :content_type => 'image/png'
-  
-    # render json: {a:path}
     render :text => @f[0].file_contents
-    # , :content_type => 'image/png', :disposition => "inline"
   end
 
   def update
