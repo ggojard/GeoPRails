@@ -92,7 +92,9 @@
     };
 
     this.bgBox = bgBox;
-    var imagePath = 'http://' + window.location.host + this.json.image;
+    // console.log(this.json.image);
+    // var imagePath = 'http://' + window.location.host + this.json.image;
+    var imagePath = 'http://localhost:3000/floors/images/1?style=original';
     this.bg = this.canvas.image(imagePath, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     this.bg.node.style.cssText = 'opacity: 0.25';
     var border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
@@ -150,7 +152,34 @@
 
 
   SvgEditor.prototype.centerMap = function() {
-    // console.log('bgBox', this.bgBox);
+    var $svg = $(this.paper.node);
+    var paperSize = {
+      w: $svg.width(),
+      h: $svg.height()
+    };
+
+    // this.camera.scale = 1;this.camera.x = 0;this.camera.y = 0;this.applyTransform();
+
+    var mapSize = this.bgBox;
+
+    var ratioW = paperSize.w / mapSize.w;
+    var ratioH = paperSize.h / mapSize.h;
+
+    // use the minimun scale ratio
+    var ratio = ratioH;
+    if (ratioW < ratioH){
+      ratio = ratioW;
+    }
+
+    this.camera.scale = ratio;
+
+
+    var scaledWidth = mapSize.w * ratio;
+    var scaledHeight = mapSize.h * ratio;
+
+    this.camera.x = (paperSize.w - scaledWidth) / 2;
+    this.camera.y = (paperSize.h - scaledHeight) / 2;;
+    this.applyTransform();
   };
 
   SvgEditor.prototype.createRoomFromJson = function(json) {

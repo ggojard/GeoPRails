@@ -5,8 +5,7 @@
     try {
       var scrollTop = loadScroll(G_FloorJson.id);
       $(window).scrollTop(scrollTop);
-    } 
-    catch (e) {}
+    } catch (e) {}
 
   });
 

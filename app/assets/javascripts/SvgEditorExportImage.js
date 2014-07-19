@@ -22,7 +22,8 @@
   SvgEditor.prototype.exportToImage = function(svgContainerId) {
     var editor = this;
     var imageName = this.getFloorFullName();
-    var $svgDiv = $('<div id="svgdataurl" style="display:none"></div>');
+    var $svgDiv = $('<div id="svgdataurl"></div>');
+    $svgDiv.css('display', 'none');
 
     var savedCamera = {
       scale: editor.camera.scale,
@@ -53,7 +54,8 @@
 
     var h = html.replace(/²/g, '&#178;');
 
-    var $c = $('<canvas style="display:none"></canvas>');
+    var $c = $('<canvas></canvas>');
+    $c.css('display', 'none');
     $('body').append($svgDiv).append($c);
     var canvas = $c[0];
     var context = canvas.getContext("2d");
@@ -85,9 +87,9 @@
         a.href = getBlobUrl(canvasdata);
         a.click();
 
-        $svgDiv.remove();
-        $c.remove();
-      }, 5000);
+        // $svgDiv.remove();
+        // $c.remove();
+      }, 0);
 
 
     };
