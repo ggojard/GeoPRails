@@ -4,7 +4,10 @@
 
     try {
       var scrollTop = loadScroll(G_FloorJson.id);
-      $(window).scrollTop(scrollTop);
+      // console.log('update scroll', scrollTop);
+      setTimeout(function() {
+        $(window).scrollTop(scrollTop);
+      }, 0);
     } catch (e) {}
 
   });
@@ -13,6 +16,7 @@
 
   function registerScroll(floorId, scrollTop) {
     if (localStorage) {
+      console.log('registerScroll', scrollTop);
       localStorage['floor-' + floorId + '-scroll-top'] = scrollTop;
     }
   }
@@ -21,6 +25,7 @@
     if (localStorage) {
       var c = localStorage['floor-' + floorId + '-scroll-top'];
       if (c !== void 0) {
+        // console.log('loadScroll', c);
         return c;
       }
     }
@@ -28,9 +33,14 @@
   }
 
   app.directive("keepscrolltop", function($window) {
+    var count = 0;
     return function(scope, element, attrs) {
       angular.element($window).bind("scroll", function() {
-        registerScroll(G_FloorJson.id, this.pageYOffset);
+        // console.log('scroll count', count);
+        if (count > 0) {
+          registerScroll(G_FloorJson.id, this.pageYOffset);
+        }
+        count += 1;
       });
     };
   });
