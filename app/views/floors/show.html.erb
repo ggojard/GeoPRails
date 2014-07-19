@@ -1,5 +1,5 @@
 <script>
- var G_RootJson = <%=@json.html_safe%>
+ var G_FloorJson = <%=@json.html_safe%>
  var G_Mode = '<%= @G_Mode %>'
  var G_Room = <%=@G_Room.html_safe%>
 
@@ -21,7 +21,7 @@
   <div class="panel panel-default panel-map" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]">
     <div class="panel-heading">
       <div class="panel-title">
-      <h3 class="panel-title">Plan</h3>
+      <h3 class="panel-title">Plan {{floorJson.name}}</h3>
       <%=  render 'options' %> 
       </div>
       

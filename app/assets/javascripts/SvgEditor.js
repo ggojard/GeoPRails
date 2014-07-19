@@ -148,6 +148,11 @@
     return moveMethod(mx, my);
   };
 
+
+  SvgEditor.prototype.centerMap = function() {
+    // console.log('bgBox', this.bgBox);
+  };
+
   SvgEditor.prototype.createRoomFromJson = function(json) {
     var b = new geoP.Polyline(this);
     b.loadFromJson(json);

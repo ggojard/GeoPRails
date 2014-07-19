@@ -41,15 +41,12 @@ ActiveAdmin.register Room do
 
   form do |f|
     f.inputs "Details" do
+      f.input :id, label: "Visualiser", input_html: { class: 'room-link' }
       f.input :floor, label: "Etage"
       f.input :name , label: "Nom"
       f.input :room_type, label: "Type"
       f.input :organization, label: "Organisation"
       f.input :room_ground_type, label: "Nature des sol"
-    end
-    f.inputs "Visualiser" do
-      f.input :id, label: "Ouvrir", input_html: { class: 'room-link' }
-      # f.input :floor_id, input_html: { class: 'floor-id' }
     end
     f.inputs "Géométrie" do
       f.input :points, label: "Points"

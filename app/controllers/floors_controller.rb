@@ -15,9 +15,13 @@ class FloorsController < GeopController
 
 
   def image
-    @f = FloorsImage.find(params[:id])
+    @s = params[:style]
+    if @s == nil
+      @s = 'original'
+    end
+    @f = FloorsImage.where(floor_id:params[:id], style: @s)
     # render json: {a:@f}
-    render :text => @f.file_contents, :content_type => 'image/png'
+    render :text => @f[0].file_contents, :content_type => 'image/png'
   end
 
   def update

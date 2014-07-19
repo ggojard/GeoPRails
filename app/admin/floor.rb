@@ -1,7 +1,7 @@
 ActiveAdmin.register Floor do
   menu :label => "Etages"
 
-  permit_params :name, :image
+  permit_params :name, :image, :building_id
 
   index do
     selectable_column
@@ -18,37 +18,31 @@ ActiveAdmin.register Floor do
       f.input :building
       f.input :image, :required => false, :as => :file
     end
-
     f.actions
   end
 
   show do |ad|
     attributes_table do
-      row "Nom" do :name end
-      row "Bâtiment" do  :building end
+      row "Visualiser" do link_to("Ouvrir",'/floors/' + ad.id.to_s, {}) end
+      row "Nom" do ad.name end
+      row "Bâtiment" do  ad.building end
       # "Image Plan",
-      row :image do
+      row "Plan" do
         image_tag(ad.image.url(:thumb))
       end
 
-    panel "Pièces" do
-      table_for floor.rooms do
-        column "Nom de la pièce" do |b| link_to b.name, [:admin, b] end
+      panel "Pièces" do
+        table_for floor.rooms do
+          column "Nom de la pièce" do |b| link_to b.name, [:admin, b] end
+        end
       end
-    end
-
-
-
-        # if ad.rooms != nil do
-        # table_for ad.rooms do
-
-        #   column "Nom" do |b| link_to b.name ,[:admin, b] end
-        #   column "Type" do |b| b.room_type.name end
-        # end
-        # end
-      
 
     end
   end
-
+  
+  controller do
+    def permitted_params
+      params.permit!
+    end
+  end
 end

@@ -13,6 +13,6 @@ jQuery( function($) {
     $rl.wrap($div);
 
     var link = '/rooms/' + $rl.val();
-    $('.room-link-container').html('<a href="' + link + '">Lien</a>');
+    $('.room-link-container').html('<a href="' + link + '">Ouvrir</a>');
 });
 

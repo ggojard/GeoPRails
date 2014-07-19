@@ -172,8 +172,12 @@
       var c = this.moveCircles[i];
       c.remove();
     };
-    this.text.remove();
-    this.areaText.remove();
+    if (this.text !== void 0) {
+      this.text.remove();
+    }
+    if (this.areaText !== void 0) {
+      this.areaText.remove();
+    }
   };
 
   Polyline.prototype.appendPoint = function(x, y) {
@@ -373,7 +377,7 @@
         break;
       case 'show':
         this.element.click(function(e) {
-          document.location.href = '/floors/' + G_RootJson.id + '/room/' + that.json.id;
+          document.location.href = '/floors/' + G_FloorJson.id + '/room/' + that.json.id;
         });
         break;
     }
