@@ -33,6 +33,10 @@
 
     editor.camera = geoP.DefaultCamera;
 
+    var saveScale = 1;
+    editor.camera.scale = saveScale;
+
+
     editor.applyTransform();
 
     var html = d3.select("#" + svgContainerId)
@@ -44,13 +48,6 @@
 
     editor.camera = savedCamera;
     editor.applyTransform();
-    // editor.camera.scale = 2;
-    // editor.camera.x = 0;
-    // editor.camera.y = 0;
-    // editor.applyTransform();
-
-    // var $svgClone = $(html);
-
 
     var h = html.replace(/²/g, '&#178;');
 
@@ -60,13 +57,19 @@
     var canvas = $c[0];
     var context = canvas.getContext("2d");
 
-    canvas.style.cssText += 'width:' + editor.bgBox.w + 'px' + ';height:' + editor.bgBox.h + 'px';
-    context.canvas.width = editor.bgBox.w;
-    context.canvas.height = editor.bgBox.h;
+    var canvasSize = {
+      w: editor.bgBox.w * saveScale,
+      h: editor.bgBox.h * saveScale
+    };
+
+    canvas.style.cssText += 'width:' + canvasSize.w + 'px' + ';height:' + canvasSize.h + 'px';
+    context.canvas.width = canvasSize.w;
+    context.canvas.height = canvasSize.h;
 
     var imgsrc = 'data:image/svg+xml;base64,' + btoa(h);
-    var img = 'svg image <img width="' + editor.bgBox.w + '" height="' + editor.bgBox.h + '" src="' + imgsrc + '"/>';
+    var img = 'svg image <img width="' + canvasSize.w + '" height="' + canvasSize.h + '" src="' + imgsrc + '"/>';
     d3.select("#svgdataurl").html(img);
+
 
     var image = new Image();
     image.src = imgsrc;
@@ -75,7 +78,8 @@
       setTimeout(function() {
 
         context.fillStyle = 'white';
-        context.fillRect(0, 0, image.width, image.height);
+        // context.fillRect(0, 0, image.width, image.height);
+        context.fillRect(0, 0, canvasSize.w, canvasSize.h);
         context.drawImage(image, 0, 0);
 
         var canvasdata = canvas.toDataURL("image/png");
@@ -87,8 +91,8 @@
         a.href = getBlobUrl(canvasdata);
         a.click();
 
-        // $svgDiv.remove();
-        // $c.remove();
+        $svgDiv.remove();
+        $c.remove();
       }, 0);
 
 

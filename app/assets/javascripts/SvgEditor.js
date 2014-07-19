@@ -94,7 +94,11 @@
     this.bgBox = bgBox;
     // console.log(this.json.image);
     var imagePath = 'http://' + window.location.host + this.json.image;
-    // var imagePath = 'http://localhost:3000/floors/images/1?style=original';
+    // var imagePath = 'http://localhost:3000/floors/images/1.png';
+    // var imagePath = 'http://localhost/plan2.png';
+    // var imagePath = 'http://localhost/plan3.png';
+    // var imagePath = 'http://localhost/1.png';
+    // var imagePath = 'http://localhost:3000/floors/images/1?style=thumb';
     this.bg = this.canvas.image(imagePath, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     this.bg.node.style.cssText = 'opacity: 0.25';
     var border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
@@ -167,7 +171,7 @@
 
     // use the minimun scale ratio
     var ratio = ratioH;
-    if (ratioW < ratioH){
+    if (ratioW < ratioH) {
       ratio = ratioW;
     }
 

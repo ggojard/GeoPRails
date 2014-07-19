@@ -134,6 +134,7 @@
 
     var editor = new GeoP.SvgEditor("#main", G_FloorJson, $scope, $http, $rootScope);
     editor.loadRooms();
+
     $scope.mode = 'normal';
 
     $scope.editModeAction = function() {

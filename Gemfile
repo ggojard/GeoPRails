@@ -54,7 +54,7 @@ gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'activeadmin-translate'
 gem 'paperclip'
 gem "paperclip_database"
-
+gem "rdoc"
 
 gem 'jquery-minicolors-rails'
 
