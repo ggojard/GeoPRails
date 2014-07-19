@@ -175,8 +175,8 @@
     var scaledWidth = mapSize.w * ratio;
     var scaledHeight = mapSize.h * ratio;
 
-    this.camera.x = (paperSize.w - scaledWidth) / 2;
-    this.camera.y = (paperSize.h - scaledHeight) / 2;;
+    this.camera.x = ((paperSize.w - scaledWidth) / 2) * 1 / ratio;
+    this.camera.y = ((paperSize.h - scaledHeight) / 2) * 1 / ratio;
     this.applyTransform();
   };
 

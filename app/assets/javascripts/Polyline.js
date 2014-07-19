@@ -44,7 +44,9 @@
   }
 
   Polyline.prototype.updateArea = function() {
-    this.areaText.node.innerHTML = this.getArea() + ' m²';
+    if (this.areaText !== void 0){
+     this.areaText.node.innerHTML = this.getArea() + ' m²'; 
+   }    
   };
 
 
@@ -54,6 +56,10 @@
     var scaleLen = this.svgEditor.mapScale.length;
     var scaleDim = this.svgEditor.mapScale.getLength();
 
+
+    if (this.element === void 0 || this.element.node === void 0){
+      return 0;
+    }
 
     for (var i = 0; i < this.element.node.points.length; i++) {
       var p = this.element.node.points[i];
@@ -223,6 +229,10 @@
   Polyline.prototype.loadFromJson = function(json) {
     this.json = json;
 
+    if (this.json.points === null) {
+      return;
+    }
+
     if (this.json.points !== null) {
       var points = JSON.parse(this.json.points);
       for (var i = 0; i < points.length; i++) {
@@ -233,7 +243,7 @@
           this.appendPoint(p.x, p.y);
         }
       }
-    }
+    } 
     if (points.length === 0) {
       return;
     }
@@ -278,6 +288,11 @@
 
   Polyline.prototype.getPointsData = function() {
     var points = [];
+    if (this.group === void 0)
+    {
+      return points;
+    }
+
     var camera = this.svgEditor.camera;
     var ctm = this.group.node.getCTM();
     var scale = camera.scale;
