@@ -6,25 +6,25 @@
 
   var a = Snap;
 
-  function getMousePos(e) {
-    var x = e.hasOwnProperty('offsetX') ? e.offsetX : e.layerX;
-    var y = e.hasOwnProperty('offsetY') ? e.offsetY : e.layerY;
-    return {
-      x: x,
-      y: y
-    };
-  }
 
-  function mouseWheel(e) {
+  function mouseWheel(event) {
     /*jshint validthis:true */
 
+    var delta = 0;
+    if (!event) /* For IE. */
+      event = window.event;
+    if (event.wheelDelta) { /* IE/Opera. */
+      delta = event.wheelDelta / 120;
+    } else if (event.detail) { /** Mozilla case. */
+      /** In Mozilla, sign of delta is different than in IE.
+       * Also, delta is multiple of 3.
+       */
+      delta = -event.detail / 3;
+    }
     if (this.$scope.isCtrlKeyDown === true) {
-      e.preventDefault();
-      var factor = 1;
-      if (e.wheelDelta < 0) {
-        factor = -1;
-      }
-      this.camera.scale += (factor * 0.01);
+      event.preventDefault();
+      var factor = delta;
+      this.camera.scale += (factor * 0.05);
       if (this.camera.scale < 0.05) {
         this.camera.scale = 0.05;
       }
@@ -34,11 +34,10 @@
 
   function mouseMove(ev) {
     /*jshint validthis:true */
-
     if (this.$scope.isCtrlKeyDown === true && this.lastMovePosition !== null) {
       var diff = {
-        x: this.lastMovePosition.x - ev.x,
-        y: this.lastMovePosition.y - ev.y
+        x: this.lastMovePosition.x - ev.clientX,
+        y: this.lastMovePosition.y - ev.clientY
       };
       this.camera.x -= diff.x / this.camera.scale;
       this.camera.y -= diff.y / this.camera.scale;
@@ -46,8 +45,8 @@
     }
 
     this.lastMovePosition = {
-      x: ev.x,
-      y: ev.y
+      x: ev.clientX,
+      y: ev.clientY
     };
   }
 
@@ -128,15 +127,38 @@
     return n;
   };
 
+
+  SvgEditor.prototype.getMousePos = function(e) {
+    if (e.hasOwnProperty('offsetX')) {
+      return {
+        x: e.offsetX,
+        y: e.offsetY
+      };
+    } else {
+      var targetOffset = $(this.paper.node).parent().offset();
+      var st = $(window).scrollTop();
+      var sl = $(window).scrollLeft();
+      var yVal = e.clientY + st - targetOffset.top;
+      var xVal = e.clientX + sl - targetOffset.left;
+      return {
+        x: xVal,
+        y: yVal
+      };
+    }
+  };
+
+
   SvgEditor.prototype.drag = function(e, node, moveMethod) {
     var scale = this.camera.scale;
     var tX = -this.camera.x;
     var tY = -this.camera.y;
-    if (e.offsetX < 0 || e.offsetY < 0) {
+    var mousePos = this.getMousePos(e);
+
+    if (mousePos.x < 0 || mousePos.y < 0) {
       return;
     }
-    var mx = (e.offsetX / scale) - node.cx.baseVal.value;
-    var my = (e.offsetY / scale) - node.cy.baseVal.value;
+    var mx = (mousePos.x / scale) - node.cx.baseVal.value;
+    var my = (mousePos.y / scale) - node.cy.baseVal.value;
 
     var ctm = this.canvas.node.getCTM();
     mx -= ctm.e / scale;
@@ -149,7 +171,7 @@
   };
 
 
-  SvgEditor.prototype.centerMap = function() {
+  SvgEditor.prototype.centerOnBox = function(boxSize) {
     var $svg = $(this.paper.node);
     var paperSize = {
       w: $svg.width(),
@@ -158,10 +180,8 @@
 
     // this.camera.scale = 1;this.camera.x = 0;this.camera.y = 0;this.applyTransform();
 
-    var mapSize = this.bgBox;
-
-    var ratioW = paperSize.w / mapSize.w;
-    var ratioH = paperSize.h / mapSize.h;
+    var ratioW = paperSize.w / boxSize.w;
+    var ratioH = paperSize.h / boxSize.h;
 
     // use the minimun scale ratio
     var ratio = ratioH;
@@ -171,13 +191,17 @@
 
     this.camera.scale = ratio;
 
+    var scaledWidth = boxSize.w * ratio;
+    var scaledHeight = boxSize.h * ratio;
 
-    var scaledWidth = mapSize.w * ratio;
-    var scaledHeight = mapSize.h * ratio;
+    this.camera.x = ((paperSize.w - scaledWidth) / 2 ) * 1 / ratio - boxSize.x;
+    this.camera.y = ((paperSize.h - scaledHeight) / 2) * 1 / ratio - boxSize.y;
 
-    this.camera.x = ((paperSize.w - scaledWidth) / 2) * 1 / ratio;
-    this.camera.y = ((paperSize.h - scaledHeight) / 2) * 1 / ratio;
     this.applyTransform();
+  };
+
+  SvgEditor.prototype.centerMap = function() {
+    this.centerOnBox(this.bgBox);
   };
 
   SvgEditor.prototype.createRoomFromJson = function(json) {
@@ -230,8 +254,10 @@
 
   SvgEditor.prototype.mapOnItems = function(methodName, a1, a2) {
     for (var i = 0; i < this.items.length; i++) {
-      this.items[i][methodName](a1, a2);
-    };
+      if (this.items[i].element !== void 0) {
+        this.items[i][methodName](a1, a2);
+      }
+    }
   };
 
   SvgEditor.prototype.loadRooms = function() {
@@ -254,7 +280,7 @@
     if (this.createPolylinePolyline === null) {
       this.createPolylinePolyline = new geoP.Polyline(this);
 
-      var mouse = getMousePos(e);
+      var mouse = this.getMousePos(e);
 
       this.createPolylinePolyline.create(mouse.x / scale + tX, mouse.y / scale + tY);
     } else {
@@ -324,20 +350,21 @@
     var scale = this.camera.scale;
     var tX = -this.camera.x;
     var tY = -this.camera.y;
+    var mousePos = this.getMousePos(e);
+
     if (this.createPolylinePolyline !== null) {
       var lastPoint = this.createPolylinePolyline.getLastPoint();
       if (lastPoint !== null) {
         if (this.createPolylineLine === null) {
-          var mouse = getMousePos(e);
-          this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, mouse.x / scale, mouse.y / scale);
+          this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, mousePos.x / scale, mousePos.y / scale);
           this.createPolylineLine.attr({
             stroke: 'orange',
             'stroke-dasharray': [5, 5]
           });
         } else {
           this.newPoint = {
-            x: e.offsetX / scale + tX,
-            y: e.offsetY / scale + tY
+            x: mousePos.x / scale + tX,
+            y: mousePos.y / scale + tY
           };
           updateNewPositionIfShift(this.$scope, this.newPoint, lastPoint);
           this.createPolylineLine.animate({

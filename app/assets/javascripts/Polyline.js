@@ -44,9 +44,9 @@
   }
 
   Polyline.prototype.updateArea = function() {
-    if (this.areaText !== void 0){
-     this.areaText.node.innerHTML = this.getArea() + ' m²'; 
-   }    
+    if (this.areaText !== void 0) {
+      this.areaText.node.innerHTML = this.getArea() + ' m²';
+    }
   };
 
 
@@ -57,7 +57,7 @@
     var scaleDim = this.svgEditor.mapScale.getLength();
 
 
-    if (this.element === void 0 || this.element.node === void 0){
+    if (this.element === void 0 || this.element.node === void 0) {
       return 0;
     }
 
@@ -135,9 +135,9 @@
       var scale = that.svgEditor.camera.scale;
       var tX = -that.svgEditor.camera.x;
       var tY = -that.svgEditor.camera.y;
-
-      var mx = (e.offsetX / scale) - movePointCircle.node.cx.baseVal.value;
-      var my = (e.offsetY / scale) - movePointCircle.node.cy.baseVal.value;
+      var mousePos = that.svgEditor.getMousePos(e);
+      var mx = (mousePos.x / scale) - movePointCircle.node.cx.baseVal.value;
+      var my = (mousePos.y / scale) - movePointCircle.node.cy.baseVal.value;
 
       var ctm = that.group.node.getCTM();
       mx -= ctm.e / scale;
@@ -210,17 +210,18 @@
         this.element.attr({
           fill: 'transparent'
         });
-        this.setDefaultColorIfRequired();
+        this.doActionIfItemIsSelected();
       }
     }
   };
 
-  Polyline.prototype.setDefaultColorIfRequired = function() {
+  Polyline.prototype.doActionIfItemIsSelected = function() {
     if (G_Room && G_Room.id === this.json.id) {
       this.element.attr({
         fill: '#1dc8fe'
       });
       this.svgEditor.$scope.room = this;
+      this.addZoomOnItemOption();
     }
 
   };
@@ -243,14 +244,14 @@
           this.appendPoint(p.x, p.y);
         }
       }
-    } 
+    }
     if (points.length === 0) {
       return;
     }
     this.close(this.svgEditor.$scope);
 
     this.setTexts();
-    this.setDefaultColorIfRequired();
+    this.doActionIfItemIsSelected();
   };
 
   Polyline.prototype.registerHover = function() {
@@ -288,8 +289,7 @@
 
   Polyline.prototype.getPointsData = function() {
     var points = [];
-    if (this.group === void 0)
-    {
+    if (this.group === void 0) {
       return points;
     }
 
@@ -358,6 +358,53 @@
     // this.isSelected = false;
   };
 
+  Polyline.prototype.zoomOnItem = function() {
+    var box = this.group.getBBox();
+    this.svgEditor.centerOnBox(box);
+
+  };
+
+  Polyline.prototype.addZoomOnItemOption = function() {
+    var that = this;
+    var $scope = this.svgEditor.$scope;
+    $scope.currentOptions.push({
+      label: 'Zoomer sur ' + that.json.name,
+      classes: 'btn-info',
+      action: function() {
+        that.zoomOnItem();
+      }
+    });
+  };
+
+  Polyline.prototype.select = function(e) {
+    var that = this;
+    var $scope = this.svgEditor.$scope;
+    // that.isSelected = true;
+    // 
+    switch ($scope.mode) {
+      case 'normal':
+      case 'edit':
+        $scope.room = that;
+
+        that.svgEditor.unSelectItems();
+        that.setMovePointsToVisibility('visible');
+        that.stroke(GeoP.Colors.Selected);
+        geoP.currentEvent = e;
+        $scope.mode = 'edit';
+        $scope.currentOptions = [{
+          label: 'Supprimer ' + that.json.name,
+          classes: 'btn-danger',
+          action: function() {
+            that.remove();
+            $scope.cleanCurrentOptions();
+          }
+        }];
+        that.addZoomOnItemOption()
+        $scope.$apply();
+        break;
+    }
+  };
+
   Polyline.prototype.close = function($scope) {
     var that = this;
 
@@ -367,28 +414,7 @@
     switch (G_Mode) {
       case 'edit':
         this.group.drag();
-
-        this.element.click(function(e) {
-          // that.isSelected = true;
-          if ($scope.mode !== 'create') {
-            $scope.room = that;
-
-            that.svgEditor.unSelectItems();
-            that.setMovePointsToVisibility('visible');
-            that.stroke(GeoP.Colors.Selected);
-            geoP.currentEvent = e;
-            $scope.mode = 'edit';
-            $scope.currentOptions = [{
-              label: 'Supprimer ' + that.json.name,
-              classes: 'btn-warning',
-              action: function() {
-                that.remove();
-                $scope.cleanCurrentOptions();
-              }
-            }];
-            $scope.$apply();
-          }
-        });
+        this.element.click(this.select.bind(this));
         break;
       case 'show':
         this.element.click(function(e) {

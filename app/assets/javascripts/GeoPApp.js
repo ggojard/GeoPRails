@@ -130,6 +130,8 @@
     $scope.G_Mode = G_Mode;
     $scope.isShift = false;
     $scope.isCtrlKeyDown = false;
+    $scope.currentOptions = [];
+
 
     function handleKey(ev) {
       var key, isShift, isCtrlKeyDown;
@@ -173,7 +175,7 @@
       label: 'Créer pièce',
       icon: 'fa-pencil',
       action: $scope.createPolyline,
-      classes: 'btn-default'
+      classes: 'btn-success'
     };
 
     var mapZoomDefault = {
@@ -230,14 +232,13 @@
 
     switch (G_Mode) {
       case 'edit':
-        $scope.buttons = [stopEditMode, createPolyline];
+        $scope.buttons = [stopEditMode, createPolyline, mapZoomDefault];
         break;
       case 'show':
         $scope.buttons = [editMode, saveToImage, editModeAdmin, mapZoomDefault];
         break;
     }
 
-    $scope.currentOptions = [];
 
   });
 }());
