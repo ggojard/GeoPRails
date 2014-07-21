@@ -217,13 +217,13 @@
 
   Polyline.prototype.doActionIfItemIsSelected = function() {
     if (G_Room && G_Room.id === this.json.id) {
+      this.svgEditor.$scope.currentOptions = [];
       this.element.attr({
         fill: '#1dc8fe'
       });
       this.svgEditor.$scope.room = this;
       this.addZoomOnItemOption();
     }
-
   };
 
 

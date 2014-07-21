@@ -268,7 +268,9 @@
     var scaledHeight = boxSize.h * ratio;
 
     this.camera.x = ((paperSize.w - scaledWidth) / 2) * 1 / ratio - boxSize.x;
+    this.camera.x *= ratio;
     this.camera.y = ((paperSize.h - scaledHeight) / 2) * 1 / ratio - boxSize.y;
+    this.camera.y *= ratio;
 
     this.applyTransform();
   };
