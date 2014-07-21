@@ -23,6 +23,13 @@ svg.mode-show{
   }
 }
 
+div#debugger{
+  background-color: white;
+  position: fixed;
+  top:0px;
+  border:1px solid green;
+}
+
 .jumbotron{
   h1, p{
     display: inline-block;

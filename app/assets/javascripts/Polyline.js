@@ -370,6 +370,7 @@
     $scope.currentOptions.push({
       label: 'Zoomer sur ' + that.json.name,
       classes: 'btn-info',
+      icon : 'fa-search',
       action: function() {
         that.zoomOnItem();
       }
@@ -394,6 +395,7 @@
         $scope.currentOptions = [{
           label: 'Supprimer ' + that.json.name,
           classes: 'btn-danger',
+          icon:'fa-trash-o',
           action: function() {
             that.remove();
             $scope.cleanCurrentOptions();
