@@ -1,5 +1,5 @@
 ActiveAdmin.register PersonState do
-  menu :label => "Status des personnes "
+ menu :parent => "Types",:label => "Status des personnes "
   
   # See permitted parameters documentation:
   # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
@@ -13,5 +13,10 @@ ActiveAdmin.register PersonState do
   #  permitted << :other if resource.something?
   #  permitted
   # end
+  controller do
+    def permitted_params
+      params.permit!
+    end
+  end
   
 end

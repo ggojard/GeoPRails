@@ -25,6 +25,13 @@ ActiveAdmin.register Room do
       row "Aire" do c.area.to_s + ' m²' end
       row "Nature des sols" do c.room_ground_type end
     end
+
+    panel "Affectations" do
+      table_for room.people do
+        column "Personnes" do |b| link_to b.firstname + ' ' + b.lastname, [:admin, b] end
+      end
+    end
+
   end
 
 
@@ -48,9 +55,20 @@ ActiveAdmin.register Room do
       f.input :organization, label: "Organisation"
       f.input :room_ground_type, label: "Nature des sol"
     end
-    f.inputs "Géométrie" do
-      f.input :points, label: "Points"
-    end
+
+    f.has_many :people do |b|
+      b.inputs "Affectations" do
+        if !b.object.nil?
+          b.input :firstname
+          b.input :lastname
+        end
+        b.actions 
+      end
+    end    
+
+    # f.inputs "Géométrie" do
+    #   f.input :points, label: "Points"
+    # end
 
     f.actions
   end

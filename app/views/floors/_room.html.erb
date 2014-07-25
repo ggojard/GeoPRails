@@ -21,6 +21,22 @@
 
   </table>
 
+  <h4>Affectations</h4>
+  <div ng-repeat="p in room.json.people" class="thumbnail">
+    <!-- <img src="/assets/person.png"/> -->
+    <div class="caption">
+      <h3>{{p.fullname}}</h3>
+      <p>
+      Etat: {{p.person_state.name}}</br>
+      Tél: {{p.format_telephone}}</br>
+      Por: {{p.format_cellphone}}</br>
+      Ordinateur: {{p.computerreference}}</br>
+      Ecran: {{p.monitorreference}}
+      </p>
+
+    </div>
+  </div>
+
   </div>
 </div>
 
