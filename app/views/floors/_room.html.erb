@@ -11,31 +11,27 @@
       <th>Type</th><td>{{room.json.room_type.name}}</td>    
     </tr>
     <tr>
-      <th>Surface</th><td>{{room.json.area}} m²</td>
+      <th>Surface</th><td>{{room.json.area_unit}}</td>
       <th>Organization</th><td>{{room.json.organization.name}} [{{room.json.organization.organization_type.name}}]</td>      
     </tr>
     <tr>
-      <th>Nature des sols</th><td colspan="3">{{room.json.room_ground_type.name}}</td>
-      <!-- <th>Organization</th><td>{{room.json.organization.name}} [{{room.json.organization.organization_type.name}}]</td>       -->
+      <th>Nature des sols</th><td >{{room.json.room_ground_type.name}}</td>
+      <th>Ratio Affectations</th><td>{{room.json.area / room.json.affectations.length}} m² / personnes</td>      
     </tr>
 
   </table>
 
-  <h4>Affectations</h4>
-  <div ng-repeat="p in room.json.people" class="thumbnail">
-    <!-- <img src="/assets/person.png"/> -->
-    <div class="caption">
-      <h3>{{p.fullname}}</h3>
-      <p>
-      Etat: {{p.person_state.name}}</br>
-      Tél: {{p.format_telephone}}</br>
-      Por: {{p.format_cellphone}}</br>
-      Ordinateur: {{p.computerreference}}</br>
-      Ecran: {{p.monitorreference}}
-      </p>
 
-    </div>
+  <div ng-if="room.json.affectations.length > 0">
+    <h4>Affectations</h4>
+    <ul class="people">
+      <li ng-repeat="a in room.json.affectations">
+        <%=  render 'person' %> 
+      </li>
+    </ul>
+
   </div>
+
 
   </div>
 </div>

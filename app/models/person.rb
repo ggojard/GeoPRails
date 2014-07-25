@@ -3,6 +3,12 @@ class Person < ActiveRecord::Base
   belongs_to :person_state
   belongs_to :organization
 
+
+  has_many :affectations
+  has_many :rooms, :through => :affectations
+  accepts_nested_attributes_for :rooms, :allow_destroy => true
+  accepts_nested_attributes_for :affectations, :allow_destroy => true
+
   def fullname
     self.firstname + ' ' + self.lastname
   end
@@ -24,7 +30,8 @@ class Person < ActiveRecord::Base
   def to_builder
     Jbuilder.new do |b|
       b.(self, :firstname, :lastname, :id, :telephone, :cellphone, :person_state, :computerreference, :monitorreference, :room, :organization, :fullname, :format_telephone, :format_cellphone)
-      # b.url "/buildings/" + self.id.to_s
+      # b.url person_url(self.id) 
+      b.affectations self.affectations.collect { |b| b.to_builder_room.attributes! }
     end
   end
 

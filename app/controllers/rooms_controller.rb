@@ -9,8 +9,6 @@ class RoomsController < GeopController
   def show
     # @json = @room.to_builder.target!
     @url = '/floors/' + @room.floor_id.to_s + '/room/' + @room.id.to_s
-    
-    # render json:{'url' => @url}
     redirect_to @url
   end
 

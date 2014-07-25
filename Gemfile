@@ -55,7 +55,7 @@ gem 'activeadmin-translate'
 gem 'paperclip'
 gem "paperclip_database"
 gem "rdoc"
-
+gem "haml"
 gem 'jquery-minicolors-rails'
 
 

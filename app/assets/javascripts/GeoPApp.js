@@ -24,6 +24,9 @@
     } catch (e) {}
 
   });
+  
+  GeoP.app = app;
+
 
 
 

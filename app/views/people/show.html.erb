@@ -1,0 +1,21 @@
+<script>
+ var G_Person = <%=@G_Person.html_safe%>;
+</script>
+
+
+<div ng-controller="PersonCtrl">
+  <%=  render '/floors/person' %> 
+
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Pièces</h3>
+  </div>
+  <div class="panel-body">
+  <ul>
+    <li ng-repeat="a in p.affectations"><a href="{{a.room.url}}">{{a.room.fullname}}</a> - {{a.room.room_type.name}} - {{a.room.area_unit}}</li>
+  </ul>
+  </div>
+</div>
+
+
+</div>

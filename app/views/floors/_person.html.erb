@@ -1,0 +1,39 @@
+
+  <div  class="thumbnail">
+
+    <a class="edit-person fa fa-edit" href="/admin/people/{{a.person.id}}/edit"></a>
+    <a class="open-person fa fa-arrow-circle-right" href="/people/{{a.person.id}}"></a>
+    <img src="/assets/person.png"/>
+    <div class="caption">
+      <h3>{{a.person.fullname}}</h3>
+      <p>
+
+      <table class="room">
+        <tr>
+          <th>Etat</th>
+          <td>{{a.person.person_state.name}}</td>
+        </tr>
+        <tr>
+          <th>Téléphone</th>
+          <td>{{a.person.format_telephone}}</td>
+        </tr>
+        <tr>
+          <th>Portable</th>
+          <td>{{a.person.format_cellphone}}</td>
+        </tr>
+        <tr>
+          <th>Ordinateur</th>
+          <td>{{a.person.computerreference}}</td>
+        </tr>
+        <tr>
+          <th>Ecran</th>
+          <td>{{a.person.monitorreference}}</td>
+        </tr>
+        <tr>
+          <th>Organization</th>
+          <td>{{a.person.organization.name}}</td>
+        </tr>
+      </table>
+      </p>
+    </div>
+  </div>

@@ -1,4 +1,5 @@
 GeoP::Application.routes.draw do
+  get "people/show"
   get "organizations/show"
   get "buildings/show"
   get "floors/show"
@@ -8,7 +9,7 @@ GeoP::Application.routes.draw do
   resources :homes
   resources :rooms
   resources :companies
-
+  resources :people
 
   get '/login_page' => 'login#login'
 

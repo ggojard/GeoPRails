@@ -17,7 +17,7 @@ ActiveAdmin.register Room do
 
   show do |c|
     attributes_table do
-      row "Visualiser" do link_to("Ouvrir",'/rooms/' + c.id.to_s, {}) end
+      row "Visualiser" do link_to("Ouvrir", room_path(c.id), {}) end
       row "Etage" do c.floor end
       row "Nom" do c.name end
       row "Type" do c.room_type end
@@ -26,9 +26,11 @@ ActiveAdmin.register Room do
       row "Nature des sols" do c.room_ground_type end
     end
 
+
     panel "Affectations" do
-      table_for room.people do
-        column "Personnes" do |b| link_to b.firstname + ' ' + b.lastname, [:admin, b] end
+      table_for room.affectations do
+        column "Personnes" do |b| link_to b.person.firstname + ' ' + b.person.lastname, admin_person_url(b.person.id) end
+        # column "Personnes" do |b| link_to b.person.firstname + ' ' + b.person.lastname, admin_person_url(b.person.id) end
       end
     end
 
@@ -54,17 +56,33 @@ ActiveAdmin.register Room do
       f.input :room_type, label: "Type"
       f.input :organization, label: "Organisation"
       f.input :room_ground_type, label: "Nature des sol"
+
     end
 
-    f.has_many :people do |b|
-      b.inputs "Affectations" do
-        if !b.object.nil?
-          b.input :firstname
-          b.input :lastname
+    f.has_many :affectations do |app_f|
+      # app_f.inputs "Affectations" do
+        if !app_f.object.nil?
+          # show the destroy checkbox only if it is an existing appointment
+          # else, there's already dynamic JS to add / remove new appointments
+          app_f.input :_destroy, :as => :boolean, :label => "Retirer l'affectation"
         end
-        b.actions 
-      end
-    end    
+        app_f.input :person, label: "Nom", as: :select, :collection => Person.all.map{|u| ["#{u.firstname} #{u.lastname}", u.id]}
+
+        # app_f.input :person # it should automatically generate a drop-down select to choose from your existing patients
+        # app_f.input :appointment_date
+      # end
+    end
+
+
+    # f.has_many :people do |b|
+    #   b.inputs "Affectations" do
+    #     if !b.object.nil?
+    #       b.input :firstname
+    #       b.input :lastname
+    #     end
+    #     b.actions
+    #   end
+    # end
 
     # f.inputs "Géométrie" do
     #   f.input :points, label: "Points"

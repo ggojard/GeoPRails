@@ -2,13 +2,13 @@
  var G_FloorJson = <%=@json.html_safe%>
  var G_Mode = '<%= @G_Mode %>'
  var G_Room = <%=@G_Room.html_safe%>
- console.log(G_Room);
 </script>
 <div keepscrolltop>
 
   <div class="jumbotron" ng-controller="FloorHeaderCtrl">
-  <h1 >{{floorJson.name}}</h1>
-  <p ng-if="roomJson.id">{{roomJson.name}}</p>
+  <h2>{{floorJson.building.name}}</h2>
+  <h2>> {{floorJson.name}}</h2>
+  <h2 ng-if="roomJson.id"> > {{roomJson.name}}</h2>
   </div>
   
   

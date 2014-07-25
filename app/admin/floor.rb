@@ -5,10 +5,10 @@ ActiveAdmin.register Floor do
 
   index do
     selectable_column
-    column "Bâtiment", :building
     id_column
+    column "Bâtiment", :building
     column "Nom", :name
-    column "Image Dimensions", :image_dimensions
+    # column "Image Dimensions", :image_dimensions
     actions
   end
 
@@ -39,7 +39,7 @@ ActiveAdmin.register Floor do
 
     end
   end
-  
+
   controller do
     def permitted_params
       params.permit!

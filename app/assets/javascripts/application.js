@@ -17,4 +17,5 @@
 //= require vendor/snap.svg-min
 //= require vendor/d3.v3.min
 //= require GeoP
+//= require GeoPApp
 //= require_tree .
