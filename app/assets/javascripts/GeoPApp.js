@@ -24,7 +24,7 @@
     } catch (e) {}
 
   });
-  
+
   GeoP.app = app;
 
 
@@ -111,14 +111,12 @@
       registerFilterCtrl($scope, $rootScope, filter.name);
     }
   });
+  
   app.controller('RootCtrl', function($scope) {
     $scope.root = G_RootJson;
   });
 
-  app.controller('GlobalCtrl', function($scope) {
-    $scope.company = G_Company;
-  });
-
+  
   app.controller('CompanyCtrl', function($scope, $http) {
     $scope.company = G_Company;
   });

@@ -2,7 +2,7 @@
 
 <% if current_admin_user != nil %>
 
-<div class="navbar navbar-default navbar-static-top" role="navigation" ng-controller="GlobalCtrl">
+<div class="navbar navbar-default navbar-static-top" role="navigation" ng-controller="MenuCtrl">
       <div class="container-fluid">
         <div class="navbar-header">
 
@@ -57,7 +57,12 @@
           </ul>
  -->
           <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Rechercher...">
+            <input name="globalSearch" id="globalSearch" type="text" class="form-control" ng-change="search()" ng-model="globalSearch" placeholder="Rechercher..." ng-class="{invalid:results.length == 0}">
+            <ul class="search-results">
+              <li ng-repeat="p in results.people"><i class="fa fa-user"></i> <a href="{{p.url}}">{{p.fullname}}</a></li>
+              <li ng-repeat="r in results.rooms"><i class="fa fa-codepen"></i>  <a href="{{r.url}}">{{r.fullname}}</a></li>
+              <li ng-repeat="r in results.floors"><i class="fa fa-delicious"></i>  <a href="{{r.url}}">{{r.fullname}}</a></li>              
+            </ul>
           </form>
 
 

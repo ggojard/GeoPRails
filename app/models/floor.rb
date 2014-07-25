@@ -10,13 +10,17 @@ class Floor < ActiveRecord::Base
   serialize :image_dimensions
 
 
+  def fullname
+    self.name + " < " + self.building.name
+  end
+
   # def img?
   #   @upload_content_type =~ %r{^(image|(x-)?application)/(bmp|gif|jpeg|jpg|pjpeg|png|x-png)$}
   # end
 
   def to_builder
     Jbuilder.new do |b|
-      b.(self, :name, :id, :image, :map_scale_x1, :map_scale_y1, :map_scale_x2, :map_scale_y2, :map_scale_length, :image_dimensions, :building)
+      b.(self, :name, :id, :image, :map_scale_x1, :map_scale_y1, :map_scale_x2, :map_scale_y2, :map_scale_length, :image_dimensions, :building, :fullname)
       b.url "/floors/" + self.id.to_s
       b.rooms self.rooms.collect { |b| b.to_builder.attributes! }
     end

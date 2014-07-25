@@ -23,12 +23,20 @@
 
 
   <div ng-if="room.json.affectations.length > 0">
-    <h4>Affectations</h4>
+
+
+<div class="panel panel-default affectations">
+  <div class="panel-heading">
+    <h3 class="panel-title">Affectations</h3>
+  </div>
+  <div class="panel-body">
     <ul class="people">
       <li ng-repeat="a in room.json.affectations">
         <%=  render 'person' %> 
       </li>
     </ul>
+  </div>
+</div>
 
   </div>
 

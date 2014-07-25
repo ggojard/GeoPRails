@@ -25,12 +25,10 @@ class Person < ActiveRecord::Base
     format_phone self.cellphone
   end
 
-
-
   def to_builder
     Jbuilder.new do |b|
       b.(self, :firstname, :lastname, :id, :telephone, :cellphone, :person_state, :computerreference, :monitorreference, :room, :organization, :fullname, :format_telephone, :format_cellphone)
-      # b.url person_url(self.id) 
+      b.url '/people/' +  self.id.to_s
       b.affectations self.affectations.collect { |b| b.to_builder_room.attributes! }
     end
   end

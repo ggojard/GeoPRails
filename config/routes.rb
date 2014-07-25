@@ -1,4 +1,5 @@
 GeoP::Application.routes.draw do
+  get "homes/search"
   get "people/show"
   get "organizations/show"
   get "buildings/show"
@@ -26,6 +27,8 @@ GeoP::Application.routes.draw do
   root 'companies#index'
   post 'upload' => 'homes#upload'
   get 'upload' => 'homes#upload'
+
+  get '/search/:q' => 'homes#search'
 
   get '/organizations/:id' => 'organizations#show'
 
