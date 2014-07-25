@@ -1,0 +1,13 @@
+  <div class="panel panel-default panel-map" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]" ng-repeat="f in floors">
+    <div class="panel-heading">
+      <div class="panel-title">
+      <h3 class="panel-title">Plan {{f.name}}</h3>
+      <%=  render '/floors/options' %> 
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="resizable-svg" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]">
+      <svg id="main" ng-class="[mode,'shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]" xmlns:xlink="http://www.w3.org/1999/xlink" />
+    </div>
+  </div>
+    </div>

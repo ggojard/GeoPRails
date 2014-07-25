@@ -140,6 +140,7 @@
     if (this.paper === null) {
       return;
     }
+
     this.json = floorJson;
     this.$scope = $scope;
     this.$http = $http;
@@ -313,6 +314,80 @@
       that.filters[belongsToKeyName][item.id] = item;
       return callback(e, item);
     });
+  };
+
+  SvgEditor.prototype.setOptions = function() {
+    
+    var $scope = this.$scope;
+    var that = this;
+
+    var createPolyline = {
+      label: 'Créer pièce',
+      icon: 'fa-pencil',
+      action: function() {
+        $scope.mode = 'create';
+        var opts = that.createPolyline($scope);
+        $scope.currentOptions = opts;
+      },
+      classes: 'btn-success'
+    };
+
+    var mapZoomDefault = {
+      label: 'Centrer le plan',
+      icon: 'fa-crosshairs',
+      action: function() {
+        that.centerMap();
+      },
+      classes: 'btn-default'
+    };
+
+
+    var editMode = {
+      label: 'Modifier le plan',
+      icon: 'fa-unlock',
+      action: function() {
+        document.location.href = '/floors/' + that.json.id + '/edit';
+      },
+      classes: 'btn-default'
+    };
+
+    var editModeAdmin = {
+      label: 'Modifier l\'étage',
+      icon: 'fa-edit',
+      action: function() {
+        document.location.href = '/admin/floors/' + that.json.id + '/edit';
+      },
+      classes: 'btn-default'
+    };
+
+
+    var stopEditMode = {
+      label: 'Arrêter la modification',
+      icon: 'fa-lock',
+      action: function() {
+        document.location.href = '/floors/' + that.json.id;
+      },
+      classes: 'btn-default'
+    };
+
+    var saveToImage = {
+      label: 'Sauvegarder l\'étage en image',
+      icon: 'fa-picture-o',
+      action: function() {
+        that.exportToImage('main');
+      },
+      classes: 'btn-default'
+    };
+
+
+    switch (G_Mode) {
+      case 'edit':
+        $scope.buttons = [stopEditMode, createPolyline, mapZoomDefault];
+        break;
+      case 'show':
+        $scope.buttons = [editMode, saveToImage, editModeAdmin, mapZoomDefault];
+        break;
+    }
   };
 
   SvgEditor.prototype.loadFilters = function() {

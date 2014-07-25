@@ -29,7 +29,6 @@
 
 
 
-
   function registerScroll(floorId, scrollTop) {
     if (localStorage) {
       localStorage['floor-' + floorId + '-scroll-top'] = scrollTop;
@@ -111,12 +110,12 @@
       registerFilterCtrl($scope, $rootScope, filter.name);
     }
   });
-  
+
   app.controller('RootCtrl', function($scope) {
     $scope.root = G_RootJson;
   });
 
-  
+
   app.controller('CompanyCtrl', function($scope, $http) {
     $scope.company = G_Company;
   });
@@ -126,13 +125,34 @@
     $scope.roomJson = G_Room;
   });
 
+  function setFloorMaps(floors, $scope, $http, $rootScope) {
+    setTimeout(function() {
+
+      for (var i = 0; i < floors.length; i++) {
+        var floor = floors[i];
+        var editor = new GeoP.SvgEditor("#main", floor, $scope, $http, $rootScope);
+        $scope.editor = editor;
+        editor.loadRooms();
+        editor.setOptions();
+      }
+
+      $scope.$apply();
+
+
+    }, 0);
+
+
+  }
 
   app.controller('GeoPCtrl', function($scope, $http, $rootScope) {
     $scope.G_Mode = G_Mode;
     $scope.isShift = false;
     $scope.isCtrlKeyDown = false;
     $scope.currentOptions = [];
+    $scope.room = null;
+    // $scope.room = G_Room;
 
+    $scope.floors = [G_FloorJson];
 
     function handleKey(ev) {
       var key, isShift, isCtrlKeyDown;
@@ -155,91 +175,17 @@
 
     $scope.floorJson = G_FloorJson;
 
-    var editor = new GeoP.SvgEditor("#main", G_FloorJson, $scope, $http, $rootScope);
-    editor.loadRooms();
-
-    $scope.editor = editor;
-
     $scope.mode = 'normal';
 
-    $scope.editModeAction = function() {
-      document.location.href = '/floors/' + G_FloorJson.id + '/edit';
-    };
 
-    $scope.createPolyline = function() {
-      $scope.mode = 'create';
-      var opts = editor.createPolyline($scope);
-      $scope.currentOptions = opts;
-    };
-
-    var createPolyline = {
-      label: 'Créer pièce',
-      icon: 'fa-pencil',
-      action: $scope.createPolyline,
-      classes: 'btn-success'
-    };
-
-    var mapZoomDefault = {
-      label: 'Centrer le plan',
-      icon: 'fa-crosshairs',
-      action: function() {
-        editor.centerMap();
-      },
-      classes: 'btn-default'
-    };
-
-
-    var editMode = {
-      label: 'Modifier le plan',
-      icon: 'fa-unlock',
-      action: $scope.editModeAction,
-      classes: 'btn-default'
-    };
-
-    var editModeAdmin = {
-      label: 'Modifier l\'étage',
-      icon: 'fa-edit',
-      action: function() {
-        document.location.href = '/admin/floors/' + G_FloorJson.id + '/edit';
-      },
-      classes: 'btn-default'
-    };
-
-
-    var stopEditMode = {
-      label: 'Arrêter la modification',
-      icon: 'fa-lock',
-      action: function() {
-        document.location.href = '/floors/' + G_FloorJson.id;
-      },
-      classes: 'btn-default'
-    };
-
-
-
-    var saveToImage = {
-      label: 'Sauvegarder l\'étage en image',
-      icon: 'fa-picture-o',
-      action: function() {
-        editor.exportToImage('main');
-      },
-      classes: 'btn-default'
-    };
 
     $scope.cleanCurrentOptions = function() {
       $scope.currentOptions = [];
       $scope.mode = 'normal';
     };
 
-    switch (G_Mode) {
-      case 'edit':
-        $scope.buttons = [stopEditMode, createPolyline, mapZoomDefault];
-        break;
-      case 'show':
-        $scope.buttons = [editMode, saveToImage, editModeAdmin, mapZoomDefault];
-        break;
-    }
 
+    setFloorMaps($scope.floors, $scope, $http, $rootScope);
 
   });
 }());

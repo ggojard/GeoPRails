@@ -1,8 +1,8 @@
 <script>
  var G_BuildingJson = <%=@G_Building.html_safe%>
 </script>
-<div ng-controller="RootCtrl">
-<div class="jumbotron"><h1>{{building.name}}</h1></div>
+<div ng-controller="BuildingCtrl">
+<div class="jumbotron"><h2>{{building.name}}</h2></div>
 
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -14,6 +14,9 @@
 </ul>
   </div>
 </div>
+
+
+    <%=  render '/floors/map_editor' %> 
 
 
 </div>

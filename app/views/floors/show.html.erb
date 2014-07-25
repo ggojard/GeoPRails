@@ -6,41 +6,17 @@
 <div keepscrolltop>
 
   <div class="jumbotron" ng-controller="FloorHeaderCtrl">
-  <h2>{{floorJson.building.name}}</h2>
-  <h2>> {{floorJson.name}}</h2>
+  <h2><a href="{{floorJson.building.url}}">{{floorJson.building.name}}</a></h2>
+  <h2>> <a href="{{floorJson.url}}">{{floorJson.name}}</a></h2>
   <h2 ng-if="roomJson.id"> > {{roomJson.name}}</h2>
   </div>
   
-  
-  <%=  render 'filters' %> 
-  
+  <%= render 'filters' %> 
   
   <div class="home" ng-controller="GeoPCtrl">
-
-
-  <div class="panel panel-default panel-map" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]">
-    <div class="panel-heading">
-      <div class="panel-title">
-      <h3 class="panel-title">Plan {{floorJson.name}}</h3>
-      <%=  render 'options' %> 
-      </div>
-      
-    </div>
-    <div class="panel-body">
-      <div class="resizable-svg" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]">
-
-      <svg id="main" ng-class="[mode,'shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]" xmlns:xlink="http://www.w3.org/1999/xlink" />
-    </div>
-  </div>
-
-    
-
-
-
-    </div>
+    <%= render '/floors/map_editor' %> 
     <%= render 'room' %>
   </div>
-
   
 
 </div>

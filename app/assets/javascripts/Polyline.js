@@ -420,7 +420,7 @@
         break;
       case 'show':
         this.element.click(function(e) {
-          document.location.href = '/floors/' + G_FloorJson.id + '/room/' + that.json.id;
+          document.location.href = '/floors/' + that.svgEditor.json.id + '/room/' + that.json.id;
         });
         break;
     }

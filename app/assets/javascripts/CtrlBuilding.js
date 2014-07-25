@@ -1,11 +1,10 @@
 (function(geoP) {
 
-  geoP.app.controller('RootCtrl', function($scope) {
+  geoP.app.controller('BuildingCtrl', function($scope) {
     $scope.building = G_BuildingJson;
 
-    
+    $scope.floors = $scope.building.floors;
 
-    
   });
 
 

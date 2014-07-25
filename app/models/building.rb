@@ -6,6 +6,7 @@ class Building < ActiveRecord::Base
   def to_builder
     Jbuilder.new do |b|
       b.(self, :name, :id)
+      # b.url building_path self.id
       b.url "/buildings/" + self.id.to_s
       # b.floors self.floors.each.to_builder
       
