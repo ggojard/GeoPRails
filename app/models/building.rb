@@ -3,21 +3,25 @@ class Building < ActiveRecord::Base
   has_many :floors, :dependent => :destroy
   accepts_nested_attributes_for :floors, :allow_destroy => true
 
+  def extract_json (b)
+      b.(self, :name, :id)
+      b.url "/buildings/" + self.id.to_s
+
+  end
+
+
+  def to_builder_simple_floor
+    Jbuilder.new do |b|
+      extract_json b
+      # b.(self, :floors)
+    end
+
+  end
+
   def to_builder
     Jbuilder.new do |b|
-      b.(self, :name, :id)
-      # b.url building_path self.id
-      b.url "/buildings/" + self.id.to_s
-      # b.floors self.floors.each.to_builder
-      
-      b.floors self.floors do |f|
-        b.name f.name
-        b.url '/floors/' + f.id.to_s
-      end
-      # self.floors.each do |f|
-      #   b.floors f.to_builder
-      # end
-
+      extract_json b
+      b.floors self.floors.collect { |b| b.to_builder.attributes! }
     end
   end
 

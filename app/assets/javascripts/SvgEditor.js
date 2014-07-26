@@ -128,18 +128,20 @@
 
     if (geoP.currentEvent === null && this.$scope.mode !== 'create') {
       this.unSelectItems();
-      this.$scope.cleanCurrentOptions();
+      this.cleanCurrentOptions();
       this.$scope.$apply();
     }
     geoP.currentEvent = null;
   }
 
-  var SvgEditor = function(svgId, floorJson, $scope, $http, $rootScope) {
+  var SvgEditor = function(floorJson, $scope, $http, $rootScope) {
     var that = this;
-    this.paper = a(svgId);
+    this.svgId = 'map-' + floorJson.id;
+    this.paper = a('#' + this.svgId);
     if (this.paper === null) {
       return;
     }
+
 
     this.json = floorJson;
     this.$scope = $scope;
@@ -153,10 +155,15 @@
     this.items = [];
     this.canvas = this.paper.g();
     this.lastMovePosition = null;
-
+    this.currentOptions = [];
 
     var dim = JSON.parse(this.json.image_dimensions);
-
+    if (dim === null) {
+      dim = {
+        w: 0,
+        h: 0
+      };
+    }
     var bgBox = {
       x: 0,
       y: 0,
@@ -188,11 +195,16 @@
     this.mapScale.loadFromFloor(this.json);
     this.$scope.mapScale = this.mapScale;
 
-    switch (G_Mode) {
+    switch ($scope.G_Mode) {
       case 'show':
         this.mapScale.hide();
         break;
     }
+  };
+
+  SvgEditor.prototype.cleanCurrentOptions = function() {
+    this.currentOptions = [];
+    this.$scope.mode = 'normal';
   };
 
   SvgEditor.prototype.getFloorFullName = function() {
@@ -317,7 +329,7 @@
   };
 
   SvgEditor.prototype.setOptions = function() {
-    
+
     var $scope = this.$scope;
     var that = this;
 
@@ -327,7 +339,7 @@
       action: function() {
         $scope.mode = 'create';
         var opts = that.createPolyline($scope);
-        $scope.currentOptions = opts;
+        that.currentOptions = opts;
       },
       classes: 'btn-success'
     };
@@ -374,18 +386,18 @@
       label: 'Sauvegarder l\'étage en image',
       icon: 'fa-picture-o',
       action: function() {
-        that.exportToImage('main');
+        that.exportToImage();
       },
       classes: 'btn-default'
     };
 
 
-    switch (G_Mode) {
+    switch (this.$scope.G_Mode) {
       case 'edit':
-        $scope.buttons = [stopEditMode, createPolyline, mapZoomDefault];
+        this.buttonOptions = [stopEditMode, createPolyline, mapZoomDefault];
         break;
       case 'show':
-        $scope.buttons = [editMode, saveToImage, editModeAdmin, mapZoomDefault];
+        this.buttonOptions = [editMode, saveToImage, editModeAdmin, mapZoomDefault];
         break;
     }
   };
@@ -424,8 +436,8 @@
 
   SvgEditor.prototype.createPolylineMode = function(e) {
     var scale = this.camera.scale;
-    var tX = -this.camera.x;
-    var tY = -this.camera.y;
+    var tX = -this.camera.x / scale;
+    var tY = -this.camera.y / scale;
 
     if (this.createPolylinePolyline === null) {
       this.createPolylinePolyline = new geoP.Polyline(this);
@@ -498,8 +510,8 @@
 
   SvgEditor.prototype.drawToMousePosition = function(e) {
     var scale = this.camera.scale;
-    var tX = -this.camera.x;
-    var tY = -this.camera.y;
+    var tX = -this.camera.x / scale;
+    var tY = -this.camera.y / scale;
     var mousePos = this.getMousePos(e);
 
     if (this.createPolylinePolyline !== null) {
@@ -537,7 +549,6 @@
     this.paper.click(createMode);
     this.paper.mousemove(move);
 
-
     function finishCreateMode() {
       that.paper.unclick(createMode);
       that.paper.unmousemove(move);
@@ -546,7 +557,7 @@
       }
       that.createPolylinePolyline = null;
       that.createPolylineLine = null;
-      $scope.cleanCurrentOptions();
+      that.cleanCurrentOptions();
     }
 
     function cancelCurrentPolyline() {

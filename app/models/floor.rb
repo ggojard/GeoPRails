@@ -25,7 +25,7 @@ class Floor < ActiveRecord::Base
       b.rooms self.rooms.collect { |b| b.to_builder.attributes! }
       if self.building_id != nil
         @o = Building.find(self.building_id)
-        b.building  @o.to_builder.attributes!
+        b.building  @o.to_builder_simple_floor.attributes!
       else
         b.building nil
       end

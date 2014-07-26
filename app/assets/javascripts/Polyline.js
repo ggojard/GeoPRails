@@ -133,8 +133,6 @@
 
     movePointCircle.drag(function(cx, cy, x, y, e) {
       var scale = that.svgEditor.camera.scale;
-      var tX = -that.svgEditor.camera.x;
-      var tY = -that.svgEditor.camera.y;
       var mousePos = that.svgEditor.getMousePos(e);
       var mx = (mousePos.x / scale) - movePointCircle.node.cx.baseVal.value;
       var my = (mousePos.y / scale) - movePointCircle.node.cy.baseVal.value;
@@ -216,8 +214,8 @@
   };
 
   Polyline.prototype.doActionIfItemIsSelected = function() {
-    if (G_Room && G_Room.id === this.json.id) {
-      this.svgEditor.$scope.currentOptions = [];
+    if (this.svgEditor.$scope.roomJson && this.svgEditor.$scope.roomJson.id === this.json.id) {
+      this.svgEditor.currentOptions = [];
       this.element.attr({
         fill: '#1dc8fe'
       });
@@ -301,8 +299,8 @@
     for (var i = 0; i < this.element.node.points.length; i++) {
       var p = this.element.node.points[i];
       points.push({
-        x: p.x + x - camera.x,
-        y: p.y + y - camera.y
+        x: p.x + x - camera.x * 1 / scale,
+        y: p.y + y - camera.y * 1 / scale
       });
     }
     return JSON.stringify(points);
@@ -366,11 +364,10 @@
 
   Polyline.prototype.addZoomOnItemOption = function() {
     var that = this;
-    var $scope = this.svgEditor.$scope;
-    $scope.currentOptions.push({
+    this.svgEditor.currentOptions.push({
       label: 'Zoomer sur ' + that.json.name,
       classes: 'btn-info',
-      icon : 'fa-search',
+      icon: 'fa-search',
       action: function() {
         that.zoomOnItem();
       }
@@ -392,13 +389,13 @@
         that.stroke(GeoP.Colors.Selected);
         geoP.currentEvent = e;
         $scope.mode = 'edit';
-        $scope.currentOptions = [{
+        that.svgEditor.currentOptions = [{
           label: 'Supprimer ' + that.json.name,
           classes: 'btn-danger',
-          icon:'fa-trash-o',
+          icon: 'fa-trash-o',
           action: function() {
             that.remove();
-            $scope.cleanCurrentOptions();
+            that.svgEditor.cleanCurrentOptions();
           }
         }];
         that.addZoomOnItemOption()
@@ -413,7 +410,7 @@
     this.stroke(GeoP.Colors.NotSelected);
     this.updateHashCode();
 
-    switch (G_Mode) {
+    switch (this.svgEditor.$scope.G_Mode) {
       case 'edit':
         this.group.drag();
         this.element.click(this.select.bind(this));

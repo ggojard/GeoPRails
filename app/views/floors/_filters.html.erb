@@ -21,12 +21,12 @@
     <form class="form-horizontal">
 
 <ul class="filters">
-  <li class="check-all">
+  <li class="check-all color-filter">
   <div class="checkbox">
     <label><input type="checkbox" ng-model="f[filter.name].checkAll" ng-change="f[filter.name].CheckAll()"><span ng-if="f[filter.name].checkAll == true">Tout décocher</span><span ng-if="f[filter.name].checkAll == false">Tout cocher</span></label>
   </div>
   </li>
-  <li ng-repeat="(id, rt) in f[filter.name].filters" style="background-color: {{rt.color}}">
+  <li ng-repeat="(id, rt) in f[filter.name].filters" style="background-color: {{rt.color}}" class='color-filter'>
 
   <div class="checkbox">
     <label><input type="checkbox" ng-model="rt.state" ng-change="f[filter.name].filterStateChange(rt)"> 

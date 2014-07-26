@@ -125,35 +125,23 @@
     $scope.roomJson = G_Room;
   });
 
-  function setFloorMaps(floors, $scope, $http, $rootScope) {
+  GeoP.setFloorMaps = function(floors, $scope, $http, $rootScope) {
+    $scope.svgEditors = {};
     setTimeout(function() {
-
       for (var i = 0; i < floors.length; i++) {
         var floor = floors[i];
-        var editor = new GeoP.SvgEditor("#main", floor, $scope, $http, $rootScope);
-        $scope.editor = editor;
+        var editor = new GeoP.SvgEditor(floor, $scope, $http, $rootScope);
+        $scope.svgEditors[floor.id] = editor;
         editor.loadRooms();
         editor.setOptions();
       }
-
       $scope.$apply();
-
-
     }, 0);
+  };
 
-
-  }
-
-  app.controller('GeoPCtrl', function($scope, $http, $rootScope) {
-    $scope.G_Mode = G_Mode;
+  GeoP.handleKeyEventsForScope = function($scope) {
     $scope.isShift = false;
     $scope.isCtrlKeyDown = false;
-    $scope.currentOptions = [];
-    $scope.room = null;
-    // $scope.room = G_Room;
-
-    $scope.floors = [G_FloorJson];
-
     function handleKey(ev) {
       var key, isShift, isCtrlKeyDown;
       if (window.event) {
@@ -172,20 +160,23 @@
 
     document.onkeydown = handleKey;
     document.onkeyup = handleKey;
+  };
+
+  app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
+    $scope.G_Mode = G_Mode;
+    
+    $scope.room = null;
+    $scope.roomJson = G_Room;
+
+    $scope.floors = [G_FloorJson];
+
+    GeoP.handleKeyEventsForScope($scope);
 
     $scope.floorJson = G_FloorJson;
 
     $scope.mode = 'normal';
 
-
-
-    $scope.cleanCurrentOptions = function() {
-      $scope.currentOptions = [];
-      $scope.mode = 'normal';
-    };
-
-
-    setFloorMaps($scope.floors, $scope, $http, $rootScope);
+    GeoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
 
   });
 }());

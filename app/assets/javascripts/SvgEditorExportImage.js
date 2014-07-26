@@ -19,7 +19,8 @@
     return newurl;
   }
 
-  SvgEditor.prototype.exportToImage = function(svgContainerId) {
+  SvgEditor.prototype.exportToImage = function() {
+    var svgContainerId = this.svgId;
     var editor = this;
     var imageName = this.getFloorFullName();
     var $svgDiv = $('<div id="svgdataurl"></div>');
