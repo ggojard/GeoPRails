@@ -199,7 +199,7 @@
   Polyline.prototype.fillFromFilterColor = function(filterName) {
     var color = 'transparent';
     if (this.json[filterName] !== null) {
-      var item = this.svgEditor.filters[filterName][this.json[filterName].id];
+      var item = this.svgEditor.mapFilter.filters[filterName][this.json[filterName].id];
       if (item.state === true) {
         this.element.attr({
           fill: item.color

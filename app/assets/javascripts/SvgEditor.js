@@ -134,7 +134,7 @@
     geoP.currentEvent = null;
   }
 
-  var SvgEditor = function(floorJson, $scope, $http, $rootScope) {
+  var SvgEditor = function(floorJson, $scope, $http, $rootScope, mapFilter) {
     var that = this;
     this.svgId = 'map-' + floorJson.id;
     this.paper = a('#' + this.svgId);
@@ -143,11 +143,12 @@
     }
 
 
+    this.mapFilter = mapFilter;
+
     this.json = floorJson;
     this.$scope = $scope;
     this.$http = $http;
     this.$rootScope = $rootScope;
-    this.filters = {};
     this.loadCamera();
     this.createPolylineLine = null;
     this.createPolylinePolyline = null;
@@ -298,8 +299,12 @@
     this.items.push(b);
   };
 
-  function getBelongsToAvailable(floorJson, belongsToNameList, belongsToKeyName) {
-    var itemsObject = {};
+  SvgEditor.prototype.updateBelongsToAvailable = function(belongsToNameList, belongsToKeyName) {
+    var floorJson = this.json;
+    if (this.mapFilter.filters[belongsToKeyName] === void 0){
+      this.mapFilter.filters[belongsToKeyName] = {};
+    }
+    var itemsObject = this.mapFilter.filters[belongsToKeyName];
     for (var i = 0; i < floorJson[belongsToNameList].length; i++) {
       var item = floorJson[belongsToNameList][i];
       if (item[belongsToKeyName] !== null) {
@@ -314,16 +319,15 @@
         itemsObject[targetItem.id].areaSum += item.area;
       }
     }
-    return itemsObject;
   }
 
   SvgEditor.prototype.loadBelongsToFilter = function(belongsToNameList, belongsToKeyName, callback) {
     var that = this;
-    this.filters[belongsToKeyName] = getBelongsToAvailable(this.json, belongsToNameList, belongsToKeyName);
-    this.$rootScope.$emit(belongsToKeyName + '_filters.Update', this.filters[belongsToKeyName]);
+    this.updateBelongsToAvailable(belongsToNameList, belongsToKeyName);
+    this.$rootScope.$emit(belongsToKeyName + '_filters.Update', this.mapFilter.filters[belongsToKeyName]);
 
     this.$rootScope.$on(belongsToKeyName + '_filters.StateChange', function(e, item) {
-      that.filters[belongsToKeyName][item.id] = item;
+      that.mapFilter.filters[belongsToKeyName][item.id] = item;
       return callback(e, item);
     });
   };

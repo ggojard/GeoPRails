@@ -43,6 +43,9 @@ GeoP.filtersNames = [{
 }, {
   name: 'room_ground_type',
   label: "Nature des sols"
+}, {
+  name: 'evacuation_zone',
+  label: "Zones d'évacuations"
 }];
 
 $(function() {

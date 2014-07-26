@@ -127,10 +127,11 @@
 
   GeoP.setFloorMaps = function(floors, $scope, $http, $rootScope) {
     $scope.svgEditors = {};
+    var mapFilter = new GeoP.MapFilter();
     setTimeout(function() {
       for (var i = 0; i < floors.length; i++) {
         var floor = floors[i];
-        var editor = new GeoP.SvgEditor(floor, $scope, $http, $rootScope);
+        var editor = new GeoP.SvgEditor(floor, $scope, $http, $rootScope, mapFilter);
         $scope.svgEditors[floor.id] = editor;
         editor.loadRooms();
         editor.setOptions();

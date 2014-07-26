@@ -24,6 +24,7 @@ ActiveAdmin.register Room do
       row "Organisation" do c.organization end
       row "Aire" do c.area.to_s + ' m²' end
       row "Nature des sols" do c.room_ground_type end
+      row "Zone d'évacuation" do c.evacuation_zone end
     end
 
 
@@ -56,20 +57,20 @@ ActiveAdmin.register Room do
       f.input :room_type, label: "Type"
       f.input :organization, label: "Organisation"
       f.input :room_ground_type, label: "Nature des sol"
-
+      f.input :evacuation_zone, label: "Zone d'évacuation"
     end
 
     f.has_many :affectations do |app_f|
       # app_f.inputs "Affectations" do
-        if !app_f.object.nil?
-          # show the destroy checkbox only if it is an existing appointment
-          # else, there's already dynamic JS to add / remove new appointments
-          app_f.input :_destroy, :as => :boolean, :label => "Retirer l'affectation"
-        end
-        app_f.input :person, label: "Nom", as: :select, :collection => Person.all.map{|u| ["#{u.firstname} #{u.lastname}", u.id]}
+      if !app_f.object.nil?
+        # show the destroy checkbox only if it is an existing appointment
+        # else, there's already dynamic JS to add / remove new appointments
+        app_f.input :_destroy, :as => :boolean, :label => "Retirer l'affectation"
+      end
+      app_f.input :person, label: "Nom", as: :select, :collection => Person.all.map{|u| ["#{u.firstname} #{u.lastname}", u.id]}
 
-        # app_f.input :person # it should automatically generate a drop-down select to choose from your existing patients
-        # app_f.input :appointment_date
+      # app_f.input :person # it should automatically generate a drop-down select to choose from your existing patients
+      # app_f.input :appointment_date
       # end
     end
 
