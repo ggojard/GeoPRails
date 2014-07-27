@@ -8,6 +8,7 @@
     this.moveCircles = [];
     this.pointIndex = 0;
     // this.isSelected = false;
+    this.hoverLines = [];
     this.json = null;
   };
 
@@ -45,7 +46,9 @@
 
   Polyline.prototype.updateArea = function() {
     if (this.areaText !== void 0) {
-      this.areaText.node.innerHTML = this.getArea() + ' m²';
+      var area = this.getArea();
+      this.areaText.node.innerHTML = area + ' m²';
+      this.json.area = area;
     }
   };
 
@@ -73,9 +76,8 @@
     }
 
     var l = polygonArea(points);
-    l = parseFloat(l, 10).toFixed(1);
     // reparse to handle toFixed to float
-    l = parseFloat(l, 10);
+    l =  parseFloat(parseFloat(l, 10).toFixed(1), 10);
     return l;
   };
 
@@ -120,6 +122,21 @@
     return t;
   };
 
+
+  Polyline.prototype.releaseDragPoints = function() {
+    this.svgEditor.cleanDragPointOptions();
+    this.setMovePointsToVisibility('visible');
+  };
+
+  Polyline.prototype.removeDragPoint = function(dragPoint) {
+    var that = this;
+    var dragPointIndex = this.moveCircles.indexOf(dragPoint);
+    dragPoint.remove();
+    this.moveCircles.splice(dragPointIndex, 1);
+    that.element.node.points.removeItem(dragPoint.pointIndex);
+    this.save();
+  };
+
   Polyline.prototype.addAndGetMovePoint = function(x, y, pointIndex) {
     var that = this;
     var movePointCircle = this.svgEditor.canvas.circle(x, y, 5);
@@ -128,8 +145,33 @@
       fill: 'transparent',
       visibility: 'hidden'
     });
+    var pointName = parseInt(x, 10) + '-' + parseInt(y, 10);
+    movePointCircle.pointName = pointName;
+    movePointCircle.pointIndex = pointIndex;
+
     this.group.add(movePointCircle);
     this.moveCircles.push(movePointCircle);
+
+    movePointCircle.click(function(e) {
+      geoP.currentEvent = e;
+      that.releaseDragPoints();
+      movePointCircle.attr({
+        stroke: 'green'
+      });
+
+
+      that.svgEditor.dragPointsOptions = [{
+        label: 'Supprimer le sommet (' + movePointCircle.pointName + ')',
+        classes: 'btn-danger',
+        icon: 'fa-trash-o',
+        action: function() {
+          that.removeDragPoint(movePointCircle);
+          that.releaseDragPoints();
+        }
+      }];
+
+      that.svgEditor.$scope.$apply();
+    });
 
     movePointCircle.drag(function(cx, cy, x, y, e) {
       var scale = that.svgEditor.camera.scale;
@@ -250,6 +292,8 @@
 
     this.setTexts();
     this.doActionIfItemIsSelected();
+    this.updateHashCode();
+
   };
 
   Polyline.prototype.registerHover = function() {
@@ -265,7 +309,8 @@
     for (var i = 0; i < that.moveCircles.length; i++) {
       var movePointCircle = that.moveCircles[i];
       movePointCircle.attr({
-        visibility: visibility
+        visibility: visibility,
+        stroke: 'red'
       });
     }
   };
@@ -278,7 +323,7 @@
   Polyline.prototype.getHash = function() {
     if (this.group !== void 0) {
       var bbox = JSON.stringify(this.group.node.getBBox());
-      var h = [bbox];
+      var h = [bbox, this.json.area];
       h.push(JSON.stringify(this.group._.transform));
       return geoP.hashCode(h.join(''));
     }
@@ -374,11 +419,25 @@
     });
   };
 
+  Polyline.prototype.addCreateDragPointModeOnItemOption = function() {
+    var that = this;
+    this.svgEditor.currentOptions.push({
+      label: 'Créer un sommet',
+      classes: 'btn-success',
+      icon: 'fa-pencil',
+      action: function() {
+        that.createHoverLines();
+      }
+    });
+  };
+
+
   Polyline.prototype.select = function(e) {
     var that = this;
     var $scope = this.svgEditor.$scope;
     // that.isSelected = true;
-    // 
+    that.svgEditor.cleanDragPointOptions();
+
     switch ($scope.mode) {
       case 'normal':
       case 'edit':
@@ -398,7 +457,8 @@
             that.svgEditor.cleanCurrentOptions();
           }
         }];
-        that.addZoomOnItemOption()
+        that.addZoomOnItemOption();
+        that.addCreateDragPointModeOnItemOption();
         $scope.$apply();
         break;
     }
@@ -421,9 +481,73 @@
         });
         break;
     }
+  };
 
+  function createHoverLine(polyline, sourceIndex, targetIndex) {
+    var that = polyline;
+    var mp = polyline.element.node.points.getItem(sourceIndex);
+    var mpn = polyline.element.node.points.getItem(targetIndex);
+
+    var line = polyline.svgEditor.canvas.line(mp.x, mp.y, mpn.x, mpn.y);
+    line.attr({
+      stroke: 'brown',
+      fill: 'brown'
+    });
+
+    var $b = $('body');
+    line.hover(function() {
+      $b.css('cursor', 'crosshair');
+    }, function() {
+      $b.css('cursor', 'default');
+    });
+
+    line.click(function(e) {
+      geoP.currentEvent = e;
+      var mousePos = polyline.svgEditor.getMousePos(e);
+      var camera = polyline.svgEditor.camera;
+      var scale = camera.scale;
+
+      var pos = {
+        x: mousePos.x / scale - camera.x / scale,
+        y: mousePos.y / scale - camera.y / scale
+      };
+
+      var point = polyline.createSvgPoint(pos.x, pos.y);
+      polyline.element.node.points.insertItemBefore(point, targetIndex);
+      polyline.addAndGetMovePoint(pos.x, pos.y, targetIndex);
+
+      polyline.setMovePointsToVisibility('visible');
+      polyline.updateArea();
+      polyline.updateHashCode();
+
+      removeHoverLines(polyline);
+
+      polyline.save();
+
+    });
+
+    polyline.hoverLines.push(line);
+
+  }
+
+  function removeHoverLines(polyline) {
+    var linesCount = polyline.hoverLines.length;
+    for (var i = 0; i < linesCount; i++) {
+      polyline.hoverLines[i].remove();
+    }
+    polyline.hoverLines = [];
+  }
+
+
+  Polyline.prototype.createHoverLines = function() {
+    removeHoverLines(this);
+    for (var i = 0; i < this.moveCircles.length - 1; i++) {
+      createHoverLine(this, i, i + 1);
+    }
+    createHoverLine(this, 0, this.moveCircles.length - 1);
 
   };
+
 
   geoP.Polyline = Polyline;
 

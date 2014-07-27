@@ -35,8 +35,8 @@
   };
 
   SvgEditor.prototype.applyTransform = function() {
-    var x = 1/this.camera.scale * this.camera.x;
-    var y = 1/this.camera.scale * this.camera.y;
+    var x = 1 / this.camera.scale * this.camera.x;
+    var y = 1 / this.camera.scale * this.camera.y;
     this.canvas.transform(["scale(", this.camera.scale, ") translate(", x, ' ', y, ')'].join(''));
     registerCamera(this.json.id, this.camera);
   };

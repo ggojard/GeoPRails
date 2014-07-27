@@ -125,10 +125,10 @@
 
   function mouseClick(e) {
     /*jshint validthis:true */
-
     if (geoP.currentEvent === null && this.$scope.mode !== 'create') {
       this.unSelectItems();
       this.cleanCurrentOptions();
+      this.cleanDragPointOptions();
       this.$scope.$apply();
     }
     geoP.currentEvent = null;
@@ -157,6 +157,7 @@
     this.canvas = this.paper.g();
     this.lastMovePosition = null;
     this.currentOptions = [];
+    this.dragPointsOptions = [];
 
     var dim = JSON.parse(this.json.image_dimensions);
     if (dim === null) {
@@ -173,14 +174,16 @@
     };
 
     this.bgBox = bgBox;
+
+    var border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
+    border.attr({
+      fill: 'white',
+      stroke: '#ffcf00'
+    });
+
     var imagePath = 'http://' + window.location.host + this.json.image;
     this.bg = this.canvas.image(imagePath, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     this.bg.node.style.cssText = 'opacity: 0.25';
-    var border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
-    border.attr({
-      fill: 'transparent',
-      stroke: '#ffcf00'
-    });
 
     this.loadFilters();
 
@@ -202,6 +205,12 @@
         break;
     }
   };
+
+  SvgEditor.prototype.cleanDragPointOptions = function() {
+    this.dragPointsOptions = [];
+  };
+
+
 
   SvgEditor.prototype.cleanCurrentOptions = function() {
     this.currentOptions = [];
@@ -301,7 +310,7 @@
 
   SvgEditor.prototype.updateBelongsToAvailable = function(belongsToNameList, belongsToKeyName) {
     var floorJson = this.json;
-    if (this.mapFilter.filters[belongsToKeyName] === void 0){
+    if (this.mapFilter.filters[belongsToKeyName] === void 0) {
       this.mapFilter.filters[belongsToKeyName] = {};
     }
     var itemsObject = this.mapFilter.filters[belongsToKeyName];
@@ -317,6 +326,7 @@
         } else {}
         itemsObject[targetItem.id].count += 1;
         itemsObject[targetItem.id].areaSum += item.area;
+        itemsObject[targetItem.id].areaSum = parseFloat(itemsObject[targetItem.id].areaSum.toFixed(1), 10)
       }
     }
   }
