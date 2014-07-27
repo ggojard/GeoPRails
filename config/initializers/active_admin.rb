@@ -1,5 +1,8 @@
 ActiveAdmin.setup do |config|
 
+
+  # config.authentication_keys = [ :username ]
+
   # == Site Title
   #
   # Set the title that is displayed on the main layout
