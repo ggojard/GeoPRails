@@ -58,5 +58,5 @@ gem "rdoc"
 gem "haml"
 gem 'jquery-minicolors-rails'
 
-
+gem 'axlsx'
 

@@ -32,6 +32,10 @@ GeoP::Application.routes.draw do
 
   get '/organizations/:id' => 'organizations#show'
 
+
+  get '/buildings/:id/export' => 'buildings#export'
+
+
   # map.connect ':controller/:action/:id'
 
 
