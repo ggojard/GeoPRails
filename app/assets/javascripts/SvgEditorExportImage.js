@@ -90,6 +90,9 @@
       $("#svgdataurl").append(a);
       a.click();
 
+      $svgDiv.remove();
+      $c.remove();
+
     }, 500);
 
 
