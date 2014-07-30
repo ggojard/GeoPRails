@@ -27,7 +27,14 @@ class Person < ActiveRecord::Base
 
   def to_builder
     Jbuilder.new do |b|
-      b.(self, :firstname, :lastname, :id, :telephone, :cellphone, :person_state, :computerreference, :monitorreference, :room, :organization, :fullname, :format_telephone, :format_cellphone)
+      b.(self, :firstname, :lastname, :id, :telephone, :cellphone, :person_state, :computerreference, :monitorreference, :room, :fullname, :format_telephone, :format_cellphone)
+      if self.organization_id != nil
+        @o = Organization.find(self.organization_id)
+        b.organization  @o.to_builder.attributes!
+      else
+        b.organization nil
+      end
+
       b.url '/people/' +  self.id.to_s
       b.affectations self.affectations.collect { |b| b.to_builder_room.attributes! }
     end

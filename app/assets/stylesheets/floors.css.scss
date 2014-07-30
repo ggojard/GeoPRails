@@ -2,21 +2,18 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-// div.options {
-
    ul.map-options {
     display: inline-block;
     margin: 0px;
     padding: 0px;
-    margin-top: 5px;
+    
     li{
       display: inline-block;
       margin-right: 5px;
+      margin-top: 5px;
     }
   }
-  // margin-bottom: 5px;
-// }
-
+  
 svg.mode-show{
   polygon:hover{
     cursor: pointer;

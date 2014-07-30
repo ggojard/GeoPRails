@@ -18,6 +18,17 @@ class Room < ActiveRecord::Base
     self.area.to_s + ' m²'
   end
 
+  # def addBelongsToToJsonBuilder builder,propertyName, c
+  #   pIdName = propertyName + '_id'
+  #   pId = self.send[pIdName]
+  #   if pId != nil
+  #     o = c.find(pId)
+  #     b[propertyName]  o.to_builder.attributes!
+  #   else
+  #     b[propertyName] nil
+  #   end
+  # end
+
   def extract_json(b)
     b.(self, :name, :id, :room_type, :floor, :points, :area, :room_ground_type, :area_unit, :fullname, :evacuation_zone)
     b.url "/rooms/" + self.id.to_s

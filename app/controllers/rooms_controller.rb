@@ -12,6 +12,11 @@ class RoomsController < GeopController
     redirect_to @url
   end
 
+  def delete
+    # @room.delete
+    render json: {'status' => 'OK'}
+  end
+
   # POST /rooms
   # POST /rooms.json
   def create

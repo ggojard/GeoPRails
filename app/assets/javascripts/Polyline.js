@@ -165,13 +165,28 @@
         stroke: 'green'
       });
 
+      var deleteLabel = 'Supprimer le sommet (' + movePointCircle.pointName + ')';
       that.svgEditor.dragPointsOptions = [{
-        label: 'Supprimer le sommet (' + movePointCircle.pointName + ')',
+        label: deleteLabel,
         classes: 'btn-danger',
         icon: 'fa-trash-o',
-        action: function() {
-          that.removeDragPoint(movePointCircle);
-          that.releaseDragPoints();
+        action: function(callback) {
+
+          that.svgEditor.$rootScope.$emit('RightPopupShow', deleteLabel, '', [{
+            'label': 'Confirmer',
+            classes: 'btn-success',
+            icon: 'fa-trash-o',
+            action: function(callback) {
+              that.removeDragPoint(movePointCircle);
+              that.releaseDragPoints();
+              return callback({
+                'status': 'OK'
+              });
+            }
+          }]);
+
+
+
         }
       }];
 
@@ -456,13 +471,26 @@
         that.stroke(GeoP.Colors.Selected);
         geoP.currentEvent = e;
         $scope.mode = 'edit';
+
+        var deleteLabel = 'Supprimer ' + that.json.name;
         that.svgEditor.currentOptions = [{
-          label: 'Supprimer ' + that.json.name,
+          label: deleteLabel,
           classes: 'btn-danger',
           icon: 'fa-trash-o',
           action: function() {
-            that.remove();
-            that.svgEditor.cleanCurrentOptions();
+            that.svgEditor.$rootScope.$emit('RightPopupShow', deleteLabel, '', [{
+              'label': 'Confirmer',
+              classes: 'btn-success',
+              icon: 'fa-trash-o',
+              action: function(callback) {
+                that.remove();
+                that.svgEditor.cleanCurrentOptions();
+                return callback({
+                  'status': 'OK'
+                });
+              }
+            }]);
+
           }
         }];
         that.addZoomOnItemOption();

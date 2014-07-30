@@ -1,4 +1,5 @@
 GeoP::Application.routes.draw do
+  get "people/index"
   get "homes/search"
   get "people/show"
   get "organizations/show"
@@ -22,6 +23,8 @@ GeoP::Application.routes.draw do
   put '/floors/:id' => 'floors#update'
   get '/floors/images/:id' => 'floors#image'
 
+
+  get "rooms/:id/delete" => 'rooms#delete'
 
   # root 'homes#home'
   root 'companies#index'

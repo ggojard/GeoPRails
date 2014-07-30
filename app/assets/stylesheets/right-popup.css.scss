@@ -1,0 +1,21 @@
+div.right-popup{
+  position: absolute;
+  right: 0;
+  top:0;
+  width: 250px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border:1px solid #999;
+  z-index: 1001;
+  min-height: 100%;
+
+  &.right-popup-visible{
+    visibility:visible;
+  }
+  &.right-popup-hidden{
+   visibility:  hidden; 
+  }  
+  .right-popup-content{
+    margin: 5px;
+  }
+}
+
