@@ -77,7 +77,7 @@
 
     var l = polygonArea(points);
     // reparse to handle toFixed to float
-    l =  parseFloat(parseFloat(l, 10).toFixed(1), 10);
+    l = parseFloat(parseFloat(l, 10).toFixed(1), 10);
     return l;
   };
 
@@ -133,6 +133,12 @@
     var dragPointIndex = this.moveCircles.indexOf(dragPoint);
     dragPoint.remove();
     this.moveCircles.splice(dragPointIndex, 1);
+
+    initMoveCirclesPointsIndex(this);
+    // console.info('delete', dragPointIndex, this.moveCircles.map(function(u) {
+    //   return u.pointIndex;
+    // }));
+
     that.element.node.points.removeItem(dragPoint.pointIndex);
     this.save();
   };
@@ -150,7 +156,7 @@
     movePointCircle.pointIndex = pointIndex;
 
     this.group.add(movePointCircle);
-    this.moveCircles.push(movePointCircle);
+    this.moveCircles.splice(pointIndex, 0, movePointCircle);
 
     movePointCircle.click(function(e) {
       geoP.currentEvent = e;
@@ -158,7 +164,6 @@
       movePointCircle.attr({
         stroke: 'green'
       });
-
 
       that.svgEditor.dragPointsOptions = [{
         label: 'Supprimer le sommet (' + movePointCircle.pointName + ')',
@@ -185,7 +190,7 @@
 
       movePointCircle.node.cx.baseVal.value += mx;
       movePointCircle.node.cy.baseVal.value += my;
-      var p = that.element.node.points[pointIndex];
+      var p = that.element.node.points[movePointCircle.pointIndex];
       p.x += mx;
       p.y += my;
 
@@ -323,7 +328,10 @@
   Polyline.prototype.getHash = function() {
     if (this.group !== void 0) {
       var bbox = JSON.stringify(this.group.node.getBBox());
-      var h = [bbox, this.json.area];
+      var h = [bbox];
+      if (this.json !== null) {
+        h.push(this.json.area);
+      }
       h.push(JSON.stringify(this.group._.transform));
       return geoP.hashCode(h.join(''));
     }
@@ -477,11 +485,22 @@
         break;
       case 'show':
         this.element.click(function(e) {
-          document.location.href = '/floors/' + that.svgEditor.json.id + '/room/' + that.json.id;
+          var link = '/floors/' + that.svgEditor.json.id + '/room/' + that.json.id;
+          if (window.location.href.indexOf(link) === -1) {
+            document.location.href = link;
+          }
         });
         break;
     }
   };
+
+
+  function initMoveCirclesPointsIndex(polyline) {
+    for (var i = 0; i < polyline.moveCircles.length; i++) {
+      polyline.moveCircles[i].pointIndex = i;
+    }
+
+  }
 
   function createHoverLine(polyline, sourceIndex, targetIndex) {
     var that = polyline;
@@ -512,9 +531,19 @@
         y: mousePos.y / scale - camera.y / scale
       };
 
+      if (sourceIndex === 0) {
+        targetIndex += 1;
+      }
+
       var point = polyline.createSvgPoint(pos.x, pos.y);
       polyline.element.node.points.insertItemBefore(point, targetIndex);
       polyline.addAndGetMovePoint(pos.x, pos.y, targetIndex);
+
+
+      initMoveCirclesPointsIndex(polyline);
+      // console.info('create', polyline.moveCircles.map(function(u) {
+      //   return u.pointIndex;
+      // }));
 
       polyline.setMovePointsToVisibility('visible');
       polyline.updateArea();
