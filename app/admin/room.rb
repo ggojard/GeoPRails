@@ -31,9 +31,18 @@ ActiveAdmin.register Room do
     panel "Affectations" do
       table_for room.affectations do
         column "Personnes" do |b| link_to b.person.firstname + ' ' + b.person.lastname, admin_person_url(b.person.id) end
-        # column "Personnes" do |b| link_to b.person.firstname + ' ' + b.person.lastname, admin_person_url(b.person.id) end
       end
     end
+
+    panel "Inventaire" do
+      table_for room.inventories do
+        column "Item" do |b| link_to b.item.name, admin_item_url(b.item.id) end
+        column "Code" do |b| b.item.code end
+        column "Quantité" do |b| b.quantity end
+
+      end
+    end
+
 
   end
 
@@ -72,6 +81,17 @@ ActiveAdmin.register Room do
       # app_f.input :person # it should automatically generate a drop-down select to choose from your existing patients
       # app_f.input :appointment_date
       # end
+    end
+
+    f.has_many :inventories do |app_f|
+      # app_f.inputs "Affectations" do
+      if !app_f.object.nil?
+        # show the destroy checkbox only if it is an existing appointment
+        # else, there's already dynamic JS to add / remove new appointments
+        app_f.input :_destroy, :as => :boolean, :label => "Retirer l'item"
+      end
+      app_f.input :item, label: "Nom", as: :select, :collection => Item.all.map{|u| ["#{u.name}", u.id]}
+      app_f.input :quantity, label: "Quantité"
     end
 
 

@@ -10,6 +10,12 @@ class Room < ActiveRecord::Base
   accepts_nested_attributes_for :people, :allow_destroy => true
   accepts_nested_attributes_for :affectations, :allow_destroy => true
 
+  has_many :inventories
+  has_many :items, :through => :inventories
+  accepts_nested_attributes_for :inventories, :allow_destroy => true
+  accepts_nested_attributes_for :items, :allow_destroy => true
+
+
   def fullname
     self.name + ' < ' + self.floor.name + ' < ' + self.floor.building.name
   end
@@ -52,6 +58,7 @@ class Room < ActiveRecord::Base
     Jbuilder.new do |b|
       extract_json b
       b.affectations self.affectations.collect { |b| b.to_builder.attributes! }
+      b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
     end
   end
 
