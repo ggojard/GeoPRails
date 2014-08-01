@@ -6,6 +6,7 @@ GeoP::Application.routes.draw do
   get "buildings/show"
   get "floors/show"
   get "rooms/show"
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   resources :homes
@@ -22,7 +23,7 @@ GeoP::Application.routes.draw do
   get '/floors/:id/room/:room_id' => 'floors#show'
   put '/floors/:id' => 'floors#update'
   get '/floors/images/:id' => 'floors#image'
-
+  get "floors/:id/json" => 'floors#show_json'
 
   get "rooms/:id/delete" => 'rooms#delete'
 

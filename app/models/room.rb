@@ -35,28 +35,44 @@ class Room < ActiveRecord::Base
   #   end
   # end
 
-  def extract_json(b)
-    b.(self, :name, :id, :room_type, :floor, :points, :area, :room_ground_type, :area_unit, :fullname, :evacuation_zone)
-    b.url "/rooms/" + self.id.to_s
-    # b.org self.organization_id
+
+  def extract_organization(b)
     if self.organization_id != nil
       @o = Organization.find(self.organization_id)
       b.organization  @o.to_builder.attributes!
     else
       b.organization nil
     end
+  end
+
+  def extract_json(b)
+    b.(self, :name, :id, :room_type, :floor, :points, :area, :room_ground_type, :area_unit, :fullname, :evacuation_zone, :organization)
+    b.url "/rooms/" + self.id.to_s
 
   end
 
   def to_builder_no_affectations
     Jbuilder.new do |b|
       extract_json b
+      # extract_organization b
     end
+  end
+
+  def to_builder_no_organization
+    Jbuilder.new do |b|
+      extract_json b
+      # b.(self, :name)
+      b.(:organization)
+      # b.affectations self.affectations.collect { |b| b.to_builder.attributes! }
+      # b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
+    end
+
   end
 
   def to_builder
     Jbuilder.new do |b|
       extract_json b
+      # extract_organization b
       b.affectations self.affectations.collect { |b| b.to_builder.attributes! }
       b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
     end

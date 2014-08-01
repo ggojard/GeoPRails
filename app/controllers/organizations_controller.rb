@@ -2,7 +2,7 @@ class OrganizationsController < GeopController
   before_action :set, only: [:show]
 
   def show
-    @json = @organizations.to_builder.target!
+    @G_Organization = @organizations.to_builder.target!
   end
 
   private

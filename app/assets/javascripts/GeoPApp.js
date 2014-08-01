@@ -111,11 +111,6 @@
     }
   });
 
-  app.controller('RootCtrl', function($scope) {
-    $scope.root = G_RootJson;
-  });
-
-
   app.controller('CompanyCtrl', function($scope, $http) {
     $scope.company = G_Company;
   });

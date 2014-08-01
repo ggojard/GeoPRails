@@ -1,15 +1,21 @@
 <script>
- var G_RootJson = <%=@json.html_safe%>
+ var G_Organization = <%=@G_Organization.html_safe%>
+ console.log(G_Organization);
 </script>
-<div ng-controller="RootCtrl">
-<h1>{{root.name}}</h1>
+<div ng-controller="OrganizationCtrl">
+<h1>{{o.name}}</h1>
 
 
-<div ng-if="root.organizations.length > 0">
+<div ng-if="o.organizations.length > 0">
 <!-- Organizations -->
 <ul>
-  <li ng-repeat="o in root.organizations"><a href="{{o.url}}">{{o.name}}</a></li>
+  <li ng-repeat="org in o.organizations"><a href="{{o.url}}">{{o.name}}</a></li>
 </ul>
 </div>
+  <%=  render '/floors/filters' %> 
+  <%=  render '/floors/map_editor' %> 
+
+
 
 </div>
+
