@@ -18,9 +18,9 @@
       <th>Nature des sols</th><td >{{room.json.room_ground_type.name}}</td>
     </tr>
     <tr>
-      <th>Organization</th><td>{{room.json.organization.name}} [{{room.json.organization.organization_type.name}}]</td>      
+      <th>Organization</th><td>{{room.json.organization.name}} <i ng-if="room.json.organization.organization_type.name">[{{room.json.organization.organization_type.name}}]</i></td>      
     </tr>
-    <tr>
+    <tr ng-if="room.json.affectations.length > 0">
       <th>Ratio Affectations</th><td>{{room.json.area / room.json.affectations.length}} m² / personnes</td>      
     </tr>
 

@@ -1,7 +1,7 @@
   <div class="panel panel-default panel-map" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isCtrlKeyDown]" ng-repeat="f in floors">
     <div class="panel-heading">
       <div class="panel-title">
-      <h3 class="panel-title">Plan {{f.name}}</h3>
+      <h3 class="panel-title"><a href="{{f.url}}">Plan {{f.name}}</a></h3>
       <%=  render '/floors/options' %> 
       </div>
     </div>

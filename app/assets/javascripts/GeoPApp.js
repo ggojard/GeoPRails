@@ -79,38 +79,6 @@
   // }
 
 
-  function registerFilterCtrl($scope, $rootScope, filterName) {
-    $scope.f[filterName] = {};
-    $scope.f[filterName].checkAll = false;
-    $scope.f[filterName]['filterStateChange'] = function(filter, e) {
-      $rootScope.$emit(filterName + '_filters.StateChange', filter);
-    };
-
-    $scope.f[filterName].CheckAll = function() {
-      // unCheckAllFilters($rootScope);
-
-      for (var key in $scope.f[filterName].filters) {
-        if ($scope.f[filterName].filters.hasOwnProperty(key)) {
-          var filter = $scope.f[filterName].filters[key];
-          filter.state = $scope.f[filterName].checkAll;
-          $rootScope.$emit(filterName + '_filters.StateChange', filter);
-        }
-      }
-    }
-    $rootScope.$on(filterName + '_filters.Update', function(e, filters) {
-      $scope.f[filterName].filters = filters;
-    });
-  }
-
-  app.controller('FiltersCtrl', function($scope, $rootScope) {
-    $scope.f = {};
-    $scope.filterNames = GeoP.filtersNames;
-    for (var i = 0; i < $scope.filterNames.length; i++) {
-      var filter = $scope.filterNames[i];
-      registerFilterCtrl($scope, $rootScope, filter.name);
-    }
-  });
-
   app.controller('CompanyCtrl', function($scope, $http) {
     $scope.company = G_Company;
   });
@@ -120,9 +88,9 @@
     $scope.roomJson = G_Room;
   });
 
-  GeoP.setFloorMaps = function(floors, $scope, $http, $rootScope) {
+  GeoP.setFloorMaps = function(floors, $scope, $http, $rootScope, callback) {
     $scope.svgEditors = {};
-    var mapFilter = new GeoP.MapFilter();
+    var mapFilter = new GeoP.MapFilter($rootScope);
     setTimeout(function() {
       for (var i = 0; i < floors.length; i++) {
         var floor = floors[i];
@@ -130,8 +98,13 @@
         $scope.svgEditors[floor.id] = editor;
         editor.loadRooms();
         editor.setOptions();
+        mapFilter.addEditor(editor);
       }
+      mapFilter.registerFiltersStateChange();
+      $rootScope.mapFilter = mapFilter;
+      mapFilter.ready();
       $scope.$apply();
+      return callback && callback(mapFilter);
     }, 0);
   };
 

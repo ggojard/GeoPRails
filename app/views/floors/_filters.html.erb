@@ -7,11 +7,13 @@
   <div class="panel-body">
 
 
+
+
 <ul id="myTab" class="nav nav-pills nav-justified" role="tablist" >
 
 
 <li ng-repeat="filter in filterNames" ng-class="{active : $first}">
-<a href="#{{filter.name}}" >{{filter.label}}</a>
+<a href="#{{filter.name}}" ng-click="filterPaneClick(filter);" >{{filter.label}}</a>
 </li>
 </ul>
 <div id="tabContent" class="tab-content" >
@@ -31,7 +33,9 @@
   <div class="checkbox">
     <label><input type="checkbox" ng-model="rt.state" ng-change="f[filter.name].filterStateChange(rt)"> 
     <span class="badge pull-right">{{rt.areaSum}} m²</span>
-    <span class="badge pull-right">{{rt.count}}</span>
+    <span ng-if="rt.count > 0" class="badge pull-right">{{rt.count}} <i class="fa fa-codepen"></i></span>
+    <span ng-if="rt.nbPeople > 0" class="badge pull-right">{{rt.nbPeople}} <i class="fa fa-user"></i></span>
+    
     {{rt.name}}&nbsp;
     </label>
   </div>
@@ -43,7 +47,7 @@
 </div>
 
 </div>
-
+<%= render '/floors/charts' %> 
 </div>
 
 

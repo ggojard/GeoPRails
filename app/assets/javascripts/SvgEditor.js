@@ -323,24 +323,22 @@
           itemsObject[targetItem.id].state = false;
           itemsObject[targetItem.id].count = 0;
           itemsObject[targetItem.id].areaSum = 0;
+          itemsObject[targetItem.id].nbPeople = 0;
         } else {}
         itemsObject[targetItem.id].count += 1;
         itemsObject[targetItem.id].areaSum += item.area;
         itemsObject[targetItem.id].areaSum = parseFloat(itemsObject[targetItem.id].areaSum.toFixed(1), 10)
+        itemsObject[targetItem.id].nbPeople += item.affectations.length;
       }
     }
   }
 
-  SvgEditor.prototype.loadBelongsToFilter = function(belongsToNameList, belongsToKeyName, callback) {
+  SvgEditor.prototype.loadBelongsToFilter = function(belongsToNameList, belongsToKeyName) {
     var that = this;
     this.updateBelongsToAvailable(belongsToNameList, belongsToKeyName);
     this.$rootScope.$emit(belongsToKeyName + '_filters.Update', this.mapFilter.filters[belongsToKeyName]);
-
-    this.$rootScope.$on(belongsToKeyName + '_filters.StateChange', function(e, item) {
-      that.mapFilter.filters[belongsToKeyName][item.id] = item;
-      return callback(e, item);
-    });
   };
+
 
   SvgEditor.prototype.setOptions = function() {
 
@@ -416,14 +414,13 @@
     }
   };
 
+
   SvgEditor.prototype.loadFilters = function() {
     var that = this;
     var filtersNames = GeoP.filtersNames;
     for (var i = 0; i < filtersNames.length; i++) {
       (function(filterName) {
-        that.loadBelongsToFilter('rooms', filterName, function(e, item) {
-          that.mapOnItems('fillFromFilterColor', filterName);
-        });
+        that.loadBelongsToFilter('rooms', filterName);
       }(filtersNames[i].name));
     }
   };

@@ -1,18 +1,48 @@
 <script>
  var G_Organization = <%=@G_Organization.html_safe%>
- console.log(G_Organization);
 </script>
 <div ng-controller="OrganizationCtrl">
-<h1>{{o.name}}</h1>
 
 
-<div ng-if="o.organizations.length > 0">
-<!-- Organizations -->
+<div class="jumbotron">
+<h2>{{o.name}}</h2>
+</div>
+
+
+
+<!-- <div ng-if="o.organizations.length > 0">
 <ul>
   <li ng-repeat="org in o.organizations"><a href="{{o.url}}">{{o.name}}</a></li>
 </ul>
 </div>
+ -->
+ 
+  <div class="panel panel-default" ng-show="filter">
+  <div class="panel-heading">
+    <h3 class="panel-title">Information</h3>
+  </div>
+  <div class="panel-body">
+
+      <table class="room">
+        <tr>
+          <th>Nombres de piéces</th>
+          <td>{{filter.count}}</td>
+        </tr>
+        <tr>
+          <th>Surface occupée</th>
+          <td>{{filter.areaSum}} m²</td>
+        </tr>
+      </table>
+
+
+  </div>
+</div>
+
+
+
   <%=  render '/floors/filters' %> 
+
+  <div id="loading">Chargement des plans des étages...</div>
   <%=  render '/floors/map_editor' %> 
 
 
