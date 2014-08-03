@@ -70,8 +70,8 @@ ActiveAdmin.register Person do
       f.input :lastname , label: "Nom"
       f.input :telephone, label: "Téléphone"
       f.input :cellphone, label: "Téléphone Portable"
-      f.input :person_state, label: "Etat"
-      f.input :organization, label: "Organisation"
+      f.input :person_state, label: "Etat", :as => :select, :collection => PersonState.order(:name).all, :include_blank => false
+      f.input :organization, label: "Organisation", :as => :select, :collection => Organization.order(:name).all, :include_blank => false
       f.input :email, label: "E-Mail"
     end
     f.inputs "Inventaire" do

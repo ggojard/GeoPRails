@@ -24,7 +24,8 @@ ActiveAdmin.register Building do
 
   form do |f|
     f.inputs "Details" do
-      f.input :name
+      f.input :name, :label => "Nom"
+      f.input :company, :label => "Entreprise"
     end
 
     f.has_many :floors do |b|
