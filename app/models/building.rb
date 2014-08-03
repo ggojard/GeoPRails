@@ -21,7 +21,8 @@ class Building < ActiveRecord::Base
   def to_builder
     Jbuilder.new do |b|
       extract_json b
-      b.floors self.floors.collect { |b| b.to_builder.attributes! }
+      floors = self.floors.sort_by &:level
+      b.floors floors.collect { |b| b.to_builder.attributes! }
     end
   end
 

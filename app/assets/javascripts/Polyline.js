@@ -232,6 +232,14 @@
     return null;
   };
 
+  Polyline.prototype.removeFromDatabase = function(callback) {
+    this.svgEditor.$http.get('/rooms/' + this.json.id + '/delete').success(callback).error(function() {
+      return callback({
+        'status': 'KO'
+      });
+    })
+  };
+
   Polyline.prototype.remove = function() {
     this.element.remove();
     for (var i = 0; i < this.moveCircles.length; i++) {
@@ -244,6 +252,7 @@
     if (this.areaText !== void 0) {
       this.areaText.remove();
     }
+    this.svgEditor.removePolyline(this);
   };
 
   Polyline.prototype.appendPoint = function(x, y) {
@@ -483,11 +492,16 @@
               classes: 'btn-success',
               icon: 'fa-trash-o',
               action: function(callback) {
-                that.remove();
-                that.svgEditor.cleanCurrentOptions();
-                return callback({
-                  'status': 'OK'
-                });
+                that.removeFromDatabase(function(res) {
+                  if (res.status === 'OK') {
+                    that.remove();
+                    that.svgEditor.cleanCurrentOptions();
+                    geoP.notifications.done('La pièce a été supprimé.');
+                    return callback(res);
+                  } else {
+                    geoP.notifications.error('Impossible de supprimer la pièce ' + that.json.name);
+                  }
+                })
               }
             }]);
 

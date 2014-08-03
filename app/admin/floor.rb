@@ -8,14 +8,16 @@ ActiveAdmin.register Floor do
     id_column
     column "Bâtiment", :building
     column "Nom", :name
+    column "Niveau", :level
     # column "Image Dimensions", :image_dimensions
     actions
   end
 
   form :html => { :enctype => "multipart/form-data" } do |f|
     f.inputs "Details" do
-      f.input :name
-      f.input :building
+      f.input :name, :label => "Nom"
+      f.input :building, :label => "Bâtiment"
+      f.input :level, :label => "Niveau"
       f.input :image, :required => false, :as => :file
     end
     f.actions
@@ -26,6 +28,7 @@ ActiveAdmin.register Floor do
       row "Visualiser" do link_to("Ouvrir",'/floors/' + ad.id.to_s, {}) end
       row "Nom" do ad.name end
       row "Bâtiment" do  ad.building end
+      row "Niveau" do ad.level end
       # "Image Plan",
       row "Plan" do
         image_tag(ad.image.url(:thumb))

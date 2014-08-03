@@ -204,13 +204,20 @@
         this.mapScale.hide();
         break;
     }
+
+    if (this.camera.scale === geoP.DefaultCamera.scale) {
+      this.centerMap();
+    }
+
   };
 
   SvgEditor.prototype.cleanDragPointOptions = function() {
     this.dragPointsOptions = [];
   };
 
-
+  SvgEditor.prototype.removePolyline = function(p) {
+    
+  };
 
   SvgEditor.prototype.cleanCurrentOptions = function() {
     this.currentOptions = [];
@@ -329,6 +336,12 @@
         itemsObject[targetItem.id].areaSum += item.area;
         itemsObject[targetItem.id].areaSum = parseFloat(itemsObject[targetItem.id].areaSum.toFixed(1), 10)
         itemsObject[targetItem.id].nbPeople += item.affectations.length;
+        if (itemsObject[targetItem.id].nbPeople === 0) {
+          itemsObject[targetItem.id].ratio = 0;
+        } else {
+          itemsObject[targetItem.id].ratio = parseFloat(itemsObject[targetItem.id].areaSum / itemsObject[targetItem.id].nbPeople, 10).toFixed(1);
+        }
+
       }
     }
   }

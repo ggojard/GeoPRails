@@ -27,7 +27,8 @@ ActiveAdmin.register Person do
         row "Prénom" do c.firstname end
         row "Nom" do c.lastname end
         row "Etat" do c.person_state end
-          row "Organisation" do c.organization end
+        row "Organisation" do c.organization end
+        row "Email" do c.email end
       end
     end
 
@@ -71,6 +72,7 @@ ActiveAdmin.register Person do
       f.input :cellphone, label: "Téléphone Portable"
       f.input :person_state, label: "Etat"
       f.input :organization, label: "Organisation"
+      f.input :email, label: "E-Mail"
     end
     f.inputs "Inventaire" do
       f.input :monitorreference, label: "Référence écran"

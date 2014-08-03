@@ -46,7 +46,7 @@ class Room < ActiveRecord::Base
   end
 
   def extract_json(b)
-    b.(self, :name, :id, :room_type, :floor, :points, :area, :room_ground_type, :area_unit, :fullname, :evacuation_zone, :organization)
+    b.(self, :name, :id, :room_type, :floor, :points, :area, :room_ground_type, :area_unit, :fullname, :evacuation_zone, :organization, :network)
     b.url "/rooms/" + self.id.to_s
 
   end

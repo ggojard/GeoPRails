@@ -1,5 +1,5 @@
 class RoomsController < GeopController
-  before_action :set_room, only: [:show, :update]
+  before_action :set_room, only: [:show, :update, :delete]
 
   def index
     @rooms = Room.all
@@ -13,7 +13,7 @@ class RoomsController < GeopController
   end
 
   def delete
-    # @room.delete
+    @room.delete
     render json: {'status' => 'OK'}
   end
 

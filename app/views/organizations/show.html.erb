@@ -16,10 +16,10 @@
 </ul>
 </div>
  -->
- 
+
   <div class="panel panel-default" ng-show="filter">
   <div class="panel-heading">
-    <h3 class="panel-title">Information</h3>
+    <h3 class="panel-title">Informations</h3>
   </div>
   <div class="panel-body">
 
@@ -32,6 +32,19 @@
           <th>Surface occupée</th>
           <td>{{filter.areaSum}} m²</td>
         </tr>
+        <tr ng-if="filter.nbPeople > 0">
+          <th>Nombre de personnes</th>
+          <td>{{filter.nbPeople}}</td>
+        </tr>
+        <tr ng-if="filter.ratio > 0">
+          <th>Ratio affectations</th>
+          <td>{{filter.ratio}} personnes / m²</td>
+        </tr>
+        <tr ng-if="filter.ratio > 0">
+          <th>Présence sur nombre d'étages</th>
+          <td>{{floors.length}}</td>
+        </tr>
+
       </table>
 
 

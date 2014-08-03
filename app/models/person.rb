@@ -27,7 +27,7 @@ class Person < ActiveRecord::Base
 
   def to_builder
     Jbuilder.new do |b|
-      b.(self, :firstname, :lastname, :id, :telephone, :cellphone, :person_state, :computerreference, :monitorreference, :room, :fullname, :format_telephone, :format_cellphone)
+      b.(self, :firstname, :lastname, :id, :telephone, :cellphone, :person_state, :computerreference, :monitorreference, :room, :fullname, :format_telephone, :format_cellphone, :email)
       if self.organization_id != nil
         @o = Organization.find(self.organization_id)
         b.organization  @o.to_builder.attributes!

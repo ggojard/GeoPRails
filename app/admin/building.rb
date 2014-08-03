@@ -7,7 +7,7 @@ ActiveAdmin.register Building do
     end
 
     panel "Etages" do
-      table_for building.floors do
+      table_for building.floors.sort_by &:level do
         column "Nom" do |b| link_to b.name, [:admin, b] end
       end
     end

@@ -25,6 +25,7 @@ ActiveAdmin.register Room do
       row "Aire" do c.area.to_s + ' m²' end
       row "Nature des sols" do c.room_ground_type end
       row "Zone d'évacuation" do c.evacuation_zone end
+      row "Ports Réseau" do c.network end
     end
 
 
@@ -67,6 +68,7 @@ ActiveAdmin.register Room do
       f.input :organization, label: "Organisation"
       f.input :room_ground_type, label: "Nature des sol"
       f.input :evacuation_zone, label: "Zone d'évacuation"
+      f.input :network, label: "Ports Réseau"
     end
 
     f.has_many :affectations do |app_f|

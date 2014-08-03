@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140731180639) do
+ActiveRecord::Schema.define(version: 20140803083811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20140731180639) do
     t.integer  "map_scale_y2"
     t.float    "map_scale_length"
     t.string   "image_dimensions"
+    t.integer  "level"
   end
 
   add_index "floors", ["building_id"], name: "index_floors_on_building_id", using: :btree
@@ -158,6 +159,7 @@ ActiveRecord::Schema.define(version: 20140731180639) do
     t.datetime "updated_at"
     t.integer  "person_state_id"
     t.integer  "organization_id"
+    t.string   "email"
   end
 
   create_table "person_states", force: true do |t|
@@ -191,6 +193,7 @@ ActiveRecord::Schema.define(version: 20140731180639) do
     t.integer  "room_ground_type_id"
     t.float    "area"
     t.integer  "evacuation_zone_id"
+    t.text     "network"
   end
 
   add_index "rooms", ["floor_id"], name: "index_rooms_on_floor_id", using: :btree
