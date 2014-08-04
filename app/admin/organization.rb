@@ -27,9 +27,9 @@ ActiveAdmin.register Organization do
     f.inputs "Details" do
       f.input :name , label: "Nom"
       f.input :color, input_html: { class: 'colorpicker' }, label: "Couleur"
-      f.input :organization, label: "Organisation Père"
-      f.input :organization_type,label:  "Type"
-      f.input :company,label:  "Entreprise"
+      f.input :organization, label: "Organisation Père" , :as => :select, :collection => Organization.order(:name).all, :include_blank => false
+      f.input :organization_type,label:  "Type", :as => :select, :collection => OrganizationType.order(:name).all, :include_blank => false
+      f.input :company,label:  "Entreprise", :as => :select, :collection => Company.order(:name).all, :include_blank => false
     end
     f.actions
   end

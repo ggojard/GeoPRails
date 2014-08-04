@@ -13,6 +13,7 @@ GeoP::Application.routes.draw do
   resources :rooms
   resources :companies
   resources :people
+  resources :floors
 
   get '/login_page' => 'login#login'
 

@@ -18,7 +18,7 @@ ActiveAdmin.register Room do
   show do |c|
     attributes_table do
       row "Visualiser" do link_to("Ouvrir", room_path(c.id), {}) end
-      row "Etage" do c.floor end
+      row "Etage" do link_to c.floor.fullname, admin_floor_path(c.floor.id), {} end
       row "Nom" do c.name end
       row "Type" do c.room_type end
       row "Organisation" do c.organization end
@@ -62,12 +62,12 @@ ActiveAdmin.register Room do
   form do |f|
     f.inputs "Details" do
       f.input :id, label: "Visualiser", input_html: { class: 'room-link' }
-      f.input :floor, label: "Etage"
+      f.input :floor, label: "Etage", :as => :select, :collection => Floor.order(:name).all.map {|f| [f.fullname]}, :include_blank => false
       f.input :name , label: "Nom"
-      f.input :room_type, label: "Type"
-      f.input :organization, label: "Organisation"
-      f.input :room_ground_type, label: "Nature des sol"
-      f.input :evacuation_zone, label: "Zone d'évacuation"
+      f.input :room_type, label: "Type", :as => :select, :collection => RoomType.order(:name).all, :include_blank => false
+      f.input :organization, label: "Organisation", :as => :select, :collection => Organization.order(:name).all, :include_blank => false
+      f.input :room_ground_type, label: "Nature des sol", :as => :select, :collection => RoomGroundType.order(:name).all, :include_blank => false
+      f.input :evacuation_zone, label: "Zone d'évacuation", :as => :select, :collection => EvacuationZone.order(:name).all, :include_blank => false
       f.input :network, label: "Ports Réseau"
     end
 

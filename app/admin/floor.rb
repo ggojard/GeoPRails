@@ -16,7 +16,7 @@ ActiveAdmin.register Floor do
   form :html => { :enctype => "multipart/form-data" } do |f|
     f.inputs "Details" do
       f.input :name, :label => "Nom"
-      f.input :building, :label => "Bâtiment"
+      f.input :building, :label => "Bâtiment", :as => :select, :collection => Building.order(:name).all, :include_blank => false
       f.input :level, :label => "Niveau"
       f.input :image, :required => false, :as => :file
     end
