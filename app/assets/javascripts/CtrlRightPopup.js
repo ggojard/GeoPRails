@@ -8,7 +8,7 @@
     $scope.saveScrollTop = $('body').scrollTop();
 
     function scrollBackToInitialScroll(){
-      $('body').scrollTop($scope.saveScrollTop);
+      $('body, html').scrollTop($scope.saveScrollTop);
     }
 
     $scope.hide = function() {
@@ -17,7 +17,7 @@
     $scope.show = function() {
       $scope.state = 'visible';
       $scope.saveScrollTop = $('body').scrollTop();
-      $('body').scrollTop(0);
+      $('body, html').scrollTop(0);
     }
 
     $scope.doAction = function(callback) {
