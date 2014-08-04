@@ -19,6 +19,8 @@
     var canvasOffset = $(this.paper.node).offset();
     var mousePosition = new geoP.Point();
     mousePosition.set(event.pageX - canvasOffset.left, event.pageY - canvasOffset.top);
+    var mp = this.getMousePos(event);
+    mousePosition.set(mp.x,mp.y);
     var canvasMousePosition = new geoP.Point();
     canvasMousePosition = mousePosition.getSubPoint(translate);
     var mousePourcentagePosition = new geoP.Point();
@@ -76,6 +78,7 @@
 
 
   function mouseWheel(event) {
+
     /*jshint validthis:true */
     var zoomFactor = 0.5;
     var zoomFactorMin = 0.25;
@@ -91,7 +94,7 @@
       delta = -event.detail / 3;
     }
     if (this.$scope.isZKeyDown === true) {
-      event.preventDefault();
+      event.preventDefault(event);
       var factor = delta;
       var scaleChange = (factor * zoomFactor);
       var newScale = this.camera.scale + scaleChange;
@@ -102,7 +105,9 @@
       this.camera.newScale = newScale;
       focusOnMouseAfterMouseWheel.bind(this)(event);
       this.applyTransform();
+      return false;
     }
+
   }
 
   function mouseMove(ev) {
