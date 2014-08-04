@@ -13,7 +13,7 @@ table.room{
   }
   th, td{
     padding: 5px;
-    width: 25%;
+    width: 50%;
   }
   th{
     text-align: right;
@@ -22,5 +22,8 @@ table.room{
   td{
     text-align: left;
     padding-left: 15px;
+  }
+  td.email{
+        word-break: break-all;
   }
 }

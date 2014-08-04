@@ -111,29 +111,57 @@
   GeoP.handleKeyEventsForScope = function($scope) {
     $scope.isShift = false;
     $scope.isCtrlKeyDown = false;
-    function handleKey(ev) {
+    $scope.isZKeyDown = false;
+
+    function handleCtrlAndShif(ev) {
       var key, isShift, isCtrlKeyDown;
       if (window.event) {
-        key = window.event.keyCode;
         isShift = window.event.shiftKey ? true : false;
         isCtrlKeyDown = window.event.ctrlKey ? true : false;
       } else {
-        key = ev.which;
         isShift = ev.shiftKey ? true : false;
         isCtrlKeyDown = ev.ctrlKey ? true : false;
       }
       $scope.isShift = isShift;
       $scope.isCtrlKeyDown = isCtrlKeyDown;
+    }
+
+    function getKey(ev) {
+      var key;
+      if (window.event) {
+        key = window.event.keyCode;
+      } else {
+        key = ev.which;
+      }
+      return key;
+    }
+
+    function keyDown(ev) {
+      handleCtrlAndShif(ev);
+      key = getKey(ev);
+      if (key === 90) {
+        $scope.isZKeyDown = true;
+      }
       $scope.$apply();
     }
 
-    document.onkeydown = handleKey;
-    document.onkeyup = handleKey;
+    function keyUp(ev) {
+      handleCtrlAndShif(ev);
+      key = getKey(ev);
+      if (key === 90) {
+        $scope.isZKeyDown = false;
+      }
+      $scope.$apply();
+    }
+
+
+    document.onkeydown = keyDown;
+    document.onkeyup = keyUp;
   };
 
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
     $scope.G_Mode = G_Mode;
-    
+
     $scope.room = null;
     $scope.roomJson = G_Room;
 

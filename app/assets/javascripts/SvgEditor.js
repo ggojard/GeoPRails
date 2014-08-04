@@ -90,7 +90,7 @@
        */
       delta = -event.detail / 3;
     }
-    if (this.$scope.isCtrlKeyDown === true) {
+    if (this.$scope.isZKeyDown === true) {
       event.preventDefault();
       var factor = delta;
       var scaleChange = (factor * zoomFactor);
@@ -107,7 +107,7 @@
 
   function mouseMove(ev) {
     /*jshint validthis:true */
-    if (this.$scope.isCtrlKeyDown === true && this.lastMovePosition !== null) {
+    if (this.$scope.isZKeyDown === true && this.lastMovePosition !== null) {
       var diff = {
         x: this.lastMovePosition.x - ev.clientX,
         y: this.lastMovePosition.y - ev.clientY

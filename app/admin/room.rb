@@ -62,7 +62,6 @@ ActiveAdmin.register Room do
   form do |f|
     f.inputs "Details" do
       f.input :id, label: "Visualiser", input_html: { class: 'room-link' }
-      #.map {|f| [f.fullname]}
       f.input :floor, label: "Etage", :as => :select, :collection => Floor.order(:name).all.map {|f| ["#{f.fullname}", f.id]}, :include_blank => false
       f.input :name , label: "Nom"
       f.input :room_type, label: "Type", :as => :select, :collection => RoomType.order(:name).all, :include_blank => false
