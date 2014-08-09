@@ -552,7 +552,7 @@
       var lastPoint = this.createPolylinePolyline.getLastPoint();
       if (lastPoint !== null) {
         if (this.createPolylineLine === null) {
-          this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, mousePos.x / scale, mousePos.y / scale);
+          this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, this.newPoint.x, this.newPoint.y);
           this.createPolylineLine.attr({
             stroke: 'orange',
             'stroke-dasharray': [5, 5]
