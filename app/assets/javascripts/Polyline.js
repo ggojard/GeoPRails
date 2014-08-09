@@ -64,7 +64,7 @@
       return 0;
     }
 
-    for (var i = 0; i < this.element.node.points.length; i++) {
+    for (var i = 0; i < this.element.node.points.numberOfItems; i++) {
       var p = this.element.node.points[i];
       var a = {
         x: p.x,
@@ -225,7 +225,7 @@
   };
 
   Polyline.prototype.getLastPoint = function() {
-    var l = this.element.node.points.length;
+    var l = this.element.node.points.numberOfItems;
     if (l > 0) {
       return this.element.node.points[l - 1];
     }
@@ -373,7 +373,7 @@
     var scale = camera.scale;
     var x = ctm.e / scale;
     var y = ctm.f / scale;
-    for (var i = 0; i < this.element.node.points.length; i++) {
+    for (var i = 0; i < this.element.node.points.numberOfItems; i++) {
       var p = this.element.node.points[i];
       points.push({
         x: p.x + x - camera.x * 1 / scale,
