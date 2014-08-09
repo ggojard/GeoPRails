@@ -20,7 +20,7 @@
     var mousePosition = new geoP.Point();
     mousePosition.set(event.pageX - canvasOffset.left, event.pageY - canvasOffset.top);
     var mp = this.getMousePos(event);
-    mousePosition.set(mp.x,mp.y);
+    mousePosition.set(mp.x, mp.y);
     var canvasMousePosition = new geoP.Point();
     canvasMousePosition = mousePosition.getSubPoint(translate);
     var mousePourcentagePosition = new geoP.Point();
@@ -221,7 +221,7 @@
   };
 
   SvgEditor.prototype.removePolyline = function(p) {
-    
+
   };
 
   SvgEditor.prototype.cleanCurrentOptions = function() {
@@ -543,6 +543,11 @@
     var tY = -this.camera.y / scale;
     var mousePos = this.getMousePos(e);
 
+    this.newPoint = {
+      x: mousePos.x / scale + tX,
+      y: mousePos.y / scale + tY
+    };
+
     if (this.createPolylinePolyline !== null) {
       var lastPoint = this.createPolylinePolyline.getLastPoint();
       if (lastPoint !== null) {
@@ -553,10 +558,6 @@
             'stroke-dasharray': [5, 5]
           });
         } else {
-          this.newPoint = {
-            x: mousePos.x / scale + tX,
-            y: mousePos.y / scale + tY
-          };
           updateNewPositionIfShift(this.$scope, this.newPoint, lastPoint);
           this.createPolylineLine.animate({
             x1: lastPoint.x,
