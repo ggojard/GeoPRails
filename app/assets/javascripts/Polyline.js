@@ -205,7 +205,7 @@
 
       movePointCircle.node.cx.baseVal.value += mx;
       movePointCircle.node.cy.baseVal.value += my;
-      var p = that.element.node.points[movePointCircle.pointIndex];
+      var p = that.element.node.points.getItem(movePointCircle.pointIndex);
       p.x += mx;
       p.y += my;
 
