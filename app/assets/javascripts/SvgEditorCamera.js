@@ -26,7 +26,8 @@
     return {
       scale: geoP.DefaultCamera.scale,
       x: geoP.DefaultCamera.x,
-      y: geoP.DefaultCamera.y
+      y: geoP.DefaultCamera.y,
+      newScale: geoP.DefaultCamera.scale
     };
   }
 

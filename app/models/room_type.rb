@@ -6,4 +6,5 @@ class RoomType < ActiveRecord::Base
     end
   end
 
+  default_scope {order(:name)}
 end

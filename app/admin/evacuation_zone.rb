@@ -1,6 +1,6 @@
 ActiveAdmin.register EvacuationZone do
 
-  menu :parent => "Types", :label => "Zones d'évacuations"
+  menu :parent => "Types"
 
 
   # See permitted parameters documentation:
@@ -18,25 +18,25 @@ ActiveAdmin.register EvacuationZone do
 
   show do |c|
     attributes_table do
-      row "Nom" do c.name end
-      row "Couleur" do c.color end
+      row I18n.t('formtastic.labels.evacuation_zone.name') do c.name end
+      row I18n.t('formtastic.labels.evacuation_zone.color') do c.color end
     end
   end
   #
   index do
     selectable_column
     id_column
-    column "Nom", :name
-    column "Couleur", :color, class: 'color-display'
+    column I18n.t('formtastic.labels.evacuation_zone.name') , :name
+    column I18n.t('formtastic.labels.evacuation_zone.color') , :color, class: 'color-display'
     actions
   end
 
   # f.input :name, input_html: { class: 'colorpicker' }
 
   form do |f|
-    f.inputs "Details" do
-      f.input :name , label: "Nom"
-      f.input :color, input_html: { class: 'colorpicker' }, label: "Couleur"
+    f.inputs do
+      f.input :name 
+      f.input :color, input_html: { class: 'colorpicker' }
     end
     f.actions
   end

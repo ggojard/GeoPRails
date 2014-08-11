@@ -1,14 +1,14 @@
 ActiveAdmin.register Building do
-  menu :label => "Bâtiments"
+  # menu :label => "Bâtiments"
 
   show do |f|
     attributes_table do
-      row "Nom" do f.name end
+      row I18n.t('formtastic.labels.building.name') do f.name end
     end
 
-    panel "Etages" do
-      table_for building.floors.sort_by &:level do
-        column "Nom" do |b| link_to b.name, [:admin, b] end
+    panel I18n.t('activerecord.models.floor.other') do
+      table_for building.floors do
+        column I18n.t('formtastic.labels.floor.name') do |b| link_to b.name, [:admin, b] end
       end
     end
   end
@@ -16,24 +16,25 @@ ActiveAdmin.register Building do
   index do
     selectable_column
     id_column
-    column "Nom", :name
-    column "Entreprise", :company
+    column I18n.t('formtastic.labels.building.name'), :name
+    column I18n.t('formtastic.labels.building.company'),:company
     actions
   end
 
 
   form do |f|
-    f.inputs "Details" do
-      f.input :name, :label => "Nom"
-      f.input :company, :label => "Entreprise"
+    f.inputs  do
+      f.input :name
+      f.input :company
     end
 
     f.has_many :floors do |b|
-      b.inputs "Etages" do
-        if !b.object.nil?
+      b.inputs I18n.t('activerecord.models.floor.other') do
+        if b.object.present?
           b.input :name
+          b.input :level
         end
-        b.actions :only => [:create, :edit, :destroy, :remove]
+        b.actions 
       end
     end
     f.actions

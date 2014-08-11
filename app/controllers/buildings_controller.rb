@@ -123,7 +123,7 @@ class BuildingsController < GeopController
     end
 
 
-    time=DateTime.now.strftime('%Y-%m-%d-%Hh%M')
+    time = DateTime.now.strftime('%Y-%m-%d-%Hh%M')
     filename = sanitize_filename("export-#{@building.name}-#{time}.xlsx")
     path = "/tmp/#{filename}"
     p.serialize(path)

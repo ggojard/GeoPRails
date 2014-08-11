@@ -39,6 +39,6 @@ class Person < ActiveRecord::Base
       b.affectations self.affectations.collect { |b| b.to_builder_room.attributes! }
     end
   end
-
+  default_scope {order(:lastname)}
 
 end

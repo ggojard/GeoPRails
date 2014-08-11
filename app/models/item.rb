@@ -4,4 +4,5 @@ class Item < ActiveRecord::Base
       b.(self, :name, :description, :code)
     end
   end
+  default_scope {order(:name)}
 end

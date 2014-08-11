@@ -6,109 +6,6 @@
 
   var a = Snap;
 
-  var focusOnMouseAfterMouseWheel = function(event) {
-
-    var $svg = $(this.paper.node);
-    var paperSize = {
-      width: $svg.width(),
-      height: $svg.height()
-    };
-
-
-    var translate = new geoP.Point(this.camera.x, this.camera.y);
-    var canvasOffset = $(this.paper.node).offset();
-    var mousePosition = new geoP.Point();
-    mousePosition.set(event.pageX - canvasOffset.left, event.pageY - canvasOffset.top);
-    var mp = this.getMousePos(event);
-    mousePosition.set(mp.x, mp.y);
-    var canvasMousePosition = new geoP.Point();
-    canvasMousePosition = mousePosition.getSubPoint(translate);
-    var mousePourcentagePosition = new geoP.Point();
-    mousePourcentagePosition.set((mousePosition.x) / paperSize.width, (mousePosition.y) / paperSize.height);
-    var scaledCanvasMousePosition = {
-      "x": (canvasMousePosition.x) * this.camera.scale,
-      "y": (canvasMousePosition.y) * this.camera.scale
-    };
-    var mouseInDrawZone = new geoP.Point();
-    mouseInDrawZone.copy(scaledCanvasMousePosition);
-    var focusMouseTranslate = new geoP.Point();
-    var newMousePourcentageShouldBe, newCanvasPositionShouldBe, oldCanvasPositionShouldBe, newScaledCanvasSize;
-    // define the sclaed size of the canvas
-    newScaledCanvasSize = new geoP.Point();
-    newScaledCanvasSize.set(this.camera.newScale * paperSize.width, this.camera.newScale * paperSize.height);
-    // define where the mouse should be in the scaled canvas using % position
-    newMousePourcentageShouldBe = mouseInDrawZone.getDivPoint(newScaledCanvasSize);
-    var oldMousePourcentageShouldBe = new geoP.Point();
-    var oldScaledCanvasSize = new geoP.Point();
-    oldScaledCanvasSize.set(this.camera.scale * paperSize.width, this.camera.scale * paperSize.height);
-    oldMousePourcentageShouldBe = mouseInDrawZone.getDivPoint(oldScaledCanvasSize);
-    // define where the mouse should be after scale
-    newCanvasPositionShouldBe = new geoP.Point();
-    newCanvasPositionShouldBe.copy(newMousePourcentageShouldBe);
-    newCanvasPositionShouldBe.x *= paperSize.width;
-    newCanvasPositionShouldBe.y *= paperSize.height;
-    // copy the old canvas mouse position %
-    oldCanvasPositionShouldBe = new geoP.Point();
-    oldCanvasPositionShouldBe.copy(oldMousePourcentageShouldBe);
-    // scale it to the canvas size
-    oldCanvasPositionShouldBe.x *= paperSize.width;
-    oldCanvasPositionShouldBe.y *= paperSize.height;
-    focusMouseTranslate.copy(newCanvasPositionShouldBe);
-    // substract the new to old position which the translate to do
-    focusMouseTranslate.sub(oldCanvasPositionShouldBe);
-    // do the translate
-    translate.copy(focusMouseTranslate);
-    translate.inverse();
-    this.camera.x -= translate.x;
-    this.camera.y -= translate.y;
-    this.camera.scale = this.camera.newScale;
-
-    // var $d = $('#debugger');
-    // $d.html('');
-    // $d.append('mouse position : ' + mousePosition.toString() + '<br>');
-    // $d.append('canvas mouse position : ' + canvasMousePosition.toString() + '<br>');
-    // $d.append('mouse % position : ' + mousePourcentagePosition.toString() + '<br>');
-    // $d.append('mouse in draw zone : ' + mouseInDrawZone.toString() + '<br>');
-    // $d.append('new mouse % pos : ' + oldMousePourcentageShouldBe.toString() + '<br>');
-    // $d.append('new mouse pos : ' + newCanvasPositionShouldBe.toString() + '<br>');
-    // $d.append('old mouse pos : ' + oldCanvasPositionShouldBe.toString() + '<br>');
-    // $d.append('translate : ' + translate.toString() + '<br>');
-
-  };
-
-
-  function mouseWheel(event) {
-
-    /*jshint validthis:true */
-    var zoomFactor = 0.5;
-    var zoomFactorMin = 0.25;
-    var delta = 0;
-    if (!event) /* For IE. */
-      event = window.event;
-    if (event.wheelDelta) { /* IE/Opera. */
-      delta = event.wheelDelta / 120;
-    } else if (event.detail) { /** Mozilla case. */
-      /** In Mozilla, sign of delta is different than in IE.
-       * Also, delta is multiple of 3.
-       */
-      delta = -event.detail / 3;
-    }
-    if (this.$scope.isZKeyDown === true) {
-      event.preventDefault(event);
-      var factor = delta;
-      var scaleChange = (factor * zoomFactor);
-      var newScale = this.camera.scale + scaleChange;
-      if (newScale < zoomFactorMin) {
-        newScale = zoomFactorMin;
-      }
-
-      this.camera.newScale = newScale;
-      focusOnMouseAfterMouseWheel.bind(this)(event);
-      this.applyTransform();
-      return false;
-    }
-
-  }
 
   function mouseMove(ev) {
     /*jshint validthis:true */
@@ -148,6 +45,7 @@
     }
 
 
+
     this.mapFilter = mapFilter;
 
     this.json = floorJson;
@@ -160,9 +58,12 @@
     this.newPoint = null;
     this.items = [];
     this.canvas = this.paper.g();
+    this.canvas.node.id = 'viewport-' + floorJson.id;
     this.lastMovePosition = null;
     this.currentOptions = [];
     this.dragPointsOptions = [];
+
+    $('#' + this.svgId).svgPan(this.canvas.node.id, this);
 
     var dim = JSON.parse(this.json.image_dimensions);
     if (dim === null) {
@@ -194,9 +95,7 @@
 
     this.applyTransform();
 
-    this.paper.node.addEventListener("mousewheel", mouseWheel.bind(this), false);
-    this.paper.node.addEventListener("DOMMouseScroll", mouseWheel.bind(this), false);
-
+  
     this.paper.mousemove(mouseMove.bind(this));
     this.paper.click(mouseClick.bind(this));
 
@@ -215,6 +114,15 @@
     }
 
   };
+
+  SvgEditor.prototype.updateCamera = function() {
+    var ctm = this.canvas.node.getCTM();
+    this.camera.x = ctm.e;
+    this.camera.y = ctm.f;
+    this.camera.scale = ctm.d;
+
+  };
+
 
   SvgEditor.prototype.cleanDragPointOptions = function() {
     this.dragPointsOptions = [];
@@ -285,8 +193,6 @@
       w: $svg.width(),
       h: $svg.height()
     };
-
-    // this.camera.scale = 1;this.camera.x = 0;this.camera.y = 0;this.applyTransform();
 
     var ratioW = paperSize.w / boxSize.w;
     var ratioH = paperSize.h / boxSize.h;

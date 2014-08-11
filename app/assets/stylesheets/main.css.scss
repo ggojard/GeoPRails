@@ -70,22 +70,16 @@ div.panel-map{
 }
 
 div.resizable-svg{
-  // resize:vertical;
-  // overflow:auto;
   width:100%;  
   height:600px;
-  // border:1px solid #1dc8fe;
   margin:0px auto;
 
   &.shift-true{
-    // border: 1px dotted #00e567;  
     opacity: 0.95;  
   }
   &.ctrl-true{
-    // border: 1px dotted red;  
     opacity: 0.95;  
   }  
-  // margin-bottom: 10px;
 }
 
 

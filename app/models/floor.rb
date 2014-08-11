@@ -42,4 +42,5 @@ class Floor < ActiveRecord::Base
     end
   end
 
+  default_scope {order(:level)}
 end

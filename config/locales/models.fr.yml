@@ -1,0 +1,88 @@
+fr:
+  formtastic:
+    create: 'Créer %{model}'
+    update: 'Mettre à jour %{model}'
+    labels:
+      room:
+        name: "Nom"
+      building:
+        name: "Nom"
+        company: "Entreprise"
+      company:
+        name : "Nom"
+      evacuation_zone:
+        name : "Nom"
+        color: "Couleur"
+      floor:
+        name : "Nom"
+        building: "Bâtiment"
+        level : "Niveau"
+        image : "Plan"
+      item:
+        name : "Nom"
+        code : "Code"
+        description : "Description"
+      organization:
+        name : "Nom"
+        color: "Couleur"
+        organization: "Organisation Père"
+        organization_type : "Type"
+        company : "Entreprise"
+      organization_type:
+        name : "Nom"
+      person:
+        fistname : "Nom"
+      person_state:
+        name : "Nom"
+      room:
+        name : "Nom"
+      room_ground_type :
+        name : "Nom"
+        color: "Couleur"
+      room_type:
+        name : "Nom"
+        color: "Couleur"
+  activerecord:
+    models:
+      admin_user: 
+        one :  "Utilisateur"
+        other : "Utilisateurs"
+      affectaton: 
+        one :  "Affectation"
+        other : "Affectations"
+      building:
+        one :  "Bâtiment"
+        other : "Bâtiments"
+      company: 
+        one :  "Entreprise"
+        other : "Entreprise"
+      evacuation_zone: 
+        one :  "Zone d'évacuation"
+        other : "Zones d'évacuations"
+      floor: 
+        one :  "Etage"
+        other : "Etages"
+      inventory: 
+        one :  "Inventaire"
+        other : "Inventaires"
+      item: 
+        one :  "Item"
+        other : "Items"
+      organization: 
+        one :  "Organisation"
+        other : "Organisations"
+      organization_type: 
+        one :  "Type d'organisation"
+        other : "Types d'organisations"
+      person:
+        one :  "Personne"
+        other :  "Personnes"
+      person_state: "Statut des personnes"
+      room: 
+        one :  "Pièce"
+        other : "Pièces"
+      room_ground_type: "Nature des sols"
+      room_type: 
+        one :  "Type de pièce"
+        other : "Types des pièces"
+

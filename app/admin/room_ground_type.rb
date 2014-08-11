@@ -1,5 +1,5 @@
 ActiveAdmin.register RoomGroundType do
-  menu :parent => "Types", :label => "Nature des sols"
+  menu :parent => "Types"
 
   
   # See permitted parameters documentation:

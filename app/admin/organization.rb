@@ -24,12 +24,12 @@ ActiveAdmin.register Organization do
   end
 
   form do |f|
-    f.inputs "Details" do
-      f.input :name , label: "Nom"
-      f.input :color, input_html: { class: 'colorpicker' }, label: "Couleur"
-      f.input :organization, label: "Organisation Père" , :as => :select, :collection => Organization.order(:name).all, :include_blank => false
-      f.input :organization_type,label:  "Type", :as => :select, :collection => OrganizationType.order(:name).all, :include_blank => false
-      f.input :company,label:  "Entreprise", :as => :select, :collection => Company.order(:name).all, :include_blank => false
+    f.inputs  do
+      f.input :name 
+      f.input :color, input_html: { class: 'colorpicker' }
+      f.input :organization
+      f.input :organization_type
+      f.input :company
     end
     f.actions
   end

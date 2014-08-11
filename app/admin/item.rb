@@ -1,5 +1,4 @@
 ActiveAdmin.register Item do
-  menu:label => "Items"
 
 
   # See permitted parameters documentation:

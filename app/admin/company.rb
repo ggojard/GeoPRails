@@ -1,15 +1,13 @@
 ActiveAdmin.register Company do
-  menu :label => "Entreprises"
 
   show do |c|
     attributes_table do
-      row "Nom" do c.name end
+      row I18n.t('formtastic.labels.company.name') do c.name end
     end
 
-    panel "Bâtiments" do
+    panel I18n.t('activerecord.models.building.other') do
       table_for c.buildings do
-        column "Nom" do |b| link_to b.name ,[:admin, b] end
-        # column "Plan" do |b| link_to ("a", "v") end
+        column I18n.t('formtastic.labels.building.name') do |b| link_to b.name ,[:admin, b] end
       end
     end
   end
@@ -18,18 +16,18 @@ ActiveAdmin.register Company do
   index do
     selectable_column
     id_column
-    column "Nom", :name
+    column I18n.t('formtastic.labels.company.name'), :name
     actions
   end
 
 
   form do |company|
-    company.inputs "Details" do
+    company.inputs  do
       company.input :name
     end
 
     company.has_many :buildings do |b|
-      b.inputs "Buildings" do
+      b.inputs I18n.t('activerecord.models.building.other') do
         if !b.object.nil?
           b.input :name
         end

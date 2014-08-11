@@ -17,5 +17,5 @@ class Company < ActiveRecord::Base
       c.organizations self.organizations.collect { |b| b.to_builder.attributes! }
     end
   end
-
+  # default_scope {order(:name)}
 end

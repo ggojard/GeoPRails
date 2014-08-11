@@ -18,4 +18,5 @@ class Organization < ActiveRecord::Base
       b.rooms self.rooms.collect { |o| o.to_builder_no_organization.attributes! }
     end
   end
+  default_scope {order(:name)}
 end

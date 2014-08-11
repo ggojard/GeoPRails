@@ -1,5 +1,4 @@
 ActiveAdmin.register Room do
-  menu :label => "Pièces"
 
   # See permitted parameters documentation:
   # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
@@ -62,23 +61,23 @@ ActiveAdmin.register Room do
   form do |f|
     f.inputs "Details" do
       f.input :id, label: "Visualiser", input_html: { class: 'room-link' }
-      f.input :floor, label: "Etage", :as => :select, :collection => Floor.order(:name).all.map {|f| ["#{f.fullname}", f.id]}, :include_blank => false
-      f.input :name , label: "Nom"
-      f.input :room_type, label: "Type", :as => :select, :collection => RoomType.order(:name).all, :include_blank => false
-      f.input :organization, label: "Organisation", :as => :select, :collection => Organization.order(:name).all, :include_blank => false
-      f.input :room_ground_type, label: "Nature des sol", :as => :select, :collection => RoomGroundType.order(:name).all, :include_blank => false
-      f.input :evacuation_zone, label: "Zone d'évacuation", :as => :select, :collection => EvacuationZone.order(:name).all, :include_blank => false
+      f.input :floor, label: "Etage", :as => :select, :collection => Floor.all.map {|f| [f.fullname, f.id]}, :include_blank => false
+      f.input :name
+      f.input :room_type, label: "Type"
+      f.input :organization, label: "Organisation"
+      f.input :room_ground_type, label: "Nature des sol"
+      f.input :evacuation_zone, label: "Zone d'évacuation"
       f.input :network, label: "Ports Réseau"
     end
 
     f.has_many :affectations do |app_f|
       # app_f.inputs "Affectations" do
-      if !app_f.object.nil?
+      if app_f.object.present?
         # show the destroy checkbox only if it is an existing appointment
         # else, there's already dynamic JS to add / remove new appointments
         app_f.input :_destroy, :as => :boolean, :label => "Retirer l'affectation"
       end
-      app_f.input :person, label: "Nom", as: :select, :collection => Person.all.map{|u| ["#{u.firstname} #{u.lastname}", u.id]}
+      app_f.input :person, label: "Nom", as: :select, :collection => Person.all.map{|u| [u.fullname, u.id]}
 
       # app_f.input :person # it should automatically generate a drop-down select to choose from your existing patients
       # app_f.input :appointment_date
