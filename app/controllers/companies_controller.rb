@@ -11,8 +11,8 @@ class CompaniesController < GeopController
   end
 
   def show
-    # @json = @company.to_builder.target!
-    @organizations = Organization.all.map { |o| o.to_json}.to_json
+    @json = @company.to_builder.target!
+    # @organizations = Organization.all.map { |o| o.to_json}.to_json
   end
 
   private
