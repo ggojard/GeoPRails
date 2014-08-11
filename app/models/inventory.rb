@@ -5,7 +5,7 @@ class Inventory < ActiveRecord::Base
   def to_builder
     Jbuilder.new do |b|
       b.(self, :room, :quantity)
-      @i = Item.find(self.item_id)
+      @i = Item.find_by_id(self.item_id)
       b.item  @i.to_builder.attributes!
     end
   end
