@@ -5,12 +5,12 @@ class Room < ActiveRecord::Base
   belongs_to :room_ground_type
   belongs_to :evacuation_zone
 
-  has_many :affectations, :dependent => :destroy
+  has_many :affectations
   has_many :people, :through => :affectations
   accepts_nested_attributes_for :people, :allow_destroy => true
   accepts_nested_attributes_for :affectations, :allow_destroy => true
 
-  has_many :inventories, :dependent => :destroy
+  has_many :inventories
   has_many :items, :through => :inventories
   accepts_nested_attributes_for :inventories, :allow_destroy => true
   accepts_nested_attributes_for :items, :allow_destroy => true
