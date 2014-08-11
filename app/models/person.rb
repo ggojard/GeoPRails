@@ -13,6 +13,10 @@ class Person < ActiveRecord::Base
     self.firstname + ' ' + self.lastname
   end
 
+  def name
+    self.fullname
+  end
+
   def format_phone (a)
     a.gsub(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, '\1 \2 \3 \4 \5')
   end
