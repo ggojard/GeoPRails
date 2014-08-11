@@ -57,6 +57,6 @@ gem "paperclip_database"
 gem "rdoc"
 gem "haml"
 gem 'jquery-minicolors-rails'
-
+gem "gon"
 gem 'axlsx'
 

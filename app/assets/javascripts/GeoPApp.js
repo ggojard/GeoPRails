@@ -81,6 +81,7 @@
 
   app.controller('CompanyCtrl', function($scope, $http) {
     $scope.company = G_Company;
+    // $scope.organizations = G_Organizations;
   });
 
   app.controller('FloorHeaderCtrl', function($scope, $http, $rootScope) {

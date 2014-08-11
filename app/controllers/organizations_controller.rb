@@ -2,12 +2,14 @@ class OrganizationsController < GeopController
   before_action :set, only: [:show]
 
   def show
-    @G_Organization = @organizations.to_builder.target!
+    
+    gon.orga = @organization.to_builder.target!
+    # @G_Organization = 
   end
 
   private
   # Use callbacks to share common setup or constraints between actions.
   def set
-    @organizations = Organization.find(params[:id])
+    @organization = Organization.find(params[:id])
   end
 end

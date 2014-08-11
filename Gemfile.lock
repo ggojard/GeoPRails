@@ -82,6 +82,11 @@ GEM
     globalize3 (0.1.0)
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
+    gon (5.1.2)
+      actionpack (>= 2.3.0)
+      json
+      multi_json
+      request_store (>= 1.0.5)
     haml (4.0.5)
       tilt
     has_scope (0.6.0.rc)
@@ -160,6 +165,7 @@ GEM
       polyamorous (~> 1.0.0)
     rdoc (4.1.1)
       json (~> 1.4)
+    request_store (1.0.8)
     responders (1.1.0)
       railties (>= 3.2, < 5)
     rubyzip (1.0.0)
@@ -206,6 +212,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   devise
   formtastic
+  gon
   haml
   jbuilder (~> 1.2)
   jquery-minicolors-rails
