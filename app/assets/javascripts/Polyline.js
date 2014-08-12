@@ -470,7 +470,7 @@
     // that.isSelected = true;
     that.svgEditor.cleanDragPointOptions();
 
-    switch ($scope.mode) {
+    switch ($scope.mapMode) {
       case 'normal':
       case 'edit':
         $scope.room = that;
@@ -479,7 +479,7 @@
         that.setMovePointsToVisibility('visible');
         that.stroke(GeoP.Colors.Selected);
         geoP.currentEvent = e;
-        $scope.mode = 'edit';
+        $scope.mapMode = 'edit';
 
         var deleteLabel = 'Supprimer ' + that.json.name;
         that.svgEditor.currentOptions = [{
@@ -520,7 +520,7 @@
     this.stroke(GeoP.Colors.NotSelected);
     this.updateHashCode();
 
-    switch (this.svgEditor.$scope.G_Mode) {
+    switch (this.svgEditor.$scope.mapMode) {
       case 'edit':
         this.group.drag();
         this.element.click(this.select.bind(this));

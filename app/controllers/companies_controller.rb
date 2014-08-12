@@ -11,7 +11,6 @@ class CompaniesController < GeopController
   end
 
   def show
-    @json = @company.to_builder.target!
     gon.organizations = Organization.all
   end
 

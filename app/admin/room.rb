@@ -30,16 +30,27 @@ ActiveAdmin.register Room do
 
     panel "Affectations" do
       table_for room.affectations do
-        column "Personnes" do |b| link_to b.person.firstname + ' ' + b.person.lastname, admin_person_url(b.person.id) end
+        column "Personnes" do |b|
+          if !b.person.nil?
+            link_to b.person.fullname, admin_person_url(b.person.id)
+          end
+        end
       end
     end
 
     panel "Inventaire" do
       table_for room.inventories do
-        column "Item" do |b| link_to b.item.name, admin_item_url(b.item.id) end
-        column "Code" do |b| b.item.code end
+        column "Item" do |b|
+          if !b.item.nil?
+            link_to b.item.name, admin_item_url(b.item.id)
+          end
+        end
+        column "Code" do |b|
+          if !b.item.nil?
+            b.item.code
+          end
+        end
         column "Quantité" do |b| b.quantity end
-
       end
     end
 
@@ -55,6 +66,7 @@ ActiveAdmin.register Room do
     column "Type", :room_type
     column "Organisation", :organization
     column "Nature des sol", :room_ground_type
+    column "Aire", :area
     actions
   end
 
@@ -71,24 +83,14 @@ ActiveAdmin.register Room do
     end
 
     f.has_many :affectations do |app_f|
-      # app_f.inputs "Affectations" do
       if !app_f.object.nil?
-        # show the destroy checkbox only if it is an existing appointment
-        # else, there's already dynamic JS to add / remove new appointments
         app_f.input :_destroy, :as => :boolean, :label => "Retirer l'affectation"
       end
       app_f.input :person, label: "Nom", as: :select, :collection => Person.all.map{|u| [u.fullname, u.id]}
-
-      # app_f.input :person # it should automatically generate a drop-down select to choose from your existing patients
-      # app_f.input :appointment_date
-      # end
     end
 
     f.has_many :inventories do |app_f|
-      # app_f.inputs "Affectations" do
       if !app_f.object.nil?
-        # show the destroy checkbox only if it is an existing appointment
-        # else, there's already dynamic JS to add / remove new appointments
         app_f.input :_destroy, :as => :boolean, :label => "Retirer l'item"
       end
       app_f.input :item, label: "Nom", as: :select, :collection => Item.all.map{|u| ["#{u.name}", u.id]}
@@ -96,15 +98,15 @@ ActiveAdmin.register Room do
     end
 
 
-    # f.has_many :people do |b|
-    #   b.inputs "Affectations" do
-    #     if !b.object.nil?
-    #       b.input :firstname
-    #       b.input :lastname
-    #     end
-    #     b.actions
-    #   end
-    # end
+    f.has_many :people do |b|
+      b.inputs "Affectations" do
+        if !b.object.nil?
+          b.input :firstname
+          b.input :lastname
+        end
+        b.actions
+      end
+    end
 
     # f.inputs "Géométrie" do
     #   f.input :points, label: "Points"

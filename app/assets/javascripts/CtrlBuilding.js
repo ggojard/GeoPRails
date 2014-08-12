@@ -5,7 +5,7 @@
     GeoP.handleKeyEventsForScope($scope);
     $scope.building = gon.building;
     $scope.floors = $scope.building.floors;
-    $scope.G_Mode = 'show';
+    $scope.mapMode = 'show';
 
     geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
 

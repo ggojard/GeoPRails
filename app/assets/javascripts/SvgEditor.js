@@ -27,7 +27,7 @@
 
   function mouseClick(e) {
     /*jshint validthis:true */
-    if (geoP.currentEvent === null && this.$scope.mode !== 'create') {
+    if (geoP.currentEvent === null && this.$scope.mapMode !== 'create') {
       this.unSelectItems();
       this.cleanCurrentOptions();
       this.cleanDragPointOptions();
@@ -103,7 +103,7 @@
     this.mapScale.loadFromFloor(this.json);
     this.$scope.mapScale = this.mapScale;
 
-    switch ($scope.G_Mode) {
+    switch ($scope.mapMode) {
       case 'show':
         this.mapScale.hide();
         break;
@@ -134,7 +134,7 @@
 
   SvgEditor.prototype.cleanCurrentOptions = function() {
     this.currentOptions = [];
-    this.$scope.mode = 'normal';
+    this.$scope.mapMode = 'normal';
   };
 
   SvgEditor.prototype.getFloorFullName = function() {
@@ -273,7 +273,7 @@
       label: 'Créer pièce',
       icon: 'fa-pencil',
       action: function() {
-        $scope.mode = 'create';
+        $scope.mapMode = 'create';
         var opts = that.createPolyline($scope);
         that.currentOptions = opts;
       },
@@ -328,7 +328,7 @@
     };
 
 
-    switch (this.$scope.G_Mode) {
+    switch (this.$scope.mapMode) {
       case 'edit':
         this.buttonOptions = [stopEditMode, createPolyline, mapZoomDefault];
         break;

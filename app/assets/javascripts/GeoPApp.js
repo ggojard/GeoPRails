@@ -5,7 +5,7 @@
     var $w = $(window);
     $w.on('scroll', function(e) {
       try {
-        var scrollLoaded = loadScroll(G_FloorJson.id);
+        var scrollLoaded = loadScroll(gon.floor.id);
         var scrollTop = $(window).scrollTop();
         if (scrollTop !== scrollLoaded) {
           $w.scrollTop(scrollLoaded);
@@ -19,7 +19,7 @@
     $rootScope.filters = [];
 
     try {
-      var scrollTop = loadScroll(G_FloorJson.id);
+      var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
     } catch (e) {}
 
@@ -50,7 +50,7 @@
     return function(scope, element, attrs) {
       angular.element($window).bind("scroll", function() {
         if (count > 0) {
-          registerScroll(G_FloorJson.id, this.pageYOffset);
+          registerScroll(gon.floor.id, this.pageYOffset);
         }
         count += 1;
       });
@@ -85,8 +85,8 @@
   });
 
   app.controller('FloorHeaderCtrl', function($scope, $http, $rootScope) {
-    $scope.floorJson = G_FloorJson;
-    $scope.roomJson = G_Room;
+    $scope.floorJson = gon.floor;
+    $scope.roomJson = gon.room;
   });
 
   GeoP.setFloorMaps = function(floors, $scope, $http, $rootScope, callback) {
@@ -161,18 +161,17 @@
   };
 
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
-    $scope.G_Mode = G_Mode;
-
+    $scope.mapMode = gon.mode;
     $scope.room = null;
-    $scope.roomJson = G_Room;
+    $scope.roomJson = gon.room;
 
-    $scope.floors = [G_FloorJson];
+    $scope.floors = [gon.floor];
 
     GeoP.handleKeyEventsForScope($scope);
 
-    $scope.floorJson = G_FloorJson;
+    $scope.floorJson = gon.floor;
 
-    $scope.mode = 'normal';
+    // $scope.mapMode = 'normal';
 
     GeoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
 

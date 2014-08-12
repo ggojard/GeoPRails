@@ -1,4 +1,4 @@
-  <div class="panel panel-default panel-map" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isZKeyDown]" ng-repeat="f in floors">
+  <div class="panel panel-default panel-map" ng-class="['shift-' + isShift, 'mode-' + mapMode, 'ctrl-' + isZKeyDown]" ng-repeat="f in floors">
     <div class="panel-heading">
       <div class="panel-title">
       <h3 class="panel-title"><a href="{{f.url}}">Plan {{f.name}}</a></h3>
@@ -6,9 +6,9 @@
       </div>
     </div>
     <div class="panel-body">
-      <div class="resizable-svg" ng-class="['shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isZKeyDown]">
+      <div class="resizable-svg" ng-class="['shift-' + isShift, 'mode-' + mapMode, 'ctrl-' + isZKeyDown]">
         
-      <svg id="map-{{f.id}}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink" version="1.1" ng-class="[mode,'shift-' + isShift, 'mode-' + G_Mode, 'ctrl-' + isZKeyDown]"  />
+      <svg id="map-{{f.id}}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink" version="1.1" ng-class="[mode,'shift-' + isShift, 'mode-' + mapMode, 'ctrl-' + isZKeyDown]"  />
     </div>
   </div>
     </div>

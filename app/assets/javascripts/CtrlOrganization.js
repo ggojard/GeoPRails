@@ -13,7 +13,7 @@
 
     function loadFloors(floorsArray) {
       $scope.floors = floorsArray;
-      $scope.G_Mode = 'show';
+      $scope.mapMode = 'show';
       geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope, function(mapFilter) {
         $scope.filter = mapFilter.filters.organization[$scope.o.id];
         $scope.filter.state = true;

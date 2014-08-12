@@ -1,10 +1,10 @@
 class FloorsController < GeopController
   before_action :set, only: [:show, :edit, :update, :show_json]
-  # before_action :floor_params, only: [:uodate]
+  # before_action :floor_params, only: [:update]
 
   def show
-    @json = @floor.to_builder.target!
-    @G_Mode = 'show';
+    gon.floor = @floor.to_builder.attributes!
+    gon.mode = 'show'
   end
 
 
@@ -13,8 +13,8 @@ class FloorsController < GeopController
   end
 
   def edit
-    @json = @floor.to_builder.target!
-    @G_Mode = 'edit';
+    gon.floor = @floor.to_builder.attributes!
+    gon.mode = 'edit'
     render 'show'
   end
 
@@ -47,9 +47,9 @@ class FloorsController < GeopController
   def set
     @floor = Floor.find_by_id(params[:id])
     if (params[:room_id])
-      @G_Room = Room.find_by_id(params[:room_id]).to_builder.target!
+      gon.room = Room.find_by_id(params[:room_id]).to_builder.attributes!
     else
-      @G_Room = "{}".to_json
+      gon.room = "{}".to_json
     end
 
   end
