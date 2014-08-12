@@ -22,8 +22,8 @@ class Floor < ActiveRecord::Base
     Jbuilder.new do |b|
       b.(self, :name, :id, :image, :map_scale_x1, :map_scale_y1, :map_scale_x2, :map_scale_y2, :map_scale_length, :image_dimensions, :fullname)
       b.url "/floors/" + self.id.to_s
-      b.rooms self.rooms.collect { |b| b.to_builder.attributes! }
-      if self.building_id != nil
+      b.rooms self.rooms.collect { |r| r.to_builder_with_affectations.attributes! }
+      if !self.building_id?
         @o = Building.find_by_id(self.building_id)
         b.building  @o.to_builder_simple_floor.attributes!
       else

@@ -28,7 +28,7 @@ class Room < ActiveRecord::Base
   #   pIdName = propertyName + '_id'
   #   pId = self.send[pIdName]
   #   if pId != nil
-#     o = c.find(pId)
+  #     o = c.find(pId)
   #     b[propertyName]  o.to_builder.attributes!
   #   else
   #     b[propertyName] nil
@@ -53,10 +53,18 @@ class Room < ActiveRecord::Base
 
   end
 
+  def to_builder_with_affectations
+    Jbuilder.new do |b|
+      extract_json b
+      b.affectations self.affectations.collect { |b| b.to_builder.attributes! }
+
+    end
+  end
+
+
   def to_builder_no_affectations
     Jbuilder.new do |b|
       extract_json b
-      # extract_organization b
     end
   end
 
