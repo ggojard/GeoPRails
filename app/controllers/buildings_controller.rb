@@ -139,7 +139,7 @@ class BuildingsController < GeopController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set
-    @building = Building.find(params[:id])
+    @building = Building.find_by_id(params[:id])
   end
 
 

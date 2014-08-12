@@ -24,7 +24,7 @@ class Floor < ActiveRecord::Base
       b.url "/floors/" + self.id.to_s
       b.rooms self.rooms.collect { |b| b.to_builder.attributes! }
       if self.building_id != nil
-        @o = Building.find(self.building_id)
+        @o = Building.find_by_id(self.building_id)
         b.building  @o.to_builder_simple_floor.attributes!
       else
         b.building nil

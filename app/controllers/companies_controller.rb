@@ -3,7 +3,7 @@ class CompaniesController < GeopController
 
   def index
     if current_admin_user != nil
-      @c = Company.find(current_admin_user.company_id)
+      @c = Company.find_by_id(current_admin_user.company_id)
       redirect_to company_url(@c)
     else
       render 'login/login'
@@ -18,7 +18,7 @@ class CompaniesController < GeopController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_company
-    @company = Company.find(params[:id])
+    @company = Company.find_by_id(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

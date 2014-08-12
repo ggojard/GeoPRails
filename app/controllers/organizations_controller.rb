@@ -10,6 +10,6 @@ class OrganizationsController < GeopController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set
-    @organization = Organization.find(params[:id])
+    @organization = Organization.find_by_id(params[:id])
   end
 end

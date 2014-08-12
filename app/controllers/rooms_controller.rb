@@ -33,7 +33,7 @@ class RoomsController < GeopController
   # PATCH/PUT /rooms/1
   # PATCH/PUT /rooms/1.json
   def update
-    @room = Room.find(params[:id])
+    @room = Room.find_by_id(params[:id])
     # respond_to do |format|
     if @room.update_attributes(params.require(:room).permit(:points, :area))
       render json: {}
@@ -45,7 +45,7 @@ class RoomsController < GeopController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_room
-    @room = Room.find(params[:id])
+    @room = Room.find_by_id(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

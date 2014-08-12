@@ -7,11 +7,12 @@ class Affectation < ActiveRecord::Base
     Jbuilder.new do |b|
       b.(self, :room)
       p = Person.find_by_id(self.person_id)
-      if p.present? do
+      if p.present?
         b.person  p.to_builder.attributes!
       end
     end
   end
+
 
   def to_builder_room
     Jbuilder.new do |b|

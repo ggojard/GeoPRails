@@ -37,9 +37,11 @@ class Room < ActiveRecord::Base
 
 
   def extract_organization(b)
-    if self.organization_id != nil
-      @o = Organization.find(self.organization_id)
-      b.organization  @o.to_builder.attributes!
+    if self.organization_id.present?
+      o = Organization.find_by_id(self.organization_id)
+      if o.present?
+        b.organization  o.to_builder.attributes!
+      end
     else
       b.organization nil
     end
