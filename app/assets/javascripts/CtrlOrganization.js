@@ -12,6 +12,10 @@
     }
 
     function loadFloors(floorsArray) {
+      function compare(a, b){
+        return a.level > b.level
+      }
+      floorsArray = floorsArray.sort(compare)
       $scope.floors = floorsArray;
       $scope.mapMode = 'show';
       geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope, function(mapFilter) {

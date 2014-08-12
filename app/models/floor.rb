@@ -20,7 +20,7 @@ class Floor < ActiveRecord::Base
 
   def to_builder
     Jbuilder.new do |b|
-      b.(self, :name, :id, :image, :map_scale_x1, :map_scale_y1, :map_scale_x2, :map_scale_y2, :map_scale_length, :image_dimensions, :fullname)
+      b.(self, :name, :id, :image, :map_scale_x1, :map_scale_y1, :map_scale_x2, :map_scale_y2, :map_scale_length, :image_dimensions, :fullname, :level)
       b.url "/floors/" + self.id.to_s
       b.rooms self.rooms.collect { |r| r.to_builder_with_affectations.attributes! }
       if !self.building_id.nil?
