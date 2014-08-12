@@ -28,7 +28,7 @@ class Room < ActiveRecord::Base
   #   pIdName = propertyName + '_id'
   #   pId = self.send[pIdName]
   #   if pId != nil
-  #     o = c.find(pId)
+#     o = c.find(pId)
   #     b[propertyName]  o.to_builder.attributes!
   #   else
   #     b[propertyName] nil
@@ -37,9 +37,9 @@ class Room < ActiveRecord::Base
 
 
   def extract_organization(b)
-    if self.organization_id.present?
+    if !self.organization_id.nil?
       o = Organization.find_by_id(self.organization_id)
-      if o.present?
+      if !o.nil?
         b.organization  o.to_builder.attributes!
       end
     else

@@ -30,7 +30,7 @@ ActiveAdmin.register Building do
 
     f.has_many :floors do |b|
       b.inputs I18n.t('activerecord.models.floor.other') do
-        if b.object.present?
+        if !b.object.nil?
           b.input :name
           b.input :level
         end

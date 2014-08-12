@@ -72,7 +72,7 @@ ActiveAdmin.register Room do
 
     f.has_many :affectations do |app_f|
       # app_f.inputs "Affectations" do
-      if app_f.object.present?
+      if !app_f.object.nil?
         # show the destroy checkbox only if it is an existing appointment
         # else, there's already dynamic JS to add / remove new appointments
         app_f.input :_destroy, :as => :boolean, :label => "Retirer l'affectation"

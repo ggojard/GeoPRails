@@ -7,7 +7,7 @@ class GeopController < ApplicationController
   before_action :set_geop
   private
   def set_geop
-    if current_admin_user.present?
+    if !current_admin_user.nil?
       @global_company = Company.find_by_id(current_admin_user.company_id)
       @global_company_json = @global_company.to_builder.target!
       @global_room_types = RoomType.all.to_json
