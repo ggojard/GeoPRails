@@ -1,6 +1,6 @@
 class Building < ActiveRecord::Base
   belongs_to :company
-  has_many :floors, :dependent => :destroy
+  has_many :floors
   accepts_nested_attributes_for :floors, :allow_destroy => true
 
   def extract_json (b)

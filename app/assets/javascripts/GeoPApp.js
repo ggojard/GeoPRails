@@ -80,7 +80,7 @@
 
 
   app.controller('CompanyCtrl', function($scope, $http) {
-    $scope.company = G_Company;
+    $scope.company = gon.company;
     // $scope.organizations = G_Organizations;
   });
 

@@ -2,9 +2,8 @@ class BuildingsController < GeopController
   before_action :set, only: [:show, :export]
 
   def show
-    @G_Building = @building.to_builder.target!
+    gon.building = @building.to_builder.attributes!
   end
-
 
 
   def export
@@ -109,16 +108,18 @@ class BuildingsController < GeopController
     wb.add_worksheet(:name => "Affectations") do |sheet|
       sheet.add_row ["Identifiant",  "Prénom", "Nom", "Nom complet", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment"]
       Affectation.all().each do |o|
-        sheet.add_row [o.id, o.person.firstname, o.person.lastname, o.person.fullname, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name] 
+        if !o.person.nil? and !o.room.nil?
+          sheet.add_row [o.id, o.person.firstname, o.person.lastname, o.person.fullname, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name]
+        end
       end
     end
-
-
 
     wb.add_worksheet(:name => "Inventaire") do |sheet|
       sheet.add_row ["Identifiant",  "Quantité", "Code", "Nom item", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment"]
       Inventory.all().each do |o|
-        sheet.add_row [o.id, o.quantity, o.item.code, o.item.name, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name]
+        if !o.item.nil? and !o.room.nil?
+          sheet.add_row [o.id, o.quantity, o.item.code, o.item.name, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name]
+        end
       end
     end
 

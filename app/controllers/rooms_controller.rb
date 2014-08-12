@@ -7,7 +7,6 @@ class RoomsController < GeopController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
-    # @json = @room.to_builder.target!
     @url = '/floors/' + @room.floor_id.to_s + '/room/' + @room.id.to_s
     redirect_to @url
   end
@@ -21,20 +20,16 @@ class RoomsController < GeopController
   # POST /rooms.json
   def create
     @room = Room.new(room_params)
-    # respond_to do |format|
     if @room.save
       render json: @room.to_builder.target!
     else
       format.json { render json: @room.errors, status: :unprocessable_entity }
     end
-    # end
   end
 
   # PATCH/PUT /rooms/1
   # PATCH/PUT /rooms/1.json
   def update
-    @room = Room.find_by_id(params[:id])
-    # respond_to do |format|
     if @room.update_attributes(params.require(:room).permit(:points, :area))
       render json: {}
     else

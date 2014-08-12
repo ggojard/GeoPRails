@@ -9,6 +9,6 @@
         $scope.results = {};
       }
     }
-    $scope.company = G_Company;
+    $scope.company = gon.company;
   });
 }(GeoP))

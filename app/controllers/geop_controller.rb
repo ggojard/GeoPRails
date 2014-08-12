@@ -8,9 +8,11 @@ class GeopController < ApplicationController
   private
   def set_geop
     if !current_admin_user.nil?
-      @global_company = Company.find_by_id(current_admin_user.company_id)
-      @global_company_json = @global_company.to_builder.target!
-      @global_room_types = RoomType.all.to_json
+      global_company = Company.find_by_id(current_admin_user.company_id)
+      if !global_company.nil?
+        gon.company = global_company.to_builder.attributes!
+      end
+      
     end
   end
 end

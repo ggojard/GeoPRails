@@ -1,7 +1,7 @@
 class Floor < ActiveRecord::Base
   belongs_to :building
-  has_many :rooms, :dependent => :destroy
-  # accepts_nested_attributes_for :rooms, :allow_destroy => true
+  has_many :rooms
+  accepts_nested_attributes_for :rooms
 
 
   has_attached_file :image,:styles => { :thumb => "200x200#" }, :storage => :database, :database_table => 'floors_images'

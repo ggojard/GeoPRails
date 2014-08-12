@@ -12,8 +12,6 @@ class FloorsController < GeopController
     render json:@floor.to_builder.target!
   end
 
-
-
   def edit
     @json = @floor.to_builder.target!
     @G_Mode = 'edit';

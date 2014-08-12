@@ -2,6 +2,7 @@
 <html ng-app='GeoP' id='ng-app'>
 <head>
 <title>Medecins Du Monde / GeoP</title>
+<%= include_gon %>
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,11 +13,6 @@
 <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 
 <%= csrf_meta_tags %>
-
-<script>
- var G_Company = <%=@global_company_json.html_safe%>
- var G_RoomTypes = <%= @global_room_types.html_safe%>
-</script>
 
 </head>
 <body>
