@@ -10,7 +10,7 @@ class GeopController < ApplicationController
     if !current_admin_user.nil?
       global_company = Company.find_by_id(current_admin_user.company_id)
       if !global_company.nil?
-        gon.company = global_company.to_builder.attributes!
+        gon.company = global_company.to_builder_simple.attributes!
       end
       
     end

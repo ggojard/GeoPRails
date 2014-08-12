@@ -6,16 +6,20 @@ class Building < ActiveRecord::Base
   def extract_json (b)
       b.(self, :name, :id)
       b.url "/buildings/" + self.id.to_s
-
   end
 
+
+  def to_builder_simple
+    Jbuilder.new do |b|
+      extract_json b
+      b.floors self.floors
+    end
+  end
 
   def to_builder_simple_floor
     Jbuilder.new do |b|
       extract_json b
-      # b.(self, :floors)
     end
-
   end
 
   def to_builder
