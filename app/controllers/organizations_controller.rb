@@ -3,8 +3,7 @@ class OrganizationsController < GeopController
 
   def show
     
-    gon.orga = @organization.to_builder.target!
-    # @G_Organization = 
+    gon.organization = @organization.to_builder.attributes!
   end
 
   private

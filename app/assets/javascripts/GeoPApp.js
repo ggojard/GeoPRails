@@ -81,7 +81,7 @@
 
   app.controller('CompanyCtrl', function($scope, $http) {
     $scope.company = gon.company;
-    // $scope.organizations = G_Organizations;
+    $scope.organizations = gon.organizations;
   });
 
   app.controller('FloorHeaderCtrl', function($scope, $http, $rootScope) {

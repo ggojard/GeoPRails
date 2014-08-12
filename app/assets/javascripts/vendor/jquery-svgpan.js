@@ -364,7 +364,7 @@
        @param zoomScale Float zoom sensitivity, defaults to .2
     **/
     $.fn.svgPan = function(viewportId, editor, enablePan, enableZoom, enableDrag, zoomScale) {
-        enablePan = typeof enablePan !== 'undefined' ? enablePan : true;
+        enablePan = typeof enablePan !== 'undefined' ? enablePan : false;
         enableZoom = typeof enableZoom !== 'undefined' ? enableZoom : true;
         enableDrag = typeof enableDrag !== 'undefined' ? enableDrag : false;
         zoomScale = typeof zoomScale !== 'undefined' ? zoomScale : 0.2;

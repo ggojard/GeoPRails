@@ -12,7 +12,7 @@ class CompaniesController < GeopController
 
   def show
     @json = @company.to_builder.target!
-    # @organizations = Organization.all.map { |o| o.to_json}.to_json
+    gon.organizations = Organization.all
   end
 
   private

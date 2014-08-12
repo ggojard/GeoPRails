@@ -1,8 +1,8 @@
 (function(geoP) {
   geoP.app.controller('OrganizationCtrl', function($scope, $http, $rootScope) {
-    
+    geoP.handleKeyEventsForScope($scope);
     $('.filter-container').hide();
-    $scope.o = G_Organization;
+    $scope.o = gon.organization;
     $scope.floors = [];
     var floors = {};
 
@@ -11,13 +11,13 @@
       floors[r.floor.id] = r.floor;
     }
 
-    function loadFloors(floorsArray){
+    function loadFloors(floorsArray) {
       $scope.floors = floorsArray;
       $scope.G_Mode = 'show';
-      geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope, function(mapFilter){
-        $scope.filter = mapFilter.filters.organization[G_Organization.id];
+      geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope, function(mapFilter) {
+        $scope.filter = mapFilter.filters.organization[$scope.o.id];
         $scope.filter.state = true;
-        $rootScope.$emit('organization_filters.StateChange', $scope.filter);  
+        $rootScope.$emit('organization_filters.StateChange', $scope.filter);
         $scope.$apply();
       });
       $('#loading').remove();
@@ -29,10 +29,10 @@
     for (var fId in floors) {
       if (floors.hasOwnProperty(fId)) {
         var floor = floors[fId];
-        $http.get('/floors/' + fId + '/json').success(function(res){
+        $http.get('/floors/' + fId + '/json').success(function(res) {
           floorsArray.push(res);
           i += 1;
-          if (i === floorsMax){
+          if (i === floorsMax) {
             loadFloors(floorsArray);
           }
         });
