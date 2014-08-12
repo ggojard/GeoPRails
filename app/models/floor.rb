@@ -33,6 +33,13 @@ class Floor < ActiveRecord::Base
     end
   end
 
+  def to_builder_search
+    Jbuilder.new do |b|
+      b.(self, :fullname)
+      b.url '/floors/' +  self.id.to_s
+    end
+  end  
+
 
   def extract_dimensions
     tempfile = image.queued_for_write[:original]

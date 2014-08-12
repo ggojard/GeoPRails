@@ -34,7 +34,13 @@ class Room < ActiveRecord::Base
   #     b[propertyName] nil
   #   end
   # end
-
+  # 
+  def to_builder_search
+    Jbuilder.new do |b|
+      b.(self, :fullname)
+      b.url '/rooms/' +  self.id.to_s
+    end
+  end
 
   def extract_organization(b)
     if !self.organization_id.nil?
@@ -57,7 +63,6 @@ class Room < ActiveRecord::Base
     Jbuilder.new do |b|
       extract_json b
       b.affectations self.affectations.collect { |b| b.to_builder.attributes! }
-
     end
   end
 

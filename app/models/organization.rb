@@ -10,6 +10,13 @@ class Organization < ActiveRecord::Base
   accepts_nested_attributes_for :rooms, :allow_destroy => true
 
 
+  def to_builder_search
+    Jbuilder.new do |b|
+      b.(self, :name)
+      b.url '/organizations/' +  self.id.to_s
+    end
+  end
+
   def to_builder
     Jbuilder.new do |b|
       b.(self, :name, :id, :organization_type, :organization, :company, :color)

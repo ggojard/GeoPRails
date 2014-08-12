@@ -5,10 +5,10 @@ class HomesController < ApplicationController
     @resArray = []
 
 
-    people = Person.where(["lower(firstname) like ? OR lower(lastname) like ?", @search, @search]).collect { |b| b.to_builder.attributes! }
-    rooms = Room.where(["lower(name) like ?", @search]).collect { |b| b.to_builder.attributes!}
-    floors = Floor.where(["lower(name) like ?", @search]).collect { |b| b.to_builder.attributes!}
-    organizations = Organization.where(["lower(name) like ?", @search]).collect { |b| b.to_builder.attributes!}
+    people = Person.where(["lower(firstname) like ? OR lower(lastname) like ?", @search, @search]).collect { |b| b.to_builder_search.attributes! }
+    rooms = Room.where(["lower(name) like ?", @search]).collect { |b| b.to_builder_search.attributes!}
+    floors = Floor.where(["lower(name) like ?", @search]).collect { |b| b.to_builder_search.attributes!}
+    organizations = Organization.where(["lower(name) like ?", @search]).collect { |b| b.to_builder_search.attributes!}
 
     @res = {
       "rooms" => rooms,

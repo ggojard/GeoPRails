@@ -31,6 +31,14 @@ class Person < ActiveRecord::Base
     format_phone self.cellphone
   end
 
+  def to_builder_search
+    Jbuilder.new do |b|
+      b.(self, :fullname)
+      b.url '/people/' +  self.id.to_s
+    end
+  end
+
+
   def to_builder
     Jbuilder.new do |b|
       b.(self, :firstname, :lastname, :id, :telephone, :cellphone, :person_state, :computerreference, :monitorreference, :room, :fullname, :format_telephone, :format_cellphone, :email)
