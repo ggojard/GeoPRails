@@ -10,7 +10,9 @@ class Person < ActiveRecord::Base
   accepts_nested_attributes_for :affectations, :allow_destroy => true
 
   def fullname
-    self.firstname + ' ' + self.lastname
+    if !self.nil?
+      self.firstname + ' ' + self.lastname
+    end
   end
 
   def name
