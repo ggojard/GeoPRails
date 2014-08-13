@@ -1,4 +1,4 @@
-
+    
 
 <% if current_admin_user != nil %>
 
@@ -22,7 +22,7 @@
             <li class="dropdown" ng-repeat="b in company.buildings">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{b.name}} <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li ng-repeat="f in b.floors"><a href="{{f.url}}">{{f.name}}</a></li>
+              <li ng-repeat="f in b.floors"><a href="/floors/{{f.id}}">{{f.name}}</a></li>
               <li class="divider"></li>
               <li><a href="{{b.url}}">{{b.name}}</a></li>
             </ul>

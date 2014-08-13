@@ -28,6 +28,7 @@ ActiveAdmin.register Person do
         row "Etat" do c.person_state end
         row "Organisation" do c.organization end
         row "Email" do c.email end
+        row "Matricule" do c.person_code end
       end
     end
 
@@ -64,18 +65,18 @@ ActiveAdmin.register Person do
 
   form do |f|
     f.inputs "Details" do
-      # f.input :id, label: "Visualiser", input_html: { class: 'person-link' }
-      f.input :firstname, label: "Prénom"
-      f.input :lastname , label: "Nom"
-      f.input :telephone, label: "Téléphone"
-      f.input :cellphone, label: "Téléphone Portable"
-      f.input :person_state, label: "Etat", :as => :select, :collection => PersonState.order(:name).all, :include_blank => false
-      f.input :organization, label: "Organisation", :as => :select, :collection => Organization.order(:name).all, :include_blank => false
-      f.input :email, label: "E-Mail"
+      f.input :firstname
+      f.input :lastname
+      f.input :telephone
+      f.input :cellphone
+      f.input :person_state
+      f.input :organization
+      f.input :email
+      f.input :person_code
     end
     f.inputs "Inventaire" do
-      f.input :monitorreference, label: "Référence écran"
-      f.input :computerreference, label: "Référence ordinateur"
+      f.input :monitorreference
+      f.input :computerreference
     end
 
     f.actions
