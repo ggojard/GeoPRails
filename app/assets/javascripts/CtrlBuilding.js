@@ -1,4 +1,6 @@
+/*global GeoP:true, gon:true*/
 (function(geoP) {
+  'use strict';
 
   geoP.app.controller('BuildingCtrl', function($scope, $http, $rootScope) {
 

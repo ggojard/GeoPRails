@@ -1,12 +1,12 @@
-(function(geoP) {
-  "use strict";
+/*global GeoP:true, jQuery:true*/
+(function(geoP, $) {
+  'use strict';
 
   geoP.app.controller('CtrlRightPopup', function($scope, $rootScope) {
-
     $scope.state = 'hidden';
     $scope.saveScrollTop = $('body').scrollTop();
 
-    function scrollBackToInitialScroll(){
+    function scrollBackToInitialScroll() {
       $('body, html').scrollTop($scope.saveScrollTop);
     }
 
@@ -32,23 +32,21 @@
       }
     };
 
-    $scope.cancel = function(){
+    $scope.cancel = function() {
       scrollBackToInitialScroll();
       $scope.hide();
     };
 
     $rootScope.$on('RightPopupShow', function(e, title, content, actions) {
+      /*jslint unparam:true*/
       $scope.title = title;
       $scope.content = content;
       $scope.actions = actions;
       $scope.show();
     });
 
-    $rootScope.$on('RightPopupHide', function(e) {
+    $rootScope.$on('RightPopupHide', function() {
       $scope.hide();
     });
-
   });
-
-
 }(GeoP));

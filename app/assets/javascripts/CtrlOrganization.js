@@ -1,23 +1,25 @@
-(function(geoP) {
+/*global GeoP:true, jQuery:true, gon:true*/
+(function(geoP, $) {
+  'use strict';
   geoP.app.controller('OrganizationCtrl', function($scope, $http, $rootScope) {
-    var i;
+    var i, floors, r, floorsArray, floorsMax, fId;
     geoP.handleKeyEventsForScope($scope);
     $('.filter-container').hide();
     $scope.o = gon.organization;
     $scope.floors = [];
-    var floors = {};
+    floors = {};
 
-    for (i = 0; i < $scope.o.rooms.length; i++) {
-      var r = $scope.o.rooms[i];
+    for (i = 0; i < $scope.o.rooms.length; i += 1) {
+      r = $scope.o.rooms[i];
       floors[r.floor.id] = r.floor;
     }
 
-    function loadFloors(floorsArray) {
+    function loadFloors(floorsArrayLocal) {
       function compare(a, b) {
         return a.level > b.level;
       }
-      floorsArray = floorsArray.sort(compare);
-      $scope.floors = floorsArray;
+      floorsArrayLocal = floorsArrayLocal.sort(compare);
+      $scope.floors = floorsArrayLocal;
       $scope.mapMode = 'show';
       geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope, function(mapFilter) {
         $scope.filter = mapFilter.filters.organization[$scope.o.id];
@@ -29,7 +31,7 @@
     }
 
     floorsArray = [];
-    var floorsMax = Object.keys(floors).length;
+    floorsMax = Object.keys(floors).length;
     i = 0;
 
     function floorLoaded(res) {
@@ -40,12 +42,10 @@
       }
     }
 
-    for (var fId in floors) {
+    for (fId in floors) {
       if (floors.hasOwnProperty(fId)) {
-        var floor = floors[fId];
         $http.get('/floors/' + fId + '/json').success(floorLoaded);
       }
     }
-
   });
 }(GeoP));

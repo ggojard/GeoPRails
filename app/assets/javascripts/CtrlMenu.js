@@ -1,4 +1,6 @@
+/*global GeoP:true, gon:true*/
 (function(geoP) {
+  'use strict';
   geoP.app.controller('MenuCtrl', function($scope, $http) {
     $scope.search = function() {
       if ($scope.globalSearch.length > 0) {
