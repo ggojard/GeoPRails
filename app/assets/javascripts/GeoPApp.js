@@ -10,7 +10,7 @@
         if (scrollTop !== scrollLoaded) {
           $w.scrollTop(scrollLoaded);
         }
-      } catch (e) {}
+      } catch (exception) {}
     });
 
   });
@@ -38,7 +38,7 @@
   function loadScroll(floorId) {
     if (localStorage) {
       var c = localStorage['floor-' + floorId + '-scroll-top'];
-      if (c !== void 0) {
+      if (c !== undefined) {
         return parseInt(c, 10);
       }
     }

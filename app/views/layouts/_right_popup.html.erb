@@ -1,15 +1,10 @@
 <div ng-controller="CtrlRightPopup" class="right-popup" ng-class="['right-popup-' + state]">
-  
-  <div class="right-popup-content">
-    <h1>{{title}}</h1>
-    <p>{{content}}</p>
-
-    <ul class="map-options">
-      <li ng-repeat="b in actions" class="option"><button ng-click="doAction(b.action)" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
-      <li class="option"><button class="btn btn-default" ng-click="cancel()">Annuler</button></li>
-    </ul>
-
-    
-  </div>
-  
+	<div class="right-popup-content">
+		<h1>{{title}}</h1>
+		<p>{{content}}</p>
+		<ul class="map-options">
+			<li ng-repeat="b in actions" class="option"><button ng-click="doAction(b.action)" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+			<li class="option"><button class="btn btn-default" ng-click="cancel()">Annuler</button></li>
+		</ul>
+	</div>
 </div>

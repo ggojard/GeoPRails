@@ -9,7 +9,7 @@
   var mapScale = function(editor) {
     this.editor = editor;
     this.length = 1;
-  }
+  };
 
   mapScale.prototype.create = function(x1, y1, x2, y2) {
     var that = this;

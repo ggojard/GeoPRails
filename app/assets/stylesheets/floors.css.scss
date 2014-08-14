@@ -2,170 +2,161 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-   ul.map-options {
+ul.map-options {
     display: inline-block;
     margin: 0px;
     padding: 0px;
-    
-    li{
-      display: inline-block;
-      margin-right: 5px;
-      margin-top: 5px;
+    li {
+        display: inline-block;
+        margin-right: 5px;
+        margin-top: 5px;
     }
-  }
-  
-svg.mode-show{
-  polygon:hover{
-    cursor: pointer;
-  }
 }
 
-
-
-#globalSearch{
-  &.invalid{
-  border:2px solid red;
-}
-&:focus{
-  outline: none;
-  box-shadow: none;
-}
-}
-
-div.affectations.panel{
-  margin-top: 10px;
-}
-
-ul.search-results{
-  background-color: rgba(255, 255, 255, 1);
-  position: absolute;
-  // right: 0;
-  // width: 300px;
-  z-index: 100;
-  margin: 0;
-  padding: 0;
-
-  li{
-    list-style: none;
-  }
-}
-
-
-
-ul.people{
-  margin: 0;
-  padding: 0;
-  >  li{
-    display: inline-block;
-    width: 300px;
-    margin-right: 10px;
-    vertical-align: top;
-  }
-}
-
-.thumbnail{
-  a.edit-person, a.open-person{
-    position: relative;
-    z-index: 10;
-    margin-right: 5px;
-    float: right;
-    &:hover{
-      text-decoration: none;
+svg.mode-show {
+    polygon:hover {
+        cursor: pointer;
     }
-  }
-
-  img{
-    width: 120px;
-    margin-top: 15px;
-  }
-  h3{
-    text-align: center;
-    margin: 0;
-    margin-bottom: 5px;
-  }
 }
 
-div#debugger{
-  background-color: white;
-  position: fixed;
-  top:0px;
-  border:1px solid green;
+#globalSearch {
+    &.invalid {
+        border: 2px solid red;
+    }
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
 }
 
-.jumbotron{
-  h1, h2, h3, p{
-    display: inline-block;
+div.affectations.panel {
+    margin-top: 10px;
+}
+
+ul.search-results {
+    background-color: rgba(255, 255, 255, 1);
+    position: absolute;
+    z-index: 100;
     margin: 0;
-    vertical-align: middle;
-  }
-  h1{
-    margin-left: 10px;
-  }
+    padding: 0;
+    li {
+        list-style: none;
+    }
+}
+
+ul.people {
+    margin: 0;
+    padding: 0;
+    >  li {
+        display: inline-block;
+        width: 300px;
+        margin-right: 10px;
+        vertical-align: top;
+    }
+}
+
+.thumbnail {
+    a.edit-person, a.open-person {
+        position: relative;
+        z-index: 10;
+        margin-right: 5px;
+        float: right;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    img {
+        width: 120px;
+        margin-top: 15px;
+    }
+    h3 {
+        text-align: center;
+        margin: 0;
+        margin-bottom: 5px;
+    }
+}
+
+div#debugger {
+    background-color: white;
+    position: fixed;
+    top: 0px;
+    border: 1px solid green;
+}
+
+.jumbotron {
+    h1, h2, h3, p {
+        display: inline-block;
+        margin: 0;
+        vertical-align: middle;
+    }
+    h1 {
+        margin-left: 10px;
+    }
 }
 
 div.panel-default .panel-heading {
-  background-image: none;
+    background-image: none;
     background: none;
     background-color: #eee;
 }
 
-div.filter-container{
-  .panel-body{
-    padding: 10px;
-  }
+div.filter-container {
+    .panel-body {
+        padding: 10px;
+    }
 }
 
-div.tab-content{
-  border-top: none;
-  .form-horizontal{
+div.tab-content {
+    border-top: none;
+    .form-horizontal {
+        margin: 0;
+        padding: 0;
+        padding-top: 5px;
+    }
+}
+
+div.checkbox {
+    .badge {
+        background-color: #eee;
+        color: black;
+        margin-right: 5px;
+        font-weight: normal;
+    }
+}
+
+ul.network {
     margin: 0;
-    padding: 0;
-    padding-top: 5px;
-  }
+    padding-left: 15px;
 }
 
-div.checkbox{
- .badge{
-  background-color:#eee;
-  color:black;
-  margin-right: 5px;
-  font-weight: normal;
- } 
-}
-
-ul.network{
-  margin: 0;
-  padding-left: 15px;
-}
-
-ul.filters{
-  padding: 0px;
-  margin: 0px;
-  box-sizing:initial;
-  line-height: 1;
-  li{
-    list-style: none;
-    display: inline-block;
-    margin: 0;
-    margin-right: 10px;
-    padding: 5px;
-    padding-top:0px;
-    border-radius: 5px;
-    vertical-align: middle;
-    margin-top: 5px;
-  }
-  li.check-all{
-    background-color: #eee;
-  }
-  ul{
+ul.filters {
+    padding: 0px;
     margin: 0px;
-  padding: 0px;
-  // padding-left: 5px;
-  }
+    box-sizing: initial;
+    line-height: 1;
+    li {
+        list-style: none;
+        display: inline-block;
+        margin: 0;
+        margin-right: 10px;
+        padding: 5px;
+        padding-top: 0px;
+        border-radius: 5px;
+        vertical-align: middle;
+        margin-top: 5px;
+    }
+    li.check-all {
+        background-color: #eee;
+    }
+    ul {
+        margin: 0px;
+        padding: 0px;
+        // padding-left: 5px;
+   
+    }
 }
 
-
-#chart_div{
-  width: 100%;
-  height: 300px;
+#chart_div {
+    width: 100%;
+    height: 300px;
 }

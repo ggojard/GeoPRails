@@ -1,10 +1,8 @@
 (function(){
   GeoP.app.controller('PersonCtrl', function($scope) {
     $scope.a = {
-      person : G_Person
+      person : gon.person
     };
-    $scope.p = G_Person;
+    $scope.p = gon.person;
   });
-}())
-
-
+}());

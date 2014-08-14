@@ -3,15 +3,13 @@
   var Point = function(x, y) {
     this.x = x;
     this.y = y;
-    if (this.x === void 0) {
+    if (this.x === undefined) {
       this.x = 0;
     }
-    if (this.y === void 0) {
+    if (this.y === undefined) {
       this.y = 0;
     }
   };
-
-
 
   Point.prototype.toString = function() {
     return '{x:' + this.x + ', ' + 'y:' + this.y + '}';
@@ -91,7 +89,7 @@
 
 
   Point.prototype.equals = function(p, distance) {
-    if (distance === void 0) {
+    if (distance === undefined) {
       distance = 0;
     }
 
@@ -112,9 +110,9 @@
   var PointApi = {};
   PointApi.createPointFromPoint = function(p) {
     return new Point(p.x, p.y);
-  }
+  };
 
 
   geoP.Point = Point;
   geoP.PointApi = PointApi;
-}(GeoP))
+}(GeoP));

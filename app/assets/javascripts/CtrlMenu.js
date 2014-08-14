@@ -8,7 +8,7 @@
       } else {
         $scope.results = {};
       }
-    }
+    };
     $scope.company = gon.company;
   });
-}(GeoP))
+}(GeoP));

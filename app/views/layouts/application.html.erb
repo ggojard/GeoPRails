@@ -1,32 +1,21 @@
 <!DOCTYPE html>
 <html ng-app='GeoP' id='ng-app'>
-<head>
-<title>Medecins Du Monde / GeoP</title>
-<%= include_gon %>
-
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
-<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-
-<%= csrf_meta_tags %>
-
-<script type="text/javascript"></script>
-
-</head>
-<body>
-
-  <%= render 'layouts/notifications' %>
-  <%= render 'layouts/right_popup' %>
-  <%= render 'layouts/menu_top' %>
-
-
-  <div class="container-fluid main-container">
-    <%= yield %>
-  </div>
-
-</body>
+	<head>
+		<title>Medecins Du Monde / GeoP</title>
+		<%= include_gon %>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+		<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+		<%= csrf_meta_tags %>
+		<script type="text/javascript"></script>
+	</head>
+	<body>
+		<%= render 'layouts/notifications' %>
+		<%= render 'layouts/right_popup' %>
+		<%= render 'layouts/menu_top' %>
+		<div class="container-fluid main-container">
+			<%= yield %>
+		</div>
+	</body>
 </html>

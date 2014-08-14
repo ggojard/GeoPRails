@@ -1,66 +1,54 @@
-    
-
 <% if current_admin_user != nil %>
-
 <div class="navbar navbar-default navbar-static-top" role="navigation" ng-controller="MenuCtrl">
-      <div class="container-fluid">
-        <div class="navbar-header">
-
-<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>          
-          <a class="logo" href="/"><img src="/assets/logo-mdm.png"></a>
-          <a class="navbar-brand" href="/">{{company.name}}</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            
-            
-            <li class="dropdown" ng-repeat="b in company.buildings">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{b.name}} <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li ng-repeat="f in b.floors"><a href="/floors/{{f.id}}">{{f.name}}</a></li>
-              <li class="divider"></li>
-              <li><a href="{{b.url}}">{{b.name}}</a></li>
-            </ul>
-            </li>
-
-
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventaire <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/admin/buildings">Bâtiments</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/admin/organizations">Organisation</a></li>
-                  <li><a href="/admin/people">Personnes</a></li>
-<!--                  <li class="divider"></li>
-                   <li class="dropdown-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li> -->
-                </ul>
-              </li>
-
-              <li class=""><a href="/admin">Base de donnée</a></li>
-            <li  class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_admin_user.email %><b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="/admin/logout">Fermer la session</a></li>
-              </ul>
-            </li>
-
-          </ul>
-
-<!--           <ul class="nav navbar-nav navbar-right">
-          </ul>
- -->
-  <%=  render '/homes/search' %> 
-
-
-        </div><!--/.nav-collapse -->
-      </div>
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      </button>
+      <a class="logo" href="/"><img src="/assets/logo-mdm.png"></a>
+      <a class="navbar-brand" href="/">{{company.name}}</a>
     </div>
-
-<% end %>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        
+        
+        <li class="dropdown" ng-repeat="b in company.buildings">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{b.name}} <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="f in b.floors"><a href="/floors/{{f.id}}">{{f.name}}</a></li>
+            <li class="divider"></li>
+            <li><a href="{{b.url}}">{{b.name}}</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventaire <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/admin/buildings">Bâtiments</a></li>
+            <li class="divider"></li>
+            <li><a href="/admin/organizations">Organisation</a></li>
+            <li><a href="/admin/people">Personnes</a></li>
+            <!--                  <li class="divider"></li>
+            <li class="dropdown-header">Nav header</li>
+            <li><a href="#">Separated link</a></li>
+            <li><a href="#">One more separated link</a></li> -->
+          </ul>
+        </li>
+        <li class=""><a href="/admin">Base de donnée</a></li>
+        <li  class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_admin_user.email %><b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/admin/logout">Fermer la session</a></li>
+          </ul>
+        </li>
+      </ul>
+      <!--           <ul class="nav navbar-nav navbar-right">
+      </ul>
+      -->
+      <%=  render '/homes/search' %>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+  <% end %>

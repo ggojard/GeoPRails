@@ -1,7 +1,6 @@
 (function(geoP) {
   "use strict";
 
-
   geoP.app.controller('CtrlRightPopup', function($scope, $rootScope) {
 
     $scope.state = 'hidden';
@@ -13,12 +12,12 @@
 
     $scope.hide = function() {
       $scope.state = 'hidden';
-    }
+    };
     $scope.show = function() {
       $scope.state = 'visible';
       $scope.saveScrollTop = $('body').scrollTop();
       $('body, html').scrollTop(0);
-    }
+    };
 
     $scope.doAction = function(callback) {
       if (typeof callback === 'function') {
@@ -31,12 +30,12 @@
           }
         });
       }
-    }
+    };
 
     $scope.cancel = function(){
       scrollBackToInitialScroll();
       $scope.hide();
-    }
+    };
 
     $rootScope.$on('RightPopupShow', function(e, title, content, actions) {
       $scope.title = title;

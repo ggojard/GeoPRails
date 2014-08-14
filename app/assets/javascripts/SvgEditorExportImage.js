@@ -4,7 +4,8 @@
 
 
   function getBlobUrl(canvasdata) {
-    var byteString = atob(canvasdata.replace(/^data:image\/(png|jpg);base64,/, "")); //wtf is atob?? https://developer.mozilla.org/en-US/docs/Web/API/Window.atob
+    var byteString = atob(canvasdata.replace(/^data:image\/(png|jpg);base64,/, ''));
+    //wtf is atob?? https://developer.mozilla.org/en-US/docs/Web/API/Window.atob
     var ab = new ArrayBuffer(byteString.length);
     var ia = new Uint8Array(ab);
     for (var i = 0; i < byteString.length; i++) {
@@ -12,7 +13,7 @@
     }
     var dataView = new DataView(ab);
     var blob = new Blob([dataView], {
-      type: "image/png"
+      type: 'image/png'
     });
     var DOMURL = self.URL || self.webkitURL || self;
     var newurl = DOMURL.createObjectURL(blob);
@@ -39,7 +40,7 @@
 
     editor.applyTransform();
 
-    var html = d3.select("#" + svgContainerId)
+    var html = d3.select('#' + svgContainerId)
       .attr('width', editor.bgBox.w)
       .attr('height', editor.bgBox.h)
       .node().outerHTML;
@@ -53,25 +54,21 @@
     $('body').append($svgDiv).append($c);
     var canvasDom = $c[0];
     var canvas = canvasDom;
-    var context = canvas.getContext("2d");
+    var context = canvas.getContext('2d');
 
     canvg(canvasDom, h);
 
     setTimeout(function() {
-      var imgsrc = canvasDom.toDataURL("image/png");
-      var a = document.createElement("a");
-      a.download = imageName + ".png";
+      var imgsrc = canvasDom.toDataURL('image/png');
+      var a = document.createElement('a');
+      a.download = imageName + '.png';
       a.href = getBlobUrl(imgsrc);
-      $("#svgdataurl").append(a);
+      $('#svgdataurl').append(a);
       a.click();
 
       $svgDiv.remove();
       $c.remove();
 
     }, 500);
-
-
   };
-
-
 }(GeoP));

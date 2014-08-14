@@ -18,7 +18,7 @@ GeoP.extend = function(Parent, child) {
   var p = construct(Parent, Array.prototype.slice.call(arguments, 2));
   child.base = {};
   for (var prop in p) {
-    if (child[prop] === void 0) {
+    if (child[prop] === undefined) {
       var value = p[prop];
       child[prop] = value;
     } else {
@@ -30,9 +30,9 @@ GeoP.extend = function(Parent, child) {
 GeoP.hashCode = function(s) {
   return s.split("").reduce(function(a, b) {
     a = ((a << 5) - a) + b.charCodeAt(0);
-    return a & a
+    return a & a;
   }, 0);
-}
+};
 
 GeoP.filtersNames = [{
   name: 'room_type',
@@ -51,7 +51,7 @@ GeoP.filtersNames = [{
 $(function() {
   setTimeout(function() {
     $('#myTab a').click(function(e) {
-      e.preventDefault()
+      e.preventDefault();
       $(this).tab('show');
     });
   }, 1000);

@@ -1,11 +1,10 @@
-/*global GeoP:true */
+/*global GeoP:true, Snap:true, jQuery:true */
 
-(function(geoP) {
-  "use strict";
+(function(geoP, $) {
+  'use strict';
 
-
-  var a = Snap;
-
+  var snap = Snap,
+    SvgEditor;
 
   function mouseMove(ev) {
     /*jshint validthis:true */
@@ -25,7 +24,7 @@
     };
   }
 
-  function mouseClick(e) {
+  function mouseClick() {
     /*jshint validthis:true */
     if (geoP.currentEvent === null && this.$scope.mapMode !== 'create') {
       this.unSelectItems();
@@ -36,10 +35,12 @@
     geoP.currentEvent = null;
   }
 
-  var SvgEditor = function(floorJson, $scope, $http, $rootScope, mapFilter) {
-    var that = this;
+  SvgEditor = function(floorJson, $scope, $http, $rootScope, mapFilter) {
+
+    var dim, bgBox, border, imagePath;
+
     this.svgId = 'map-' + floorJson.id;
-    this.paper = a('#' + this.svgId);
+    this.paper = snap('#' + this.svgId);
     if (this.paper === null) {
       return;
     }
@@ -65,14 +66,14 @@
 
     $('#' + this.svgId).svgPan(this.canvas.node.id, this);
 
-    var dim = JSON.parse(this.json.image_dimensions);
+    dim = JSON.parse(this.json.image_dimensions);
     if (dim === null) {
       dim = {
         w: 0,
         h: 0
       };
     }
-    var bgBox = {
+    bgBox = {
       x: 0,
       y: 0,
       w: dim.w,
@@ -81,13 +82,13 @@
 
     this.bgBox = bgBox;
 
-    var border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
+    border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     border.attr({
       fill: 'white',
       stroke: '#ffcf00'
     });
 
-    var imagePath = 'http://' + window.location.host + this.json.image;
+    imagePath = 'http://' + window.location.host + this.json.image;
     this.bg = this.canvas.image(imagePath, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     this.bg.node.style.cssText = 'opacity: 0.25';
 
@@ -95,7 +96,7 @@
 
     this.applyTransform();
 
-  
+
     this.paper.mousemove(mouseMove.bind(this));
     this.paper.click(mouseClick.bind(this));
 
@@ -128,8 +129,9 @@
     this.dragPointsOptions = [];
   };
 
-  SvgEditor.prototype.removePolyline = function(p) {
-
+  SvgEditor.prototype.removePolyline = function() {
+    // need to take it out of the items //TODO
+    return undefined;
   };
 
   SvgEditor.prototype.cleanCurrentOptions = function() {
@@ -150,33 +152,33 @@
         x: e.offsetX,
         y: e.offsetY
       };
-    } else {
-      var targetOffset = $(this.paper.node).parent().offset();
-      var st = $(window).scrollTop();
-      var sl = $(window).scrollLeft();
-      var yVal = e.clientY + st - targetOffset.top;
-      var xVal = e.clientX + sl - targetOffset.left;
-      return {
-        x: xVal,
-        y: yVal
-      };
     }
+    var targetOffset, st, sl, yVal, xVal;
+    targetOffset = $(this.paper.node).parent().offset();
+    st = $(window).scrollTop();
+    sl = $(window).scrollLeft();
+    yVal = e.clientY + st - targetOffset.top;
+    xVal = e.clientX + sl - targetOffset.left;
+    return {
+      x: xVal,
+      y: yVal
+    };
+
   };
 
 
   SvgEditor.prototype.drag = function(e, node, moveMethod) {
-    var scale = this.camera.scale;
-    var tX = -this.camera.x;
-    var tY = -this.camera.y;
-    var mousePos = this.getMousePos(e);
+    var scale, mousePos, mx, my, ctm;
+    scale = this.camera.scale;
+    mousePos = this.getMousePos(e);
 
     if (mousePos.x < 0 || mousePos.y < 0) {
       return;
     }
-    var mx = (mousePos.x / scale) - node.cx.baseVal.value;
-    var my = (mousePos.y / scale) - node.cy.baseVal.value;
+    mx = (mousePos.x / scale) - node.cx.baseVal.value;
+    my = (mousePos.y / scale) - node.cy.baseVal.value;
 
-    var ctm = this.canvas.node.getCTM();
+    ctm = this.canvas.node.getCTM();
     mx -= ctm.e / scale;
     my -= ctm.f / scale;
 
@@ -188,29 +190,30 @@
 
 
   SvgEditor.prototype.centerOnBox = function(boxSize) {
-    var $svg = $(this.paper.node);
-    var paperSize = {
+    var $svg, paperSize, ratioW, ratioH, ratio, scaledWidth, scaledHeight;
+    $svg = $(this.paper.node);
+    paperSize = {
       w: $svg.width(),
       h: $svg.height()
     };
 
-    var ratioW = paperSize.w / boxSize.w;
-    var ratioH = paperSize.h / boxSize.h;
+    ratioW = paperSize.w / boxSize.w;
+    ratioH = paperSize.h / boxSize.h;
 
     // use the minimun scale ratio
-    var ratio = ratioH;
+    ratio = ratioH;
     if (ratioW < ratioH) {
       ratio = ratioW;
     }
 
     this.camera.scale = ratio;
 
-    var scaledWidth = boxSize.w * ratio;
-    var scaledHeight = boxSize.h * ratio;
+    scaledWidth = boxSize.w * ratio;
+    scaledHeight = boxSize.h * ratio;
 
-    this.camera.x = ((paperSize.w - scaledWidth) / 2) * 1 / ratio - boxSize.x;
+    this.camera.x = ((paperSize.w - scaledWidth) / 2) / ratio - boxSize.x;
     this.camera.x *= ratio;
-    this.camera.y = ((paperSize.h - scaledHeight) / 2) * 1 / ratio - boxSize.y;
+    this.camera.y = ((paperSize.h - scaledHeight) / 2) / ratio - boxSize.y;
     this.camera.y *= ratio;
 
     this.applyTransform();
@@ -227,25 +230,26 @@
   };
 
   SvgEditor.prototype.updateBelongsToAvailable = function(belongsToNameList, belongsToKeyName) {
-    var floorJson = this.json;
-    if (this.mapFilter.filters[belongsToKeyName] === void 0) {
+    var floorJson = this.json,
+      itemsObject, targetItem, i, item;
+    if (this.mapFilter.filters[belongsToKeyName] === undefined) {
       this.mapFilter.filters[belongsToKeyName] = {};
     }
-    var itemsObject = this.mapFilter.filters[belongsToKeyName];
-    for (var i = 0; i < floorJson[belongsToNameList].length; i++) {
-      var item = floorJson[belongsToNameList][i];
+    itemsObject = this.mapFilter.filters[belongsToKeyName];
+    for (i = 0; i < floorJson[belongsToNameList].length; i += 1) {
+      item = floorJson[belongsToNameList][i];
       if (item[belongsToKeyName] !== null) {
-        var targetItem = item[belongsToKeyName];
-        if (itemsObject[targetItem.id] === void 0) {
+        targetItem = item[belongsToKeyName];
+        if (itemsObject[targetItem.id] === undefined) {
           itemsObject[targetItem.id] = targetItem;
           itemsObject[targetItem.id].state = false;
           itemsObject[targetItem.id].count = 0;
           itemsObject[targetItem.id].areaSum = 0;
           itemsObject[targetItem.id].nbPeople = 0;
-        } else {}
+        }
         itemsObject[targetItem.id].count += 1;
         itemsObject[targetItem.id].areaSum += item.area;
-        itemsObject[targetItem.id].areaSum = parseFloat(itemsObject[targetItem.id].areaSum.toFixed(1), 10)
+        itemsObject[targetItem.id].areaSum = parseFloat(itemsObject[targetItem.id].areaSum.toFixed(1), 10);
         itemsObject[targetItem.id].nbPeople += item.affectations.length;
         if (itemsObject[targetItem.id].nbPeople === 0) {
           itemsObject[targetItem.id].ratio = 0;
@@ -255,32 +259,31 @@
 
       }
     }
-  }
+  };
 
   SvgEditor.prototype.loadBelongsToFilter = function(belongsToNameList, belongsToKeyName) {
-    var that = this;
     this.updateBelongsToAvailable(belongsToNameList, belongsToKeyName);
     this.$rootScope.$emit(belongsToKeyName + '_filters.Update', this.mapFilter.filters[belongsToKeyName]);
   };
 
 
   SvgEditor.prototype.setOptions = function() {
+    var $scope = this.$scope,
+      that = this,
+      createPolyline, mapZoomDefault, editMode, editModeAdmin, stopEditMode, saveToImage;
 
-    var $scope = this.$scope;
-    var that = this;
-
-    var createPolyline = {
+    createPolyline = {
       label: 'Créer pièce',
       icon: 'fa-pencil',
       action: function() {
         $scope.mapMode = 'create';
-        var opts = that.createPolyline($scope);
+        var opts = that.createPolyline();
         that.currentOptions = opts;
       },
       classes: 'btn-success'
     };
 
-    var mapZoomDefault = {
+    mapZoomDefault = {
       label: 'Centrer le plan',
       icon: 'fa-crosshairs',
       action: function() {
@@ -290,7 +293,7 @@
     };
 
 
-    var editMode = {
+    editMode = {
       label: 'Modifier le plan',
       icon: 'fa-unlock',
       action: function() {
@@ -299,7 +302,7 @@
       classes: 'btn-default'
     };
 
-    var editModeAdmin = {
+    editModeAdmin = {
       label: 'Modifier l\'étage',
       icon: 'fa-edit',
       action: function() {
@@ -309,7 +312,7 @@
     };
 
 
-    var stopEditMode = {
+    stopEditMode = {
       label: 'Arrêter la modification',
       icon: 'fa-lock',
       action: function() {
@@ -318,7 +321,7 @@
       classes: 'btn-default'
     };
 
-    var saveToImage = {
+    saveToImage = {
       label: 'Sauvegarder l\'étage en image',
       icon: 'fa-picture-o',
       action: function() {
@@ -340,27 +343,32 @@
 
 
   SvgEditor.prototype.loadFilters = function() {
-    var that = this;
-    var filtersNames = GeoP.filtersNames;
-    for (var i = 0; i < filtersNames.length; i++) {
-      (function(filterName) {
-        that.loadBelongsToFilter('rooms', filterName);
-      }(filtersNames[i].name));
+    var that = this,
+      filtersNames = GeoP.filtersNames,
+      i;
+
+    function load(filterName) {
+      that.loadBelongsToFilter('rooms', filterName);
+    }
+    for (i = 0; i < filtersNames.length; i += 1) {
+      load(filtersNames[i].name);
     }
   };
 
   SvgEditor.prototype.mapOnItems = function(methodName, a1, a2) {
-    for (var i = 0; i < this.items.length; i++) {
-      if (this.items[i].element !== void 0) {
+    var i = 0;
+    for (i = 0; i < this.items.length; i += 1) {
+      if (this.items[i].element !== undefined) {
         this.items[i][methodName](a1, a2);
       }
     }
   };
 
   SvgEditor.prototype.loadRooms = function() {
-    var that = this;
-    for (var i = 0; i < this.json.rooms.length; i++) {
-      var r = this.json.rooms[i];
+    var that = this,
+      i, r;
+    for (i = 0; i < this.json.rooms.length; i += 1) {
+      r = this.json.rooms[i];
       that.createRoomFromJson(r);
     }
   };
@@ -370,36 +378,32 @@
   };
 
   SvgEditor.prototype.createPolylineMode = function(e) {
-    var scale = this.camera.scale;
-    var tX = -this.camera.x / scale;
-    var tY = -this.camera.y / scale;
-
+    var scale = this.camera.scale,
+      tX, tY, mouse;
+    tX = -this.camera.x / scale;
+    tY = -this.camera.y / scale;
     if (this.createPolylinePolyline === null) {
       this.createPolylinePolyline = new geoP.Polyline(this);
-
-      var mouse = this.getMousePos(e);
-
+      mouse = this.getMousePos(e);
       this.createPolylinePolyline.create(mouse.x / scale + tX, mouse.y / scale + tY);
     } else {
       this.createPolylinePolyline.appendPoint(this.newPoint.x, this.newPoint.y);
     }
   };
 
-  function toDeg(rad) {
-    return rad * 180 / Math.PI;
-  }
-
   function getAngle(cx, cy, ex, ey) {
-    var dx = ex - cx;
-    var dy = ey - cy;
-    var theta = Math.atan2(dy, dx);
+    var dx, dy, theta;
+    dx = ex - cx;
+    dy = ey - cy;
+    theta = Math.atan2(dy, dx);
     theta *= 180 / Math.PI; // rads to degs
     return theta;
   }
 
   function v2(angle, power) {
-    var x = Math.sin(angle);
-    var y = Math.cos(angle);
+    var x, y;
+    x = Math.sin(angle);
+    y = Math.cos(angle);
     x *= power;
     y *= power;
     return {
@@ -413,8 +417,9 @@
   }
 
   function hyp(newPoint, lastPoint) {
-    var pow = power(newPoint.x - lastPoint.x) + power(newPoint.y - lastPoint.y);
-    var sqrt = Math.sqrt(pow);
+    var pow, sqrt;
+    pow = power(newPoint.x - lastPoint.x) + power(newPoint.y - lastPoint.y);
+    sqrt = Math.sqrt(pow);
     return sqrt;
   }
 
@@ -425,8 +430,9 @@
   }
 
   function updateNewPositionIfShift($scope, newPoint, lastPoint) {
+    var a;
     if ($scope.isShift === true) {
-      var a = getAngle(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
+      a = getAngle(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
       if ((a > -22.5 && a < 22.5) || (a < -157.5 || a > 157.5)) {
         newPoint.y = lastPoint.y;
       } else if (a >= 22.5 && a < 67.5) {
@@ -444,10 +450,11 @@
   }
 
   SvgEditor.prototype.drawToMousePosition = function(e) {
-    var scale = this.camera.scale;
-    var tX = -this.camera.x / scale;
-    var tY = -this.camera.y / scale;
-    var mousePos = this.getMousePos(e);
+    var scale, tX, tY, mousePos, lastPoint;
+    scale = this.camera.scale;
+    tX = -this.camera.x / scale;
+    tY = -this.camera.y / scale;
+    mousePos = this.getMousePos(e);
 
     this.newPoint = {
       x: mousePos.x / scale + tX,
@@ -455,7 +462,7 @@
     };
 
     if (this.createPolylinePolyline !== null) {
-      var lastPoint = this.createPolylinePolyline.getLastPoint();
+      lastPoint = this.createPolylinePolyline.getLastPoint();
       if (lastPoint !== null) {
         if (this.createPolylineLine === null) {
           this.createPolylineLine = this.canvas.line(lastPoint.x, lastPoint.y, this.newPoint.x, this.newPoint.y);
@@ -477,11 +484,12 @@
   };
 
 
-  SvgEditor.prototype.createPolyline = function($scope) {
-    var that = this;
+  SvgEditor.prototype.createPolyline = function() {
+    var that = this,
+      createMode, move;
 
-    var createMode = this.createPolylineMode.bind(this);
-    var move = this.drawToMousePosition.bind(this);
+    createMode = this.createPolylineMode.bind(this);
+    move = this.drawToMousePosition.bind(this);
     this.paper.click(createMode);
     this.paper.mousemove(move);
 
@@ -508,7 +516,7 @@
       classes: 'btn-success',
       action: function() {
         if (that.createPolylinePolyline !== null) {
-          that.createPolylinePolyline.close($scope);
+          that.createPolylinePolyline.close();
           that.createPolylinePolyline.save();
           that.items.push(that.createPolylinePolyline);
         }
@@ -524,4 +532,4 @@
 
   geoP.SvgEditor = SvgEditor;
 
-}(GeoP));
+}(GeoP, jQuery));

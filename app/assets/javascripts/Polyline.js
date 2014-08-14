@@ -1,7 +1,7 @@
-/*global GeoP:true */
+/*global GeoP:true, jQuery:true */
 
-(function(geoP) {
-  "use strict";
+(function(geoP, $) {
+  'use strict';
 
   var Polyline = function(svgEditor) {
     geoP.extend(geoP.Shape, this, svgEditor);
@@ -19,33 +19,33 @@
     return point;
   };
 
-
-  function polygonArea(points) {
-    var l = points.length
-    var det = 0
-
-    points = points.map(normalize);
-    points = points.concat(points[0]);
-
-    for (var i = 0; i < l; i++) {
-      det += points[i].x * points[i + 1].y - points[i].y * points[i + 1].x
-    }
-    return Math.abs(det) / 2
-  }
-
   function normalize(point) {
     if (Array.isArray(point)) {
       return {
         x: point[0],
         y: point[1]
-      }
-    } else {
-      return point;
+      };
     }
+    return point;
   }
 
+  function polygonArea(points) {
+    var l = points.length,
+      det = 0,
+      i = 0;
+
+    points = points.map(normalize);
+    points = points.concat(points[0]);
+
+    for (i = 0; i < l; i += 1) {
+      det += points[i].x * points[i + 1].y - points[i].y * points[i + 1].x;
+    }
+    return Math.abs(det) / 2;
+  }
+
+
   Polyline.prototype.updateArea = function() {
-    if (this.areaText !== void 0) {
+    if (this.areaText !== undefined) {
       var area = this.getArea();
       this.areaText.node.innerHTML = area + ' m²';
       this.json.area = area;
@@ -54,19 +54,21 @@
 
 
   Polyline.prototype.getArea = function() {
-    var points = [];
+    var points = [],
+      i = 0,
+      scaleLen, scaleDim, p, a, l;
 
-    var scaleLen = this.svgEditor.mapScale.length;
-    var scaleDim = this.svgEditor.mapScale.getLength();
+    scaleLen = this.svgEditor.mapScale.length;
+    scaleDim = this.svgEditor.mapScale.getLength();
 
 
-    if (this.element === void 0 || this.element.node === void 0) {
+    if (this.element === undefined || this.element.node === undefined) {
       return 0;
     }
 
-    for (var i = 0; i < this.element.node.points.numberOfItems; i++) {
-      var p = this.element.node.points.getItem(i);
-      var a = {
+    for (i = 0; i < this.element.node.points.numberOfItems; i += 1) {
+      p = this.element.node.points.getItem(i);
+      a = {
         x: p.x,
         y: p.y
       };
@@ -75,14 +77,13 @@
       points.push(a);
     }
 
-    var l = polygonArea(points);
+    l = polygonArea(points);
     // reparse to handle toFixed to float
     l = parseFloat(parseFloat(l, 10).toFixed(1), 10);
     return l;
   };
 
   Polyline.prototype.create = function(x, y) {
-    var that = this;
     var point = this.createSvgPoint(x, y);
     this.element = this.svgEditor.canvas.polygon(point.x, point.y);
     this.element.attr({
@@ -91,23 +92,14 @@
     });
     this.group = this.svgEditor.canvas.group(this.element);
     this.addAndGetMovePoint(x, y, this.pointIndex);
-    this.element.click(function() {
-      var x = [];
-      var y = [];
-      for (var i = 0; i < that.moveCircles.length; i++) {
-        var p = that.moveCircles[i];
-        x.push(p.node.cx.baseVal.value);
-        y.push(p.node.cy.baseVal.value);
-      }
-    });
   };
 
   Polyline.prototype.updateTextPosition = function(textSvg, yTranslate) {
-    var bbox = this.element.node.getBBox();
-    var textBbox = textSvg.node.getBBox();
+    var bbox = this.element.node.getBBox(),
+      textBbox = textSvg.node.getBBox();
     textSvg.attr({
       x: bbox.x + bbox.width / 2 - textBbox.width / 2,
-      y: bbox.y + bbox.height / 2 + yTranslate * textBbox.height,
+      y: bbox.y + bbox.height / 2 + yTranslate * textBbox.height
     });
   };
 
@@ -128,30 +120,36 @@
     this.setMovePointsToVisibility('visible');
   };
 
+  function initMoveCirclesPointsIndex(polyline) {
+    var i = 0;
+    for (i = 0; i < polyline.moveCircles.length; i += 1) {
+      polyline.moveCircles[i].pointIndex = i;
+    }
+  }
+
+
   Polyline.prototype.removeDragPoint = function(dragPoint) {
-    var that = this;
-    var dragPointIndex = this.moveCircles.indexOf(dragPoint);
+    var that = this,
+      dragPointIndex;
+    dragPointIndex = this.moveCircles.indexOf(dragPoint);
     dragPoint.remove();
     this.moveCircles.splice(dragPointIndex, 1);
 
     initMoveCirclesPointsIndex(this);
-    // console.info('delete', dragPointIndex, this.moveCircles.map(function(u) {
-    //   return u.pointIndex;
-    // }));
-
     that.element.node.points.removeItem(dragPoint.pointIndex);
     this.save();
   };
 
   Polyline.prototype.addAndGetMovePoint = function(x, y, pointIndex) {
-    var that = this;
-    var movePointCircle = this.svgEditor.canvas.circle(x, y, 5);
+    var that = this,
+      movePointCircle, pointName, deleteLabel;
+    movePointCircle = this.svgEditor.canvas.circle(x, y, 5);
     movePointCircle.attr({
       stroke: 'red',
       fill: 'transparent',
       visibility: 'hidden'
     });
-    var pointName = parseInt(x, 10) + '-' + parseInt(y, 10);
+    pointName = parseInt(x, 10) + '-' + parseInt(y, 10);
     movePointCircle.pointName = pointName;
     movePointCircle.pointIndex = pointIndex;
 
@@ -165,13 +163,12 @@
         stroke: 'green'
       });
 
-      var deleteLabel = 'Supprimer le sommet (' + movePointCircle.pointName + ')';
+      deleteLabel = 'Supprimer le sommet (' + movePointCircle.pointName + ')';
       that.svgEditor.dragPointsOptions = [{
         label: deleteLabel,
         classes: 'btn-danger',
         icon: 'fa-trash-o',
-        action: function(callback) {
-
+        action: function() {
           that.svgEditor.$rootScope.$emit('RightPopupShow', deleteLabel, '', [{
             'label': 'Confirmer',
             classes: 'btn-success',
@@ -184,9 +181,6 @@
               });
             }
           }]);
-
-
-
         }
       }];
 
@@ -194,18 +188,21 @@
     });
 
     movePointCircle.drag(function(cx, cy, x, y, e) {
-      var scale = that.svgEditor.camera.scale;
-      var mousePos = that.svgEditor.getMousePos(e);
-      var mx = (mousePos.x / scale) - movePointCircle.node.cx.baseVal.value;
-      var my = (mousePos.y / scale) - movePointCircle.node.cy.baseVal.value;
+      /*jslint unparam: true*/
 
-      var ctm = that.group.node.getCTM();
+      var scale, mousePos, mx, my, ctm, p;
+      scale = that.svgEditor.camera.scale;
+      mousePos = that.svgEditor.getMousePos(e);
+      mx = (mousePos.x / scale) - movePointCircle.node.cx.baseVal.value;
+      my = (mousePos.y / scale) - movePointCircle.node.cy.baseVal.value;
+
+      ctm = that.group.node.getCTM();
       mx -= ctm.e / scale;
       my -= ctm.f / scale;
 
       movePointCircle.node.cx.baseVal.value += mx;
       movePointCircle.node.cy.baseVal.value += my;
-      var p = that.element.node.points.getItem(movePointCircle.pointIndex);
+      p = that.element.node.points.getItem(movePointCircle.pointIndex);
       p.x += mx;
       p.y += my;
 
@@ -237,19 +234,21 @@
       return callback({
         'status': 'KO'
       });
-    })
+    });
   };
 
   Polyline.prototype.remove = function() {
+    var i = 0,
+      c;
     this.element.remove();
-    for (var i = 0; i < this.moveCircles.length; i++) {
-      var c = this.moveCircles[i];
+    for (i = 0; i < this.moveCircles.length; i += 1) {
+      c = this.moveCircles[i];
       c.remove();
-    };
-    if (this.text !== void 0) {
+    }
+    if (this.text !== undefined) {
       this.text.remove();
     }
-    if (this.areaText !== void 0) {
+    if (this.areaText !== undefined) {
       this.areaText.remove();
     }
     this.svgEditor.removePolyline(this);
@@ -268,7 +267,6 @@
   };
 
   Polyline.prototype.fillFromFilterColor = function(filterName) {
-    var color = 'transparent';
     if (this.json[filterName] !== null) {
       var item = this.svgEditor.mapFilter.filters[filterName][this.json[filterName].id];
       if (item.state === true) {
@@ -297,6 +295,7 @@
 
 
   Polyline.prototype.loadFromJson = function(json) {
+    var points, i, p;
     this.json = json;
 
     if (this.json.points === null) {
@@ -304,20 +303,20 @@
     }
 
     if (this.json.points !== null) {
-      var points = JSON.parse(this.json.points);
-      for (var i = 0; i < points.length; i++) {
-        var p = points[i];
+      points = JSON.parse(this.json.points);
+      for (i = 0; i < points.length; i += 1) {
+        p = points[i];
         if (i === 0) {
           this.create(p.x, p.y);
         } else {
           this.appendPoint(p.x, p.y);
         }
       }
+      if (points.length === 0) {
+        return;
+      }
     }
-    if (points.length === 0) {
-      return;
-    }
-    this.close(this.svgEditor.$scope);
+    this.close();
 
     this.setTexts();
     this.doActionIfItemIsSelected();
@@ -326,7 +325,8 @@
   };
 
   Polyline.prototype.registerHover = function() {
-    this.element.hover(function(e) {
+    var that = this;
+    this.element.hover(function() {
       that.stroke(GeoP.Colors.Selected);
     }, function() {
       that.stroke(GeoP.Colors.NotSelected);
@@ -334,9 +334,10 @@
   };
 
   Polyline.prototype.setMovePointsToVisibility = function(visibility) {
-    var that = this;
-    for (var i = 0; i < that.moveCircles.length; i++) {
-      var movePointCircle = that.moveCircles[i];
+    var that = this,
+      i, movePointCircle;
+    for (i = 0; i < that.moveCircles.length; i += 1) {
+      movePointCircle = that.moveCircles[i];
       movePointCircle.attr({
         visibility: visibility,
         stroke: 'red'
@@ -350,9 +351,11 @@
   };
 
   Polyline.prototype.getHash = function() {
-    if (this.group !== void 0) {
-      var bbox = JSON.stringify(this.group.node.getBBox());
-      var h = [bbox];
+    /*jslint nomen: true*/
+    var bbox, h;
+    if (this.group !== undefined) {
+      bbox = JSON.stringify(this.group.node.getBBox());
+      h = [bbox];
       if (this.json !== null) {
         h.push(this.json.area);
       }
@@ -363,30 +366,31 @@
   };
 
   Polyline.prototype.getPointsData = function() {
-    var points = [];
-    if (this.group === void 0) {
+    var points = [],
+      camera, ctm, scale, x, y, i, p;
+    if (this.group === undefined) {
       return points;
     }
 
-    var camera = this.svgEditor.camera;
-    var ctm = this.group.node.getCTM();
-    var scale = camera.scale;
-    var x = ctm.e / scale;
-    var y = ctm.f / scale;
-    for (var i = 0; i < this.element.node.points.numberOfItems; i++) {
-      var p = this.element.node.points.getItem(i);
+    camera = this.svgEditor.camera;
+    ctm = this.group.node.getCTM();
+    scale = camera.scale;
+    x = ctm.e / scale;
+    y = ctm.f / scale;
+    for (i = 0; i < this.element.node.points.numberOfItems; i += 1) {
+      p = this.element.node.points.getItem(i);
       points.push({
-        x: p.x + x - camera.x * 1 / scale,
-        y: p.y + y - camera.y * 1 / scale
+        x: p.x + x - camera.x / scale,
+        y: p.y + y - camera.y / scale
       });
     }
     return JSON.stringify(points);
   };
 
   Polyline.prototype.save = function(callback) {
-    var that = this;
+    var data, that = this;
     if (this.json === null) {
-      var data = {
+      data = {
         'points': this.getPointsData(),
         'area': this.getArea(),
         'floor_id': this.svgEditor.json.id,
@@ -398,23 +402,23 @@
         that.setTexts();
         that.updateHashCode();
         return callback && callback();
-      }).error(function(data, status, headers, config) {
+      }).error(function() {
         console.error('impossible to create new');
       });
       return null;
     }
-    var data = {
+    data = {
       'id': this.json.id,
       'room': {
         'points': this.getPointsData(),
         'area': this.getArea()
       }
     };
-    this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function(d) {
+    this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function() {
       geoP.notifications.done('La pièce ' + that.json.name + ' a été sauvegardée.');
       that.updateHashCode();
       return callback && callback();
-    }).error(function(data, status, headers, config) {
+    }).error(function() {
       console.error('impossible to update');
     });
   };
@@ -465,8 +469,9 @@
 
 
   Polyline.prototype.select = function(e) {
-    var that = this;
-    var $scope = this.svgEditor.$scope;
+    var that = this,
+      $scope = this.svgEditor.$scope,
+      deleteLabel;
     // that.isSelected = true;
     that.svgEditor.cleanDragPointOptions();
 
@@ -481,7 +486,7 @@
         geoP.currentEvent = e;
         $scope.mapMode = 'edit';
 
-        var deleteLabel = 'Supprimer ' + that.json.name;
+        deleteLabel = 'Supprimer ' + that.json.name;
         that.svgEditor.currentOptions = [{
           label: deleteLabel,
           classes: 'btn-danger',
@@ -498,10 +503,9 @@
                     that.svgEditor.cleanCurrentOptions();
                     geoP.notifications.done('La pièce a été supprimé.');
                     return callback(res);
-                  } else {
-                    geoP.notifications.error('Impossible de supprimer la pièce ' + that.json.name);
                   }
-                })
+                  geoP.notifications.error('Impossible de supprimer la pièce ' + that.json.name);
+                });
               }
             }]);
 
@@ -514,7 +518,7 @@
     }
   };
 
-  Polyline.prototype.close = function($scope) {
+  Polyline.prototype.close = function() {
     var that = this;
 
     this.stroke(GeoP.Colors.NotSelected);
@@ -526,7 +530,7 @@
         this.element.click(this.select.bind(this));
         break;
       case 'show':
-        this.element.click(function(e) {
+        this.element.click(function() {
           var link = '/floors/' + that.svgEditor.json.id + '/room/' + that.json.id;
           if (window.location.href.indexOf(link) === -1) {
             document.location.href = link;
@@ -537,25 +541,29 @@
   };
 
 
-  function initMoveCirclesPointsIndex(polyline) {
-    for (var i = 0; i < polyline.moveCircles.length; i++) {
-      polyline.moveCircles[i].pointIndex = i;
+  function removeHoverLines(polyline) {
+    var i = 0,
+      linesCount = polyline.hoverLines.length;
+    for (i = 0; i < linesCount; i += 1) {
+      polyline.hoverLines[i].remove();
     }
-
+    polyline.hoverLines = [];
   }
 
-  function createHoverLine(polyline, sourceIndex, targetIndex) {
-    var that = polyline;
-    var mp = polyline.element.node.points.getItem(sourceIndex);
-    var mpn = polyline.element.node.points.getItem(targetIndex);
 
-    var line = polyline.svgEditor.canvas.line(mp.x, mp.y, mpn.x, mpn.y);
+
+  function createHoverLine(polyline, sourceIndex, targetIndex) {
+    var mp, mpn, line, $b;
+    mp = polyline.element.node.points.getItem(sourceIndex);
+    mpn = polyline.element.node.points.getItem(targetIndex);
+
+    line = polyline.svgEditor.canvas.line(mp.x, mp.y, mpn.x, mpn.y);
     line.attr({
       stroke: 'brown',
       fill: 'brown'
     });
 
-    var $b = $('body');
+    $b = $('body');
     line.hover(function() {
       $b.css('cursor', 'crosshair');
     }, function() {
@@ -563,12 +571,13 @@
     });
 
     line.click(function(e) {
+      var mousePos, camera, scale, pos, point;
       geoP.currentEvent = e;
-      var mousePos = polyline.svgEditor.getMousePos(e);
-      var camera = polyline.svgEditor.camera;
-      var scale = camera.scale;
+      mousePos = polyline.svgEditor.getMousePos(e);
+      camera = polyline.svgEditor.camera;
+      scale = camera.scale;
 
-      var pos = {
+      pos = {
         x: mousePos.x / scale - camera.x / scale,
         y: mousePos.y / scale - camera.y / scale
       };
@@ -577,15 +586,12 @@
         targetIndex += 1;
       }
 
-      var point = polyline.createSvgPoint(pos.x, pos.y);
+      point = polyline.createSvgPoint(pos.x, pos.y);
       polyline.element.node.points.insertItemBefore(point, targetIndex);
       polyline.addAndGetMovePoint(pos.x, pos.y, targetIndex);
 
 
       initMoveCirclesPointsIndex(polyline);
-      // console.info('create', polyline.moveCircles.map(function(u) {
-      //   return u.pointIndex;
-      // }));
 
       polyline.setMovePointsToVisibility('visible');
       polyline.updateArea();
@@ -601,26 +607,15 @@
 
   }
 
-  function removeHoverLines(polyline) {
-    var linesCount = polyline.hoverLines.length;
-    for (var i = 0; i < linesCount; i++) {
-      polyline.hoverLines[i].remove();
-    }
-    polyline.hoverLines = [];
-  }
-
 
   Polyline.prototype.createHoverLines = function() {
+    var i = 0;
     removeHoverLines(this);
-    for (var i = 0; i < this.moveCircles.length - 1; i++) {
+    for (i = 0; i < this.moveCircles.length - 1; i += 1) {
       createHoverLine(this, i, i + 1);
     }
     createHoverLine(this, 0, this.moveCircles.length - 1);
 
   };
-
-
   geoP.Polyline = Polyline;
-
-
-}(GeoP));
+}(GeoP, jQuery));

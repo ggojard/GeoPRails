@@ -1,4 +1,7 @@
+/*global GeoP:true*/
+
 (function(geoP) {
+  'use strict';
 
   var SvgEditor = geoP.SvgEditor;
 
@@ -7,8 +10,7 @@
     scale: 1,
     x: 0,
     y: 0
-  };;
-
+  };
 
   function registerCamera(floorId, camera) {
     if (localStorage) {
@@ -19,7 +21,7 @@
   function loadCamera(floorId) {
     if (localStorage) {
       var c = localStorage['floor-' + floorId + '-camera'];
-      if (c !== void 0) {
+      if (c !== undefined) {
         return JSON.parse(c);
       }
     }
@@ -36,12 +38,11 @@
   };
 
   SvgEditor.prototype.applyTransform = function() {
-    var x = 1 / this.camera.scale * this.camera.x;
-    var y = 1 / this.camera.scale * this.camera.y;
-    this.canvas.transform(["scale(", this.camera.scale, ") translate(", x, ' ', y, ')'].join(''));
+    var x, y;
+    x = 1 / this.camera.scale * this.camera.x;
+    y = 1 / this.camera.scale * this.camera.y;
+    this.canvas.transform(['scale(', this.camera.scale, ') translate(', x, ' ', y, ')'].join(''));
     registerCamera(this.json.id, this.camera);
   };
-
-
 
 }(GeoP));

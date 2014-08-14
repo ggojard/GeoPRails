@@ -12,7 +12,7 @@
       setTimeout(function() {
         $n.fadeOut(function() {
           $n.remove();
-        })
+        });
       }, 1000);
     }
 
@@ -28,8 +28,7 @@
       done: done,
       error: error
     };
-  }
+  };
 
   geoP.notifications = notificationManager();
-
 }(GeoP));

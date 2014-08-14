@@ -9,7 +9,7 @@
 
 
   Shape.prototype.stroke = function(c) {
-    if (this.element !== void 0) {
+    if (this.element !== undefined) {
       this.element.attr({
         'stroke': c
       });

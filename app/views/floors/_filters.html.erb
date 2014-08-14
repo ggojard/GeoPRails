@@ -1,54 +1,44 @@
-<div ng-controller="FiltersCtrl" class="filter-container panel panel-default">
-
-<div class="panel-heading">
-    <h3 class="panel-title">Filtres</h3>
+<div class="panel-group" id="filter-chart">
+  <div ng-controller="FiltersCtrl" class="filter-container panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+      <a data-toggle="collapse" data-parent="#filter-chart" href="#collapseOne">
+      Filtres</a> </h3>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse">
+      <div class="panel-body">
+        <ul id="myTab" class="nav nav-pills nav-justified" role="tablist" >
+          <li ng-repeat="filter in filterNames" ng-class="{active : $first}">
+            <a href="#{{filter.name}}" ng-click="filterPaneClick(filter);" >{{filter.label}}</a>
+          </li>
+        </ul>
+        <div id="tabContent" class="tab-content" >
+          <div class="tab-pane fade" ng-class="{active : $first, in : $first}" id="{{filter.name}}" ng-repeat="filter in filterNames" >
+            
+            <form class="form-horizontal">
+              <ul class="filters">
+                <li class="check-all color-filter">
+                  <div class="checkbox">
+                    <label><input type="checkbox" ng-model="f[filter.name].checkAll" ng-change="f[filter.name].CheckAll()"><span ng-if="f[filter.name].checkAll == true">Tout décocher</span><span ng-if="f[filter.name].checkAll == false">Tout cocher</span></label>
+                  </div>
+                </li>
+                <li ng-repeat="(id, rt) in f[filter.name].filters" style="background-color: {{rt.color}}" class='color-filter'>
+                  <div class="checkbox">
+                    <label><input type="checkbox" ng-model="rt.state" ng-change="f[filter.name].filterStateChange(rt)">
+                    <span class="badge pull-right">{{rt.areaSum}} m²</span>
+                    <span ng-if="rt.count > 0" class="badge pull-right">{{rt.count}} <i class="fa fa-codepen"></i></span>
+                    <span ng-if="rt.nbPeople > 0" class="badge pull-right">{{rt.nbPeople}} <i class="fa fa-user"></i></span>
+                    <span ng-if="rt.ratio > 0" class="badge pull-right">{{rt.ratio}} <i class="fa fa-user"></i> / m²</span>
+                    {{rt.name}}&nbsp;
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </form>
+        </div>
+      </div>
+      <%= render '/floors/charts' %>
+    </div>
   </div>
-
-  <div class="panel-body">
-
-
-
-
-<ul id="myTab" class="nav nav-pills nav-justified" role="tablist" >
-
-
-<li ng-repeat="filter in filterNames" ng-class="{active : $first}">
-<a href="#{{filter.name}}" ng-click="filterPaneClick(filter);" >{{filter.label}}</a>
-</li>
-</ul>
-<div id="tabContent" class="tab-content" >
-
-<div class="tab-pane fade" ng-class="{active : $first, in : $first}" id="{{filter.name}}" ng-repeat="filter in filterNames" >
-  
-    <form class="form-horizontal">
-
-<ul class="filters">
-  <li class="check-all color-filter">
-  <div class="checkbox">
-    <label><input type="checkbox" ng-model="f[filter.name].checkAll" ng-change="f[filter.name].CheckAll()"><span ng-if="f[filter.name].checkAll == true">Tout décocher</span><span ng-if="f[filter.name].checkAll == false">Tout cocher</span></label>
-  </div>
-  </li>
-  <li ng-repeat="(id, rt) in f[filter.name].filters" style="background-color: {{rt.color}}" class='color-filter'>
-
-  <div class="checkbox">
-    <label><input type="checkbox" ng-model="rt.state" ng-change="f[filter.name].filterStateChange(rt)"> 
-    <span class="badge pull-right">{{rt.areaSum}} m²</span>
-    <span ng-if="rt.count > 0" class="badge pull-right">{{rt.count}} <i class="fa fa-codepen"></i></span>
-    <span ng-if="rt.nbPeople > 0" class="badge pull-right">{{rt.nbPeople}} <i class="fa fa-user"></i></span>
-    <span ng-if="rt.ratio > 0" class="badge pull-right">{{rt.ratio}} <i class="fa fa-user"></i> / m²</span>
-    {{rt.name}}&nbsp;
-    </label>
-  </div>
-    </li>
-</ul>
-</form>
-
-
 </div>
-
-</div>
-<%= render '/floors/charts' %> 
-</div>
-
-
 </div>

@@ -4,13 +4,10 @@
   function registerFilterCtrl($scope, $rootScope, filterName) {
     $scope.f[filterName] = {};
     $scope.f[filterName].checkAll = false;
-    $scope.f[filterName]['filterStateChange'] = function(filter, e) {
+    $scope.f[filterName].filterStateChange = function(filter, e) {
       $rootScope.$emit(filterName + '_filters.StateChange', filter);
     };
-
     $scope.f[filterName].CheckAll = function() {
-      // unCheckAllFilters($rootScope);
-
       for (var key in $scope.f[filterName].filters) {
         if ($scope.f[filterName].filters.hasOwnProperty(key)) {
           var filter = $scope.f[filterName].filters[key];
@@ -18,7 +15,7 @@
           $rootScope.$emit(filterName + '_filters.StateChange', filter);
         }
       }
-    }
+    };
     $rootScope.$on(filterName + '_filters.Update', function(e, filters) {
       $scope.f[filterName].filters = filters;
     });
@@ -32,10 +29,25 @@
       registerFilterCtrl($scope, $rootScope, filter.name);
     }
 
-    $scope.filterPaneClick = function(filter){
+    $scope.filterPaneClick = function(filter) {
       $rootScope.$emit(filter.name + '_filters.Selected', filter);
-    }
+    };
+
+    console.log($('#filter-chart').length);
+    var c = function() {
+      // do something…
+      console.log('hide');
+    };
+    $('#filter-chart').on('hidden.bs.collapse', c);
+    $('#filter-chart').on('show.bs.collapse', c);
+
+    // $('#filter-chart h3').on('click', function() {
+    //   console.log('click');
+
+    //   $rootScope.$emit('MapFilter.Ready', $rootScope.mapFilter);
+    // })
+
   });
 
 
-}(GeoP))
+}(GeoP));
