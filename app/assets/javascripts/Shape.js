@@ -1,7 +1,7 @@
 /*global GeoP:true */
 
 (function(geoP) {
-  "use strict";
+  'use strict';
 
   var Shape = function(svgEditor) {
     this.svgEditor = svgEditor;

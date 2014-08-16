@@ -521,7 +521,7 @@
   Polyline.prototype.close = function() {
     var that = this;
 
-    this.stroke(GeoP.Colors.NotSelected);
+    this.stroke(geoP.Colors.NotSelected);
     this.updateHashCode();
 
     switch (this.svgEditor.$scope.mapMode) {

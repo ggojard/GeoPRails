@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Try v1.2 Bootstrap Online</title>
+
+		<!-- <script src="http://code.jquery.com/jquery-1.11.1.js"></script> -->
+		<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+
+<div class="panel-group" id="accordion">
+   <div class="panel panel-info">
+      <div class="panel-heading">
+         <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" 
+               href="#collapseexample">
+               Click me to exapand. Click me again to collapse.
+               Section --shown event
+            </a>
+         </h4>
+      </div>
+      <div id="collapseexample" class="panel-collapse collapse">
+         <div class="panel-body">
+            Nihil anim keffiyeh helvetica, craft beer labore wes anderson 
+            cred nesciunt sapiente ea proident. 
+            Ad vegan excepteur butcher vice lomo.
+         </div>
+      </div>
+   </div>
+</div>
+
+<script type="text/javascript">
+   $(function () { 
+      $('.collapse').on('show.bs.collapse', function () {
+         console.log('Hey, this alert shows up when you expand it');})
+      $('.collapse').on('hide.bs.collapse', function () {
+         console.log('hide');})      
+   });
+</script> 
+
+</body>
+</html>

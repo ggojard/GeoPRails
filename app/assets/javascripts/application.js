@@ -13,7 +13,7 @@
 //= require vendor/angular
 //= require vendor/angular-resource.min
 //= require vendor/jquery-2.1.1.min
-//= require vendor/bootstrap.min
+//= require vendor/bootstrap
 //= require vendor/snap.svg-min
 //= require vendor/d3.v3.min
 //= require GeoP

@@ -64,7 +64,7 @@
     this.currentOptions = [];
     this.dragPointsOptions = [];
 
-    $('#' + this.svgId).svgPan(this.canvas.node.id, this);
+    // $('#' + this.svgId).svgPan(this.canvas.node.id, this);
 
     dim = JSON.parse(this.json.image_dimensions);
     if (dim === null) {

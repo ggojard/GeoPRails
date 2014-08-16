@@ -82,6 +82,20 @@
   app.controller('CompanyCtrl', function($scope, $http) {
     $scope.company = gon.company;
     $scope.organizations = gon.organizations;
+    console.log('here');
+
+
+    // $(function() {
+      // console.log($('.collapse').length);
+      // $('.collapse').collapse();
+
+
+      // $('#accordion').on('hidden.bs.collapse', function() {
+      //   // do something…
+      //   console.log('hide');
+      // })
+
+    // }())
   });
 
   app.controller('FloorHeaderCtrl', function($scope, $http, $rootScope) {

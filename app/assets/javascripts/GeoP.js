@@ -26,14 +26,14 @@ var GeoP = {};
     p = construct(Parent, Array.prototype.slice.call(arguments, 2));
     child.base = {};
     for (prop in p) {
-      if (p.hasOwnProperty(prop)) {
+      // if (p.hasOwnProperty(prop)) {
         if (child[prop] === undefined) {
           value = p[prop];
           child[prop] = value;
         } else {
           child.base[prop] = Parent.prototype[prop];
         }
-      }
+      // }
     }
   };
 
@@ -69,4 +69,4 @@ var GeoP = {};
     }, 1000);
   });
 
-}(GeoP));
+}(GeoP, jQuery));

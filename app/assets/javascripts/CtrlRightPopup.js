@@ -49,4 +49,4 @@
       $scope.hide();
     });
   });
-}(GeoP));
+}(GeoP,jQuery));

@@ -38,17 +38,21 @@
       $rootScope.$emit(filter.name + '_filters.Selected', filter);
     };
 
-    console.log($('#filter-chart').length);
-    c = function() {
-      // do something…
-      console.log('hide');
-    };
-    $('#filter-chart').on('hidden.bs.collapse', c);
-    $('#filter-chart').on('show.bs.collapse', c);
+    // console.log($('#filter-chart').length);
+    
+    // $('#filter-chart-content').on('hidden.bs.collapse', c);
+    $('#filter-chart-content').on('shown.bs.collapse', function() {
+      $('#chart_div').show();
+      $rootScope.$emit('MapFilter.Ready', $rootScope.mapFilter);
+      $('#chart_div').addClass('animated bounceIn');
+    });
+    $('#filter-chart-content').on('show.bs.collapse', function() {
+      $('#chart_div').hide();
+    });
 
     // $('#filter-chart h3').on('click', function() {
     //   console.log('click');
-    //   $rootScope.$emit('MapFilter.Ready', $rootScope.mapFilter);
+    //   
     // })
   });
 
