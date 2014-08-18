@@ -1,5 +1,7 @@
 /*global GeoP:true, Snap:true, jQuery:true */
 
+
+
 (function(geoP, $) {
   'use strict';
 
@@ -44,6 +46,20 @@
     if (this.paper === null) {
       return;
     }
+
+    $((function() {
+
+      setTimeout(function() {
+        $('.chosen-select').chosen();
+
+      }, 2000);
+
+
+      // console.log($('#m-chosen').length);
+      // $('#m-chosen').chosen({
+      //   disable_search_threshold: 10
+      // });
+    }()));
 
 
 

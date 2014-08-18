@@ -1,10 +1,9 @@
-/*global GeoP:true, jQuery:true, gon:true*/
-(function(geoP, $) {
+/*global GeoP:true, gon:true*/
+(function(geoP) {
   'use strict';
   geoP.app.controller('OrganizationCtrl', function($scope, $http, $rootScope) {
     var i, floors, r, floorsArray, floorsMax, fId;
     geoP.handleKeyEventsForScope($scope);
-    $('.filter-container').hide();
     $scope.o = gon.organization;
     $scope.floors = [];
     floors = {};
@@ -27,7 +26,6 @@
         $rootScope.$emit('organization_filters.StateChange', $scope.filter);
         $scope.$apply();
       });
-      $('#loading').remove();
     }
 
     floorsArray = [];

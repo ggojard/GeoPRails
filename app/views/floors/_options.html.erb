@@ -1,44 +1,42 @@
-    <ul class="map-options">
-      <li ng-repeat="b in svgEditors[f.id].buttonOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
-      <li ng-if="mapMode == 'edit'">
-       <label for="mapScale">Echelle (mètre): </label> <input name="mapScale" type="number" step="any" ng-model="mapScale.length" ng-change="mapScale.updateMapScale()"/>      
-      </li>
-    </ul>
-    <ul class="map-options">
-      <li ng-repeat="b in svgEditors[f.id].currentOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
-    </ul>
-    <ul class="map-options">
-      <li ng-repeat="b in svgEditors[f.id].dragPointsOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
-    </ul>
-    <div id='debugger'></div>
-    <select multiple>
-      <option>Nom pièces</option>
-      <option>Personnes</option>
-    </select>
-
+<ul class="map-options">
+  <li ng-repeat="b in svgEditors[f.id].buttonOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+  <li ng-if="mapMode == 'edit'">
+    <label for="mapScale">Echelle (mètre): </label> <input name="mapScale" type="number" step="any" ng-model="mapScale.length" ng-change="mapScale.updateMapScale()"/>
+  </li>
+</ul>
+<ul class="map-options">
+  <li ng-repeat="b in svgEditors[f.id].currentOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+</ul>
+<ul class="map-options">
+  <li ng-repeat="b in svgEditors[f.id].dragPointsOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+</ul>
+<div id='debugger'></div>
+<select id="m-chosen" class="chosen-select">
+  <option>Nom pièces</option>
+  <option>Personnes</option>
+</select>
 <!-- Single button -->
 <div class="btn-group">
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    Voir sur la carte <span class="caret"></span>
+  Voir sur la carte <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" role="menu">
     <li><input type='checkbox'> Action</li>
-<!--     <li><a href="#">Another action</a></li>
+    <!--     <li><a href="#">Another action</a></li>
     <li><a href="#">Something else here</a></li>
     <li class="divider"></li>
     <li><a href="#">Separated link</a></li> -->
   </ul>
-</div>    
-<!-- 
-    <ul>
-      <li>
-       <label for="scale">Zoom : </label> <input name="scale" type="number" value="editor.camera.scale" ng-model="editor.camera.scale" ng-change="applyTransform()" step="0.1" min="0"/>
-      </li>
-      <li>
-       <label for="x">X :</label> <input name="x" type="number" value="editor.camera.x" ng-model="editor.camera.x" ng-change="applyTransform()" step="10"/>
-      </li>      
-      <li>
-       <label for="y">Y :</label> <input name="y" type="number" value="editor.camera.y" ng-model="editor.camera.y" ng-change="applyTransform()" step="10"/>
-      </li>            
-    </ul> -->
-  
+</div>
+<!--
+<ul>
+  <li>
+    <label for="scale">Zoom : </label> <input name="scale" type="number" value="editor.camera.scale" ng-model="editor.camera.scale" ng-change="applyTransform()" step="0.1" min="0"/>
+  </li>
+  <li>
+    <label for="x">X :</label> <input name="x" type="number" value="editor.camera.x" ng-model="editor.camera.x" ng-change="applyTransform()" step="10"/>
+  </li>
+  <li>
+    <label for="y">Y :</label> <input name="y" type="number" value="editor.camera.y" ng-model="editor.camera.y" ng-change="applyTransform()" step="10"/>
+  </li>
+</ul> -->

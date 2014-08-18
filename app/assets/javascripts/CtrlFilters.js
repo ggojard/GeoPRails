@@ -26,7 +26,7 @@
   }
 
   geoP.app.controller('FiltersCtrl', function($scope, $rootScope) {
-    var i, filter, c;
+    var i, filter;
     $scope.f = {};
     $scope.filterNames = GeoP.filtersNames;
     for (i = 0; i < $scope.filterNames.length; i += 1) {
@@ -38,22 +38,15 @@
       $rootScope.$emit(filter.name + '_filters.Selected', filter);
     };
 
-    // console.log($('#filter-chart').length);
-    
-    // $('#filter-chart-content').on('hidden.bs.collapse', c);
     $('#filter-chart-content').on('shown.bs.collapse', function() {
       $('#chart_div').show();
       $rootScope.$emit('MapFilter.Ready', $rootScope.mapFilter);
-      $('#chart_div').addClass('animated bounceIn');
+      $('#chart_div').addClass('animated fadeIn');
     });
     $('#filter-chart-content').on('show.bs.collapse', function() {
       $('#chart_div').hide();
     });
 
-    // $('#filter-chart h3').on('click', function() {
-    //   console.log('click');
-    //   
-    // })
   });
 
 }(GeoP, jQuery));

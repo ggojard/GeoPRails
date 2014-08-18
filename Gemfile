@@ -59,4 +59,7 @@ gem "haml"
 gem 'jquery-minicolors-rails'
 gem "gon"
 gem 'axlsx'
+gem 'newrelic_rpm'
+
+
 

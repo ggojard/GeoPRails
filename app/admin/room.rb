@@ -98,15 +98,15 @@ ActiveAdmin.register Room do
     end
 
 
-    f.has_many :people do |b|
-      b.inputs "Affectations" do
-        if !b.object.nil?
-          b.input :firstname
-          b.input :lastname
-        end
-        b.actions
-      end
-    end
+    # f.has_many :people do |b|
+    #   b.inputs "Affectations" do
+    #     if !b.object.nil?
+    #       b.input :firstname
+    #       b.input :lastname
+    #     end
+    #     b.actions
+    #   end
+    # end
 
     # f.inputs "Géométrie" do
     #   f.input :points, label: "Points"
