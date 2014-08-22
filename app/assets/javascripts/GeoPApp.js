@@ -1,12 +1,33 @@
-(function() {
+/*global gon:true, jQuery:true, GeoP:true, angular:true*/
+
+(function(geoP, gon, $, angular) {
+  'use strict';
+
+
+  function registerScroll(floorId, scrollTop) {
+    if (localStorage) {
+      localStorage['floor-' + floorId + '-scroll-top'] = scrollTop;
+    }
+  }
+
+  function loadScroll(floorId) {
+    if (localStorage) {
+      var c = localStorage['floor-' + floorId + '-scroll-top'];
+      if (c !== undefined) {
+        return parseInt(c, 10);
+      }
+    }
+    return 0;
+  }
 
   $(function() {
     // rescroll if loaded scroll !== of current scroll (because of browser jump ?)
     var $w = $(window);
-    $w.on('scroll', function(e) {
+    $w.on('scroll', function() {
+      var scrollLoaded, scrollTop;
       try {
-        var scrollLoaded = loadScroll(gon.floor.id);
-        var scrollTop = $(window).scrollTop();
+        scrollLoaded = loadScroll(gon.floor.id);
+        scrollTop = $(window).scrollTop();
         if (scrollTop !== scrollLoaded) {
           $w.scrollTop(scrollLoaded);
         }
@@ -28,22 +49,6 @@
   GeoP.app = app;
 
 
-
-  function registerScroll(floorId, scrollTop) {
-    if (localStorage) {
-      localStorage['floor-' + floorId + '-scroll-top'] = scrollTop;
-    }
-  }
-
-  function loadScroll(floorId) {
-    if (localStorage) {
-      var c = localStorage['floor-' + floorId + '-scroll-top'];
-      if (c !== undefined) {
-        return parseInt(c, 10);
-      }
-    }
-    return 0;
-  }
 
   app.directive("keepscrolltop", function($window) {
     var count = 0;
@@ -82,20 +87,6 @@
   app.controller('CompanyCtrl', function($scope, $http) {
     $scope.company = gon.company;
     $scope.organizations = gon.organizations;
-    console.log('here');
-
-
-    // $(function() {
-      // console.log($('.collapse').length);
-      // $('.collapse').collapse();
-
-
-      // $('#accordion').on('hidden.bs.collapse', function() {
-      //   // do something…
-      //   console.log('hide');
-      // })
-
-    // }())
   });
 
   app.controller('FloorHeaderCtrl', function($scope, $http, $rootScope) {
@@ -190,4 +181,4 @@
     GeoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
 
   });
-}());
+}(GeoP, gon, jQuery, angular));

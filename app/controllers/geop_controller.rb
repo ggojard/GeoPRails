@@ -12,7 +12,7 @@ class GeopController < ApplicationController
       if !global_company.nil?
         gon.company = global_company.to_builder_simple.attributes!
       end
-      
+      gon.i18n = I18n.t('formtastic.labels');
     end
   end
 end

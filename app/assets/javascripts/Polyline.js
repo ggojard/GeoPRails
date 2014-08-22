@@ -10,6 +10,7 @@
     // this.isSelected = false;
     this.hoverLines = [];
     this.json = null;
+    this.displayTexts = {};
   };
 
   Polyline.prototype.createSvgPoint = function(x, y) {
@@ -237,6 +238,16 @@
     });
   };
 
+  Polyline.prototype.removeDisplayTexts = function() {
+    var i, texts;
+    texts = Object.keys(this.texts);
+    for (i = 0; i < texts.length; i += 1) {
+      if (this.texts[texts[i]] !== undefined) {
+        this.texts[texts[i]].remove();
+      }
+    }
+  };
+
   Polyline.prototype.remove = function() {
     var i = 0,
       c;
@@ -245,12 +256,8 @@
       c = this.moveCircles[i];
       c.remove();
     }
-    if (this.text !== undefined) {
-      this.text.remove();
-    }
-    if (this.areaText !== undefined) {
-      this.areaText.remove();
-    }
+    this.revmoveDisplayTexts();
+
     this.svgEditor.removePolyline(this);
   };
 
@@ -262,8 +269,20 @@
 
 
   Polyline.prototype.setTexts = function() {
-    this.text = this.addText(this.json.name, 0);
-    this.areaText = this.addText(this.json.area + ' m²', 1);
+    var displayNames, id, line, displayText, text;
+    displayNames = this.svgEditor.displayProperties;
+    this.texts = {};
+    line = 0;
+    for (id in displayNames) {
+      if (displayNames.hasOwnProperty(id)) {
+        displayText = displayNames[id];
+        text = this.json[id];
+        if (displayText.value === true && text !== null) {
+          this.texts[id] = this.addText(displayText.format(text), line);
+          line += 1;
+        }
+      }
+    }
   };
 
   Polyline.prototype.fillFromFilterColor = function(filterName) {

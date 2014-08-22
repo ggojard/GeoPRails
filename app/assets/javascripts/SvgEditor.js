@@ -39,28 +39,13 @@
 
   SvgEditor = function(floorJson, $scope, $http, $rootScope, mapFilter) {
 
-    var dim, bgBox, border, imagePath;
+    var dim, bgBox, border, imagePath, that = this;
 
     this.svgId = 'map-' + floorJson.id;
     this.paper = snap('#' + this.svgId);
     if (this.paper === null) {
       return;
     }
-
-    $((function() {
-
-      setTimeout(function() {
-        $('.chosen-select').chosen();
-
-      }, 2000);
-
-
-      // console.log($('#m-chosen').length);
-      // $('#m-chosen').chosen({
-      //   disable_search_threshold: 10
-      // });
-    }()));
-
 
 
     this.mapFilter = mapFilter;
@@ -80,7 +65,11 @@
     this.currentOptions = [];
     this.dragPointsOptions = [];
 
-    // $('#' + this.svgId).svgPan(this.canvas.node.id, this);
+    that.displayProperties = $rootScope.displayNames;
+
+    $((function() {
+      $('#' + that.svgId).svgPan(that.canvas.node.id, that);
+    }()));
 
     dim = JSON.parse(this.json.image_dimensions);
     if (dim === null) {
@@ -130,6 +119,15 @@
       this.centerMap();
     }
 
+
+
+    $rootScope.$on('DisplayNames.Update', function(e, displayNames) {
+      /*jslint unparam:true*/
+      that.displayProperties = displayNames;
+      that.mapOnItems('removeDisplayTexts');
+      that.mapOnItems('setTexts');
+    });
+
   };
 
   SvgEditor.prototype.updateCamera = function() {
@@ -137,9 +135,7 @@
     this.camera.x = ctm.e;
     this.camera.y = ctm.f;
     this.camera.scale = ctm.d;
-
   };
-
 
   SvgEditor.prototype.cleanDragPointOptions = function() {
     this.dragPointsOptions = [];

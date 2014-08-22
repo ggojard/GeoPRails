@@ -1,0 +1,24 @@
+<div class="panel-group" id="display-text" ng-controller="DisplayTextCtrl">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+      <a data-toggle="collapse" data-parent="#fdisplay-text"
+        href="#display-text-content">Voir sur les plans
+      </a>
+      </h3>
+    </div>
+    <div id="display-text-content" class="panel-collapse collapse">
+      <div class="panel-body">
+        <form class="form-horizontal">
+          <ul class="filters">
+            <li class="check-all color-filter" ng-repeat="(id,p) in properties">
+              <div class="checkbox">
+                <label><input type="checkbox" ng-change="updateDisplayText()" id="select-display-name-{{p.name}}" ng-model="p.value"><span>{{p.label}}</span></label>
+              </div>
+            </li>
+          </ul>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

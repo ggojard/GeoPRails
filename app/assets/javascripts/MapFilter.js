@@ -24,18 +24,20 @@
   };
 
   MapFilter.prototype.registerFiltersStateChange = function() {
-    var that = this;
-    var filtersNames = GeoP.filtersNames;
+    var that = this,
+      filtersNames = geoP.filtersNames,
+      j, i;
+
 
     function register(filterName) {
-      that.resisterFilterStateChange(filterName, function(e, item) {
-        for (var j = 0; j < that.editors.length; j++) {
+      that.resisterFilterStateChange(filterName, function() {
+        for (j = 0; j < that.editors.length; j += 1) {
           that.editors[j].mapOnItems('fillFromFilterColor', filterName);
         }
       });
     }
 
-    for (var i = 0; i < filtersNames.length; i++) {
+    for (i = 0; i < filtersNames.length; i += 1) {
       register(filtersNames[i].name);
     }
   };

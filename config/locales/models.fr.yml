@@ -5,6 +5,9 @@ fr:
     labels:
       room:
         name: "Nom"
+        area: "Aire"
+        network: "Ports Réseau"
+        affectations: "Affectations"
       building:
         name: "Nom"
         company: "Entreprise"
@@ -42,8 +45,6 @@ fr:
         monitorreference: "Référence écran"
         computerreference: "Référence ordinateur"
       person_state:
-        name : "Nom"
-      room:
         name : "Nom"
       room_ground_type :
         name : "Nom"
