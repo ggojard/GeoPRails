@@ -27,14 +27,14 @@
       return [v + ' m²'];
     }));
     p.push(getDisplayNameFilter('network', false, function(v) {
-      return v.split('\r\n');//.join(', ');
+      return v.split('\r\n');
     }));
     p.push(getDisplayNameFilter('affectations', false, function(v) {
       return v.filter(function(f) {
         return f.person !== undefined;
       }).map(function(m) {
         return m.person.fullname;
-      });//.join(', ');
+      });
     }));
 
     $scope.updateDisplayText = function() {
@@ -49,11 +49,9 @@
       //sourceItemHandleScope, destSortableScope
       accept: function() {
         return true;
-      }, //override to determine drag is allowed or not. default is true.
-      //event
-      itemMoved: function() {},
-      orderChanged: function(event) {
-        console.log(event, p);
+      },
+      // itemMoved: function() {},
+      orderChanged: function() {
         $scope.updateDisplayText();
       },
       containment: '#display-text-content' //optional param.

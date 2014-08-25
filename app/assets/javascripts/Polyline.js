@@ -102,10 +102,7 @@
   Polyline.prototype.updateTextPosition = function() {
     var that = this, bbox = this.element.node.getBBox(),
       textBbox, lines;
-    console.log(bbox);
-
     lines = this.text.selectAll('tspan');
-    console.log(lines);
     this.text.attr({
       x: bbox.x,
       y: bbox.y
