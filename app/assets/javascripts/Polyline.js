@@ -240,9 +240,9 @@
     });
 
     movePointCircle.hover(function() {
-      that.group.undrag();
+      // that.group.undrag();
     }, function() {
-      that.group.drag();
+      // that.group.drag();
     });
     this.pointIndex += 1;
 
@@ -618,7 +618,7 @@
 
     switch (this.svgEditor.$scope.mapMode) {
       case 'edit':
-        this.group.drag();
+        // this.group.drag();
         this.element.click(this.select.bind(this));
         break;
       case 'show':
