@@ -14,7 +14,7 @@
     this.hoverLines = [];
     this.json = null;
     this.displayTexts = {};
-
+    this.dragMode = false ;
   };
 
   Polyline.prototype.createSvgPoint = function(x, y) {
@@ -100,7 +100,8 @@
   };
 
   Polyline.prototype.updateTextPosition = function() {
-    var that = this, bbox = this.element.node.getBBox(),
+    var that = this,
+      bbox = this.element.node.getBBox(),
       textBbox, lines;
     lines = this.text.selectAll('tspan');
     this.text.attr({
@@ -600,11 +601,18 @@
                 });
               }
             }]);
-
           }
         }];
         that.addZoomOnItemOption();
         that.addCreateDragPointModeOnItemOption();
+        // that.svgEditor.currentOptions.push({
+        //   label: 'Activer le déplacement',
+        //   classes: 'btn-default',
+        //   icon: ' fa-arrows',
+        //   action: function(callback) {
+        //     that.dragMode = true;
+        //   }
+        // });
         $scope.$apply();
         break;
     }
