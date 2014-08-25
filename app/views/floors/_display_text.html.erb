@@ -7,12 +7,14 @@
       </a>
       </h3>
     </div>
+    <!-- collapse -->
     <div id="display-text-content" class="panel-collapse collapse">
       <div class="panel-body">
-        <form class="form-horizontal">
-          <ul class="filters">
-            <li class="check-all color-filter" ng-repeat="(id,p) in properties">
-              <div class="checkbox">
+        <form class="form-horizontal" >
+          <ul class="filters" sortable="dragControlListeners" ng-model="properties">
+            <li class="check-all color-filter" ng-repeat="p in properties" sortable-item>
+              <div class="checkbox" >
+                <i sortable-item-handle class="fa fa-exchange"></i>
                 <label><input type="checkbox" ng-change="updateDisplayText()" id="select-display-name-{{p.name}}" ng-model="p.value"><span>{{p.label}}</span></label>
               </div>
             </li>

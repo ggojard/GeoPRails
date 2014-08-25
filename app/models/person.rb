@@ -20,7 +20,9 @@ class Person < ActiveRecord::Base
   end
 
   def format_phone (a)
-    a.gsub(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, '\1 \2 \3 \4 \5')
+    if a.present?
+      a.gsub(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, '\1 \2 \3 \4 \5')
+    end
   end
 
   def format_telephone

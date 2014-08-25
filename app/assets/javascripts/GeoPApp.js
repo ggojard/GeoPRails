@@ -36,7 +36,7 @@
 
   });
 
-  var app = angular.module('GeoP', []).run(function($rootScope) { // instance-injector
+  var app = angular.module('GeoP', ['ui.sortable']).run(function($rootScope) { // instance-injector
     $rootScope.filters = [];
 
     try {
@@ -143,21 +143,28 @@
     }
 
     function keyDown(ev) {
+      var key;
       handleCtrlAndShif(ev);
       key = getKey(ev);
-      if (key === 90) {
-        $scope.isZKeyDown = true;
+      if (key !== undefined) {
+        if (key === 90) {
+          $scope.isZKeyDown = true;
+        }
+        $scope.$apply();
       }
-      $scope.$apply();
+
     }
 
     function keyUp(ev) {
+      var key;
       handleCtrlAndShif(ev);
       key = getKey(ev);
-      if (key === 90) {
-        $scope.isZKeyDown = false;
+      if (key !== undefined) {
+        if (key === 90) {
+          $scope.isZKeyDown = false;
+        }
+        $scope.$apply();
       }
-      $scope.$apply();
     }
 
 

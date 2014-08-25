@@ -23,7 +23,7 @@ GeoP::Application.routes.draw do
   get '/floors/:id/edit' => 'floors#edit'
   get '/floors/:id/room/:room_id' => 'floors#show'
   put '/floors/:id' => 'floors#update'
-  get '/floors/images/:id' => 'floors#image'
+  get '/floors/images/:id' => 'images#floor_image'
   get "floors/:id/json" => 'floors#show_json'
 
   get "rooms/:id/delete" => 'rooms#delete'

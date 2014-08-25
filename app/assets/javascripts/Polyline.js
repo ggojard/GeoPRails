@@ -3,7 +3,10 @@
 (function(geoP, $) {
   'use strict';
 
-  var Polyline = function(svgEditor) {
+  var charHeight = 14,
+    Polyline;
+
+  Polyline = function(svgEditor) {
     geoP.extend(geoP.Shape, this, svgEditor);
     this.moveCircles = [];
     this.pointIndex = 0;
@@ -11,6 +14,7 @@
     this.hoverLines = [];
     this.json = null;
     this.displayTexts = {};
+
   };
 
   Polyline.prototype.createSvgPoint = function(x, y) {
@@ -95,25 +99,52 @@
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 
-  Polyline.prototype.updateTextPosition = function(textSvg, yTranslate) {
-    var bbox = this.element.node.getBBox(),
-      textBbox = textSvg.node.getBBox();
-    textSvg.attr({
+  Polyline.prototype.updateTextPosition = function() {
+    var that = this, bbox = this.element.node.getBBox(),
+      textBbox, lines;
+    console.log(bbox);
+
+    lines = this.text.selectAll('tspan');
+    console.log(lines);
+    this.text.attr({
+      x: bbox.x,
+      y: bbox.y
+    });
+
+    lines.forEach(function(l) {
+      var options = {
+        x: bbox.x,
+        style: 'text-anchor: middle'
+      };
+      options.dy = charHeight;
+      l.attr(options);
+    });
+    textBbox = this.text.getBBox();
+    this.text.attr({
       x: bbox.x + bbox.width / 2 - textBbox.width / 2,
-      y: bbox.y + bbox.height / 2 + yTranslate * textBbox.height
+      y: bbox.y + bbox.height / 2 - textBbox.height / 2
+    });
+    this.text.selectAll('tspan').attr({
+      x: bbox.x + bbox.width / 2 - textBbox.width / 2
+    });
+
+    lines.forEach(function(l) {
+      var options = {},
+        tWidth, n, width, dx;
+      tWidth = textBbox.width;
+
+      n = that.svgEditor.canvas.text(0, 0, l.node.innerHTML);
+
+      width = n.getBBox().width;
+      n.remove();
+      dx = (tWidth - width) / 2;
+      if (dx > 0) {
+        options.dx = (tWidth - width) / 2;
+      }
+      l.attr(options);
     });
   };
 
-  Polyline.prototype.addText = function(text, yTranslate) {
-    var t = this.svgEditor.canvas.text(0, 0, text);
-    t.attr({
-      fill: 'black'
-    });
-    t.node.style.cssText = 'font-size:12px;font-family:arial';
-    this.updateTextPosition(t, yTranslate);
-    this.group.add(t);
-    return t;
-  };
 
 
   Polyline.prototype.releaseDragPoints = function() {
@@ -208,8 +239,7 @@
       p.y += my;
 
       that.updateArea();
-      that.updateTextPosition(that.text, 0);
-      that.updateTextPosition(that.areaText, 1);
+      that.updateTextPosition();
     });
 
     movePointCircle.hover(function() {
@@ -239,11 +269,11 @@
   };
 
   Polyline.prototype.removeDisplayTexts = function() {
-    var i, texts;
-    texts = Object.keys(this.texts);
-    for (i = 0; i < texts.length; i += 1) {
-      if (this.texts[texts[i]] !== undefined) {
-        this.texts[texts[i]].remove();
+    var i;
+    // texts = Object.keys(this.texts);
+    for (i = 0; i < this.texts.length; i += 1) {
+      if (this.texts[i] !== undefined) {
+        this.texts[i].remove();
       }
     }
   };
@@ -267,22 +297,68 @@
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 
+  Polyline.prototype.putInTextArray = function(tokens, maxLineLength) {
+    var texts = [],
+      i, token, line = [],
+      separator = ', ',
+      lineString, t;
+    if (tokens.length === 1) {
+      return tokens;
+    }
+    for (i = 0; i < tokens.length; i += 1) {
+      token = tokens[i];
+      line.push(token);
+      lineString = line.join(separator);
+
+      t = this.svgEditor.canvas.text(0, 0, lineString);
+      if (t.getBBox().width > maxLineLength) {
+        if (line.length > 1) {
+          line.pop();
+          i -= 1;
+          lineString = line.join(separator);
+        }
+        texts.push(lineString);
+        line = [];
+      }
+      t.remove();
+    }
+    texts.push(line.join(separator));
+    return texts;
+  };
+
 
   Polyline.prototype.setTexts = function() {
-    var displayNames, id, line, displayText, text;
+    var displayNames, id, textBbox, displayText, text, i, texts, bbox, pos, t;
+    bbox = this.element.node.getBBox();
     displayNames = this.svgEditor.displayProperties;
-    this.texts = {};
-    line = 0;
-    for (id in displayNames) {
-      if (displayNames.hasOwnProperty(id)) {
-        displayText = displayNames[id];
-        text = this.json[id];
-        if (displayText.value === true && text !== null) {
-          this.texts[id] = this.addText(displayText.format(text), line);
-          line += 1;
-        }
+    if (displayNames === undefined) {
+      console.error('displayProperties is undefined');
+      return;
+    }
+    this.texts = [];
+    texts = [];
+    for (i = 0; i < displayNames.length; i += 1) {
+      displayText = displayNames[i];
+      id = displayText.name;
+      text = this.json[id];
+      if (displayText.value === true && text !== null) {
+        texts = texts.concat(this.putInTextArray(displayText.format(text), bbox.width));
       }
     }
+
+
+
+    this.text = this.svgEditor.canvas.text(0, 0, texts);
+    this.texts.push(this.text);
+    this.text.attr({
+      fill: 'black',
+      style: 'text-anchor: middle'
+    });
+    this.text.node.style.cssText = 'font-size:12px;font-family:arial';
+
+
+
+    this.updateTextPosition();
   };
 
   Polyline.prototype.fillFromFilterColor = function(filterName) {
