@@ -7,7 +7,7 @@ class RoomsController < GeopController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
-    @url = '/floors/' + @room.floor_id.to_s + '/room/' + @room.id.to_s
+    @url = '/floors/' + @room.floor_id.to_s + '#' + @room.id.to_s
     redirect_to @url
   end
 
