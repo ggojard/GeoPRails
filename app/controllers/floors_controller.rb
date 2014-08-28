@@ -33,11 +33,12 @@ class FloorsController < GeopController
   # Use callbacks to share common setup or constraints between actions.
   def set
     @floor = Floor.find_by_id(params[:id])
-    if (params[:room_id])
-      gon.room = Room.find_by_id(params[:room_id]).to_builder.attributes!
-    else
-      gon.room = "{}".to_json
-    end
+    # if (params[:room_id])
+      # gon.roomId = params[:room_id].to_i
+    #   gon.room = Room.find_by_id(params[:room_id]).to_builder.attributes!
+    # else
+    #   gon.room = "{}".to_json
+    # end
 
   end
 

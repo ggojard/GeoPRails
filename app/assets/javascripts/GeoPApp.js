@@ -84,23 +84,25 @@
   // }
 
 
-  app.controller('CompanyCtrl', function($scope, $http) {
+  app.controller('CompanyCtrl', function($scope) {
     $scope.company = gon.company;
     $scope.organizations = gon.organizations;
   });
 
-  app.controller('FloorHeaderCtrl', function($scope, $http, $rootScope) {
+  app.controller('FloorHeaderCtrl', function($scope) {
     $scope.floorJson = gon.floor;
-    $scope.roomJson = gon.room;
+    // $scope.roomId = gon.roomId;
+    // $scope.roomJson = gon.room;
   });
 
   GeoP.setFloorMaps = function(floors, $scope, $http, $rootScope, callback) {
     $scope.svgEditors = {};
     var mapFilter = new GeoP.MapFilter($rootScope);
     setTimeout(function() {
-      for (var i = 0; i < floors.length; i++) {
-        var floor = floors[i];
-        var editor = new GeoP.SvgEditor(floor, $scope, $http, $rootScope, mapFilter);
+      var i, floor, editor;
+      for (i = 0; i < floors.length; i += 1) {
+        floor = floors[i];
+        editor = new GeoP.SvgEditor(floor, $scope, $http, $rootScope, mapFilter);
         $scope.svgEditors[floor.id] = editor;
         editor.loadRooms();
         editor.setOptions();
@@ -175,7 +177,9 @@
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
     $scope.mapMode = gon.mode;
     $scope.room = null;
-    $scope.roomJson = gon.room;
+    $scope.roomId = GeoP.getRoomIdFromHash();
+    // $scope.roomJson = gon.room;
+
 
     $scope.floors = [gon.floor];
 

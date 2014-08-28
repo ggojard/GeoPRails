@@ -27,14 +27,25 @@ var GeoP = {};
     child.base = {};
     for (prop in p) {
       // if (p.hasOwnProperty(prop)) {
-        if (child[prop] === undefined) {
-          value = p[prop];
-          child[prop] = value;
-        } else {
-          child.base[prop] = Parent.prototype[prop];
-        }
+      if (child[prop] === undefined) {
+        value = p[prop];
+        child[prop] = value;
+      } else {
+        child.base[prop] = Parent.prototype[prop];
+      }
       // }
     }
+  };
+
+
+  geoP.getRoomIdFromHash = function() {
+    var hash, res;
+    hash = window.location.hash;
+    if (hash.length > 0) {
+      res = hash.replace('#', '');
+      return parseInt(res, 10);
+    }
+
   };
 
   geoP.hashCode = function(s) {

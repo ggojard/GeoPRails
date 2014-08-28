@@ -59,6 +59,7 @@
     this.createPolylinePolyline = null;
     this.newPoint = null;
     this.items = [];
+    this.itemsById = {};
     this.canvas = this.paper.g();
     this.canvas.node.id = 'viewport-' + floorJson.id;
     this.lastMovePosition = null;
@@ -66,6 +67,14 @@
     this.dragPointsOptions = [];
 
     that.displayProperties = $rootScope.displayNames;
+
+    window.onhashchange = function() {
+      $scope.roomId = geoP.getRoomIdFromHash();
+      that.itemsById[$scope.roomId].doActionIfItemIsSelected();
+      setTimeout(function() {
+        $scope.$apply();
+      }, 0);
+    };
 
     $((function() {
       $('#' + that.svgId).svgPan(that.canvas.node.id, that);
@@ -239,6 +248,7 @@
     var b = new geoP.Polyline(this);
     b.loadFromJson(json);
     this.items.push(b);
+    this.itemsById[b.json.id] = b;
   };
 
   SvgEditor.prototype.updateBelongsToAvailable = function(belongsToNameList, belongsToKeyName) {

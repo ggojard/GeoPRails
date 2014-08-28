@@ -354,7 +354,14 @@
   };
 
   Polyline.prototype.doActionIfItemIsSelected = function() {
-    if (this.svgEditor.$scope.roomJson && this.svgEditor.$scope.roomJson.id === this.json.id) {
+
+    if (this.svgEditor.$scope.roomId && this.svgEditor.$scope.roomId === this.json.id) {
+      this.svgEditor.items.map(function(i) {
+        i.element.attr({
+          fill: 'transparent'
+        });
+      });
+
       this.svgEditor.currentOptions = [];
       this.element.attr({
         fill: '#1dc8fe'
@@ -655,7 +662,7 @@
         break;
       case 'show':
         this.element.click(function() {
-          var link = '/floors/' + that.svgEditor.json.id + '/room/' + that.json.id;
+          var link = '/floors/' + that.svgEditor.json.id + '#' + that.json.id;
           if (window.location.href.indexOf(link) === -1) {
             document.location.href = link;
           }
