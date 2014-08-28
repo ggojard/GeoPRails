@@ -14,7 +14,7 @@
     this.hoverLines = [];
     this.json = null;
     this.displayTexts = {};
-    this.dragMode = false ;
+    this.dragMode = false;
   };
 
   Polyline.prototype.createSvgPoint = function(x, y) {
@@ -100,18 +100,14 @@
   };
 
   Polyline.prototype.updateTextPosition = function() {
-    var that = this,
-      bbox = this.element.node.getBBox(),
-      textBbox, lines;
+    var bbox = this.element.node.getBBox(),
+      textBbox, lines, x;
     lines = this.text.selectAll('tspan');
-    this.text.attr({
-      x: bbox.x,
-      y: bbox.y
-    });
 
+    x = bbox.x + bbox.width / 2;
     lines.forEach(function(l) {
       var options = {
-        x: bbox.x,
+        x: x,
         style: 'text-anchor: middle'
       };
       options.dy = charHeight;
@@ -119,28 +115,10 @@
     });
     textBbox = this.text.getBBox();
     this.text.attr({
-      x: bbox.x + bbox.width / 2 - textBbox.width / 2,
+      x: x,
       y: bbox.y + bbox.height / 2 - textBbox.height / 2
     });
-    this.text.selectAll('tspan').attr({
-      x: bbox.x + bbox.width / 2 - textBbox.width / 2
-    });
 
-    lines.forEach(function(l) {
-      var options = {},
-        tWidth, n, width, dx;
-      tWidth = textBbox.width;
-
-      n = that.svgEditor.canvas.text(0, 0, l.node.innerHTML);
-
-      width = n.getBBox().width;
-      n.remove();
-      dx = (tWidth - width) / 2;
-      if (dx > 0) {
-        options.dx = (tWidth - width) / 2;
-      }
-      l.attr(options);
-    });
   };
 
 
@@ -241,9 +219,13 @@
     });
 
     movePointCircle.hover(function() {
-      // that.group.undrag();
+      if (that.dragMode === true) {
+        that.group.undrag();
+      }
     }, function() {
-      // that.group.drag();
+      if (that.dragMode === true) {
+        that.group.drag();
+      }
     });
     this.pointIndex += 1;
 
@@ -295,12 +277,15 @@
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 
-  Polyline.prototype.putInTextArray = function(tokens, maxLineLength) {
+  Polyline.prototype.putInTextArray = function(tokens, maxLineLength, merge) {
     var texts = [],
       i, token, line = [],
       separator = ', ',
       lineString, t;
     if (tokens.length === 1) {
+      return tokens;
+    }
+    if (merge === false) {
       return tokens;
     }
     for (i = 0; i < tokens.length; i += 1) {
@@ -326,7 +311,7 @@
 
 
   Polyline.prototype.setTexts = function() {
-    var displayNames, id, textBbox, displayText, text, i, texts, bbox, pos, t;
+    var displayNames, id, displayText, text, i, texts, bbox;
     bbox = this.element.node.getBBox();
     displayNames = this.svgEditor.displayProperties;
     if (displayNames === undefined) {
@@ -340,21 +325,14 @@
       id = displayText.name;
       text = this.json[id];
       if (displayText.value === true && text !== null) {
-        texts = texts.concat(this.putInTextArray(displayText.format(text), bbox.width));
+        texts = texts.concat(this.putInTextArray(displayText.format(text), bbox.width, displayText.merge));
       }
     }
 
-
-
     this.text = this.svgEditor.canvas.text(0, 0, texts);
     this.texts.push(this.text);
-    this.text.attr({
-      fill: 'black',
-      style: 'text-anchor: middle'
-    });
-    this.text.node.style.cssText = 'font-size:12px;font-family:arial';
-
-
+    this.text.node.style.cssText = 'font-size:12px;font-family:arial;fill:black';
+    this.group.add(this.text);
 
     this.updateTextPosition();
   };
@@ -548,6 +526,46 @@
     });
   };
 
+
+  Polyline.prototype.addMovePolylineOption = function() {
+    var that = this,
+      mode, enableMode, disableMode;
+
+    enableMode = {
+      id: 'drag-mode',
+      label: 'Activer le déplacement',
+      classes: 'btn-default',
+      icon: ' fa-arrows',
+      action: function() {
+        that.dragMode = true;
+        var i = that.svgEditor.currentOptions.indexOf(enableMode);
+        that.svgEditor.currentOptions[i] = disableMode;
+        that.select();
+      }
+    };
+    disableMode = {
+      id: 'drag-mode',
+      label: 'Désactiver le déplacement',
+      classes: 'btn-danger',
+      icon: ' fa-stop',
+      action: function() {
+        that.dragMode = false;
+        var i = that.svgEditor.currentOptions.indexOf(disableMode);
+        that.svgEditor.currentOptions[i] = enableMode;
+        that.select();
+      }
+    };
+
+    if (this.dragMode === false) {
+      mode = enableMode;
+    } else {
+      mode = disableMode;
+    }
+
+    that.svgEditor.currentOptions.push(mode);
+
+  };
+
   Polyline.prototype.addCreateDragPointModeOnItemOption = function() {
     var that = this;
     this.svgEditor.currentOptions.push({
@@ -566,6 +584,13 @@
       $scope = this.svgEditor.$scope,
       deleteLabel;
     // that.isSelected = true;
+
+    if (this.dragMode === true) {
+      this.group.drag();
+    } else {
+      this.group.undrag();
+    }
+
     that.svgEditor.cleanDragPointOptions();
 
     switch ($scope.mapMode) {
@@ -605,15 +630,11 @@
         }];
         that.addZoomOnItemOption();
         that.addCreateDragPointModeOnItemOption();
-        // that.svgEditor.currentOptions.push({
-        //   label: 'Activer le déplacement',
-        //   classes: 'btn-default',
-        //   icon: ' fa-arrows',
-        //   action: function(callback) {
-        //     that.dragMode = true;
-        //   }
-        // });
-        $scope.$apply();
+        that.addMovePolylineOption();
+        setTimeout(function() {
+          $scope.$apply();
+        });
+
         break;
     }
   };
@@ -626,7 +647,6 @@
 
     switch (this.svgEditor.$scope.mapMode) {
       case 'edit':
-        // this.group.drag();
         this.element.click(this.select.bind(this));
         break;
       case 'show':
