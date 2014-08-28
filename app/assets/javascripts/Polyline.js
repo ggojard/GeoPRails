@@ -373,6 +373,10 @@
       return;
     }
 
+    if (this.json.affectations.length > 0) {
+      this.json.ratio = parseFloat(this.json.area / this.json.affectations.length, 10).toFixed(2);
+    }
+    
     if (this.json.points !== null) {
       points = JSON.parse(this.json.points);
       for (i = 0; i < points.length; i += 1) {
