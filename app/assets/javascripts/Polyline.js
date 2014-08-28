@@ -357,9 +357,11 @@
 
     if (this.svgEditor.$scope.roomId && this.svgEditor.$scope.roomId === this.json.id) {
       this.svgEditor.items.map(function(i) {
-        i.element.attr({
-          fill: 'transparent'
-        });
+        if (i.element !== undefined) {
+          i.element.attr({
+            fill: 'transparent'
+          });
+        }
       });
 
       this.svgEditor.currentOptions = [];
