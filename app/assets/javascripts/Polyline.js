@@ -331,7 +331,7 @@
 
     this.text = this.svgEditor.canvas.text(0, 0, texts);
     this.texts.push(this.text);
-    this.text.node.style.cssText = 'font-size:12px;font-family:arial;fill:black';
+    this.text.node.style.cssText = 'font-size:12px;font-family:arial;fill:black;text-anchor: middle';
     this.group.add(this.text);
 
     this.updateTextPosition();
@@ -376,7 +376,7 @@
     if (this.json.affectations.length > 0) {
       this.json.ratio = parseFloat(this.json.area / this.json.affectations.length, 10).toFixed(2);
     }
-    
+
     if (this.json.points !== null) {
       points = JSON.parse(this.json.points);
       for (i = 0; i < points.length; i += 1) {
