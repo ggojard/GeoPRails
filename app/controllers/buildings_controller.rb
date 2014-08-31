@@ -1,4 +1,4 @@
-require_dependency 'buildings_duplicate'
+require_dependency 'buildings_manager'
 
 class BuildingsController < GeopController
   before_action :set, only: [:show, :export]
@@ -10,7 +10,7 @@ class BuildingsController < GeopController
 
   def duplicate
     id = params[:id]
-    a = BuildingsDuplicate.new(id)
+    a = BuildingsManager.new(id)
     a.duplicate
     redirect_to building_path a.id
     # render :text => a.to_str
@@ -18,13 +18,11 @@ class BuildingsController < GeopController
 
   def delete_all
     id = params[:id]
-    a = BuildingsDuplicate.new(id)
+    a = BuildingsManager.new(id)
     a.delete_recursive
     redirect_to '/'
     # render :text => 'Suppression du bâtiment numéro %d. <a></' % id
   end
-
-
 
   def export
     require 'axlsx'

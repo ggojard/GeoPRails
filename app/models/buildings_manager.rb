@@ -1,4 +1,4 @@
-class BuildingsDuplicate
+class BuildingsManager
   def initialize buildingId
     @building = Building.find_by_id(buildingId)
   end
