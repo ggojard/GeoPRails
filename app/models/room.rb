@@ -17,7 +17,16 @@ class Room < ActiveRecord::Base
 
 
   def fullname
-    self.name + ' < ' + self.floor.name + ' < ' + self.floor.building.name
+    room_fullname = self.name
+    if !self.floor.nil?
+      if !self.floor.name.nil?
+        room_fullname += ' < ' + self.floor.name
+      end
+      if !self.floor.building.name.nil?
+        room_fullname += ' < ' + self.floor.building.name
+      end
+    end
+    return room_fullname
   end
 
   def area_unit
@@ -34,7 +43,7 @@ class Room < ActiveRecord::Base
   #     b[propertyName] nil
   #   end
   # end
-  # 
+  #
   def to_builder_search
     Jbuilder.new do |b|
       b.(self, :fullname)

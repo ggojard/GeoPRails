@@ -1,3 +1,5 @@
+require_dependency 'buildings_duplicate'
+
 class BuildingsController < GeopController
   before_action :set, only: [:show, :export]
 
@@ -6,11 +8,28 @@ class BuildingsController < GeopController
   end
 
 
+  def duplicate
+    id = params[:id]
+    a = BuildingsDuplicate.new(id)
+    a.duplicate
+    redirect_to building_path a.id
+    # render :text => a.to_str
+  end
+
+  def delete_all
+    id = params[:id]
+    a = BuildingsDuplicate.new(id)
+    a.delete_recursive
+    redirect_to '/'
+    # render :text => 'Suppression du bâtiment numéro %d. <a></' % id
+  end
+
+
+
   def export
     require 'axlsx'
 
     ret = "hi\n"
-
 
     p = Axlsx::Package.new
     wb = p.workbook
@@ -18,9 +37,6 @@ class BuildingsController < GeopController
       sheet.add_row ["Identifiant", "Nom", "Entreprise"]
       sheet.add_row [@building.id, @building.name, @building.company.name]
     end
-
-
-
 
     wb.add_worksheet(:name => "Etages") do |sheet|
       sheet.add_row ["Identifiant", "Nom", "Identifiant Batiment", "Niveau"]

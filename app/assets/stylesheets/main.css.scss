@@ -13,11 +13,31 @@ svg {
     }
 }
 
+.home {
+    .buildings {
+        // display: -webkit-box;
+        // -webkit-box-orient: horizontal;
+
+    max-width: 100%;
+
+        .building{
+            display: inline-block;
+            h2{
+                text-align: center;
+            }
+            min-width: 300px;
+            max-width: 100%;
+            min-height: 250px;
+            background-color: #eee;
+            margin: 5px;
+        }
+    }
+}
 
 .checkbox {
-    i.fa-exchange{
-      cursor: move;
-      font-size: 1.2em;
+    i.fa-exchange {
+        cursor: move;
+        font-size: 1.2em;
     }
     padding-left: 0;
     input[type=checkbox] {
@@ -27,10 +47,10 @@ svg {
     }
 }
 
-.sortable-drag{
-  input[type=checkbox]{
-    display: none;
-  }
+.sortable-drag {
+    input[type=checkbox] {
+        display: none;
+    }
 }
 
 .btn {

@@ -14,6 +14,7 @@ GeoP::Application.routes.draw do
   resources :companies
   resources :people
   resources :floors
+  resources :buildings
 
   get '/login_page' => 'login#login'
 
@@ -39,7 +40,8 @@ GeoP::Application.routes.draw do
 
 
   get '/buildings/:id/export' => 'buildings#export'
-
+  get '/buildings/:id/duplicate' => 'buildings#duplicate'
+  get '/buildings/:id/delete_all' => 'buildings#delete_all'
 
   # map.connect ':controller/:action/:id'
 
