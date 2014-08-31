@@ -72,6 +72,7 @@ class Room < ActiveRecord::Base
     Jbuilder.new do |b|
       extract_json b
       b.affectations self.affectations.collect { |b| b.to_builder.attributes! }
+      b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
     end
   end
 
@@ -79,6 +80,7 @@ class Room < ActiveRecord::Base
   def to_builder_no_affectations
     Jbuilder.new do |b|
       extract_json b
+       b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
     end
   end
 
