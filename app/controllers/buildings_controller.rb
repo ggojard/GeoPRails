@@ -17,9 +17,9 @@ class BuildingsController < GeopController
   end
 
   def delete_all
-    id = params[:id]
-    a = BuildingsManager.new(id)
-    a.delete_recursive
+    # id = params[:id]
+    # a = BuildingsManager.new(id)
+    # a.delete_recursive
     redirect_to '/'
     # render :text => 'Suppression du bâtiment numéro %d. <a></' % id
   end
