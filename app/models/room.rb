@@ -5,6 +5,8 @@ class Room < ActiveRecord::Base
   belongs_to :room_ground_type
   belongs_to :evacuation_zone
 
+
+
   has_many :affectations
   has_many :people, :through => :affectations
   accepts_nested_attributes_for :people, :allow_destroy => true
@@ -83,6 +85,15 @@ class Room < ActiveRecord::Base
        b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
     end
   end
+
+  def to_builder_test
+    Jbuilder.new do |b|
+      extract_json b
+      # extract_organization b
+       # b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
+    end
+  end
+
 
   def to_builder_no_organization
     Jbuilder.new do |b|

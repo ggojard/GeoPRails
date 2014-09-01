@@ -60,6 +60,7 @@
     this.newPoint = null;
     this.items = [];
     this.itemsById = {};
+    $rootScope.itemsById = this.itemsById;
     this.canvas = this.paper.g();
     this.canvas.node.id = 'viewport-' + floorJson.id;
     this.lastMovePosition = null;
@@ -106,7 +107,6 @@
     this.bg = this.canvas.image(imagePath, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     this.bg.node.style.cssText = 'opacity: 0.25';
 
-    this.loadFilters();
 
     this.applyTransform();
 
@@ -360,20 +360,6 @@
       case 'show':
         this.buttonOptions = [editMode, saveToImage, editModeAdmin, mapZoomDefault];
         break;
-    }
-  };
-
-
-  SvgEditor.prototype.loadFilters = function() {
-    var that = this,
-      filtersNames = GeoP.filtersNames,
-      i;
-
-    function load(filterName) {
-      that.loadBelongsToFilter('rooms', filterName);
-    }
-    for (i = 0; i < filtersNames.length; i += 1) {
-      load(filtersNames[i].name);
     }
   };
 

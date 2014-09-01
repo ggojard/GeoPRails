@@ -18,7 +18,7 @@
       <th>Nature des sols</th><td >{{room.json.room_ground_type.name}}</td>
     </tr>
     <tr>
-      <th>Organisation</th><td>{{room.json.organization.name}} <i ng-if="room.json.organization.organization_type.name">[{{room.json.organization.organization_type.name}}]</i></td>      
+      <th>Organisation</th><td><a href="/organizations/{{room.json.organization.id}}">{{room.json.organization.name}}</a> <i ng-if="room.json.organization.organization_type.name">[{{room.json.organization.organization_type.name}}]</i></td>      
     </tr>
     <tr ng-if="room.json.network.length > 0">
       <th>Ports Réseau</th><td ><ul class="network"><li ng-repeat="n in room.json.network.split('\r\n')">{{n}}</li> </ul></td>

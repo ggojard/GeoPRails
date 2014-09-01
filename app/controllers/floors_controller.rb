@@ -9,11 +9,17 @@ class FloorsController < GeopController
 
 
   def show_json
-    render json:@floor.to_builder.target!
+    if !@floor.nil?
+      render json:@floor.to_builder.target!
+    else
+      render json: {"error"=>"floor is nil"}
+    end
   end
 
   def edit
-    gon.floor = @floor.to_builder.attributes!
+    if !@floor.nil?
+      gon.floor = @floor.to_builder.attributes!
+    end
     gon.mode = 'edit'
     render 'show'
   end
@@ -32,14 +38,7 @@ class FloorsController < GeopController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set
-    @floor = Floor.find_by_id(params[:id])
-    # if (params[:room_id])
-      # gon.roomId = params[:room_id].to_i
-    #   gon.room = Room.find_by_id(params[:room_id]).to_builder.attributes!
-    # else
-    #   gon.room = "{}".to_json
-    # end
-
+    @floor = Floor.includes(:rooms).find_by_id(params[:id])
   end
 
   def floor_params

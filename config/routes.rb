@@ -12,6 +12,7 @@ GeoP::Application.routes.draw do
   resources :homes
   resources :rooms
   resources :companies
+  resources :organizations
   resources :people
   resources :floors
   resources :buildings

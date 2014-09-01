@@ -17,10 +17,14 @@ class Organization < ActiveRecord::Base
     end
   end
 
+  def url
+    '/organizations/%d' %  self.id
+  end
+
   def to_builder
     Jbuilder.new do |b|
-      b.(self, :name, :id, :organization_type, :organization, :company, :color)
-      b.url '/organizations/' + self.id.to_s
+      b.(self, :name, :id, :organization_type, :organization, :company, :color, :url)
+      b.url self.url
       # b.organizations self.organizations.collect { |o| o.to_builder.attributes! }
       b.rooms self.rooms.collect { |o| o.to_builder_no_organization.attributes! }
     end

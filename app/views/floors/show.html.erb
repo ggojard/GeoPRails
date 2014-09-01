@@ -3,7 +3,7 @@
   <div class="jumbotron" ng-controller="FloorHeaderCtrl">
   <h2><a href="{{floorJson.building.url}}">{{floorJson.building.name}}</a></h2>
   <h2>> <a href="{{floorJson.url}}">{{floorJson.name}}</a></h2>
-  <h2 ng-if="roomJson.id">room{{roomId}}</h2>
+  <!-- <h2 ng-if="itemsById[roomId]">> {{itemsById[roomId].name}}</h2> -->
   </div>
   
   <%= render 'filters' %> 

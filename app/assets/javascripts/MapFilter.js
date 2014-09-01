@@ -1,4 +1,6 @@
+/*global GeoP:true*/
 (function(geoP) {
+  'use strict';
 
   var MapFilter = function($rootScope) {
     this.filters = {};
@@ -12,7 +14,26 @@
 
   MapFilter.prototype.ready = function() {
     this.$rootScope.$emit('MapFilter.Ready', this);
+  };
 
+
+  MapFilter.prototype.loadFilter = function(editor) {
+    var filtersNames = GeoP.filtersNames,
+      i;
+
+    function load(filterName) {
+      editor.loadBelongsToFilter('rooms', filterName);
+    }
+    for (i = 0; i < filtersNames.length; i += 1) {
+      load(filtersNames[i].name);
+    }
+  };
+
+  MapFilter.prototype.loadFilters = function() {
+    var j, that = this;
+    for (j = 0; j < that.editors.length; j += 1) {
+      this.loadFilter(that.editors[j]);
+    }
   };
 
   MapFilter.prototype.resisterFilterStateChange = function(belongsToKeyName, callback) {

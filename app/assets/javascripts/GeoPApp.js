@@ -3,7 +3,6 @@
 (function(geoP, gon, $, angular) {
   'use strict';
 
-
   function registerScroll(floorId, scrollTop) {
     if (localStorage) {
       localStorage['floor-' + floorId + '-scroll-top'] = scrollTop;
@@ -31,7 +30,9 @@
         if (scrollTop !== scrollLoaded) {
           $w.scrollTop(scrollLoaded);
         }
-      } catch (exception) {}
+      } catch (e) {
+        return e;
+      }
     });
 
   });
@@ -42,18 +43,20 @@
     try {
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
-    } catch (e) {}
+    } catch (e) {
+      return e;
+    }
 
   });
 
-  GeoP.app = app;
+  geoP.app = app;
 
 
 
-  app.directive("keepscrolltop", function($window) {
+  app.directive('keepscrolltop', function($window) {
     var count = 0;
-    return function(scope, element, attrs) {
-      angular.element($window).bind("scroll", function() {
+    return function() {
+      angular.element($window).bind('scroll', function() {
         if (count > 0) {
           registerScroll(gon.floor.id, this.pageYOffset);
         }
@@ -62,7 +65,7 @@
     };
   });
 
-  app.config(["$httpProvider",
+  app.config(['$httpProvider',
     function(provider) {
       provider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
     }
@@ -91,23 +94,22 @@
 
   app.controller('FloorHeaderCtrl', function($scope) {
     $scope.floorJson = gon.floor;
-    // $scope.roomId = gon.roomId;
-    // $scope.roomJson = gon.room;
   });
 
-  GeoP.setFloorMaps = function(floors, $scope, $http, $rootScope, callback) {
+  geoP.setFloorMaps = function(floors, $scope, $http, $rootScope, callback) {
     $scope.svgEditors = {};
-    var mapFilter = new GeoP.MapFilter($rootScope);
+    var mapFilter = new geoP.MapFilter($rootScope);
     setTimeout(function() {
       var i, floor, editor;
       for (i = 0; i < floors.length; i += 1) {
         floor = floors[i];
-        editor = new GeoP.SvgEditor(floor, $scope, $http, $rootScope, mapFilter);
+        editor = new geoP.SvgEditor(floor, $scope, $http, $rootScope, mapFilter);
         $scope.svgEditors[floor.id] = editor;
         editor.loadRooms();
         editor.setOptions();
         mapFilter.addEditor(editor);
       }
+      mapFilter.loadFilters();
       mapFilter.registerFiltersStateChange();
       $rootScope.mapFilter = mapFilter;
       mapFilter.ready();
@@ -116,13 +118,13 @@
     }, 0);
   };
 
-  GeoP.handleKeyEventsForScope = function($scope) {
+  geoP.handleKeyEventsForScope = function($scope) {
     $scope.isShift = false;
     $scope.isCtrlKeyDown = false;
     $scope.isZKeyDown = false;
 
     function handleCtrlAndShif(ev) {
-      var key, isShift, isCtrlKeyDown;
+      var isShift, isCtrlKeyDown;
       if (window.event) {
         isShift = window.event.shiftKey ? true : false;
         isCtrlKeyDown = window.event.ctrlKey ? true : false;
@@ -177,19 +179,14 @@
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
     $scope.mapMode = gon.mode;
     $scope.room = null;
-    $scope.roomId = GeoP.getRoomIdFromHash();
-    // $scope.roomJson = gon.room;
-
+    $scope.roomId = geoP.getRoomIdFromHash();
 
     $scope.floors = [gon.floor];
 
-    GeoP.handleKeyEventsForScope($scope);
+    geoP.handleKeyEventsForScope($scope);
 
     $scope.floorJson = gon.floor;
-
-    // $scope.mapMode = 'normal';
-
-    GeoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
+    geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
 
   });
 }(GeoP, gon, jQuery, angular));

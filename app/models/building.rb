@@ -25,7 +25,7 @@ class Building < ActiveRecord::Base
   def to_builder
     Jbuilder.new do |b|
       extract_json b
-      b.floors self.floors.collect { |b| b.to_builder.attributes! }
+      b.floors self.floors.includes(:rooms).collect { |b| b.to_builder.attributes! }
     end
   end
   default_scope {order(:name)}

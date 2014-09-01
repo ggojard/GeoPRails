@@ -41,14 +41,16 @@
     };
     $rootScope.$on('MapFilter.Ready', function(mapFilter) {
       var filters, filterName, f;
-      filters = $rootScope.mapFilter.filters;
-      for (filterName in filters) {
-        if (filters.hasOwnProperty(filterName)) {
-          f = filters[filterName];
-          (filterMethod(filterName, f));
+      if ($rootScope.mapFilter !== undefined) {
+        filters = $rootScope.mapFilter.filters;
+        for (filterName in filters) {
+          if (filters.hasOwnProperty(filterName)) {
+            f = filters[filterName];
+            (filterMethod(filterName, f));
+          }
         }
+        chartsData[geoP.filtersNames[0].name]();
       }
-      chartsData[geoP.filtersNames[0].name]();
     });
   });
 }(GeoP));

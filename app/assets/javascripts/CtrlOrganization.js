@@ -2,15 +2,22 @@
 (function(geoP) {
   'use strict';
   geoP.app.controller('OrganizationCtrl', function($scope, $http, $rootScope) {
-    var i, floors, r, floorsArray, floorsMax, fId;
+    var i, floors, r, floorsArray, floorsMax, fId, buildings;
     geoP.handleKeyEventsForScope($scope);
     $scope.o = gon.organization;
     $scope.floors = [];
     floors = {};
+    buildings = {};
 
     for (i = 0; i < $scope.o.rooms.length; i += 1) {
       r = $scope.o.rooms[i];
+
+      // if (buildings[r.floor.building.id] === undefined) {
+      //   buildings[r.floor.building.id] = {};
+      // }
+
       floors[r.floor.id] = r.floor;
+      // buildings[r.floor.building.id][r.floor.id] = r.floor;
     }
 
     function loadFloors(floorsArrayLocal) {

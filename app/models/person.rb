@@ -45,8 +45,10 @@ class Person < ActiveRecord::Base
     Jbuilder.new do |b|
       b.(self, :firstname, :lastname, :id, :telephone, :cellphone, :person_state, :computerreference, :monitorreference, :room, :fullname, :format_telephone, :format_cellphone, :email, :person_code)
       if self.organization_id != nil
-        @o = Organization.find_by_id(self.organization_id)
-        b.organization  @o.to_builder.attributes!
+        o = Organization.find_by_id(self.organization_id)
+        if !o.nil?
+          b.organization  o.to_builder.attributes!
+        end
       else
         b.organization nil
       end

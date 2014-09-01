@@ -13,7 +13,7 @@ class Company < ActiveRecord::Base
     Jbuilder.new do |c|
       c.(self, :name, :id)
       c.url self.url
-      c.buildings self.buildings.collect { |b| b.to_builder.attributes! }
+      c.buildings self.buildings.includes(:floors).collect { |b| b.to_builder.attributes! }
       # c.organizations self.organizations.collect { |b| b.to_builder.attributes! }
     end
   end
@@ -22,7 +22,7 @@ class Company < ActiveRecord::Base
     Jbuilder.new do |c|
       c.(self, :name, :id)
       c.url self.url
-      c.buildings self.buildings.collect { |b| b.to_builder_simple.attributes!}
+      c.buildings self.buildings.includes(:floors).collect { |b| b.to_builder_simple.attributes!}
       # c.organizations self.organizations.collect { |b| b.to_builder.attributes! }
     end
   end
