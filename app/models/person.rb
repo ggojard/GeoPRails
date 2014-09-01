@@ -54,7 +54,7 @@ class Person < ActiveRecord::Base
       end
 
       b.url '/people/' +  self.id.to_s
-      b.affectations self.affectations.collect { |b| b.to_builder_room.attributes! }
+      b.affectations self.affectations.includes(:room, :person).collect { |b| b.to_builder_room.attributes! }
     end
   end
   default_scope {order(:lastname)}

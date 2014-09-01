@@ -38,7 +38,7 @@ class FloorsController < GeopController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set
-    @floor = Floor.includes(:rooms).find_by_id(params[:id])
+    @floor = Floor.includes(:rooms, :building).find_by_id(params[:id])
   end
 
   def floor_params

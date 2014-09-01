@@ -73,8 +73,8 @@ class Room < ActiveRecord::Base
   def to_builder_with_affectations
     Jbuilder.new do |b|
       extract_json b
-      b.affectations self.affectations.collect { |b| b.to_builder.attributes! }
-      b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
+      b.affectations self.affectations.includes(:room, :person).collect { |b| b.to_builder.attributes! }
+      b.inventories self.inventories.includes(:room, :item).collect { |b| b.to_builder.attributes! }
     end
   end
 
@@ -82,7 +82,7 @@ class Room < ActiveRecord::Base
   def to_builder_no_affectations
     Jbuilder.new do |b|
       extract_json b
-       b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
+       b.inventories self.inventories.includes(:room, :item).collect { |b| b.to_builder.attributes! }
     end
   end
 
@@ -110,8 +110,8 @@ class Room < ActiveRecord::Base
     Jbuilder.new do |b|
       extract_json b
       # extract_organization b
-      b.affectations self.affectations.collect { |b| b.to_builder.attributes! }
-      b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
+      b.affectations self.affectations.includes(:room, :person).collect { |b| b.to_builder.attributes! }
+      b.inventories self.inventories.includes(:room, :item).collect { |b| b.to_builder.attributes! }
     end
   end
 
