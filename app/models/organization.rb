@@ -26,7 +26,7 @@ class Organization < ActiveRecord::Base
       b.(self, :name, :id, :organization_type, :organization, :company, :color, :url)
       b.url self.url
       # b.organizations self.organizations.collect { |o| o.to_builder.attributes! }
-      b.rooms self.rooms.collect { |o| o.to_builder_no_organization.attributes! }
+      # b.rooms self.rooms.collect { |o| o.to_builder_no_organization.attributes! }
     end
   end
   default_scope {order(:name)}

@@ -11,6 +11,6 @@
         $scope.results = {};
       }
     };
-    $scope.company = gon.company;
+    $scope.company = JSON.parse(gon.company);
   });
 }(GeoP));

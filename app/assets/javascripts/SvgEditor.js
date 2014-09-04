@@ -262,21 +262,24 @@
       item = floorJson[belongsToNameList][i];
       if (item[belongsToKeyName] !== null) {
         targetItem = item[belongsToKeyName];
-        if (itemsObject[targetItem.id] === undefined) {
-          itemsObject[targetItem.id] = targetItem;
-          itemsObject[targetItem.id].state = false;
-          itemsObject[targetItem.id].count = 0;
-          itemsObject[targetItem.id].areaSum = 0;
-          itemsObject[targetItem.id].nbPeople = 0;
-        }
-        itemsObject[targetItem.id].count += 1;
-        itemsObject[targetItem.id].areaSum += item.area;
-        itemsObject[targetItem.id].areaSum = parseFloat(itemsObject[targetItem.id].areaSum.toFixed(1), 10);
-        itemsObject[targetItem.id].nbPeople += item.affectations.length;
-        if (itemsObject[targetItem.id].nbPeople === 0) {
-          itemsObject[targetItem.id].ratio = 0;
-        } else {
-          itemsObject[targetItem.id].ratio = parseFloat(itemsObject[targetItem.id].areaSum / itemsObject[targetItem.id].nbPeople, 10).toFixed(1);
+        if (targetItem !== undefined) {
+          if (itemsObject[targetItem.id] === undefined) {
+            itemsObject[targetItem.id] = targetItem;
+            itemsObject[targetItem.id].state = false;
+            itemsObject[targetItem.id].count = 0;
+            itemsObject[targetItem.id].areaSum = 0;
+            itemsObject[targetItem.id].nbPeople = 0;
+          }
+          itemsObject[targetItem.id].count += 1;
+          itemsObject[targetItem.id].areaSum += item.area;
+          itemsObject[targetItem.id].areaSum = parseFloat(itemsObject[targetItem.id].areaSum.toFixed(1), 10);
+          itemsObject[targetItem.id].nbPeople += item.affectations.length;
+          if (itemsObject[targetItem.id].nbPeople === 0) {
+            itemsObject[targetItem.id].ratio = 0;
+          } else {
+            itemsObject[targetItem.id].ratio = parseFloat(itemsObject[targetItem.id].areaSum / itemsObject[targetItem.id].nbPeople, 10).toFixed(1);
+          }
+
         }
 
       }

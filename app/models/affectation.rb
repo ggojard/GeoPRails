@@ -6,7 +6,7 @@ class Affectation < ActiveRecord::Base
   def to_builder
     Jbuilder.new do |b|
       b.(self, :room)
-      p = Person.includes(:organization).find_by_id(self.person_id)
+      p = Person.includes(:organization, :person_state).find_by_id(self.person_id)
       if !p.nil?
         b.person  p.to_builder.attributes!
       end

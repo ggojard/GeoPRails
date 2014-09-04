@@ -3,6 +3,8 @@
 (function(geoP, gon, $, angular) {
   'use strict';
 
+
+
   function registerScroll(floorId, scrollTop) {
     if (localStorage) {
       localStorage['floor-' + floorId + '-scroll-top'] = scrollTop;
@@ -176,7 +178,10 @@
     document.onkeyup = keyUp;
   };
 
+  gon.floor = JSON.parse(gon.floor);
+
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
+
     $scope.mapMode = gon.mode;
     $scope.room = null;
     $scope.roomId = geoP.getRoomIdFromHash();

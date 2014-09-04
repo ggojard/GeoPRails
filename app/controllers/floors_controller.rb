@@ -3,7 +3,10 @@ class FloorsController < GeopController
   # before_action :floor_params, only: [:update]
 
   def show
-    gon.floor = @floor.to_builder.attributes!
+
+    floor = Floor.includes(:rooms => [:room_type, :evacuation_zone, :organization, :room_ground_type, :affectations]).find_by_id(params[:id])
+    # gon.floor = @floor.to_builder.attributes!
+    gon.floor = floor.to_json(:include => {:rooms => {:include => [:room_type, :evacuation_zone, :organization, :room_ground_type, :affectations]}})
     gon.mode = 'show'
   end
 
@@ -38,7 +41,7 @@ class FloorsController < GeopController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set
-    @floor = Floor.includes(:rooms, :building).find_by_id(params[:id])
+    # @floor = Floor.find_by_id(params[:id])
   end
 
   def floor_params

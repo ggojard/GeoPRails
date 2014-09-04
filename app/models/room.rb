@@ -65,7 +65,7 @@ class Room < ActiveRecord::Base
   end
 
   def extract_json(b)
-    b.(self, :name, :id, :room_type, :floor, :points, :area, :room_ground_type, :area_unit, :fullname, :evacuation_zone, :organization, :network)
+    b.(self, :name, :id, :room_type, :points, :area, :room_ground_type, :area_unit, :fullname, :evacuation_zone, :organization, :network)
     b.url "/rooms/" + self.id.to_s
 
   end
@@ -73,8 +73,9 @@ class Room < ActiveRecord::Base
   def to_builder_with_affectations
     Jbuilder.new do |b|
       extract_json b
-      b.affectations self.affectations.includes(:room, :person).collect { |b| b.to_builder.attributes! }
-      b.inventories self.inventories.includes(:room, :item).collect { |b| b.to_builder.attributes! }
+      b.affectations []
+      # b.affectations self.affectations.includes(:room, :person).collect { |b| b.to_builder.attributes! }
+      # b.inventories self.inventories.includes(:room, :item).collect { |b| b.to_builder.attributes! }
     end
   end
 
@@ -82,19 +83,11 @@ class Room < ActiveRecord::Base
   def to_builder_no_affectations
     Jbuilder.new do |b|
       extract_json b
-       b.inventories self.inventories.includes(:room, :item).collect { |b| b.to_builder.attributes! }
+       # b.inventories self.inventories.includes(:room, :item).collect { |b| b.to_builder.attributes! }
     end
   end
 
-  def to_builder_test
-    Jbuilder.new do |b|
-      extract_json b
-      # extract_organization b
-       # b.inventories self.inventories.collect { |b| b.to_builder.attributes! }
-    end
-  end
-
-
+  
   def to_builder_no_organization
     Jbuilder.new do |b|
       extract_json b
@@ -110,8 +103,8 @@ class Room < ActiveRecord::Base
     Jbuilder.new do |b|
       extract_json b
       # extract_organization b
-      b.affectations self.affectations.includes(:room, :person).collect { |b| b.to_builder.attributes! }
-      b.inventories self.inventories.includes(:room, :item).collect { |b| b.to_builder.attributes! }
+      # b.affectations self.affectations.includes(:room, :person).collect { |b| b.to_builder.attributes! }
+      # b.inventories self.inventories.includes(:room, :item).collect { |b| b.to_builder.attributes! }
     end
   end
 
