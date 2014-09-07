@@ -261,14 +261,14 @@
   Polyline.prototype.remove = function() {
     var i = 0,
       c;
-    this.element.remove();
     for (i = 0; i < this.moveCircles.length; i += 1) {
       c = this.moveCircles[i];
       c.remove();
     }
-    this.revmoveDisplayTexts();
-
+    this.removeDisplayTexts();
+    this.element.remove();
     this.svgEditor.removePolyline(this);
+
   };
 
   Polyline.prototype.appendPoint = function(x, y) {
@@ -485,6 +485,7 @@
         'name': 'B?'
       };
       this.svgEditor.$http.post('/rooms.json', data).success(function(d) {
+        console.log(d);
         geoP.notifications.done('La nouvelle pièce a été crée.');
         that.json = d;
         that.setTexts();
@@ -663,6 +664,7 @@
     this.updateHashCode();
 
     switch (this.svgEditor.$scope.mapMode) {
+      case 'create':
       case 'edit':
         this.element.click(this.select.bind(this));
         break;

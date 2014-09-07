@@ -6,7 +6,11 @@ class RoomsController < GeopController
     [:room_type, :evacuation_zone, :organization, :room_ground_type, {:affectations => {:person => [:person_state, :organization]} }]
   end
   def self.json_selection
-    {:rooms => {:methods =>:area_unit, :include => [:room_type, :evacuation_zone, :organization, :room_ground_type, {:affectations => {:include =>{:person =>{:methods => PeopleController.json_methods, :include => [:person_state, {:organization => {:methods => [:url]}}]}} }}]}}
+    {:rooms => RoomsController.json_single_selection}
+  end
+
+  def self.json_single_selection
+    {:methods =>:area_unit, :include => [:room_type, :evacuation_zone, :organization, :room_ground_type, {:affectations => {:include =>{:person =>{:methods => PeopleController.json_methods, :include => [:person_state, {:organization => {:methods => [:url]}}]}} }}]}
   end
 
 
@@ -16,8 +20,12 @@ class RoomsController < GeopController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
-    @url = '/floors/' + @room.floor_id.to_s + '#' + @room.id.to_s
-    redirect_to @url
+    if !@room.nil?
+      redirect_to '/floors/%d#%d' % [@room.floor_id, @room.id]
+    else
+      redirect_to '/'
+    end
+
   end
 
   def delete
@@ -28,11 +36,12 @@ class RoomsController < GeopController
   # POST /rooms
   # POST /rooms.json
   def create
-    @room = Room.new(room_params)
-    if @room.save
-      render json: @room.to_builder.target!
+    new_room = Room.new(room_params)
+    if new_room.save
+      room = Room.includes(RoomsController.selection).find_by_id(new_room.id)
+      render json: room.as_json(RoomsController.json_single_selection)
     else
-      format.json { render json: @room.errors, status: :unprocessable_entity }
+      format.json { render json: new_room.errors, status: :unprocessable_entity }
     end
   end
 

@@ -8,42 +8,13 @@ class Floor < ActiveRecord::Base
   before_save :extract_dimensions
   serialize :image_dimensions
 
-
   def fullname
     self.name + " < " + self.building.name
   end
 
   def url 
-    "/floors/%d" % self.id.to_s
+    "/floors/%d" % self.id
   end
-
-  # def img?
-  #   @upload_content_type =~ %r{^(image|(x-)?application)/(bmp|gif|jpeg|jpg|pjpeg|png|x-png)$}
-  # end
-
-  def to_builder
-    Jbuilder.new do |b|
-      b.(self, :name, :id, :image, :map_scale_x1, :map_scale_y1, :map_scale_x2, :map_scale_y2, :map_scale_length, :image_dimensions, :fullname, :level)
-      b.url self.url
-      # b.rooms self.rooms
-      # b.rooms self.rooms.includes(:room_type, :room_ground_type, :evacuation_zone, :organization, :affectations).collect { |r| r.to_builder_with_affectations.attributes! }
-      # if !self.building_id.nil?
-      #   @o = Building.find_by_id(self.building_id)
-      #   b.building  @o.to_builder_simple_floor.attributes!
-      # else
-      #   b.building nil
-      # end
-    end
-  end
-
-  def to_builder_search
-    Jbuilder.new do |b|
-      b.(self, :fullname)
-      b.url '/floors/' +  self.id.to_s
-    end
-  end  
-
-
   def extract_dimensions
     tempfile = image.queued_for_write[:original]
     unless tempfile.nil?
