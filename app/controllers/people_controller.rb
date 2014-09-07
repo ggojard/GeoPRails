@@ -6,7 +6,7 @@ class PeopleController < GeopController
 
 	def show
 		p = Person.includes([{:affectations => {:room => [{:floor => :building}, :room_type]}}, :person_state, :organization]).find_by_id(params[:id])
-		gon.person = p.as_json({:include => [{:affectations => {:include => {:room => {:methods=> [:fullname, :area_unit], :include => [{:floor => {:include => :building}}, :room_type]  }}}}, :person_state, {:organization => {:methods => [:url]}}], :methods => PeopleController.json_methods})
+		gon.person = p.as_json({:include => [{:affectations => {:include => {:room => {:methods=> [:fullname, :area_unit, :url], :include => [{:floor => {:include => :building}}, :room_type]  }}}}, :person_state, {:organization => {:methods => [:url]}}], :methods => PeopleController.json_methods})
 	end
 
 	def index
