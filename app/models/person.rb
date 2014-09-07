@@ -15,6 +15,10 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def url
+    '/people/%d' % self.id
+  end
+
   def name
     self.fullname
   end

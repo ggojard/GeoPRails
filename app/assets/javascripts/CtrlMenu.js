@@ -5,6 +5,7 @@
     $scope.search = function() {
       if ($scope.globalSearch.length > 0) {
         $http.get('/search/' + $scope.globalSearch + '?' + Math.random()).success(function(res) {
+          console.log('res search', res);
           $scope.results = res;
         });
       } else {

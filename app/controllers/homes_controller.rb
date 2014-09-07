@@ -5,10 +5,10 @@ class HomesController < ApplicationController
     @resArray = []
 
 
-    people = Person.where(["lower(firstname) like ? OR lower(lastname) like ?", @search, @search]).each { |b| b.as_json(:methods => [:fullname]) }
-    rooms = Room.where(["lower(name) like ?", @search]).collect { |b| b.as_json(:methods => [:fullname])}
-    floors = Floor.where(["lower(name) like ?", @search]).collect { |b| b.as_json(:methods => [:fullname])}
-    organizations = Organization.where(["lower(name) like ?", @search]).collect { |b| b.as_json(:methods => [:fullname])}
+    people = Person.where(["lower(firstname) like ? OR lower(lastname) like ?", @search, @search]).map { |b| b.as_json(:methods => [:fullname, :url]) }
+    rooms = Room.where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
+    floors = Floor.where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
+    organizations = Organization.where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
 
     @res = {
       "rooms" => rooms,
