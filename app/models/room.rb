@@ -31,9 +31,14 @@ class Room < ActiveRecord::Base
     return room_fullname
   end
 
+
   def area_unit
-    self.area.to_s + ' m²'
+    if !self.area.nil?
+      '%.2f m²' % self.area
+    end
   end
+
+
 
   # def addBelongsToToJsonBuilder builder,propertyName, c
   #   pIdName = propertyName + '_id'

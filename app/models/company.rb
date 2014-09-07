@@ -11,23 +11,23 @@ class Company < ActiveRecord::Base
 
   # scope :b, -> (buildings)
   
-  def to_builder
-    Jbuilder.new do |c|
-      c.(self, :name, :id)
-      c.url self.url
-      # c.buildings self.buildings.includes(:floors).collect { |b| b.to_builder.attributes! }
-      # c.organizations self.organizations.collect { |b| b.to_builder.attributes! }
-    end
-  end
+  # def to_builder
+  #   Jbuilder.new do |c|
+  #     c.(self, :name, :id)
+  #     c.url self.url
+  #     # c.buildings self.buildings.includes(:floors).collect { |b| b.to_builder.attributes! }
+  #     # c.organizations self.organizations.collect { |b| b.to_builder.attributes! }
+  #   end
+  # end
 
-  def to_builder_simple
-    Jbuilder.new do |c|
-      c.(self, :name, :id)
-      c.url self.url
-      c.buildings self.buildings.includes(:floors).collect { |b| b.to_builder_simple.attributes!}
-      # c.organizations self.organizations.collect { |b| b.to_builder.attributes! }
-    end
-  end
+  # def to_builder_simple
+  #   Jbuilder.new do |c|
+  #     c.(self, :name, :id)
+  #     c.url self.url
+  #     c.buildings self.buildings.includes(:floors).collect { |b| b.to_builder_simple.attributes!}
+  #     # c.organizations self.organizations.collect { |b| b.to_builder.attributes! }
+  #   end
+  # end
 
   def url
     '/companies/%d' % self.id.to_s

@@ -9,10 +9,8 @@ class GeopController < ApplicationController
   def set_geop
     if !current_admin_user.nil?
       global_company = Company.includes(:buildings => :floors).find_by_id(current_admin_user.company_id)
-      # global_company = Company.includes(:buildings => {:floors => {:rooms => [:room_type, :evacuation_zone, :organization, :room_ground_type]} }).find_by_id(current_admin_user.company_id)
       if !global_company.nil?
-        # gon.company = global_company.to_json(:include => {:buildings => {:include => {:floors => {:include => {:rooms => {:include => [:room_type, :evacuation_zone, :organization, :room_ground_type]}}}}}})
-        gon.company = global_company.to_json(:include => {:buildings => {:include => :floors}})
+        gon.company = global_company.as_json(:include => {:buildings => {:include => :floors}})
       end
       gon.i18n = I18n.t('formtastic.labels');
     end

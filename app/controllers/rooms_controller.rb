@@ -1,6 +1,15 @@
 class RoomsController < GeopController
   before_action :set_room, only: [:show, :update, :delete]
 
+
+  def self.selection
+    [:room_type, :evacuation_zone, :organization, :room_ground_type, {:affectations => {:person => [:person_state, :organization]} }]
+  end
+  def self.json_selection
+    {:rooms => {:methods =>:area_unit, :include => [:room_type, :evacuation_zone, :organization, :room_ground_type, {:affectations => {:include =>{:person =>{:methods => PeopleController.json_methods, :include => [:person_state, {:organization => {:methods => [:url]}}]}} }}]}}
+  end
+
+
   def index
     @rooms = Room.all
   end

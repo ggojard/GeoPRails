@@ -338,17 +338,21 @@
   };
 
   Polyline.prototype.fillFromFilterColor = function(filterName) {
+    var value, item;
     if (this.json[filterName] !== null) {
-      var item = this.svgEditor.mapFilter.filters[filterName][this.json[filterName].id];
-      if (item.state === true) {
-        this.element.attr({
-          fill: item.color
-        });
-      } else {
-        this.element.attr({
-          fill: 'transparent'
-        });
-        this.doActionIfItemIsSelected();
+      value = this.json[filterName];
+      if (value !== undefined) {
+        item = this.svgEditor.mapFilter.filters[filterName][value.id];
+        if (item.state === true) {
+          this.element.attr({
+            fill: item.color
+          });
+        } else {
+          this.element.attr({
+            fill: 'transparent'
+          });
+          this.doActionIfItemIsSelected();
+        }
       }
     }
   };

@@ -21,10 +21,6 @@
     }
 
     function loadFloors(floorsArrayLocal) {
-      function compare(a, b) {
-        return a.level > b.level;
-      }
-      floorsArrayLocal = floorsArrayLocal.sort(compare);
       $scope.floors = floorsArrayLocal;
       $scope.mapMode = 'show';
       geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope, function(mapFilter) {
@@ -49,7 +45,7 @@
 
     for (fId in floors) {
       if (floors.hasOwnProperty(fId)) {
-        $http.get('/floors/' + fId + '/json').success(floorLoaded);
+        $http.get('/floors/' + fId + '.json').success(floorLoaded);
       }
     }
   });

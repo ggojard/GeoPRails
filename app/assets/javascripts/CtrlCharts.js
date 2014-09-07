@@ -14,6 +14,7 @@
       filterMethod;
 
     filterMethod = function(fName, filter) {
+      $scope.chart = null;
       $rootScope.$on(fName + '_filters.Selected', function() {
         chartsData[fName]();
       });
@@ -33,10 +34,14 @@
             data.push([item.name, item.areaSum, item.color]);
           }
         }
-        a = google.visualization.arrayToDataTable(data);
-        options = {};
-        chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-        chart.draw(a, options);
+
+        if (data.length > 1) {
+          a = google.visualization.arrayToDataTable(data);
+          options = {};
+          chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+          chart.draw(a, options);
+          $scope.chart = chart;
+        }
       };
     };
     $rootScope.$on('MapFilter.Ready', function(mapFilter) {

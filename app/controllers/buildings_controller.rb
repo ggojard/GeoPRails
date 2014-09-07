@@ -3,8 +3,8 @@ require_dependency 'buildings_manager'
 class BuildingsController < GeopController
   before_action :set, only: [:show, :export]
 
-  def show
-    gon.building = @building.to_builder.attributes!
+  def show    
+    gon.building = @building.as_json(:include => [:company, {:floors => {:include => FloorsController.json_selection}}])
   end
 
 
@@ -154,7 +154,7 @@ class BuildingsController < GeopController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set
-    @building = Building.find_by_id(params[:id])
+    @building = Building.includes([:company, :floors => FloorsController.selection]).find_by_id(params[:id])
   end
 
 

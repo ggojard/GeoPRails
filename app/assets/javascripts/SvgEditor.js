@@ -103,7 +103,7 @@
       stroke: '#ffcf00'
     });
 
-    imagePath = 'http://' + window.location.host + this.json.image;
+    imagePath = 'http://' + window.location.host + '/floors/images/' + this.json.id + '?style=original';
     this.bg = this.canvas.image(imagePath, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
     this.bg.node.style.cssText = 'opacity: 0.25';
 

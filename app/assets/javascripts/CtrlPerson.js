@@ -2,9 +2,9 @@
 (function(geoP) {
   'use strict';
   geoP.app.controller('PersonCtrl', function($scope) {
+    var p = gon.person;
     $scope.a = {
-      person: gon.person
+      person: p
     };
-    $scope.p = gon.person;
   });
 }(GeoP));

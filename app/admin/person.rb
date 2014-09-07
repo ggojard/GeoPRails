@@ -45,8 +45,8 @@ ActiveAdmin.register Person do
 
     panel "Affectations" do
       table_for person.affectations do
-        column "Pièces" do |b| link_to b.room.name + ' < ' + b.room.floor.name + ' < ' + b.room.floor.building.name  , admin_room_path(b.room.id) end
-        column "Visualiser" do |b| link_to  "Visualiser" , room_path(b.room.id) end
+        # column "Pièces" do |b| link_to b.room.name + ' < ' + b.room.floor.name + ' < ' + b.room.floor.building.name  , admin_room_path(b.room.id) end
+        # column "Visualiser" do |b| link_to  "Visualiser" , room_path(b.room.id) end
       end
     end
 
@@ -78,6 +78,14 @@ ActiveAdmin.register Person do
       f.input :monitorreference
       f.input :computerreference
     end
+
+    f.has_many :affectations do |app_f|
+      if !app_f.object.nil?
+        app_f.input :_destroy, :as => :boolean, :label => "Retirer l'affectation"
+      end
+      app_f.input :room, label: "Nom", as: :select, :collection => Room.all.map{|u| [u.fullname, u.id]}
+    end
+
 
     f.actions
   end

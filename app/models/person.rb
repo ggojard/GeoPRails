@@ -33,30 +33,6 @@ class Person < ActiveRecord::Base
     format_phone self.cellphone
   end
 
-  def to_builder_search
-    Jbuilder.new do |b|
-      b.(self, :fullname)
-      b.url '/people/' +  self.id.to_s
-    end
-  end
-
-
-  def to_builder
-    Jbuilder.new do |b|
-      b.(self, :firstname, :lastname, :id, :telephone, :cellphone, :person_state, :computerreference, :monitorreference, :room, :fullname, :format_telephone, :format_cellphone, :email, :person_code)
-      if self.organization_id != nil
-        o = Organization.find_by_id(self.organization_id)
-        if !o.nil?
-          b.organization  o.to_builder.attributes!
-        end
-      else
-        b.organization nil
-      end
-
-      b.url '/people/' +  self.id.to_s
-      b.affectations self.affectations.includes(:room, :person).collect { |b| b.to_builder_room.attributes! }
-    end
-  end
   default_scope {order(:lastname)}
 
 end

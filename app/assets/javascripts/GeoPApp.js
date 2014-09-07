@@ -178,8 +178,6 @@
     document.onkeyup = keyUp;
   };
 
-  gon.floor = JSON.parse(gon.floor);
-
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
 
     $scope.mapMode = gon.mode;
