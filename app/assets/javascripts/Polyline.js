@@ -358,7 +358,6 @@
   };
 
   Polyline.prototype.doActionIfItemIsSelected = function() {
-
     if (this.svgEditor.$scope.roomId && this.svgEditor.$scope.roomId === this.json.id) {
       this.svgEditor.items.map(function(i) {
         if (i.element !== undefined) {
@@ -485,7 +484,6 @@
         'name': 'B?'
       };
       this.svgEditor.$http.post('/rooms.json', data).success(function(d) {
-        console.log(d);
         geoP.notifications.done('La nouvelle pièce a été crée.');
         that.json = d;
         that.setTexts();
@@ -603,6 +601,7 @@
       deleteLabel;
     // that.isSelected = true;
 
+
     if (this.dragMode === true) {
       this.group.drag();
     } else {
@@ -612,6 +611,9 @@
     that.svgEditor.cleanDragPointOptions();
 
     switch ($scope.mapMode) {
+      case 'show':
+        that.addZoomOnItemOption();
+        break;
       case 'normal':
       case 'edit':
         $scope.room = that;
