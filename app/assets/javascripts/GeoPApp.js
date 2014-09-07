@@ -3,8 +3,6 @@
 (function(geoP, gon, $, angular) {
   'use strict';
 
-
-
   function registerScroll(floorId, scrollTop) {
     if (localStorage) {
       localStorage['floor-' + floorId + '-scroll-top'] = scrollTop;

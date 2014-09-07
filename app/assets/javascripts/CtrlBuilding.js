@@ -4,12 +4,18 @@
 
   geoP.app.controller('BuildingCtrl', function($scope, $http, $rootScope) {
 
+    $scope.loading = true;
     GeoP.handleKeyEventsForScope($scope);
-    $scope.building = gon.building;
-    $scope.floors = $scope.building.floors;
-    $scope.mapMode = 'show';
 
-    geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
+    $http.get(gon.building.url + '.json').success(function(b) {
+      $scope.mapMode = 'show';
+      $scope.loading = false;
+      $scope.building = b;
+      $scope.floors = b.floors;
+      geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
+    });
+
+
 
   });
 

@@ -1,10 +1,22 @@
 require_dependency 'buildings_manager'
 
 class BuildingsController < GeopController
-  before_action :set, only: [:show, :export]
+  before_action :set, only: [:export]
 
-  def show    
-    gon.building = @building.as_json(:include => [:company, {:floors => {:include => FloorsController.json_selection}}])
+  def show
+    
+    
+    respond_to do |format|
+      format.html{
+        b = Building.find_by_id(params[:id])
+        gon.building = b.as_json(:methods => [:url])
+      }
+      format.json{
+        b = Building.includes([:company, :floors => FloorsController.selection]).find_by_id(params[:id])
+        render json: b.as_json(:include => [:company, {:floors => {:include => FloorsController.json_selection}}])
+      }
+    end
+
   end
 
   def url
