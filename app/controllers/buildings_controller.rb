@@ -7,6 +7,9 @@ class BuildingsController < GeopController
     gon.building = @building.as_json(:include => [:company, {:floors => {:include => FloorsController.json_selection}}])
   end
 
+  def url
+    '/buildings/%d' % self.id
+  end
 
   def duplicate
     id = params[:id]
