@@ -13,7 +13,7 @@ class BuildingsController < GeopController
       }
       format.json{
         b = Building.includes([:company, :floors => FloorsController.selection]).find_by_id(params[:id])
-        render json: b.as_json(:include => [:company, {:floors => {:include => FloorsController.json_selection}}])
+        render json: b.as_json(:include => [:company, {:floors => {:include => FloorsController.json_selection, :methods => [:url]}}])
       }
     end
 

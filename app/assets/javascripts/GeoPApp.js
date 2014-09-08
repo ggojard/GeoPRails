@@ -92,9 +92,9 @@
     $scope.organizations = gon.organizations;
   });
 
-  app.controller('FloorHeaderCtrl', function($scope) {
-    $scope.floorJson = gon.floor;
-  });
+  // app.controller('FloorHeaderCtrl', function($scope) {
+  //   $scope.floorJson = gon.floor;
+  // });
 
   geoP.setFloorMaps = function(floors, $scope, $http, $rootScope, callback) {
     $scope.svgEditors = {};
@@ -178,16 +178,23 @@
 
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
 
+    $scope.loading = true;
     $scope.mapMode = gon.mode;
-    $scope.room = null;
-    $scope.roomId = geoP.getRoomIdFromHash();
 
-    $scope.floors = [gon.floor];
+    $http.get('/floors/' + gon.floor.id + '.json').success(function(floor) {
+      $scope.room = null;
+      $scope.roomId = geoP.getRoomIdFromHash();
 
-    geoP.handleKeyEventsForScope($scope);
+      $scope.floors = [floor];
 
-    $scope.floorJson = gon.floor;
-    geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
+      geoP.handleKeyEventsForScope($scope);
+
+      $scope.floorJson = floor;
+      geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
+      $scope.loading = false;
+    });
+
+
 
   });
 }(GeoP, gon, jQuery, angular));

@@ -20,6 +20,14 @@ svg {
     margin-top: -16px;
     margin-left: -16px;
     content:url('/assets/loading2.gif');
+
+    &.search-results{
+        position: relative;
+        margin: 0;
+        padding: 0;
+        left:0;
+        top:0;
+    }
 }
 
 .home {

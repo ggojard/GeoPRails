@@ -9,10 +9,10 @@
 
     $http.get(gon.building.url + '.json').success(function(b) {
       $scope.mapMode = 'show';
-      $scope.loading = false;
       $scope.building = b;
       $scope.floors = b.floors;
       geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
+      $scope.loading = false;
     });
 
 

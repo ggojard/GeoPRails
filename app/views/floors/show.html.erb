@@ -1,18 +1,17 @@
-<div keepscrolltop>
-
-  <div class="jumbotron" ng-controller="FloorHeaderCtrl">
-  <h2><a href="{{floorJson.building.url}}">{{floorJson.building.name}}</a></h2>
-  <h2>> <a href="{{floorJson.url}}">{{floorJson.name}}</a></h2>
-  <!-- <h2 ng-if="itemsById[roomId]">> {{itemsById[roomId].name}}</h2> -->
-  </div>
-  
-  <%= render 'filters' %> 
-  <%= render 'display_text' %> 
-  
-  <div class="home" ng-controller="FloorMapCtrl">
-    <%= render '/floors/map_editor' %> 
+<div keepscrolltop class="home" ng-controller="FloorMapCtrl">
+  <div ng-show="loading" class="loading"><img alt="chargement..."></div>
+  <div ng-show="!loading">
+    <div class="jumbotron">
+      <h2><a href="{{floorJson.building.url}}">{{floorJson.building.name}}</a></h2>
+      <h2>> <a href="{{floorJson.url}}">{{floorJson.name}}</a></h2>
+      <!-- <h2 ng-if="itemsById[roomId]">> {{itemsById[roomId].name}}</h2> -->
+    </div>
+    
+    <%= render 'filters' %>
+    <%= render 'display_text' %>
+    
+    <%= render '/floors/map_editor' %>
     <%= render 'room' %>
+    
   </div>
-  
-
 </div>
