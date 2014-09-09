@@ -8,6 +8,7 @@ fr:
         area: "Aire"
         network: "Ports Réseau"
         affectations: "Affectations"
+        perimeter: "Périmètre"
       building:
         name: "Nom"
         company: "Entreprise"

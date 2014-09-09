@@ -47,6 +47,9 @@
     p.push(getDisplayNameFilter('area', true, function(v) {
       return [v + ' m²'];
     }));
+    p.push(getDisplayNameFilter('perimeter', false, function(v) {
+      return [v + ' m'];
+    }));
     p.push(getDisplayNameFilter('network', false, function(v) {
       return v.split('\r\n');
     }));
@@ -58,7 +61,7 @@
       });
     }, false));
 
-    p = p.sort(function(a, b){
+    p = p.sort(function(a, b) {
       return a.order > b.order;
     });
 
