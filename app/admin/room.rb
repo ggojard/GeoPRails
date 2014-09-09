@@ -22,6 +22,7 @@ ActiveAdmin.register Room do
       row "Type" do c.room_type end
       row "Organisation" do c.organization end
       row "Aire" do c.area.to_s + ' m²' end
+      row "Périmètre" do c.perimeter end
       row "Nature des sols" do c.room_ground_type end
       row "Zone d'évacuation" do c.evacuation_zone end
       row "Ports Réseau" do c.network end
@@ -67,6 +68,7 @@ ActiveAdmin.register Room do
     column "Organisation", :organization
     column "Nature des sol", :room_ground_type
     column "Aire", :area
+    column "Périmètre", :perimeter
     actions
   end
 

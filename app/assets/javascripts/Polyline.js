@@ -50,11 +50,46 @@
 
 
   Polyline.prototype.updateArea = function() {
-    if (this.areaText !== undefined) {
-      var area = this.getArea();
-      this.areaText.node.innerHTML = area + ' m²';
-      this.json.area = area;
+    var area = this.getArea();
+    this.json.area = area;
+  };
+
+  Polyline.prototype.updatePerimeter = function() {
+    var perimeter = this.getPerimeter();
+    this.json.perimeter = perimeter;
+  };
+
+
+  function lineDistance(point1, point2) {
+    var xs = 0,
+      ys = 0;
+
+    xs = point2.x - point1.x;
+    xs = xs * xs;
+
+    ys = point2.y - point1.y;
+    ys = ys * ys;
+
+    return Math.sqrt(xs + ys);
+  }
+
+  Polyline.prototype.getPerimeter = function() {
+    var i, p1, p2, sumDistance = 0,
+      d, scaleLen, scaleDim;
+    scaleLen = this.svgEditor.mapScale.length;
+    scaleDim = this.svgEditor.mapScale.getLength();
+
+    for (i = 0; i < this.element.node.points.numberOfItems - 2; i += 1) {
+      p1 = this.element.node.points.getItem(i);
+      if (i === 0) {
+        p2 = this.element.node.points.getItem(this.element.node.points.numberOfItems - 1);
+      } else {
+        p2 = this.element.node.points.getItem(i + 1);
+      }
+      d = lineDistance(p1, p2);
+      sumDistance += d * scaleLen / scaleDim;
     }
+    return parseFloat(parseFloat(sumDistance, 10).toFixed(1), 10);
   };
 
 
@@ -215,6 +250,7 @@
       p.y += my;
 
       that.updateArea();
+      that.updatePerimeter();
       that.updateTextPosition();
     });
 
@@ -480,6 +516,7 @@
       data = {
         'points': this.getPointsData(),
         'area': this.getArea(),
+        'perimeter' : this.getPerimeter(),
         'floor_id': this.svgEditor.json.id,
         'name': 'B?'
       };
@@ -498,7 +535,8 @@
       'id': this.json.id,
       'room': {
         'points': this.getPointsData(),
-        'area': this.getArea()
+        'area': this.getArea(),
+        'perimeter': this.getPerimeter()
       }
     };
     this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function() {
@@ -739,6 +777,7 @@
 
       polyline.setMovePointsToVisibility('visible');
       polyline.updateArea();
+      polyline.updatePerimeter();
       polyline.updateHashCode();
 
       removeHoverLines(polyline);
