@@ -6,8 +6,8 @@ class HomesController < ApplicationController
 
 
     people = Person.where(["lower(firstname) like ? OR lower(lastname) like ?", @search, @search]).map { |b| b.as_json(:methods => [:fullname, :url]) }
-    rooms = Room.where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
-    floors = Floor.where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
+    rooms = Room.includes(:floor => :building).where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
+    floors = Floor.includes(:building).where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
     organizations = Organization.where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
 
     @res = {

@@ -671,10 +671,13 @@
         this.element.click(this.select.bind(this));
         break;
       case 'show':
-        this.element.click(function() {
+        this.element.click(function(e) {
           var link = '/floors/' + that.svgEditor.json.id + '#' + that.json.id;
           if (window.location.href.indexOf(link) === -1) {
             document.location.href = link;
+          } else {
+            geoP.currentEvent = e;
+            that.doActionIfItemIsSelected();
           }
         });
         break;
