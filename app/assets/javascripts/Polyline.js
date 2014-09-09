@@ -79,15 +79,17 @@
     scaleLen = this.svgEditor.mapScale.length;
     scaleDim = this.svgEditor.mapScale.getLength();
 
-    for (i = 0; i < this.element.node.points.numberOfItems - 2; i += 1) {
+    for (i = 0; i < this.element.node.points.numberOfItems - 1; i += 1) {
       p1 = this.element.node.points.getItem(i);
       if (i === 0) {
         p2 = this.element.node.points.getItem(this.element.node.points.numberOfItems - 1);
-      } else {
-        p2 = this.element.node.points.getItem(i + 1);
+        d = lineDistance(p1, p2) * scaleLen / scaleDim;
+        sumDistance += d;
       }
-      d = lineDistance(p1, p2);
-      sumDistance += d * scaleLen / scaleDim;
+      p2 = this.element.node.points.getItem(i + 1);
+
+      d = lineDistance(p1, p2) * scaleLen / scaleDim;
+      sumDistance += d;
     }
     return parseFloat(parseFloat(sumDistance, 10).toFixed(1), 10);
   };
@@ -481,6 +483,7 @@
       h = [bbox];
       if (this.json !== null) {
         h.push(this.json.area);
+        h.push(this.json.perimeter);
       }
       h.push(JSON.stringify(this.group._.transform));
       return geoP.hashCode(h.join(''));
@@ -516,7 +519,7 @@
       data = {
         'points': this.getPointsData(),
         'area': this.getArea(),
-        'perimeter' : this.getPerimeter(),
+        'perimeter': this.getPerimeter(),
         'floor_id': this.svgEditor.json.id,
         'name': 'B?'
       };
@@ -639,6 +642,7 @@
       deleteLabel;
     // that.isSelected = true;
 
+    this.getPerimeter();
 
     if (this.dragMode === true) {
       this.group.drag();
