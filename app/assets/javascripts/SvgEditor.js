@@ -271,10 +271,14 @@
             itemsObject[targetItem.id].count = 0;
             itemsObject[targetItem.id].areaSum = 0;
             itemsObject[targetItem.id].nbPeople = 0;
+            itemsObject[targetItem.id].perimeterSum = 0;
           }
           itemsObject[targetItem.id].count += 1;
           itemsObject[targetItem.id].areaSum += item.area;
           itemsObject[targetItem.id].areaSum = parseFloat(itemsObject[targetItem.id].areaSum.toFixed(1), 10);
+
+          itemsObject[targetItem.id].perimeterSum += item.perimeter;
+          itemsObject[targetItem.id].perimeterSum = parseFloat(itemsObject[targetItem.id].perimeterSum.toFixed(1), 10);
           itemsObject[targetItem.id].nbPeople += item.affectations.length;
           if (itemsObject[targetItem.id].nbPeople === 0) {
             itemsObject[targetItem.id].ratio = 0;
