@@ -157,7 +157,9 @@
 
   SvgEditor.prototype.cleanCurrentOptions = function() {
     this.currentOptions = [];
-    this.$scope.mapMode = 'normal';
+    if (this.$scope.mapMode === 'create') {
+      this.$scope.mapMode = 'edit';
+    }
   };
 
   SvgEditor.prototype.getFloorFullName = function() {
