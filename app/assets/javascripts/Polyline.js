@@ -369,7 +369,7 @@
 
     this.text = this.svgEditor.canvas.text(0, 0, texts);
     this.texts.push(this.text);
-    this.text.node.style.cssText = 'font-size:12px;font-family:arial;fill:black;text-anchor: middle';
+    this.text.node.style.cssText = 'pointer-events: auto;font-size:12px;font-family:arial;fill:black;text-anchor: middle';
     this.group.add(this.text);
 
     this.updateTextPosition();

@@ -26,6 +26,11 @@
   SvgEditor.prototype.exportToImage = function() {
     var svgContainerId = this.svgId,
       editor = this,
+      line = 0,
+      heightOfLine = 64,
+      fontSize = 24,
+      legendWidth = 300,
+      bg, svgElements = [],
       imageName, savedCamera, saveScale, html, $svg, h, $c, canvasDom;
     imageName = this.getFloorFullName();
 
@@ -43,9 +48,39 @@
     editor.applyTransform();
 
     $svg = $('#' + svgContainerId);
-    $svg.attr('width', editor.bgBox.w);
+    $svg.attr('width', editor.bgBox.w + legendWidth);
     $svg.attr('height', editor.bgBox.h);
+
+    bg = editor.canvas.rect(editor.bgBox.w, 0, legendWidth, editor.bgBox.h);
+    bg.attr({
+      fill: 'white'
+    });
+
+    Object.keys(editor.mapFilter.filters).map(function(fKey) {
+      Object.keys(editor.mapFilter.filters[fKey]).map(function(fId) {
+        var filter, text;
+        filter = editor.mapFilter.filters[fKey][fId];
+        if (filter.state === true) {
+          bg = editor.canvas.rect(editor.bgBox.w, line * heightOfLine, legendWidth, heightOfLine);
+          svgElements.push(bg);
+          bg.attr({
+            'fill': filter.color,
+            'stroke': 'white'
+          });
+          text = editor.canvas.text(editor.bgBox.w + legendWidth / 2, line * heightOfLine + fontSize + ((heightOfLine - fontSize) / 2), filter.name);
+          text.attr({
+            'fill': 'black'
+          });
+          text.node.style.cssText = 'font-size:' + fontSize + 'px;font-family:arial;fill:black;text-anchor:middle';
+          svgElements.push(text);
+          line += 1;
+        }
+      });
+    });
+
     html = $svg[0].outerHTML;
+
+
 
     editor.camera = savedCamera;
     editor.applyTransform();
@@ -65,6 +100,12 @@
       $('#svgdataurl').append(a);
       a.click();
       $c.remove();
+      $svg.attr('width', editor.bgBox.w);
+      $svg.attr('height', editor.bgBox.h);
+      svgElements.forEach(function(e) {
+        e.remove();
+      });
+
     }, 500);
   };
 }(GeoP, canvg, jQuery));

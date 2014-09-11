@@ -244,6 +244,9 @@
 
   SvgEditor.prototype.centerMap = function() {
     this.centerOnBox(this.bgBox);
+    this.camera.x = 0;
+    this.camera.y = 0;
+    this.applyTransform();
   };
 
   SvgEditor.prototype.createRoomFromJson = function(json) {
