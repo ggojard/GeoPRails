@@ -182,6 +182,8 @@
     $scope.mapMode = gon.mode;
 
     $http.get('/floors/' + gon.floor.id + '.json').success(function(floor) {
+
+      $rootScope.$emit('SetBodyColor', floor.building.color);
       $scope.room = null;
       $scope.roomId = geoP.getRoomIdFromHash();
 

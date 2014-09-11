@@ -12,6 +12,7 @@ fr:
       building:
         name: "Nom"
         company: "Entreprise"
+        color: "Couleur de fond"
       company:
         name : "Nom"
       evacuation_zone:

@@ -4,6 +4,7 @@ ActiveAdmin.register Building do
   show do |f|
     attributes_table do
       row I18n.t('formtastic.labels.building.name') do f.name end
+
     end
 
     panel I18n.t('activerecord.models.floor.other') do
@@ -18,6 +19,7 @@ ActiveAdmin.register Building do
     id_column
     column I18n.t('formtastic.labels.building.name'), :name
     column I18n.t('formtastic.labels.building.company'),:company
+    column I18n.t('formtastic.labels.building.color'), :color, class: 'color-display'    
     actions
   end
 
@@ -26,6 +28,7 @@ ActiveAdmin.register Building do
     f.inputs  do
       f.input :name
       f.input :company
+      f.input :color, input_html: { class: 'colorpicker' }
     end
 
     f.has_many :floors do |b|
