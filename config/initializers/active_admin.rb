@@ -20,7 +20,7 @@ ActiveAdmin.setup do |config|
   #
   # Note: Aim for an image that's 21px high so it fits in the header.
   #
-  config.site_title_image = "/assets/logo-mdm.png"
+  config.site_title_image = "/images/logo_small.png"
 
   # == Default Namespace
   #

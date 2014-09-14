@@ -1,8 +1,13 @@
 ActiveAdmin.register Company do
 
+  permit_params :name, :image
+
   show do |c|
     attributes_table do
       row I18n.t('formtastic.labels.company.name') do c.name end
+      row "Logo" do
+        image_tag(c.image.url(:thumb))
+      end
     end
 
     panel I18n.t('activerecord.models.building.other') do
@@ -21,9 +26,22 @@ ActiveAdmin.register Company do
   end
 
 
-  form do |company|
+  # form :html => { :enctype => "multipart/form-data" } do |f|
+  #   f.inputs do
+  #     f.input :name
+  #     f.input :building
+  #     f.input :level
+  #     f.input :image, :required => false, :as => :file
+  #   end
+  #   f.actions
+  # end
+
+
+
+  form :html => { :enctype => "multipart/form-data" } do |company|
     company.inputs  do
       company.input :name
+      company.input :image, :required => false, :as => :file
     end
 
     company.has_many :buildings do |b|
