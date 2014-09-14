@@ -4,12 +4,9 @@
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= [@page_title, render_or_call_method_or_proc_on(self, ActiveAdmin.application.site_title)].compact.join(" | ") %></title>
+  
+  <%= render '/layouts/ios' %>
 
-
-   <link rel='apple-touch-icon' href='/assets/surfy-57.png'/>
-    <link rel='apple-touch-icon' sizes='72x72' href='/assets/surfy-72.png'/>
-    <link rel='apple-touch-icon' sizes='114x114' href='/assets/surfy-114.png'/>
-    <link rel='apple-touch-icon' sizes='144x144' href='/assets/surfy-144.png'/>
 
   <% ActiveAdmin.application.stylesheets.each do |style, options| %>
     <%= stylesheet_link_tag style, options %>
