@@ -1,10 +1,9 @@
-@mixin transition($speed){
+@mixin transition($speed) {
     -o-transition: all $speed ease-out;
-  -moz-transition: all $speed ease-out;
-  -webkit-transition: all $speed ease-out;
-  transition: all $speed ease-out;
+    -moz-transition: all $speed ease-out;
+    -webkit-transition: all $speed ease-out;
+    transition: all $speed ease-out;
 }
-
 
 body, label, button, input, #upload-file, input[type="file"] {
     font-family: arial;
@@ -18,6 +17,16 @@ svg {
     background-color: white;
     &.create:hover {
         cursor: crosshair;
+    }
+    g.select.move:hover {
+        cursor: move;
+    }
+    g.select.moveText {
+        text {
+            &:hover {
+                cursor: move;
+            }
+        }
     }
 }
 
@@ -120,7 +129,6 @@ div.panel-map {
             background-color: #00C7FF;
         }
     }
-
     &.shift-true {
         .panel-heading {
             background-color: #00e567;
@@ -231,12 +239,11 @@ a.logo {
     }
 }
 
-
 @media screen and (min-width: 240px) and (max-width: 639px) {
     .home {
-        .buildings{
+        .buildings {
             div.building {
-                h2{
+                h2 {
                     text-align: left;
                 }
                 display: block;
@@ -246,7 +253,6 @@ a.logo {
                 min-height: 0;
                 margin: 0;
             }
-
         }
     }
 }

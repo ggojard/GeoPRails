@@ -15,6 +15,7 @@
     this.json = null;
     this.displayTexts = {};
     this.dragMode = false;
+    this.dragTextMode = false;
   };
 
   Polyline.prototype.createSvgPoint = function(x, y) {
@@ -133,6 +134,9 @@
       stroke: GeoP.Colors.Drawing
     });
     this.group = this.svgEditor.canvas.group(this.element);
+    this.group.attr({
+      'id': 'g-' + this.json.id
+    });
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 
@@ -155,6 +159,12 @@
       x: x,
       y: bbox.y + bbox.height / 2 - textBbox.height / 2
     });
+
+    if (this.json !== null && this.json.anchor_text_point !== null) {
+      if (this.json.anchor_text_point !== '') {
+        this.text.node.setAttribute('transform', this.json.anchor_text_point);
+      }
+    }
 
   };
 
@@ -485,6 +495,7 @@
         h.push(this.json.area);
         h.push(this.json.perimeter);
       }
+      h.push(this.getTextTransform());
       h.push(JSON.stringify(this.group._.transform));
       return geoP.hashCode(h.join(''));
     }
@@ -513,15 +524,26 @@
     return JSON.stringify(points);
   };
 
+
+  Polyline.prototype.getTextTransform = function() {
+    var textTransform = null;
+    if (this.text !== undefined) {
+      textTransform = this.text.node.getAttribute('transform');
+    }
+    return textTransform;
+  };
+
   Polyline.prototype.save = function(callback) {
     var data, that = this;
+
     if (this.json === null) {
       data = {
         'points': this.getPointsData(),
         'area': this.getArea(),
         'perimeter': this.getPerimeter(),
         'floor_id': this.svgEditor.json.id,
-        'name': 'B?'
+        'name': 'B?',
+        'anchor_text_point': this.getTextTransform()
       };
       this.svgEditor.$http.post('/rooms.json', data).success(function(d) {
         geoP.notifications.done('La nouvelle pièce a été crée.');
@@ -539,7 +561,8 @@
       'room': {
         'points': this.getPointsData(),
         'area': this.getArea(),
-        'perimeter': this.getPerimeter()
+        'perimeter': this.getPerimeter(),
+        'anchor_text_point': this.getTextTransform()
       }
     };
     this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function() {
@@ -554,15 +577,11 @@
   Polyline.prototype.unSelect = function() {
     this.stroke(GeoP.Colors.NotSelected);
     this.setMovePointsToVisibility('hidden');
-
-    // if (this.isSelected === true) {
     var currentHash = this.getHash();
     if (this.hashCode !== currentHash) {
       this.save();
     }
-    // }
-
-    // this.isSelected = false;
+    this.group.node.setAttribute('class', 'unselected');
   };
 
   Polyline.prototype.zoomOnItem = function() {
@@ -584,13 +603,73 @@
   };
 
 
+
+  Polyline.prototype.addMoveTextOption = function() {
+    var that = this,
+      mode, enableMode, disableMode, centerBackText;
+
+    enableMode = {
+      id: 'drag-mode',
+      label: 'Activer le déplacement du texte',
+      classes: 'btn-default',
+      icon: ' fa-arrows',
+      action: function() {
+        that.dragTextMode = true;
+        var i = that.svgEditor.currentOptions.indexOf(enableMode);
+        that.svgEditor.currentOptions[i] = disableMode;
+        that.select();
+      }
+    };
+    disableMode = {
+      id: 'drag-mode',
+      label: 'Désactiver le déplacement du texte',
+      classes: 'btn-danger',
+      icon: ' fa-stop',
+      action: function() {
+        that.dragTextMode = false;
+        var i = that.svgEditor.currentOptions.indexOf(disableMode);
+        that.svgEditor.currentOptions[i] = enableMode;
+        that.select();
+      }
+    };
+
+    if (this.dragTextMode === false) {
+      mode = enableMode;
+    } else {
+      mode = disableMode;
+    }
+
+    that.svgEditor.currentOptions.push(mode);
+
+
+    if (this.text !== undefined) {
+      if (this.text.node.hasAttribute('transform') && this.text.node.getAttribute('transform') !== '') {
+        centerBackText = {
+          id: 'center-text',
+          label: 'Recentrer le texte',
+          classes: 'btn-danger',
+          icon: ' fa-crosshairs',
+          action: function() {
+            that.text.node.setAttribute('transform', '');
+            // that.updateTextPosition();
+            // that.save(function(){
+            //   that.select();
+            // });
+          }
+        };
+        that.svgEditor.currentOptions.push(centerBackText);
+      }
+    }
+
+  };
+
   Polyline.prototype.addMovePolylineOption = function() {
     var that = this,
       mode, enableMode, disableMode;
 
     enableMode = {
       id: 'drag-mode',
-      label: 'Activer le déplacement',
+      label: 'Activer le déplacement du polygone',
       classes: 'btn-default',
       icon: ' fa-arrows',
       action: function() {
@@ -602,7 +681,7 @@
     };
     disableMode = {
       id: 'drag-mode',
-      label: 'Désactiver le déplacement',
+      label: 'Désactiver le déplacement du polygone',
       classes: 'btn-danger',
       icon: ' fa-stop',
       action: function() {
@@ -642,13 +721,12 @@
       deleteLabel;
     // that.isSelected = true;
 
+
+
+    // this.group.addClass('select'/);
     this.getPerimeter();
 
-    if (this.dragMode === true) {
-      this.group.drag();
-    } else {
-      this.group.undrag();
-    }
+
 
     that.svgEditor.cleanDragPointOptions();
 
@@ -659,8 +737,21 @@
       case 'normal':
       case 'edit':
         $scope.room = that;
-
         that.svgEditor.unSelectItems();
+        this.group.node.setAttribute('class', 'select');
+        if (this.dragMode === true) {
+          this.group.drag();
+          this.group.node.setAttribute('class', this.group.node.className.baseVal + ' move');
+        } else {
+          this.group.undrag();
+        }
+        if (this.dragTextMode === true) {
+          this.text.drag();
+          this.group.node.setAttribute('class', this.group.node.className.baseVal + ' moveText');
+        } else {
+          this.text.undrag();
+        }
+
         that.setMovePointsToVisibility('visible');
         that.stroke(GeoP.Colors.Selected);
         geoP.currentEvent = e;
@@ -693,6 +784,7 @@
         that.addZoomOnItemOption();
         that.addCreateDragPointModeOnItemOption();
         that.addMovePolylineOption();
+        that.addMoveTextOption();
         setTimeout(function() {
           $scope.$apply();
         });
