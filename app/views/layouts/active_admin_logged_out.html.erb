@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= [@page_title, render_or_call_method_or_proc_on(self, ActiveAdmin.application.site_title)].compact.join(" | ") %></title>
+
+
+   <link rel='apple-touch-icon' href='/assets/surfy-57.png'/>
+    <link rel='apple-touch-icon' sizes='72x72' href='/assets/surfy-72.png'/>
+    <link rel='apple-touch-icon' sizes='114x114' href='/assets/surfy-114.png'/>
+    <link rel='apple-touch-icon' sizes='144x144' href='/assets/surfy-144.png'/>
+
+  <% ActiveAdmin.application.stylesheets.each do |style, options| %>
+    <%= stylesheet_link_tag style, options %>
+  <% end %>
+  <% ActiveAdmin.application.javascripts.each do |path| %>
+    <%= javascript_include_tag path %>
+  <% end %>
+  
+  <%= favicon_link_tag ActiveAdmin.application.favicon if ActiveAdmin.application.favicon %>
+  
+    <!-- Latest compiled and minified CSS -->
+  <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> -->
+
+  <!-- Optional theme -->
+  <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"> -->
+
+  <!-- Latest compiled and minified JavaScript -->
+  <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>   -->
+
+  
+  <link rel="stylesheet" href="/assets/sessions.css">
+  <link rel="stylesheet" href="/assets/vendor/animate.css">
+
+  
+
+  <%= csrf_meta_tag %>
+</head>
+<body id="body-zone" class="active_admin logged_out <%= controller.action_name %>">
+<div id="wrapper">
+
+  <div id="content_wrapper">
+    <% flash.each do |type, message| %>
+      <%= content_tag :div, message, class: "flash flash_#{type}" %>
+    <% end %>
+    <div id="active_admin_content" class="animated zoomInDown">
+      <%= yield %>
+    </div>
+  </div>
+  <div id="footer">
+    <%= yield :footer %>
+  </div>
+</div>
+  <!-- <script src='/assets/sessions.js'></script> -->
+</body>
+</html>
