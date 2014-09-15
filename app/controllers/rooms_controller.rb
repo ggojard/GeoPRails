@@ -47,8 +47,9 @@ class RoomsController < GeopController
 
   # PATCH/PUT /rooms/1
   # PATCH/PUT /rooms/1.json
+  # params.require(:room).permit(:points, :area, :perimeter, :anchor_text_point)
   def update
-    if @room.update_attributes(params.require(:room).permit(:points, :area, :perimeter, :anchor_text_point))
+    if @room.update_attributes(room_params)
       render json: {}
     else
       render :action => "edit"
@@ -63,7 +64,7 @@ class RoomsController < GeopController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def room_params
-    params.require(:room).permit(:points, :area, :perimeter, :anchor_text_point)
+    params.require(:room).permit(:name, :floor_id, :points, :area, :perimeter, :anchor_text_point)
   end
 
 end
