@@ -134,9 +134,12 @@
       stroke: GeoP.Colors.Drawing
     });
     this.group = this.svgEditor.canvas.group(this.element);
-    this.group.attr({
-      'id': 'g-' + this.json.id
-    });
+    if (this.json !== null) {
+      this.group.attr({
+        'id': 'g-' + this.json.id
+      });
+    }
+
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 
