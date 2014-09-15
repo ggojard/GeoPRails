@@ -69,14 +69,6 @@
 
     that.displayProperties = $rootScope.displayNames;
 
-    window.onhashchange = function() {
-      $scope.roomId = geoP.getRoomIdFromHash();
-      that.itemsById[$scope.roomId].doActionIfItemIsSelected();
-      setTimeout(function() {
-        $scope.$apply();
-      }, 0);
-    };
-
     $((function() {
       $('#' + that.svgId).svgPan(that.canvas.node.id, that);
     }()));
@@ -138,6 +130,12 @@
     });
 
   };
+
+  SvgEditor.prototype.setCurrentRoom = function(polyline) {
+    this.$scope.room = polyline;
+    this.$scope.roomInfoTopOffset = this.paper.node.offsetTop;
+  };
+
 
   SvgEditor.prototype.updateCamera = function() {
     var ctm = this.canvas.node.getCTM();
@@ -394,6 +392,7 @@
   };
 
   SvgEditor.prototype.unSelectItems = function() {
+    this.$scope.room = null;
     this.mapOnItems('unSelect');
   };
 

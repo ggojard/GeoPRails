@@ -6,35 +6,35 @@
       <h3>{{a.person.fullname}}</h3>
       <p>
       <table class="room">
-        <tr>
+        <tr ng-if="a.person.person_state">
           <th>Etat</th>
           <td>{{a.person.person_state.name}}</td>
         </tr>
-        <tr>
+        <tr ng-if="a.person.email">
           <th>E-mail</th>
           <td class="email"><a href="mailto:{{a.person.email}}">{{a.person.email}}</a></td>
         </tr>
-        <tr>
+        <tr ng-if="a.person.format_telephone">
           <th>Téléphone</th>
           <td>{{a.person.format_telephone}}</td>
         </tr>
-        <tr>
+        <tr ng-if="a.person.format_cellphone">
           <th>Portable</th>
           <td>{{a.person.format_cellphone}}</td>
         </tr>
-        <tr>
+        <tr ng-if="a.person.computerreference">
           <th>Ordinateur</th>
           <td>{{a.person.computerreference}}</td>
         </tr>
-        <tr>
+        <tr ng-if="a.person.monitorreference">
           <th>Ecran</th>
           <td>{{a.person.monitorreference}}</td>
         </tr>
-        <tr>
+        <tr ng-if="a.person.person_code">
           <th>Matricule</th>
           <td>{{a.person.person_code}}</td>
         </tr>        
-        <tr>
+        <tr ng-if="a.person.organization">
           <th>Organisation</th>
           <td><a href="{{a.person.organization.url}}">{{a.person.organization.name}}</a></td>
         </tr>

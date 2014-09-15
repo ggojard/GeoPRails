@@ -4,8 +4,7 @@
 (function() {
   'use strict';
   $((function() {
-
-    console.log('start', $('#active_admin_content').length);
+  	return undefined;
     // $('#active_admin_content').addClass('animated fadeIn');
 
   }()));

@@ -113,6 +113,28 @@
       mapFilter.registerFiltersStateChange();
       $rootScope.mapFilter = mapFilter;
       mapFilter.ready();
+
+      window.onhashchange = function() {
+        var roomId, floorId, floorEditor;
+
+        function apply() {
+          $scope.$apply();
+        }
+
+        roomId = geoP.getRoomIdFromHash();
+        for (floorId in $scope.svgEditors) {
+          if ($scope.svgEditors.hasOwnProperty(floorId)) {
+            floorEditor = $scope.svgEditors[floorId];
+            if (floorEditor.itemsById[roomId]) {
+              $scope.roomId = roomId;
+              floorEditor.itemsById[$scope.roomId].doActionIfItemIsSelected();
+              setTimeout(apply, 0);
+            }
+          }
+        }
+      };
+
+
       $scope.$apply();
       return callback && callback(mapFilter);
     }, 0);
