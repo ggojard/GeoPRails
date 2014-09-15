@@ -68,3 +68,14 @@
         }
     }
 }
+
+
+@media screen and (min-width: 240px) and (max-width: 639px) {
+#body-zone {
+  
+    #content_wrapper {
+        margin:  10px auto;
+        max-width: 300px;
+}}
+}
+
