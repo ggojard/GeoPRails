@@ -1,5 +1,6 @@
 ActiveAdmin.register AdminUser do
-  permit_params :email, :password, :password_confirmation, :company_id, :username
+  menu :parent => "Administration"
+  permit_params :email, :password, :password_confirmation, :company_id, :username, :admin_user_type_id
 
   index do
     selectable_column
@@ -8,8 +9,9 @@ ActiveAdmin.register AdminUser do
     column :username
     column :current_sign_in_at
     column :sign_in_count
-    column :created_at
+    # column :created_at
     column :company
+    # column :admin_user_type
     actions
   end
 
@@ -27,6 +29,7 @@ ActiveAdmin.register AdminUser do
       f.input :password_confirmation
       f.input :company
       f.input :username      
+      f.input :admin_user_type
     end
     f.actions
   end

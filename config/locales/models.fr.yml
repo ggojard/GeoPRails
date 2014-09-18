@@ -18,6 +18,9 @@ fr:
       evacuation_zone:
         name : "Nom"
         color: "Couleur"
+      admin_user_type:
+        name: "Nom"
+        code: "Code"
       floor:
         name : "Nom"
         building: "Bâtiment"
@@ -62,6 +65,9 @@ fr:
       affectaton: 
         one :  "Affectation"
         other : "Affectations"
+      admin_user_type:
+        one :  "Type d'utilisateur"
+        other : "Type d'utilisateurs"
       building:
         one :  "Bâtiment"
         other : "Bâtiments"
