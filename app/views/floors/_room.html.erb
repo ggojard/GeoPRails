@@ -36,6 +36,10 @@
     <tr ng-if="room.json.affectations.length > 0">
       <th>Ratio Affectations</th><td>{{room.json.ratio}} personnes / m²</td>      
     </tr>
+    <tr ng-if="room.json.affectations.length > 0">
+      <th>Nombre de personnes</th><td>{{room.json.affectations.length}}</td>      
+    </tr>
+
   </table>
 
   <%=  render '/floors/affectations' %> 

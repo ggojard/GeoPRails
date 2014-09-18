@@ -335,9 +335,14 @@
     editMode = {
       label: 'Modifier le plan',
       icon: 'fa-unlock',
-      action: function() {
+      action: function(e) {
+        that.unSelectItems();
         $scope.mapMode = 'edit';
         that.setOptions();
+        var polyline = geoP.selectPolylineIfIsInHash($scope);
+        if (polyline !== null) {
+          polyline.select(e);
+        }
       },
       classes: 'btn-default'
     };
@@ -354,10 +359,16 @@
     stopEditMode = {
       label: 'Arrêter la modification',
       icon: 'fa-lock',
-      action: function() {
+      action: function(e) {
+        that.unSelectItems();
         that.cancelCreateMode();
+        that.mapOnItems('resetActions');
         $scope.mapMode = 'show';
         that.setOptions();
+        var polyline = geoP.selectPolylineIfIsInHash($scope);
+        if (polyline !== null) {
+          polyline.select(e);
+        }
       },
       classes: 'btn-warning'
     };

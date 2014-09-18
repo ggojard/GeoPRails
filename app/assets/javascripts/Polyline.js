@@ -384,10 +384,12 @@
       }
     }
 
+
     this.text = this.svgEditor.canvas.text(0, 0, texts);
     this.texts.push(this.text);
     this.text.node.style.cssText = 'pointer-events: auto;font-size:12px;font-family:arial;fill:black;text-anchor: middle';
     this.group.add(this.text);
+    this.checkAndSetDragModeTextEventsAndClass();
 
     this.updateTextPosition();
   };
@@ -558,6 +560,17 @@
     });
   };
 
+  Polyline.prototype.resetActions = function() {
+    this.dragMode = false;
+    this.dragTextMode = false;
+    if (this.group !== undefined) {
+      this.group.undrag();
+    }
+    if (this.text !== undefined) {
+      this.text.undrag();
+    }
+  };
+
   Polyline.prototype.unSelect = function() {
     this.setMovePointsToVisibility('hidden');
     var currentHash = this.getHash();
@@ -593,7 +606,7 @@
 
 
 
-  Polyline.prototype.addMoveTextOption = function() {
+  Polyline.prototype.addMoveTextOption = function(e) {
     var that = this,
       mode, enableMode, disableMode, centerBackText;
 
@@ -607,6 +620,7 @@
         var i = that.optionsOnMap.indexOf(enableMode);
         that.optionsOnMap[i] = disableMode;
         that.select();
+
       }
     };
     disableMode = {
@@ -640,6 +654,7 @@
           icon: ' fa-crosshairs',
           action: function() {
             that.text.node.setAttribute('transform', '');
+            that.select(e);
             // that.updateTextPosition();
             // that.save(function(){
             //   that.select();
@@ -762,6 +777,17 @@
     document.location.hash = link;
   };
 
+  Polyline.prototype.checkAndSetDragModeTextEventsAndClass = function() {
+    if (this.dragTextMode === true) {
+      this.text.drag();
+      this.group.node.setAttribute('class', this.group.node.className.baseVal + ' moveText');
+      this.text.node.setAttribute('class', 'move');
+    } else {
+      this.text.undrag();
+      this.text.node.setAttribute('class', 'hidden');
+    }
+  };
+
   Polyline.prototype.select = function(e) {
     var that = this,
       $scope = this.svgEditor.$scope;
@@ -772,6 +798,12 @@
     that.svgEditor.unSelectItems();
 
     this.selectPolyline();
+
+
+    if (this.dragMode === true) {
+      this.group.undrag();
+    }
+
     switch ($scope.mapMode) {
       case 'normal':
       case 'edit':
@@ -781,18 +813,12 @@
         } else {
           this.group.undrag();
         }
-        if (this.dragTextMode === true) {
-          this.text.drag();
-          this.group.node.setAttribute('class', this.group.node.className.baseVal + ' moveText');
-        } else {
-          this.text.undrag();
-        }
+        this.checkAndSetDragModeTextEventsAndClass();
         that.setMovePointsToVisibility('visible');
         that.addDeleteOption();
         that.addCreateDragPointModeOnItemOption();
         that.addMovePolylineOption();
-        that.addMoveTextOption();
-
+        that.addMoveTextOption(e);
         break;
     }
 

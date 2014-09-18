@@ -97,13 +97,12 @@
   // });
 
 
-  function selectPolylineIfIsInHash($scope) {
+  geoP.selectPolylineIfIsInHash = function($scope) {
     var roomId, floorId, floorEditor;
 
     function apply() {
       $scope.$apply();
     }
-
     roomId = geoP.getRoomIdFromHash();
     for (floorId in $scope.svgEditors) {
       if ($scope.svgEditors.hasOwnProperty(floorId)) {
@@ -112,10 +111,12 @@
           $scope.roomId = roomId;
           floorEditor.itemsById[$scope.roomId].selectPolyline();
           setTimeout(apply, 0);
+          return floorEditor.itemsById[$scope.roomId];
         }
       }
     }
-  }
+    return null;
+  };
 
   geoP.setFloorMaps = function(floors, $scope, $http, $rootScope, callback) {
     $scope.svgEditors = {};
@@ -136,7 +137,7 @@
       mapFilter.ready();
 
 
-      selectPolylineIfIsInHash($scope);
+      geoP.selectPolylineIfIsInHash($scope);
 
       $scope.$apply();
       return callback && callback(mapFilter);

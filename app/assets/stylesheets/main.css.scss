@@ -15,6 +15,17 @@ svg {
     width: 100%;
     height: 100%;
     background-color: white;
+
+    &.mode-create, &.mode-edit{
+        text{
+            display: none;
+        }
+                    text.move{
+                display: block;
+            }
+
+    }
+
     &.mode-create:hover {
         cursor: crosshair;
     }
@@ -28,8 +39,11 @@ svg {
             fill: #1dc8fe;
             stroke: #0063FF;
         }
-        &.move:hover {
+        &.move{
+    polygon:hover {
             cursor: move;
+        }
+
         }
         &.moveText {
             text {
@@ -39,6 +53,7 @@ svg {
             }
         }
     }
+
 }
 
 .loading {
