@@ -13,9 +13,12 @@ ul.map-options {
     }
 }
 
-svg.mode-show, svg.mode-normal {
+svg {
     polygon:hover {
         cursor: pointer;
+    }
+    circle:hover{
+        cursor: move;
     }
 }
 

@@ -16,6 +16,7 @@
     this.displayTexts = {};
     this.dragMode = false;
     this.dragTextMode = false;
+    this.optionsOnMap = [];
   };
 
   Polyline.prototype.createSvgPoint = function(x, y) {
@@ -301,10 +302,11 @@
 
   Polyline.prototype.removeDisplayTexts = function() {
     var i;
-    // texts = Object.keys(this.texts);
-    for (i = 0; i < this.texts.length; i += 1) {
-      if (this.texts[i] !== undefined) {
-        this.texts[i].remove();
+    if (this.texts !== undefined) {
+      for (i = 0; i < this.texts.length; i += 1) {
+        if (this.texts[i] !== undefined) {
+          this.texts[i].remove();
+        }
       }
     }
   };
@@ -312,13 +314,15 @@
   Polyline.prototype.remove = function() {
     var i = 0,
       c;
+
+    this.svgEditor.removePolyline(this);
     for (i = 0; i < this.moveCircles.length; i += 1) {
       c = this.moveCircles[i];
       c.remove();
     }
     this.removeDisplayTexts();
     this.element.remove();
-    this.svgEditor.removePolyline(this);
+
 
   };
 
@@ -402,7 +406,6 @@
           this.element.attr({
             fill: 'transparent'
           });
-          this.doActionIfItemIsSelected();
         }
       }
     }
@@ -410,10 +413,9 @@
 
   Polyline.prototype.doActionIfItemIsSelected = function() {
     if (this.svgEditor.$scope.roomId && this.svgEditor.$scope.roomId === this.json.id) {
-      this.svgEditor.currentOptions = [];
+      this.optionsOnMap = [];
       this.group.node.setAttribute('class', 'select');
       this.svgEditor.setCurrentRoom(this);
-      this.addZoomOnItemOption();
     }
   };
 
@@ -447,18 +449,7 @@
     this.close();
 
     this.setTexts();
-    this.doActionIfItemIsSelected();
     this.updateHashCode();
-
-  };
-
-  Polyline.prototype.registerHover = function() {
-    var that = this;
-    this.element.hover(function() {
-      that.stroke(GeoP.Colors.Selected);
-    }, function() {
-      that.stroke(GeoP.Colors.NotSelected);
-    });
   };
 
   Polyline.prototype.setMovePointsToVisibility = function(visibility) {
@@ -568,7 +559,6 @@
   };
 
   Polyline.prototype.unSelect = function() {
-    this.stroke(GeoP.Colors.NotSelected);
     this.setMovePointsToVisibility('hidden');
     var currentHash = this.getHash();
     if (this.hashCode !== currentHash) {
@@ -578,15 +568,21 @@
   };
 
   Polyline.prototype.zoomOnItem = function() {
-    var box = this.group.getBBox();
+    var box, spaceAround = 50;
+    box = this.group.getBBox();
+    box.width += spaceAround;
+    box.height += spaceAround;
+    box.w += spaceAround;
+    box.h += spaceAround;
+    box.x -= spaceAround / 2;
+    box.y -= spaceAround / 2;
     this.svgEditor.centerOnBox(box);
-
   };
 
   Polyline.prototype.addZoomOnItemOption = function() {
     var that = this;
-    this.svgEditor.currentOptions.push({
-      label: 'Zoomer sur ' + that.json.name,
+    this.optionsOnMap.push({
+      label: 'Zoomer',
       classes: 'btn-info',
       icon: 'fa-search',
       action: function() {
@@ -608,8 +604,8 @@
       icon: ' fa-arrows',
       action: function() {
         that.dragTextMode = true;
-        var i = that.svgEditor.currentOptions.indexOf(enableMode);
-        that.svgEditor.currentOptions[i] = disableMode;
+        var i = that.optionsOnMap.indexOf(enableMode);
+        that.optionsOnMap[i] = disableMode;
         that.select();
       }
     };
@@ -620,8 +616,8 @@
       icon: ' fa-stop',
       action: function() {
         that.dragTextMode = false;
-        var i = that.svgEditor.currentOptions.indexOf(disableMode);
-        that.svgEditor.currentOptions[i] = enableMode;
+        var i = that.optionsOnMap.indexOf(disableMode);
+        that.optionsOnMap[i] = enableMode;
         that.select();
       }
     };
@@ -632,7 +628,7 @@
       mode = disableMode;
     }
 
-    that.svgEditor.currentOptions.push(mode);
+    that.optionsOnMap.push(mode);
 
 
     if (this.text !== undefined) {
@@ -650,7 +646,7 @@
             // });
           }
         };
-        that.svgEditor.currentOptions.push(centerBackText);
+        that.optionsOnMap.push(centerBackText);
       }
     }
 
@@ -667,8 +663,8 @@
       icon: ' fa-arrows',
       action: function() {
         that.dragMode = true;
-        var i = that.svgEditor.currentOptions.indexOf(enableMode);
-        that.svgEditor.currentOptions[i] = disableMode;
+        var i = that.optionsOnMap.indexOf(enableMode);
+        that.optionsOnMap[i] = disableMode;
         that.select();
       }
     };
@@ -679,8 +675,8 @@
       icon: ' fa-stop',
       action: function() {
         that.dragMode = false;
-        var i = that.svgEditor.currentOptions.indexOf(disableMode);
-        that.svgEditor.currentOptions[i] = enableMode;
+        var i = that.optionsOnMap.indexOf(disableMode);
+        that.optionsOnMap[i] = enableMode;
         that.select();
       }
     };
@@ -691,13 +687,13 @@
       mode = disableMode;
     }
 
-    that.svgEditor.currentOptions.push(mode);
+    that.optionsOnMap.push(mode);
 
   };
 
   Polyline.prototype.addCreateDragPointModeOnItemOption = function() {
     var that = this;
-    this.svgEditor.currentOptions.push({
+    this.optionsOnMap.push({
       label: 'Créer un sommet',
       classes: 'btn-success',
       icon: 'fa-pencil',
@@ -708,30 +704,77 @@
   };
 
 
+  Polyline.prototype.clearOptionsOnMap = function() {
+    this.optionsOnMap = [];
+  };
+
+  Polyline.prototype.addDeleteOption = function() {
+    var deleteLabel, option, that = this;
+    deleteLabel = 'Supprimer ' + that.json.name;
+    option = {
+      label: deleteLabel,
+      classes: 'btn-danger',
+      icon: 'fa-trash-o',
+      action: function() {
+        that.svgEditor.$rootScope.$emit('RightPopupShow', deleteLabel, '', [{
+          'label': 'Confirmer',
+          classes: 'btn-success',
+          icon: 'fa-trash-o',
+          action: function(callback) {
+            that.removeFromDatabase(function(res) {
+              if (res.status === 'OK') {
+                that.remove();
+                that.clearOptionsOnMap();
+                geoP.notifications.done('La pièce a été supprimé.');
+                return callback(res);
+              }
+              geoP.notifications.error('Impossible de supprimer la pièce ' + that.json.name);
+            });
+          }
+        }]);
+      }
+    };
+    that.optionsOnMap.push(option);
+
+  };
+
+
+  Polyline.prototype.addEditPolylineOption = function() {
+    this.optionsOnMap.push({
+      label: 'Modifier',
+      classes: 'btn-default',
+      icon: 'fa-edit',
+      action: function() {
+        document.location.href = '/admin/rooms/' + this.json.id + '/edit';
+      }
+    });
+  };
+
+  Polyline.prototype.selectPolyline = function() {
+    var that = this,
+      link;
+    that.svgEditor.$scope.roomId = that.json.id;
+    that.doActionIfItemIsSelected();
+    that.addEditPolylineOption();
+    that.addZoomOnItemOption();
+    this.group.node.setAttribute('class', 'select');
+    link = '#' + that.json.id;
+    document.location.hash = link;
+  };
+
   Polyline.prototype.select = function(e) {
     var that = this,
-      $scope = this.svgEditor.$scope,
-      deleteLabel;
-    // that.isSelected = true;
+      $scope = this.svgEditor.$scope;
 
-
-
-    // this.group.addClass('select'/);
-    this.getPerimeter();
-
-
+    geoP.currentEvent = e;
 
     that.svgEditor.cleanDragPointOptions();
+    that.svgEditor.unSelectItems();
 
+    this.selectPolyline();
     switch ($scope.mapMode) {
-      case 'show':
-        that.addZoomOnItemOption();
-        break;
       case 'normal':
       case 'edit':
-        $scope.room = that;
-        that.svgEditor.unSelectItems();
-        this.group.node.setAttribute('class', 'select');
         if (this.dragMode === true) {
           this.group.drag();
           this.group.node.setAttribute('class', this.group.node.className.baseVal + ' move');
@@ -744,72 +787,25 @@
         } else {
           this.text.undrag();
         }
-
         that.setMovePointsToVisibility('visible');
-        that.stroke(GeoP.Colors.Selected);
-        geoP.currentEvent = e;
-        $scope.mapMode = 'edit';
-
-        deleteLabel = 'Supprimer ' + that.json.name;
-        that.svgEditor.currentOptions = [{
-          label: deleteLabel,
-          classes: 'btn-danger',
-          icon: 'fa-trash-o',
-          action: function() {
-            that.svgEditor.$rootScope.$emit('RightPopupShow', deleteLabel, '', [{
-              'label': 'Confirmer',
-              classes: 'btn-success',
-              icon: 'fa-trash-o',
-              action: function(callback) {
-                that.removeFromDatabase(function(res) {
-                  if (res.status === 'OK') {
-                    that.remove();
-                    that.svgEditor.cleanCurrentOptions();
-                    geoP.notifications.done('La pièce a été supprimé.');
-                    return callback(res);
-                  }
-                  geoP.notifications.error('Impossible de supprimer la pièce ' + that.json.name);
-                });
-              }
-            }]);
-          }
-        }];
-        that.addZoomOnItemOption();
+        that.addDeleteOption();
         that.addCreateDragPointModeOnItemOption();
         that.addMovePolylineOption();
         that.addMoveTextOption();
-        setTimeout(function() {
-          $scope.$apply();
-        });
 
         break;
     }
+
+    setTimeout(function() {
+      $scope.$apply();
+    });
+
   };
 
   Polyline.prototype.close = function() {
-    var that = this;
-
-    this.stroke(geoP.Colors.NotSelected);
     this.updateHashCode();
-
-    switch (this.svgEditor.$scope.mapMode) {
-      case 'create':
-      case 'edit':
-        this.element.click(this.select.bind(this));
-        break;
-      case 'show':
-        this.element.click(function(e) {
-          var link = '#' + that.json.id;
-          that.svgEditor.unSelectItems();
-          that.svgEditor.setCurrentRoom(that);
-          that.svgEditor.$scope.roomId = that.json.id;
-          geoP.currentEvent = e;
-          that.doActionIfItemIsSelected();
-          that.svgEditor.$scope.$apply();
-          document.location.hash = link;
-        });
-        break;
-    }
+    this.unSelect();
+    this.element.click(this.select.bind(this));
   };
 
 

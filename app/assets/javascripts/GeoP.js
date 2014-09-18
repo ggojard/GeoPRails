@@ -9,7 +9,6 @@ var GeoP = {};
   geoP.currentEvent = null;
 
   geoP.Colors = {};
-  geoP.Colors.Selected = '#ff9000';
   geoP.Colors.NotSelected = '#0b6aff';
   geoP.Colors.Drawing = '#00e567';
 

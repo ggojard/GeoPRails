@@ -15,22 +15,27 @@ svg {
     width: 100%;
     height: 100%;
     background-color: white;
-    &.create:hover {
+    &.mode-create:hover {
         cursor: crosshair;
     }
-    g.select{
-        polygon{
-        fill:#1dc8fe;    
+    g.unselected {
+        polygon {
+            stroke: #1dc8fe;
         }
-        
     }
-    g.select.move:hover {
-        cursor: move;
-    }
-    g.select.moveText {
-        text {
-            &:hover {
-                cursor: move;
+    g.select {
+        polygon {
+            fill: #1dc8fe;
+            stroke: #0063FF;
+        }
+        &.move:hover {
+            cursor: move;
+        }
+        &.moveText {
+            text {
+                &:hover {
+                    cursor: move;
+                }
             }
         }
     }
@@ -246,16 +251,14 @@ a.logo {
     }
 }
 
-
-div.panel-room{
+div.panel-room {
     position: absolute;
     right: 15px;
     width: 320px;
     z-index: 999;
-    top:0;
+    top: 0;
     border-radius: 0;
 }
-
 
 @media screen and (min-width: 240px) and (max-width: 639px) {
     .home {

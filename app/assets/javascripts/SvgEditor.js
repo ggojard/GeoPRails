@@ -148,9 +148,15 @@
     this.dragPointsOptions = [];
   };
 
-  SvgEditor.prototype.removePolyline = function() {
-    // need to take it out of the items //TODO
-    return undefined;
+  SvgEditor.prototype.removePolyline = function(polyline) {
+    var index = this.items.indexOf(polyline);
+    if (index !== -1) {
+      this.items.splice(index, 1);
+    }
+    if (polyline.json !== null && this.itemsById[polyline.json.id] !== undefined) {
+      delete this.itemsById[polyline.json.id];
+    }
+
   };
 
   SvgEditor.prototype.cleanCurrentOptions = function() {
@@ -305,12 +311,14 @@
       createPolyline, mapZoomDefault, editMode, editModeAdmin, stopEditMode, saveToImage;
 
     createPolyline = {
-      label: 'Créer pièce',
+      label: 'Créer une pièce',
       icon: 'fa-pencil',
       action: function() {
         $scope.mapMode = 'create';
+        that.unSelectItems();
         var opts = that.createPolyline();
         that.currentOptions = opts;
+        that.setOptions();
       },
       classes: 'btn-success'
     };
@@ -324,12 +332,12 @@
       classes: 'btn-default'
     };
 
-
     editMode = {
       label: 'Modifier le plan',
       icon: 'fa-unlock',
       action: function() {
-        document.location.href = '/floors/' + that.json.id + '/edit';
+        $scope.mapMode = 'edit';
+        that.setOptions();
       },
       classes: 'btn-default'
     };
@@ -343,14 +351,15 @@
       classes: 'btn-default'
     };
 
-
     stopEditMode = {
       label: 'Arrêter la modification',
       icon: 'fa-lock',
       action: function() {
-        document.location.href = '/floors/' + that.json.id;
+        that.cancelCreateMode();
+        $scope.mapMode = 'show';
+        that.setOptions();
       },
-      classes: 'btn-default'
+      classes: 'btn-warning'
     };
 
     saveToImage = {
@@ -363,14 +372,19 @@
     };
 
 
+    this.mapOptions = [mapZoomDefault];
     switch (this.$scope.mapMode) {
+      case 'create':
+        this.mapOptions.push(stopEditMode);
+        break;
       case 'edit':
-        this.buttonOptions = [stopEditMode, createPolyline, mapZoomDefault];
+        this.mapOptions = this.mapOptions.concat([stopEditMode, createPolyline]);
         break;
       case 'show':
-        this.buttonOptions = [editMode, saveToImage, editModeAdmin, mapZoomDefault];
+        this.mapOptions = this.mapOptions.concat([editMode, saveToImage, editModeAdmin]);
         break;
     }
+    this.mapOptions.push();
   };
 
   SvgEditor.prototype.mapOnItems = function(methodName, a1, a2) {
@@ -502,36 +516,44 @@
     }
   };
 
+  SvgEditor.prototype.finishCreateMode = function() {
+    if (this.createEvents !== undefined) {
+      this.paper.unclick(this.createEvents.createMode);
+      this.paper.unmousemove(this.createEvents.move);
+    }
+    if (this.createPolylineLine !== null) {
+      this.createPolylineLine.remove();
+    }
+    this.createPolylinePolyline = null;
+    this.createPolylineLine = null;
+    this.cleanCurrentOptions();
+    this.setOptions();
+  };
+
+  SvgEditor.prototype.cancelCreateMode = function() {
+    if (this.createPolylinePolyline !== null) {
+      this.createPolylinePolyline.remove();
+    }
+    this.finishCreateMode();
+  };
 
   SvgEditor.prototype.createPolyline = function() {
-    var that = this,
-      createMode, move;
+    var that = this;
 
-    createMode = this.createPolylineMode.bind(this);
-    move = this.drawToMousePosition.bind(this);
-    this.paper.click(createMode);
-    this.paper.mousemove(move);
-
-    function finishCreateMode() {
-      that.paper.unclick(createMode);
-      that.paper.unmousemove(move);
-      if (that.createPolylineLine !== null) {
-        that.createPolylineLine.remove();
+    this.createEvents = {
+      createMode: function(e) {
+        that.createPolylineMode(e);
+      },
+      move: function(e) {
+        that.drawToMousePosition(e);
       }
-      that.createPolylinePolyline = null;
-      that.createPolylineLine = null;
-      that.cleanCurrentOptions();
-    }
+    };
 
-    function cancelCurrentPolyline() {
-      if (that.createPolylinePolyline !== null) {
-        that.createPolylinePolyline.remove();
-      }
-      finishCreateMode();
-    }
+    this.paper.click(this.createEvents.createMode);
+    this.paper.mousemove(this.createEvents.move);
 
     return [{
-      label: 'Fermer',
+      label: 'Fermer la pièce',
       classes: 'btn-success',
       action: function() {
         if (that.createPolylinePolyline !== null) {
@@ -539,12 +561,12 @@
           that.createPolylinePolyline.save();
           that.items.push(that.createPolylinePolyline);
         }
-        finishCreateMode();
+        that.finishCreateMode();
       }
     }, {
-      label: 'Annuler',
+      label: 'Annuler la création de la pièce',
       classes: 'btn-warning',
-      action: cancelCurrentPolyline
+      action: that.cancelCreateMode.bind(that)
     }];
   };
 

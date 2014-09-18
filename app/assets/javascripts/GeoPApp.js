@@ -96,6 +96,27 @@
   //   $scope.floorJson = gon.floor;
   // });
 
+
+  function selectPolylineIfIsInHash($scope) {
+    var roomId, floorId, floorEditor;
+
+    function apply() {
+      $scope.$apply();
+    }
+
+    roomId = geoP.getRoomIdFromHash();
+    for (floorId in $scope.svgEditors) {
+      if ($scope.svgEditors.hasOwnProperty(floorId)) {
+        floorEditor = $scope.svgEditors[floorId];
+        if (floorEditor.itemsById[roomId]) {
+          $scope.roomId = roomId;
+          floorEditor.itemsById[$scope.roomId].selectPolyline();
+          setTimeout(apply, 0);
+        }
+      }
+    }
+  }
+
   geoP.setFloorMaps = function(floors, $scope, $http, $rootScope, callback) {
     $scope.svgEditors = {};
     var mapFilter = new geoP.MapFilter($rootScope);
@@ -114,26 +135,8 @@
       $rootScope.mapFilter = mapFilter;
       mapFilter.ready();
 
-      window.onhashchange = function() {
-        var roomId, floorId, floorEditor;
 
-        function apply() {
-          $scope.$apply();
-        }
-
-        roomId = geoP.getRoomIdFromHash();
-        for (floorId in $scope.svgEditors) {
-          if ($scope.svgEditors.hasOwnProperty(floorId)) {
-            floorEditor = $scope.svgEditors[floorId];
-            if (floorEditor.itemsById[roomId]) {
-              $scope.roomId = roomId;
-              floorEditor.itemsById[$scope.roomId].doActionIfItemIsSelected();
-              setTimeout(apply, 0);
-            }
-          }
-        }
-      };
-
+      selectPolylineIfIsInHash($scope);
 
       $scope.$apply();
       return callback && callback(mapFilter);

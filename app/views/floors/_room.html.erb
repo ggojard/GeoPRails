@@ -1,7 +1,14 @@
 <div class="panel panel-default panel-room animated fadeInRight" ng-if='room != null' style="top:{{roomInfoTopOffset}}px">
   <div class="panel-heading">
     <h3 class="panel-title">{{room.json.name}}</h3>
-    <a class="btn btn-default" href="/admin/rooms/{{room.json.id}}/edit">Modifier la pièce <i class="fa fa-edit"></i></a>
+
+<ul class="map-options">
+  <li ng-repeat="b in room.optionsOnMap" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+</ul>
+<ul class="map-options">
+  <li ng-repeat="b in svgEditors[room.json.floor_id].dragPointsOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+</ul>
+
   </div>
   <div class="panel-body">
       <table class='room'>
