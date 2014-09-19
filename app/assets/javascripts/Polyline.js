@@ -475,7 +475,9 @@
     /*jslint nomen: true*/
     var bbox, h;
     if (this.group !== undefined) {
-      bbox = JSON.stringify(this.group.node.getBBox());
+      bbox = this.moveCircles.map(function(m) {
+        return m.node.getBBox();
+      });
       h = [bbox];
       if (this.json !== null) {
         h.push(this.json.area);
@@ -784,7 +786,9 @@
       this.text.node.setAttribute('class', 'move');
     } else {
       this.text.undrag();
-      this.text.node.setAttribute('class', 'hidden');
+      if (this.svgEditor.$scope.mapMode !== 'show') {
+        this.text.node.setAttribute('class', 'hidden');
+      }
     }
   };
 
