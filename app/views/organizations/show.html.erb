@@ -1,7 +1,7 @@
 <div ng-controller="OrganizationCtrl">
 
 
-<div class="jumbotron">
+<div class="jumbotron" style="background-color: {{o.color}}">
 <h2>{{o.name}}</h2>
 </div>
 
@@ -54,7 +54,7 @@
 
   <div id="loading" ng-if="floors.length === 0">Chargement des plans des étages...</div>
   <%=  render '/floors/map_editor' %> 
-
+  <%=  render '/floors/room' %> 
 
 
 </div>

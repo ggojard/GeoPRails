@@ -26,6 +26,10 @@
       <tr  ng-if="room.json.room_ground_type">
         <th>Nature des sols</th><td >{{room.json.room_ground_type.name}}</td>
       </tr>
+      <tr  ng-if="room.json.evacuation_zone">
+        <th>{{i18n.room.evacuation_zone}}</th><td >{{room.json.evacuation_zone.name}}</td>
+      </tr>
+
       <tr  ng-if="room.json.organization">
         <th>Organisation</th><td><a href="/organizations/{{room.json.organization.id}}">{{room.json.organization.name}}</a> <i ng-if="room.json.organization.organization_type.name">[{{room.json.organization.organization_type.name}}]</i></td>
       </tr>

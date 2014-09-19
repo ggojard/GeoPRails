@@ -267,6 +267,12 @@
   SvgEditor.prototype.updateBelongsToAvailable = function(belongsToNameList, belongsToKeyName) {
     var floorJson = this.json,
       itemsObject, targetItem, i, item;
+
+
+      console.log(this.json.id, this.json.building.id);
+
+
+
     if (this.mapFilter.filters[belongsToKeyName] === undefined) {
       this.mapFilter.filters[belongsToKeyName] = {};
     }

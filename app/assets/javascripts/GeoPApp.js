@@ -136,7 +136,6 @@
       $rootScope.mapFilter = mapFilter;
       mapFilter.ready();
 
-
       geoP.selectPolylineIfIsInHash($scope);
 
       $scope.$apply();

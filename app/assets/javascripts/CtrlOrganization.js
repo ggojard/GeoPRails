@@ -2,7 +2,7 @@
 (function(geoP) {
   'use strict';
   geoP.app.controller('OrganizationCtrl', function($scope, $http, $rootScope) {
-    var i, floors, r, floorsArray, floorsMax, fId, buildings;
+    var i, floors, r, floorsArray, floorsMax, fId, buildings, buildingId, floorId;
     geoP.handleKeyEventsForScope($scope);
     $scope.o = gon.organization;
     $scope.floors = [];
@@ -11,6 +11,15 @@
 
     for (i = 0; i < $scope.o.rooms.length; i += 1) {
       r = $scope.o.rooms[i];
+
+      // console.log(r);
+      floorId = r.floor.id;
+      buildingId = r.floor.building_id;
+
+      if (buildings[buildingId] === undefined) {
+        buildings[buildingId] = [];
+      }
+      buildings[buildingId].push(floorId);
 
       // if (buildings[r.floor.building.id] === undefined) {
       //   buildings[r.floor.building.id] = {};
@@ -24,10 +33,17 @@
       $scope.floors = floorsArrayLocal;
       $scope.mapMode = 'show';
       geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope, function(mapFilter) {
-        $scope.filter = mapFilter.filters.organization[$scope.o.id];
-        $scope.filter.state = true;
-        $rootScope.$emit('organization_filters.StateChange', $scope.filter);
-        $scope.$apply();
+        var bId;
+        $scope.filter = {};
+        for (bId in buildings) {
+          if (buildings.hasOwnProperty(bId)) {
+            $scope.filter[bId] = mapFilter.mergedFiltersForBuildings[bId].organization[$scope.o.id];
+            $scope.filter[bId].state = true;
+            $rootScope.$emit('organization_filters.StateChange', $scope.filter[bId]);
+            $scope.$apply();
+          }
+        }
+
       });
     }
 

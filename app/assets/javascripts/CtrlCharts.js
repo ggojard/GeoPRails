@@ -45,6 +45,7 @@
       };
     };
     $rootScope.$on('MapFilter.Ready', function(mapFilter) {
+      return;
       var filters, filterName, f;
       if ($rootScope.mapFilter !== undefined) {
         filters = $rootScope.mapFilter.filters;
