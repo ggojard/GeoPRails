@@ -243,6 +243,10 @@
     this.camera.y = ((paperSize.h - scaledHeight) / 2) / ratio - boxSize.y;
     this.camera.y *= ratio;
 
+    this.camera.x = -boxSize.x * ratio;
+    this.camera.y = -boxSize.y * ratio;
+
+
     this.applyTransform();
   };
 

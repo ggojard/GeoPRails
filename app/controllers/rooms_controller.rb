@@ -3,14 +3,15 @@ class RoomsController < GeopController
 
 
   def self.selection
-    [:room_type, :evacuation_zone, :organization, :room_ground_type, {:affectations => {:person => [:person_state, :organization]} }]
+    [:room_type, :evacuation_zone, :organization, :room_ground_type, {:affectations => {:person => [:person_state, :organization]} , :inventories => :item}]
   end
   def self.json_selection
     {:rooms => RoomsController.json_single_selection}
   end
 
   def self.json_single_selection
-    {:methods =>:area_unit, :include => [:room_type, :evacuation_zone, :organization, :room_ground_type, {:affectations => {:include =>{:person =>{:methods => PeopleController.json_methods, :include => [:person_state, {:organization => {:methods => [:url]}}]}} }}]}
+    # ,
+    {:methods =>:area_unit, :include => [{:inventories => {:include => :item}}, :room_type, :evacuation_zone, :organization, :room_ground_type, { :affectations => {:include =>{:person =>{:methods => PeopleController.json_methods, :include => [:person_state, {:organization => {:methods => [:url]}}]}} }}]}
   end
 
 

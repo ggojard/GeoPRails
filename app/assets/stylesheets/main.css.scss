@@ -125,11 +125,28 @@ div.panel-room {
             display: inline-block;
         }
         h3 {
-            margin-right: 10px;
+            margin-right: 10px;            
         }
     }
     .panel-body {
         padding: 10px;
+    }
+    h3.title{
+        color:#0063FF;
+        text-align: center;
+    }
+
+    div.affectations{
+        .thumbnail{
+            border-width: 0;
+            margin-bottom: 0;
+            padding:0;
+            box-shadow: none;
+            -webkit-box-shadow:none;
+            .caption{
+                padding: 0;
+            }
+        }
     }
 }
 

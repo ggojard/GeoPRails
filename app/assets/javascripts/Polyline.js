@@ -757,12 +757,13 @@
 
 
   Polyline.prototype.addEditPolylineOption = function() {
+    var that = this;
     this.optionsOnMap.push({
       label: 'Modifier',
       classes: 'btn-default',
       icon: 'fa-edit',
       action: function() {
-        document.location.href = '/admin/rooms/' + this.json.id + '/edit';
+        document.location.href = '/admin/rooms/' + that.json.id + '/edit';
       }
     });
   };

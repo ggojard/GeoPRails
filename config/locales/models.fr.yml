@@ -9,6 +9,7 @@ fr:
         network: "Ports Réseau"
         affectations: "Affectations"
         perimeter: "Périmètre"
+        free_desk_number: "Places libres"
       building:
         name: "Nom"
         company: "Entreprise"

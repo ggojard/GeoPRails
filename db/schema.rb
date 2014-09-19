@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140916202051) do
+ActiveRecord::Schema.define(version: 20140919065559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -218,6 +218,7 @@ ActiveRecord::Schema.define(version: 20140916202051) do
     t.text     "network"
     t.float    "perimeter"
     t.string   "anchor_text_point"
+    t.integer  "free_desk_number"
   end
 
   add_index "rooms", ["floor_id"], name: "index_rooms_on_floor_id", using: :btree

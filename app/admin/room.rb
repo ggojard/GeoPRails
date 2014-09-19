@@ -26,6 +26,7 @@ ActiveAdmin.register Room do
       row "Nature des sols" do c.room_ground_type end
       row "Zone d'évacuation" do c.evacuation_zone end
       row "Ports Réseau" do c.network end
+      row I18n.t('formtastic.labels.room.free_desk_number') do c.free_desk_number end
     end
 
 
@@ -81,7 +82,8 @@ ActiveAdmin.register Room do
       f.input :organization, label: "Organisation"
       f.input :room_ground_type, label: "Nature des sol"
       f.input :evacuation_zone, label: "Zone d'évacuation"
-      f.input :network, label: "Ports Réseau"
+      f.input :free_desk_number
+      f.input :network, label: "Ports Réseau"      
     end
 
     f.has_many :affectations do |app_f|

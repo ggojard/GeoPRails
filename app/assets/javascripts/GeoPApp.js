@@ -206,6 +206,7 @@
 
     $scope.loading = true;
     $scope.mapMode = gon.mode;
+    $scope.i18n = gon.i18n;
 
     $http.get('/floors/' + gon.floor.id + '.json').success(function(floor) {
 
