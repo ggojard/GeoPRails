@@ -1,5 +1,5 @@
-/*global GeoP:true*/
-(function(geoP) {
+/*global GeoP:true, jQuery:true*/
+(function(geoP, $) {
   'use strict';
 
   var MapFilter = function($rootScope) {
@@ -150,6 +150,17 @@
     }
   };
 
+
+  MapFilter.prototype.updateEditorsRoomPositions = function() {
+    this.editors.forEach(function(editor) {
+      if ($(editor.paper.node).find('g.select').length > 0) {
+        console.log(editor.json.id);
+        editor.updateRoomOffset();
+        geoP.$apply(editor.$scope);
+      }
+    });
+  };
+
   MapFilter.prototype.loadBelongsToData = function(floorJson, belongsToKeyName) {
     var i, room, buildingId, floorId, belongsToKpi, ratio, belongsToItem, kpis;
 
@@ -221,4 +232,4 @@
 
   geoP.MapFilter = MapFilter;
 
-}(GeoP));
+}(GeoP, jQuery));

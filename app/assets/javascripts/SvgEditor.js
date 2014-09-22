@@ -137,7 +137,7 @@
   };
 
   SvgEditor.prototype.updateRoomOffset = function() {
-this.$scope.roomInfoTopOffset = this.paper.node.offsetTop;
+    this.$scope.roomInfoTopOffset = this.paper.node.offsetTop;
   };
 
 
@@ -270,7 +270,6 @@ this.$scope.roomInfoTopOffset = this.paper.node.offsetTop;
 
 
 
-
   SvgEditor.prototype.setOptions = function() {
     var $scope = this.$scope,
       that = this,
@@ -383,8 +382,10 @@ this.$scope.roomInfoTopOffset = this.paper.node.offsetTop;
   };
 
   SvgEditor.prototype.unSelectItems = function() {
-    this.$scope.room = null;
-    this.mapOnItems('unSelect');
+    this.mapFilter.editors.forEach(function(editor) {
+      editor.$scope.room = null;
+      editor.mapOnItems('unSelect');
+    });
   };
 
   SvgEditor.prototype.createPolylineMode = function(e) {

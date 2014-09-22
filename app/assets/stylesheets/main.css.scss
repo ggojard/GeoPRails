@@ -119,6 +119,8 @@ svg {
 }
 
 div.panel-room {
+    -webkit-transition: all 0.25s ease-in; 
+    transition: all 0.25s ease-in; 
     .panel-heading {
         background-color: #1dc8fe;
         a, h3 {

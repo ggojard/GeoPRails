@@ -1,5 +1,5 @@
-/*global GeoP:true, gon:true*/
-(function(geoP) {
+/*global GeoP:true, gon:true, jQuery:true*/
+(function(geoP, $) {
   'use strict';
   geoP.app.controller('DisplayTextCtrl', function($scope, $rootScope) {
 
@@ -72,6 +72,13 @@
       }
     };
 
+    $('#display-text-content').on('shown.bs.collapse', function() {
+      $rootScope.mapFilter.updateEditorsRoomPositions();
+    });
+    $('#display-text-content').on('hidden.bs.collapse', function() {
+      $rootScope.mapFilter.updateEditorsRoomPositions();
+    });
+
 
     $scope.properties = p;
     $rootScope.displayNames = p;
@@ -97,4 +104,4 @@
 
 
   });
-}(GeoP));
+}(GeoP, jQuery));

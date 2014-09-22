@@ -42,14 +42,16 @@
       $('#chart_div').show();
       $rootScope.$emit('MapFilter.Ready', $rootScope.mapFilter);
       $('#chart_div').addClass('animated fadeIn');
-      $rootScope.mapFilter.editors.forEach(function(editor) {
-        editor.updateRoomOffset();
-        geoP.$apply(editor.$scope);
-      });
+      $rootScope.mapFilter.updateEditorsRoomPositions();
     });
     $('#filter-chart-content').on('show.bs.collapse', function() {
       $('#chart_div').hide();
     });
+
+    $('#filter-chart-content').on('hidden.bs.collapse', function() {
+      $rootScope.mapFilter.updateEditorsRoomPositions();
+    });
+
 
   });
 

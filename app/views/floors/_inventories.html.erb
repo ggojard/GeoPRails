@@ -8,6 +8,7 @@
 -->
 <div ng-if="room.json.inventories.length > 0">
   <h3 class="title">Inventaire</h3>
+  <hr>
   <ul class="inventory">
     <li ng-repeat="i in room.json.inventories">
       {{i.quantity}} x {{i.item.name}} ({{i.item.code}})
