@@ -11,8 +11,6 @@
 
     for (i = 0; i < $scope.o.rooms.length; i += 1) {
       r = $scope.o.rooms[i];
-
-      // console.log(r);
       floorId = r.floor.id;
       buildingId = r.floor.building_id;
 
@@ -20,13 +18,7 @@
         buildings[buildingId] = [];
       }
       buildings[buildingId].push(floorId);
-
-      // if (buildings[r.floor.building.id] === undefined) {
-      //   buildings[r.floor.building.id] = {};
-      // }
-
       floors[r.floor.id] = r.floor;
-      // buildings[r.floor.building.id][r.floor.id] = r.floor;
     }
 
     function loadFloors(floorsArrayLocal) {

@@ -12,7 +12,6 @@
     $scope.f[filterName].CheckAll = function() {
       var key, filter;
       for (key in $scope.f[filterName].filters.names) {
-        // console.log($scope.f[filterName].filters.names);
         if ($scope.f[filterName].filters.names.hasOwnProperty(key)) {
           filter = $scope.f[filterName].filters.names[key];
           filter.state = $scope.f[filterName].checkAll;
@@ -39,8 +38,6 @@
     $scope.filterPaneClick = function(filter) {
       $rootScope.$emit(filter.name + '_filters.Selected', filter);
     };
-
-    console.log('f', $scope.f);
 
     $('#filter-chart-content').on('shown.bs.collapse', function() {
       $('#chart_div').show();

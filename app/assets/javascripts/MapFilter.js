@@ -209,12 +209,6 @@
   };
 
   MapFilter.prototype.getFilterForBelongsToKeyName = function(buildingId, belongsToKeyName) {
-    // var buildingId, floorId;
-    // buildingId = floorJson.building.id;
-    // floorId = floorJson.id;
-
-    console.log('getFilterForBelongsToKeyName', belongsToKeyName);
-    // console.log(belongsToKeyName, this.bfilters[buildingId][floorId][belongsToKeyName]);
     return {
       names: this.bfilters[buildingId].belongsToItems[belongsToKeyName],
       values: this.mergedFiltersForBuildings[buildingId][belongsToKeyName]
@@ -223,7 +217,6 @@
 
   MapFilter.prototype.loadBelongsToFilter = function(floorJson, belongsToKeyName) {
     this.loadBelongsToData(floorJson, belongsToKeyName);
-    // this.$rootScope.$emit(belongsToKeyName + '_filters.Update', this.getFilterForBelongsToKeyName(floorJson, belongsToKeyName));
   };
 
   geoP.MapFilter = MapFilter;
