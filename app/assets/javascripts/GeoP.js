@@ -37,6 +37,12 @@ var GeoP = {};
   };
 
 
+  geoP.$apply = function($scope) {
+    setTimeout(function() {
+      $scope.$apply();
+    });
+  };
+
   geoP.getRoomIdFromHash = function() {
     var hash, res;
     hash = window.location.hash;

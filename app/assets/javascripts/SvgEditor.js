@@ -133,7 +133,11 @@
 
   SvgEditor.prototype.setCurrentRoom = function(polyline) {
     this.$scope.room = polyline;
-    this.$scope.roomInfoTopOffset = this.paper.node.offsetTop;
+    this.updateRoomOffset();
+  };
+
+  SvgEditor.prototype.updateRoomOffset = function() {
+this.$scope.roomInfoTopOffset = this.paper.node.offsetTop;
   };
 
 

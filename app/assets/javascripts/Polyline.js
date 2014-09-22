@@ -829,10 +829,7 @@
         break;
     }
 
-    setTimeout(function() {
-      $scope.$apply();
-    });
-
+    geoP.$apply($scope);
   };
 
   Polyline.prototype.close = function() {
