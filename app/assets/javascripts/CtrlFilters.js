@@ -21,7 +21,6 @@
     };
     $rootScope.$on(filterName + '_filters.Update', function(e, filters) {
       /*jslint unparam:true */
-      console.log('set filters', filters);
       $scope.f[filterName].filters = filters;
     });
   }
