@@ -12,13 +12,17 @@
     var chartsData = {},
       filterMethod;
 
-    filterMethod = function(fName, filter, filterNames) {
+    filterMethod = function(fName, filter, filterNames, bId) {
       $scope.chart = null;
-      $rootScope.$on(fName + '_filters.Selected', function() {
-        chartsData[fName]();
+      $rootScope.$on(fName + '_' + bId + '_filters.Selected', function() {
+        chartsData[bId][fName]();
       });
 
-      chartsData[fName] = function() {
+      if (chartsData[bId] === undefined){
+        chartsData[bId] = {};
+      }
+
+      chartsData[bId][fName] = function() {
         var data, itemId, item, a, options, chart, itemName;
         data = [
           [fName, 'Surface (m²)', {
@@ -43,19 +47,20 @@
       };
     };
     $rootScope.$on('MapFilter.Ready', function(mapFilter) {
-      var filters, filterName, f, filterNames;
+      var filters, filterName, f, filterNames, bId;
       if ($rootScope.mapFilter !== undefined) {
-        filters = $rootScope.mapFilter.mergedFiltersForBuildings[$scope.currentBuildingId];
-        filterNames = $rootScope.mapFilter.bfilters[$scope.currentBuildingId].belongsToItems;
+
+        bId = $rootScope.mapFilter.buildingId;
+        filters = $rootScope.mapFilter.mergedFiltersForBuildings[bId];
+        filterNames = $rootScope.mapFilter.bfilters[bId].belongsToItems;
         for (filterName in filters) {
           if (filters.hasOwnProperty(filterName)) {
             f = filters[filterName];
-            (filterMethod(filterName, f, filterNames));
+            (filterMethod(filterName, f, filterNames, bId));
           }
         }
-        chartsData[geoP.filtersNames[0].name]();
+        chartsData[bId][geoP.filtersNames[0].name]();
       }
     });
   });
 }(GeoP));
-

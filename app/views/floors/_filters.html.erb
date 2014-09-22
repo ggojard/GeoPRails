@@ -1,6 +1,6 @@
 <div class="panel-group" id="filter-chart">
   <div class="panel panel-default">
-    <div class="panel-heading"  style="background-color: {{bgColor}}">
+    <div class="panel-heading" style="background-color: {{bgColor[buildingId]}}">
       <h3 class="panel-title">
       <a data-toggle="collapse" data-parent="#filter-chart"
         href="#filter-chart-content">Filtres et rapports
@@ -13,7 +13,7 @@
         <div ng-controller="FiltersCtrl" class="filter-container " >
           <ul id="myTab" class="nav nav-pills nav-justified" role="tablist" >
             <li ng-repeat="filter in filterNames" ng-class="{active : $first}">
-              <a href="#{{filter.name}}" ng-click="filterPaneClick(filter);" >{{filter.label}}</a>
+              <a href="#{{filter.name}}" ng-click="filterPaneClick(filter, buildingId);" >{{filter.label}}</a>
             </li>
           </ul>
           <div id="tabContent" class="tab-content" >

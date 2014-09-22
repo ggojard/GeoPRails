@@ -400,7 +400,7 @@
       value = this.json[filterName];
       if (value !== undefined) {
 
-        item = this.svgEditor.mapFilter.bfilters[this.svgEditor.$rootScope.currentBuildingId].belongsToItems[filterName][value.id];
+        item = this.svgEditor.mapFilter.bfilters[this.svgEditor.json.building_id].belongsToItems[filterName][value.id];
         if (item.state === true) {
           this.element.attr({
             fill: item.color

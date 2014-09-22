@@ -4,17 +4,18 @@
 
   geoP.app.controller('BuildingCtrl', function($scope, $http, $rootScope) {
 
-
+    $scope.floorsByBuildingId = {};
     $scope.loading = true;
     GeoP.handleKeyEventsForScope($scope);
 
     $http.get(gon.building.url + '.json').success(function(b) {
-      $rootScope.currentBuildingId = b.id;
-      $rootScope.$emit('SetBodyColor', b.color);
+      $scope.buildings = [b.id];
+      $rootScope.$emit('SetBodyColor', b);
       $scope.mapMode = 'show';
       $scope.building = b;
-      $scope.floors = b.floors;
-      geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
+      $scope.floorsByBuildingId[b.id] = b.floors;
+
+      geoP.setFloorMaps(b.id, b.floors, $scope, $http, $rootScope);
       $scope.loading = false;
     });
 

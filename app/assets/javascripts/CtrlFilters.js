@@ -34,8 +34,8 @@
       registerFilterCtrl($scope, $rootScope, filter.name);
     }
 
-    $scope.filterPaneClick = function(filter) {
-      $rootScope.$emit(filter.name + '_filters.Selected', filter);
+    $scope.filterPaneClick = function(filter, bId) {
+      $rootScope.$emit(filter.name + '_' + bId + '_filters.Selected', filter);
     };
 
     $('#filter-chart-content').on('shown.bs.collapse', function() {

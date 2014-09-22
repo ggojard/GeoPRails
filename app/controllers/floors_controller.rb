@@ -7,18 +7,18 @@ class FloorsController < GeopController
   end
 
   def self.json_selection
-    [{:building => {:methods => :url}}, RoomsController.json_selection]
+    [{:building => {:methods => [:url, :fullname]}}, RoomsController.json_selection]
   end
 
   def show
     respond_to do |format|
       format.html {
-        gon.floor = @floor.as_json(:include => FloorsController.json_selection)
+        gon.floor = @floor.as_json(:include => FloorsController.json_selection, :methods =>[:fullname, :url])
         gon.mode = 'show'
       }
       format.json{
         if !@floor.nil?
-          render json: @floor.as_json(:include => FloorsController.json_selection)
+          render json: @floor.as_json(:include => FloorsController.json_selection, :methods =>[:fullname, :url])
         else
           render json: {"error"=>"floor is nil"}
         end

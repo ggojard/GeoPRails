@@ -2,11 +2,12 @@
 (function(geoP, $) {
   'use strict';
 
-  var MapFilter = function($rootScope) {
+  var MapFilter = function($rootScope, buildingId) {
     this.filters = {};
     this.bfilters = {};
     this.editors = [];
     this.$rootScope = $rootScope;
+    this.buildingId = buildingId;
     this.mergedFiltersForBuildings = {};
   };
 
@@ -39,7 +40,7 @@
     }
     this.createMergedFiltersByBuilding();
 
-    bId = this.$rootScope.currentBuildingId;
+    bId = this.buildingId;
     mergedFilters = this.mergedFiltersForBuildings[bId];
     for (fName in mergedFilters) {
       if (mergedFilters.hasOwnProperty(fName)) {
@@ -105,7 +106,7 @@
   MapFilter.prototype.registerFilterStateChange = function(belongsToKeyName, callback) {
     var that = this;
     this.$rootScope.$on(belongsToKeyName + '_filters.StateChange', function(e, item) {
-      that.bfilters[that.$rootScope.currentBuildingId].belongsToItems[belongsToKeyName][item.id] = item;
+      that.bfilters[that.buildingId].belongsToItems[belongsToKeyName][item.id] = item;
       return callback(e, item);
     });
   };

@@ -1,7 +1,7 @@
-<div class="panel panel-default panel-map" ng-class="['shift-' + isShift, 'mode-' + mapMode, 'ctrl-' + isZKeyDown]" ng-repeat="f in floors">
-  <div class="panel-heading"  style="background-color: {{bgColor}}">
+<div class="panel panel-default panel-map" ng-class="['shift-' + isShift, 'mode-' + mapMode, 'ctrl-' + isZKeyDown]" ng-repeat="f in floorsByBuildingId[buildingId]">
+  <div class="panel-heading"  style="background-color: {{bgColor[buildingId]}}">
     <div class="panel-title">
-      <h3 class="panel-title"><a href="{{f.url}}">Plan {{f.name}}</a></h3>
+      <h3 class="panel-title"><a href="{{f.url}}">Plan {{f.fullname}}</a></h3>
       <%=  render '/floors/options' %>
     </div>
   </div>

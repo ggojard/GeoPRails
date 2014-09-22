@@ -43,6 +43,7 @@
 
     this.svgId = 'map-' + floorJson.id;
     this.paper = snap('#' + this.svgId);
+    console.log('SvgEditor', this.svgId, this.paper);
     if (this.paper === null) {
       return;
     }

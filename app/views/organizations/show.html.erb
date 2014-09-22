@@ -1,61 +1,42 @@
 <div ng-controller="OrganizationCtrl">
-
-
-<div class="jumbotron" style="background-color: {{o.color}}">
-<h2>{{o.name}}</h2>
-</div>
-
-
-
-<!-- <div ng-if="o.organizations.length > 0">
-<ul>
-  <li ng-repeat="org in o.organizations"><a href="{{o.url}}">{{o.name}}</a></li>
-</ul>
-</div>
- -->
-
-  <div class="panel panel-default" ng-show="filter">
-  <div class="panel-heading">
-    <h3 class="panel-title">Informations</h3>
+  <div class="jumbotron" style="background-color: {{o.color}}">
+    <h2>{{o.name}}</h2>
   </div>
-  <div class="panel-body">
-
-      <table class="room">
-        <tr>
-          <th>Nombres de piéces</th>
-          <td>{{filter.count}}</td>
-        </tr>
-        <tr>
-          <th>Surface occupée</th>
-          <td>{{filter.areaSum}} m²</td>
-        </tr>
-        <tr ng-if="filter.nbPeople > 0">
-          <th>Nombre de personnes</th>
-          <td>{{filter.nbPeople}}</td>
-        </tr>
-        <tr ng-if="filter.ratio > 0">
-          <th>Ratio affectations</th>
-          <td>{{filter.ratio}} personnes / m²</td>
-        </tr>
-        <tr ng-if="filter.ratio > 0">
-          <th>Présence sur nombre d'étages</th>
-          <td>{{floors.length}}</td>
-        </tr>
-
-      </table>
-
-
+  <div ng-repeat="buildingId in buildings">
+    <div class="panel panel-default" ng-show="filter">
+      <div class="panel-heading" style="background-color: {{bgColor[buildingId]}}" >
+        <h3 class="panel-title">Informations pour {{buildingsById[buildingId].name}}</h3>
+      </div>
+      <div class="panel-body">
+        <table class="room">
+          <tr>
+            <th>Nombres de piéces</th>
+            <td>{{filter[buildingId].count}}</td>
+          </tr>
+          <tr>
+            <th>Surface occupée</th>
+            <td>{{filter[buildingId].areaSum}} m²</td>
+          </tr>
+          <tr ng-if="filter[buildingId].nbPeople > 0">
+            <th>Nombre de personnes</th>
+            <td>{{filter[buildingId].nbPeople}}</td>
+          </tr>
+          <tr ng-if="filter[buildingId].ratio > 0">
+            <th>Ratio affectations</th>
+            <td>{{filter[buildingId].ratio}} personnes / m²</td>
+          </tr>
+          <tr ng-if="filter[buildingId].ratio > 0">
+            <th>Présence sur nombre d'étages</th>
+            <td>{{floorsByBuildingId[buildingId].length}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <%=  render '/floors/filters' %>
+    <%=  render '/floors/display_text' %>
+    <div id="loading" ng-if="floors.length === 0">Chargement des plans des étages...</div>
+    <%=  render '/floors/map_editor' %>
+    <hr>
   </div>
+  <%=  render '/floors/room' %>
 </div>
-
-
-  <%=  render '/floors/filters' %> 
-  <%=  render '/floors/display_text' %>   
-
-  <div id="loading" ng-if="floors.length === 0">Chargement des plans des étages...</div>
-  <%=  render '/floors/map_editor' %> 
-  <%=  render '/floors/room' %> 
-
-
-</div>
-

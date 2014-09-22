@@ -1,35 +1,34 @@
-
 <div ng-controller="BuildingCtrl">
-  <div ng-show="loading" class="loading"><img alt="chargement..."></div>
-  <div ng-show="!loading">
-
-  <div class="jumbotron" style="background-color: {{bgColor}}"><h2>{{building.name}}</h2></div>
-  <div class="panel panel-default">
-    <div class="panel-heading"  style="background-color: {{bgColor}}">
-      <h3 class="panel-title" >Accès direct aux étages</h3>
+  <div ng-repeat="buildingId in buildings">
+    <div ng-show="loading" class="loading"><img alt="chargement..."></div>
+    <div ng-show="!loading">
+      <div class="jumbotron" style="background-color: {{bgColor[buildingId]}}"><h2>{{building.name}}</h2></div>
+      <div class="panel panel-default">
+        <div class="panel-heading"  style="background-color: {{bgColor[buildingId]}}">
+          <h3 class="panel-title" >Accès direct aux étages</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li ng-repeat="f in building.floors"><a href="{{f.url}}">{{f.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+      <%= render '/floors/filters' %>
+      <%= render '/floors/display_text' %>
+      <%= render '/floors/map_editor' %>
+      <div class="panel panel-default">
+        <div class="panel-heading"  style="background-color: {{bgColor[buildingId]}}">
+          <h3 class="panel-title">Opérations</h3>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li><a href="{{building.url}}/duplicate">Dupliquer le bâtiment</a></li>
+            <li><a href="{{building.url}}/export">Exporter le bâtiment</a></li>
+            <li><a href="{{building.url}}/delete_all">Supprimer le bâtiment et l'ensemble des étages et bureaux associés</a></li>
+          </ul>
+        </div>
+      </div>
+      <%= render '/floors/room' %>
     </div>
-    <div class="panel-body">
-      <ul>
-        <li ng-repeat="f in building.floors"><a href="{{f.url}}">{{f.name}}</a></li>
-      </ul>
-    </div>
-  </div>
-  <%= render '/floors/filters' %>
-  <%= render '/floors/display_text' %>
-  <%= render '/floors/map_editor' %>
-  <div class="panel panel-default">
-    <div class="panel-heading"  style="background-color: {{bgColor}}">
-      <h3 class="panel-title">Opérations</h3>
-    </div>
-    <div class="panel-body">
-      <ul>
-        <li><a href="{{building.url}}/duplicate">Dupliquer le bâtiment</a></li>
-        <li><a href="{{building.url}}/export">Exporter le bâtiment</a></li>
-        <li><a href="{{building.url}}/delete_all">Supprimer le bâtiment et l'ensemble des étages et bureaux associés</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <%= render '/floors/room' %>
   </div>
 </div>

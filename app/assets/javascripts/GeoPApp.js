@@ -118,9 +118,9 @@
     return null;
   };
 
-  geoP.setFloorMaps = function(floors, $scope, $http, $rootScope, callback) {
+  geoP.setFloorMaps = function(buildingId, floors, $scope, $http, $rootScope, callback) {
     $scope.svgEditors = {};
-    var mapFilter = new geoP.MapFilter($rootScope);
+    var mapFilter = new geoP.MapFilter($rootScope, buildingId);
     setTimeout(function() {
       var i, floor, editor;
       for (i = 0; i < floors.length; i += 1) {
@@ -202,25 +202,23 @@
   };
 
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
-
+    $scope.floorsByBuildingId = {};
     $scope.loading = true;
     $scope.mapMode = gon.mode;
     $scope.i18n = gon.i18n;
 
     $http.get('/floors/' + gon.floor.id + '.json').success(function(floor) {
 
-      $rootScope.$emit('SetBodyColor', floor.building.color);
+      $rootScope.$emit('SetBodyColor', floor.building);
       $scope.room = null;
       $scope.roomId = geoP.getRoomIdFromHash();
-
-      $scope.floors = [floor];
-
-      $rootScope.currentBuildingId = floor.building_id;
+      $scope.buildings = [floor.building_id];
+      $scope.floorsByBuildingId[floor.building_id] = [floor];
 
       geoP.handleKeyEventsForScope($scope);
 
       $scope.floorJson = floor;
-      geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope);
+      geoP.setFloorMaps(floor.building_id, $scope.floorsByBuildingId[floor.building_id], $scope, $http, $rootScope);
       $scope.loading = false;
     });
 

@@ -5,7 +5,7 @@
     var i, floors, r, floorsArray, floorsMax, fId, buildings, buildingId, floorId;
     geoP.handleKeyEventsForScope($scope);
     $scope.o = gon.organization;
-    $scope.floors = [];
+    $scope.floorsByBuildingId = {};
     floors = {};
     buildings = {};
 
@@ -13,6 +13,7 @@
       r = $scope.o.rooms[i];
       floorId = r.floor.id;
       buildingId = r.floor.building_id;
+      // console.log(r.floor);
 
       if (buildings[buildingId] === undefined) {
         buildings[buildingId] = [];
@@ -21,22 +22,53 @@
       floors[r.floor.id] = r.floor;
     }
 
-    function loadFloors(floorsArrayLocal) {
-      $scope.floors = floorsArrayLocal;
-      $scope.mapMode = 'show';
-      geoP.setFloorMaps($scope.floors, $scope, $http, $rootScope, function(mapFilter) {
-        var bId;
-        $scope.filter = {};
-        for (bId in buildings) {
-          if (buildings.hasOwnProperty(bId)) {
-            $scope.filter[bId] = mapFilter.mergedFiltersForBuildings[bId].organization[$scope.o.id];
-            $scope.filter[bId].state = true;
-            $rootScope.$emit('organization_filters.StateChange', $scope.filter[bId]);
-            $scope.$apply();
-          }
-        }
+    $scope.buildings = Object.keys(buildings);
 
+    function loadFloors(floorsArrayLocal) {
+      var buildingsById = {},
+        floorsByBuildingId = {},
+        bId;
+
+      floorsArrayLocal.forEach(function(f) {
+        buildingsById[f.building_id] = f.building;
+        if (floorsByBuildingId[f.building_id] === undefined) {
+          floorsByBuildingId[f.building_id] = [];
+        }
+        floorsByBuildingId[f.building_id].push(f);
       });
+
+      Object.keys(buildings).forEach(function(bId) {
+        floorsByBuildingId[bId].sort(function(a, b) {
+          return a.level > b.level;
+        });
+      });
+
+      $scope.buildingsById = buildingsById;
+      $scope.floorsByBuildingId = floorsByBuildingId;
+
+      $scope.mapMode = 'show';
+      $scope.filter = {};
+
+      function loadMapCallback(mapFilter, localBuildingId) {
+        $scope.filter[localBuildingId] = mapFilter.mergedFiltersForBuildings[localBuildingId].organization[$scope.o.id];
+        $scope.filter[localBuildingId].state = true;
+        $rootScope.$emit('organization_filters.StateChange', $scope.filter[localBuildingId]);
+        $scope.$apply();
+      }
+
+      function loadBuilding(localBuildingId) {
+        $rootScope.$emit('SetBodyColor', buildingsById[localBuildingId]);
+        geoP.setFloorMaps(localBuildingId, $scope.floorsByBuildingId[localBuildingId], $scope, $http, $rootScope, function(mapFilter) {
+          loadMapCallback(mapFilter, localBuildingId);
+        });
+      }
+
+      for (bId in buildings) {
+        if (buildings.hasOwnProperty(bId)) {
+          loadBuilding(bId);
+        }
+      }
+
     }
 
     floorsArray = [];
