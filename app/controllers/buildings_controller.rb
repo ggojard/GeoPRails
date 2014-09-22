@@ -4,8 +4,6 @@ class BuildingsController < GeopController
   before_action :set, only: [:export]
 
   def show
-    
-    
     respond_to do |format|
       format.html{
         b = Building.find_by_id(params[:id])
@@ -13,7 +11,7 @@ class BuildingsController < GeopController
       }
       format.json{
         b = Building.includes([:company, :floors => FloorsController.selection]).find_by_id(params[:id])
-        render json: b.as_json(:include => [:company, {:floors => {:include => FloorsController.json_selection, :methods => [:url]}}])
+        render json: b.as_json(:methods => [:url], :include => [:company, {:floors => {:include => FloorsController.json_selection, :methods => [:url]}}])
       }
     end
 
