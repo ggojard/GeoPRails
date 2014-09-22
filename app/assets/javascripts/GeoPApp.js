@@ -213,6 +213,7 @@
       $scope.room = null;
       $scope.roomId = geoP.getRoomIdFromHash();
       $scope.buildings = [floor.building_id];
+      $scope.buildingId = floor.building_id;
       $scope.floorsByBuildingId[floor.building_id] = [floor];
 
       geoP.handleKeyEventsForScope($scope);

@@ -13,8 +13,6 @@
       r = $scope.o.rooms[i];
       floorId = r.floor.id;
       buildingId = r.floor.building_id;
-      // console.log(r.floor);
-
       if (buildings[buildingId] === undefined) {
         buildings[buildingId] = [];
       }

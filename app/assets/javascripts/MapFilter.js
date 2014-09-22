@@ -155,7 +155,6 @@
   MapFilter.prototype.updateEditorsRoomPositions = function() {
     this.editors.forEach(function(editor) {
       if ($(editor.paper.node).find('g.select').length > 0) {
-        console.log(editor.json.id);
         editor.updateRoomOffset();
         geoP.$apply(editor.$scope);
       }
