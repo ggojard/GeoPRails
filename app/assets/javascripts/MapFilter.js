@@ -32,13 +32,20 @@
   };
 
   MapFilter.prototype.loadFilters = function() {
-    var j, that = this;
+    var j, that = this,
+      bId, mergedFilters, fName;
     for (j = 0; j < that.editors.length; j += 1) {
       this.loadFilter(that.editors[j]);
     }
-    console.log(this.bfilters);
     this.createMergedFiltersByBuilding();
-    console.log(this.mergedFiltersForBuildings);
+
+    bId = this.$rootScope.currentBuildingId;
+    mergedFilters = this.mergedFiltersForBuildings[bId];
+    for (fName in mergedFilters) {
+      if (mergedFilters.hasOwnProperty(fName)) {
+        this.$rootScope.$emit(fName + '_filters.Update', this.getFilterForBelongsToKeyName(bId, fName));
+      }
+    }
   };
 
   MapFilter.prototype.createMergedFiltersByBuilding = function() {
@@ -49,7 +56,7 @@
       if (this.bfilters.hasOwnProperty(bId)) {
 
         for (fId in this.bfilters[bId]) {
-          if (this.bfilters[bId].hasOwnProperty(fId)) {
+          if (this.bfilters[bId].hasOwnProperty(fId) && fId !== 'belongsToItems') {
             filtersForFloorObject = this.bfilters[bId][fId];
 
 
@@ -77,6 +84,12 @@
                       o.areaSum += n.areaSum;
                       o.perimeterSum += n.perimeterSum;
                       o.ratio += n.ratio;
+
+                      o.count = parseFloat(o.count.toFixed(1), 10);
+                      o.nbPeople = parseFloat(o.nbPeople.toFixed(1), 10);
+                      o.areaSum = parseFloat(o.areaSum.toFixed(1), 10);
+                      o.perimeterSum = parseFloat(o.perimeterSum.toFixed(1), 10);
+                      o.ratio = parseFloat(o.ratio.toFixed(1), 10);
                       this.mergedFiltersForBuildings[bId][belongsToName][belongsToId] = o;
                     }
                   }
@@ -89,10 +102,10 @@
     }
   };
 
-  MapFilter.prototype.resisterFilterStateChange = function(belongsToKeyName, callback) {
+  MapFilter.prototype.registerFilterStateChange = function(belongsToKeyName, callback) {
     var that = this;
     this.$rootScope.$on(belongsToKeyName + '_filters.StateChange', function(e, item) {
-      that.filters[belongsToKeyName][item.id] = item;
+      that.bfilters[that.$rootScope.currentBuildingId].belongsToItems[belongsToKeyName][item.id] = item;
       return callback(e, item);
     });
   };
@@ -103,7 +116,7 @@
       j, i;
 
     function register(filterName) {
-      that.resisterFilterStateChange(filterName, function() {
+      that.registerFilterStateChange(filterName, function() {
         for (j = 0; j < that.editors.length; j += 1) {
           that.editors[j].mapOnItems('fillFromFilterColor', filterName);
         }
@@ -152,10 +165,15 @@
       belongsToItem = room[belongsToKeyName];
       if (belongsToItem !== undefined && belongsToItem !== null) {
 
+
         if (this.bfilters[buildingId].belongsToItems[belongsToKeyName] === undefined) {
-          this.bfilters[buildingId].belongsToItems[belongsToKeyName] = belongsToItem;
-          this.bfilters[buildingId].belongsToItems[belongsToKeyName].state = false;
+          this.bfilters[buildingId].belongsToItems[belongsToKeyName] = {};
         }
+
+        belongsToItem.state = false;
+        this.bfilters[buildingId].belongsToItems[belongsToKeyName][belongsToItem.id] = belongsToItem;
+        // this.bfilters[buildingId].belongsToItems[belongsToKeyName].state = false;
+
 
         if (kpis[belongsToItem.id] === undefined) {
           kpis[belongsToItem.id] = {
@@ -190,16 +208,22 @@
     this.bfilters[buildingId][floorId][belongsToKeyName] = kpis;
   };
 
-  MapFilter.prototype.getFilterForBelongsToKeyName = function(floorJson, belongsToKeyName) {
-    var buildingId, floorId;
-    buildingId = floorJson.building.id;
-    floorId = floorJson.id;
-    return this.bfilters[buildingId][floorId][belongsToKeyName];
+  MapFilter.prototype.getFilterForBelongsToKeyName = function(buildingId, belongsToKeyName) {
+    // var buildingId, floorId;
+    // buildingId = floorJson.building.id;
+    // floorId = floorJson.id;
+
+    console.log('getFilterForBelongsToKeyName', belongsToKeyName);
+    // console.log(belongsToKeyName, this.bfilters[buildingId][floorId][belongsToKeyName]);
+    return {
+      names: this.bfilters[buildingId].belongsToItems[belongsToKeyName],
+      values: this.mergedFiltersForBuildings[buildingId][belongsToKeyName]
+    };
   };
 
   MapFilter.prototype.loadBelongsToFilter = function(floorJson, belongsToKeyName) {
     this.loadBelongsToData(floorJson, belongsToKeyName);
-    this.$rootScope.$emit(belongsToKeyName + '_filters.Update', this.getFilterForBelongsToKeyName(floorJson, belongsToKeyName));
+    // this.$rootScope.$emit(belongsToKeyName + '_filters.Update', this.getFilterForBelongsToKeyName(floorJson, belongsToKeyName));
   };
 
   geoP.MapFilter = MapFilter;

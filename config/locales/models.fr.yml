@@ -10,6 +10,7 @@ fr:
         affectations: "Affectations"
         perimeter: "Périmètre"
         free_desk_number: "Places libres"
+        evacuation_zone: "Zone d'évacuation"
       building:
         name: "Nom"
         company: "Entreprise"

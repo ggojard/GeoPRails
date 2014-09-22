@@ -399,7 +399,8 @@
     if (this.json[filterName] !== null) {
       value = this.json[filterName];
       if (value !== undefined) {
-        item = this.svgEditor.mapFilter.filters[filterName][value.id];
+
+        item = this.svgEditor.mapFilter.bfilters[this.svgEditor.$rootScope.currentBuildingId].belongsToItems[filterName][value.id];
         if (item.state === true) {
           this.element.attr({
             fill: item.color
@@ -565,6 +566,7 @@
   Polyline.prototype.resetActions = function() {
     this.dragMode = false;
     this.dragTextMode = false;
+    this.text.node.setAttribute('class', null);
     if (this.group !== undefined) {
       this.group.undrag();
     }

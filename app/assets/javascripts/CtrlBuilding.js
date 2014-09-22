@@ -4,10 +4,12 @@
 
   geoP.app.controller('BuildingCtrl', function($scope, $http, $rootScope) {
 
+
     $scope.loading = true;
     GeoP.handleKeyEventsForScope($scope);
 
     $http.get(gon.building.url + '.json').success(function(b) {
+      $rootScope.currentBuildingId = b.id;
       $rootScope.$emit('SetBodyColor', b.color);
       $scope.mapMode = 'show';
       $scope.building = b;

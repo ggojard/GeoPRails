@@ -264,55 +264,7 @@
     this.itemsById[b.json.id] = b;
   };
 
-  SvgEditor.prototype.updateBelongsToAvailable = function(belongsToNameList, belongsToKeyName) {
-    var floorJson = this.json,
-      itemsObject, targetItem, i, item;
 
-
-      console.log(this.json.id, this.json.building.id);
-
-
-
-    if (this.mapFilter.filters[belongsToKeyName] === undefined) {
-      this.mapFilter.filters[belongsToKeyName] = {};
-    }
-    itemsObject = this.mapFilter.filters[belongsToKeyName];
-    for (i = 0; i < floorJson[belongsToNameList].length; i += 1) {
-      item = floorJson[belongsToNameList][i];
-      if (item[belongsToKeyName] !== null) {
-        targetItem = item[belongsToKeyName];
-        if (targetItem !== undefined) {
-          if (itemsObject[targetItem.id] === undefined) {
-            itemsObject[targetItem.id] = targetItem;
-            itemsObject[targetItem.id].state = false;
-            itemsObject[targetItem.id].count = 0;
-            itemsObject[targetItem.id].areaSum = 0;
-            itemsObject[targetItem.id].nbPeople = 0;
-            itemsObject[targetItem.id].perimeterSum = 0;
-          }
-          itemsObject[targetItem.id].count += 1;
-          itemsObject[targetItem.id].areaSum += item.area;
-          itemsObject[targetItem.id].areaSum = parseFloat(itemsObject[targetItem.id].areaSum.toFixed(1), 10);
-
-          itemsObject[targetItem.id].perimeterSum += item.perimeter;
-          itemsObject[targetItem.id].perimeterSum = parseFloat(itemsObject[targetItem.id].perimeterSum.toFixed(1), 10);
-          itemsObject[targetItem.id].nbPeople += item.affectations.length;
-          if (itemsObject[targetItem.id].nbPeople === 0) {
-            itemsObject[targetItem.id].ratio = 0;
-          } else {
-            itemsObject[targetItem.id].ratio = parseFloat(itemsObject[targetItem.id].areaSum / itemsObject[targetItem.id].nbPeople, 10).toFixed(1);
-          }
-
-        }
-
-      }
-    }
-  };
-
-  SvgEditor.prototype.loadBelongsToFilter = function(belongsToNameList, belongsToKeyName) {
-    this.updateBelongsToAvailable(belongsToNameList, belongsToKeyName);
-    this.$rootScope.$emit(belongsToKeyName + '_filters.Update', this.mapFilter.filters[belongsToKeyName]);
-  };
 
 
   SvgEditor.prototype.setOptions = function() {

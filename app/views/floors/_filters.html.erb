@@ -25,15 +25,15 @@
                       <label><input type="checkbox" ng-model="f[filter.name].checkAll" ng-change="f[filter.name].CheckAll()"><span ng-if="f[filter.name].checkAll == true">Tout décocher</span><span ng-if="f[filter.name].checkAll == false">Tout cocher</span></label>
                     </div>
                   </li>
-                  <li ng-repeat="(id, rt) in f[filter.name].filters" style="background-color: {{rt.color}}" class='color-filter'>
+                  <li ng-repeat="(id, rt) in f[filter.name].filters.names" style="background-color: {{rt.color}}" class='color-filter'>
                     <div class="checkbox">
                       <label><input type="checkbox" ng-model="rt.state" ng-change="f[filter.name].filterStateChange(rt)">
-                      <span class="badge pull-right">{{rt.areaSum}} m²</span>
-                      <span class="badge pull-right">{{rt.perimeterSum}} m</span>
-                      <span ng-if="rt.count > 0" class="badge pull-right">{{rt.count}} <i class="fa fa-codepen"></i></span>
-                      <span ng-if="rt.nbPeople > 0" class="badge pull-right">{{rt.nbPeople}} <i class="fa fa-user"></i></span>
-                      <span ng-if="rt.ratio > 0" class="badge pull-right">{{rt.ratio}} <i class="fa fa-user"></i> / m²</span>
-                      {{rt.name}}&nbsp;
+                      <span class="badge pull-right">{{f[filter.name].filters.values[id].areaSum}} m²</span>
+                      <span class="badge pull-right">{{f[filter.name].filters.values[id].perimeterSum}} m</span>
+                      <span ng-if="rt.count > 0" class="badge pull-right">{{f[filter.name].filters.values[id].count}} <i class="fa fa-codepen"></i></span>
+                      <span ng-if="rt.nbPeople > 0" class="badge pull-right">{{f[filter.name].filters.values[id].nbPeople}} <i class="fa fa-user"></i></span>
+                      <span ng-if="rt.ratio > 0" class="badge pull-right">{{f[filter.name].filters.values[id].ratio}} <i class="fa fa-user"></i> / m²</span>
+                      {{f[filter.name].filters.names[id].name}}&nbsp;
                     </label>
                   </div>
                 </li>
