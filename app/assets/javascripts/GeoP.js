@@ -78,7 +78,7 @@ var GeoP = {};
 
   $(function() {
     setTimeout(function() {
-      $('#myTab a').click(function(e) {
+      $('.nav.nav-pills a').click(function(e) {
         e.preventDefault();
         $(this).tab('show');
       });

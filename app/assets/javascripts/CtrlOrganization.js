@@ -21,6 +21,7 @@
     }
 
     $scope.buildings = Object.keys(buildings);
+    $rootScope.buildings = $scope.buildings;
 
     function loadFloors(floorsArrayLocal) {
       var buildingsById = {},
@@ -49,8 +50,9 @@
 
       function loadMapCallback(mapFilter, localBuildingId) {
         $scope.filter[localBuildingId] = mapFilter.mergedFiltersForBuildings[localBuildingId].organization[$scope.o.id];
-        $scope.filter[localBuildingId].state = true;
-        $rootScope.$emit('organization_filters.StateChange', $scope.filter[localBuildingId]);
+        var filter = mapFilter.bfilters[localBuildingId].belongsToItems.organization[$scope.o.id];
+        filter.state = true;
+        $rootScope.$emit('organization_filters.StateChange', filter);
         $scope.$apply();
       }
 

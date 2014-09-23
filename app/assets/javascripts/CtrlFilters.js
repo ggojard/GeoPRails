@@ -38,19 +38,33 @@
       $rootScope.$emit(filter.name + '_' + bId + '_filters.Selected', filter);
     };
 
-    $('#filter-chart-content').on('shown.bs.collapse', function() {
-      $('#chart_div').show();
-      $rootScope.$emit('MapFilter.Ready', $rootScope.mapFilter);
-      $('#chart_div').addClass('animated fadeIn');
-      $rootScope.mapFilter.updateEditorsRoomPositions();
-    });
-    $('#filter-chart-content').on('show.bs.collapse', function() {
-      $('#chart_div').hide();
-    });
+    $scope.init = function(bId) {
 
-    $('#filter-chart-content').on('hidden.bs.collapse', function() {
-      $rootScope.mapFilter.updateEditorsRoomPositions();
-    });
+        setTimeout(function() {
+          var $id, $chart;
+          $id = $('#filter-chart-' + bId + '-content');
+          $id.on('shown.bs.collapse', function() {
+            var filterName = {
+              name: 'room_type'
+            };
+            $chart.show();
+            $rootScope.$emit(filterName.name + '_' + bId + '_filters.Selected', filterName);
+            $rootScope.$emit('MapFilter.Ready', $rootScope.mapFilter);
+            $chart.addClass('animated fadeIn');
+            $rootScope.mapFilter.updateEditorsRoomPositions();
+          });
+          $id.on('show.bs.collapse', function() {
+            $chart = $('#chart_div_' + bId);
+            $chart.hide();
+          });
+
+          $id.on('hidden.bs.collapse', function() {
+            $rootScope.mapFilter.updateEditorsRoomPositions();
+          });
+        }, 0);
+
+    };
+
 
 
   });

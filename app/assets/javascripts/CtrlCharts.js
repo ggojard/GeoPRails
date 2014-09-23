@@ -18,7 +18,7 @@
         chartsData[bId][fName]();
       });
 
-      if (chartsData[bId] === undefined){
+      if (chartsData[bId] === undefined) {
         chartsData[bId] = {};
       }
 
@@ -40,7 +40,7 @@
         if (data.length > 1) {
           a = google.visualization.arrayToDataTable(data);
           options = {};
-          chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+          chart = new google.visualization.ColumnChart(document.getElementById('chart_div_' + bId));
           chart.draw(a, options);
           $scope.chart = chart;
         }

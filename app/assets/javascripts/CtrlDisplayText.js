@@ -72,12 +72,18 @@
       }
     };
 
-    $('#display-text-content').on('shown.bs.collapse', function() {
-      $rootScope.mapFilter.updateEditorsRoomPositions();
+
+    $rootScope.buildings.forEach(function(bId) {
+      var $displayTextContent = $('#display-text-' + bId + '-content');
+
+      $displayTextContent.on('shown.bs.collapse', function() {
+        $rootScope.mapFilter.updateEditorsRoomPositions();
+      });
+      $displayTextContent.on('hidden.bs.collapse', function() {
+        $rootScope.mapFilter.updateEditorsRoomPositions();
+      });
     });
-    $('#display-text-content').on('hidden.bs.collapse', function() {
-      $rootScope.mapFilter.updateEditorsRoomPositions();
-    });
+
 
 
     $scope.properties = p;

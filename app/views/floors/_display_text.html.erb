@@ -1,14 +1,14 @@
-<div class="panel-group" id="display-text" ng-controller="DisplayTextCtrl">
+<div class="panel-group" id="display-text-{{buildingId}}" ng-controller="DisplayTextCtrl">
   <div class="panel panel-default">
     <div class="panel-heading"  style="background-color: {{bgColor[buildingId]}}">
       <h3 class="panel-title">
-      <a data-toggle="collapse" data-parent="#fdisplay-text"
-        href="#display-text-content">Afficher dans les pièces
+      <a data-toggle="collapse" data-parent="#fdisplay-text-{{buildingId}}"
+        href="#display-text-{{buildingId}}-content">Afficher dans les pièces
       </a>
       </h3>
     </div>
     <!-- collapse -->
-    <div id="display-text-content" class="panel-collapse collapse">
+    <div id="display-text-{{buildingId}}-content" class="panel-collapse collapse">
       <div class="panel-body">
         <form class="form-horizontal" >
           <ul class="filters" sortable="dragControlListeners" ng-model="properties">
