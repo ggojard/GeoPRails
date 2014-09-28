@@ -14,7 +14,7 @@ ul.map-options {
 }
 
 svg {
-    polygon:hover {
+    polygon:hover, text:hover {
         cursor: pointer;
     }
     circle:hover{

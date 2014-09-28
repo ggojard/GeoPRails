@@ -393,6 +393,8 @@
     this.checkAndSetDragModeTextEventsAndClass();
 
     this.updateTextPosition();
+
+    this.text.click(this.select.bind(this));
   };
 
   Polyline.prototype.fillFromFilterColor = function(filterName) {
