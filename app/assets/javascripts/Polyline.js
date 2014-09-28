@@ -146,7 +146,7 @@
 
   Polyline.prototype.updateTextPosition = function() {
     var bbox = this.element.node.getBBox(),
-      textBbox, lines, x;
+      textBbox, lines, x, y;
     lines = this.text.selectAll('tspan');
 
     x = bbox.x + bbox.width / 2;
@@ -159,9 +159,10 @@
       l.attr(options);
     });
     textBbox = this.text.getBBox();
+    y = bbox.y + bbox.height / 2 - textBbox.height / 2;
     this.text.attr({
       x: x,
-      y: bbox.y + bbox.height / 2 - textBbox.height / 2
+      y: y
     });
 
     if (this.json !== null && this.json.anchor_text_point !== null) {

@@ -3,8 +3,8 @@
     <h2>{{o.name}}</h2>
   </div>
   <ul id="myTab-0" class="nav nav-pills nav-justified" role="tablist" >
-    <li ng-repeat="buildingId in buildings" ng-class="{active : $first}" style="background-color: {{buildingsById[buildingId].color}}">
-      <a href="#b{{buildingId}}"><h3>{{buildingsById[buildingId].name}}</h3></a>
+    <li ng-repeat="buildingId in buildings" ng-class="{active : $first}" style="background-color: {{buildingsById[buildingId].color}}" ng-init="init(buildingId)" id="tab-oraganization-{{buildingId}}">
+      <a data-toggle="tab" href="#b{{buildingId}}"><h3>{{buildingsById[buildingId].name}}</h3></a>
     </li>
   </ul>
   <div class="tab-content" >

@@ -1,5 +1,5 @@
-/*global GeoP:true, gon:true*/
-(function(geoP) {
+/*global GeoP, gon, jQuery*/
+(function(geoP, $) {
   'use strict';
   geoP.app.controller('OrganizationCtrl', function($scope, $http, $rootScope) {
     var i, floors, r, floorsArray, floorsMax, fId, buildings, buildingId, floorId;
@@ -88,5 +88,18 @@
         $http.get('/floors/' + fId + '.json').success(floorLoaded);
       }
     }
+
+    $scope.init = function(bId) {
+      setTimeout(function() {
+        var $id;
+        $id = $('#tab-oraganization-' + bId);
+        $id.on('shown.bs.tab', function() {
+          var editors = $rootScope.mapFilterByBuildingId[bId].editors;
+          editors.forEach(function(editor) {
+            editor.mapOnItems('updateTextPosition');
+          });
+        });
+      }, 0);
+    };
   });
-}(GeoP));
+}(GeoP, jQuery));

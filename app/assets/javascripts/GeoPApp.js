@@ -135,6 +135,10 @@
       mapFilter.registerFiltersStateChange();
       $rootScope.mapFilter = mapFilter;
       mapFilter.ready();
+      if ($rootScope.mapFilterByBuildingId === undefined){
+        $rootScope.mapFilterByBuildingId = {};
+      }
+      $rootScope.mapFilterByBuildingId[buildingId] = mapFilter;
 
       geoP.selectPolylineIfIsInHash($scope);
 
