@@ -93,11 +93,17 @@
       setTimeout(function() {
         var $id;
         $id = $('#tab-oraganization-' + bId);
+
+        $id.on('show.bs.tab', function() {
+          $scope.roomInfoTopOffset = 0;
+        });
+
         $id.on('shown.bs.tab', function() {
           var editors = $rootScope.mapFilterByBuildingId[bId].editors;
           editors.forEach(function(editor) {
             editor.mapOnItems('updateTextPosition');
           });
+          geoP.selectPolylineIfIsInHash($scope);
         });
       }, 0);
     };

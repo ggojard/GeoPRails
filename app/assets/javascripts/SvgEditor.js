@@ -142,7 +142,10 @@
   };
 
   SvgEditor.prototype.updateRoomOffset = function() {
-    this.$scope.roomInfoTopOffset = this.paper.node.offsetTop;
+    var offsetTop = this.paper.node.offsetTop;
+    if (offsetTop > 0) {
+      this.$scope.roomInfoTopOffset = offsetTop;
+    }
   };
 
 
