@@ -10,6 +10,8 @@
 
     $http.get(gon.building.url + '.json').success(function(b) {
       $scope.buildings = [b.id];
+      $rootScope.buildings = $scope.buildings;
+
       $rootScope.$emit('SetBodyColor', b);
       $scope.mapMode = 'show';
       $scope.building = b;

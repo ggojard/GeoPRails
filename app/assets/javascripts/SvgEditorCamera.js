@@ -5,7 +5,6 @@
 
   var SvgEditor = geoP.SvgEditor;
 
-
   geoP.DefaultCamera = {
     scale: 1,
     x: 0,

@@ -9,7 +9,6 @@
   </ul>
   <div class="tab-content" >
     <div class="tab-pane fade" ng-class="{active : $first, in : $first}" id="b{{buildingId}}" ng-repeat="buildingId in buildings">
-    {{filter}}
       <div class="panel panel-default" ng-show="filter">
         <div class="panel-heading" style="background-color: {{bgColor[buildingId]}}" >
           <h3 class="panel-title">Informations pour {{buildingsById[buildingId].name}}</h3>

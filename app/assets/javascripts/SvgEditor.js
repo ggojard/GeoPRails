@@ -109,11 +109,7 @@
     this.mapScale.loadFromFloor(this.json);
     this.$scope.mapScale = this.mapScale;
 
-    switch ($scope.mapMode) {
-      case 'show':
-        this.mapScale.hide();
-        break;
-    }
+    this.updateMapScaleVisibility();
 
     if (this.camera.scale === geoP.DefaultCamera.scale) {
       this.centerMap();
@@ -127,7 +123,17 @@
       that.mapOnItems('removeDisplayTexts');
       that.mapOnItems('setTexts');
     });
+  };
 
+  SvgEditor.prototype.updateMapScaleVisibility = function() {
+    switch (this.$scope.mapMode) {
+      case 'show':
+        this.mapScale.hide();
+        break;
+      case 'edit':
+        this.mapScale.show();
+        break;
+    }
   };
 
   SvgEditor.prototype.setCurrentRoom = function(polyline) {
@@ -303,6 +309,7 @@
         that.unSelectItems();
         $scope.mapMode = 'edit';
         that.setOptions();
+        that.updateMapScaleVisibility();
         var polyline = geoP.selectPolylineIfIsInHash($scope);
         if (polyline !== null) {
           polyline.select(e);
@@ -329,6 +336,7 @@
         that.mapOnItems('resetActions');
         $scope.mapMode = 'show';
         that.setOptions();
+        that.updateMapScaleVisibility();
         var polyline = geoP.selectPolylineIfIsInHash($scope);
         if (polyline !== null) {
           polyline.select(e);

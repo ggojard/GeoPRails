@@ -11,7 +11,7 @@ class BuildingsController < GeopController
       }
       format.json{
         b = Building.includes([:company, :floors => FloorsController.selection]).find_by_id(params[:id])
-        render json: b.as_json(:methods => [:url], :include => [:company, {:floors => {:include => FloorsController.json_selection, :methods => [:url]}}])
+        render json: b.as_json(:methods => [:url], :include => [:company, {:floors => {:include => FloorsController.json_selection, :methods => [:url, :fullname]}}])
       }
     end
 
@@ -26,7 +26,6 @@ class BuildingsController < GeopController
     a = BuildingsManager.new(id)
     a.duplicate
     redirect_to building_path a.id
-    # render :text => a.to_str
   end
 
   def delete_all
@@ -34,7 +33,7 @@ class BuildingsController < GeopController
     # a = BuildingsManager.new(id)
     # a.delete_recursive
     redirect_to '/'
-    # render :text => 'Suppression du bâtiment numéro %d. <a></' % id
+    # render :text => 'Suppression du bâtiment numéro %d.' % id
   end
 
   def export

@@ -1,19 +1,20 @@
+/*global GeoP*/
+
 (function(geoP) {
+  'use strict';
 
   var circleColor = {
-    stroke: 'red',
-    fill: 'transparent'
-  };
+      stroke: 'red',
+      fill: 'transparent'
+    },
+    mapScale;
 
-
-  var mapScale = function(editor) {
+  mapScale = function(editor) {
     this.editor = editor;
     this.length = 1;
   };
 
   mapScale.prototype.create = function(x1, y1, x2, y2) {
-    var that = this;
-
     this.line = this.editor.canvas.line(x1, y1, x2, y2);
     this.line.attr({
       stroke: 'red'
@@ -24,22 +25,32 @@
 
   };
 
+  mapScale.prototype.applyAttributes = function(attributes) {
+    this.c1.attr(attributes);
+    this.c2.attr(attributes);
+    this.line.attr(attributes);
+  };
+
+  mapScale.prototype.show = function() {
+    this.applyAttributes({
+      visibility: 'visible'
+    });
+  };
+
+
   mapScale.prototype.hide = function() {
-    var hidden = {
+    this.applyAttributes({
       visibility: 'hidden'
-    };
-    this.c1.attr(hidden);
-    this.c2.attr(hidden);
-    this.line.attr(hidden);
+    });
   };
 
 
   mapScale.prototype.updateMapScale = function() {
-    var that = this;
-    var data = {
-      'map_scale_length': this.length
-    };
-    that.editor.$http.put('/floors/' + that.editor.json.id + '.json', data).success(function(d) {
+    var that = this,
+      data = {
+        'map_scale_length': this.length
+      };
+    that.editor.$http.put('/floors/' + that.editor.json.id + '.json', data).success(function() {
       that.editor.items.map(function(i) {
         i.updateArea();
       });
@@ -78,24 +89,24 @@
 
   mapScale.prototype.createPoint = function(x, y, index) {
     var that = this;
+    function empty() {
+      return undefined;
+    }
     this['c' + index] = this.editor.canvas.circle(x, y, 5);
     this['c' + index].attr(circleColor);
     this['c' + index].drag(function(cx, cy, x, y, e) {
+      /*jslint unparam:true*/
       that.editor.drag(e, that['c' + index].node, function(mx, my) {
         that.line.node['x' + index].baseVal.value += mx;
         that.line.node['y' + index].baseVal.value += my;
       });
-    }, function() {}, function() {
-
-      var length = that.getLength();
-      var data = {};
-
+    }, empty, function() {
+      var data;
+      data = {};
       data['map_scale_x' + index] = that.line.node['x' + index].baseVal.value;
       data['map_scale_y' + index] = that.line.node['y' + index].baseVal.value;
-
-      that.editor.$http.put('/floors/' + that.editor.json.id + '.json', data).success(function(d) {});
+      that.editor.$http.put('/floors/' + that.editor.json.id + '.json', data).success(empty);
     });
-
   };
 
 
