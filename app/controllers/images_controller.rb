@@ -42,6 +42,6 @@ class ImagesController < ApplicationController
     response.headers['Cache-Control'] = "public, max-age=#{12.hours.to_i}"
     response.headers['Content-Disposition'] = 'inline'
     response.headers['Content-Type'] = 'image/png'
-    render :text => @f[0].file_contents, :content_type => 'image/png', c
+    render :text => @f[0].file_contents, :content_type => 'image/png'
   end
 end
