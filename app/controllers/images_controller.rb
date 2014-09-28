@@ -1,5 +1,8 @@
 class ImagesController < ApplicationController
 
+  # caches_page :public
+  caches_action :company_image, expires_in: 1.hour
+
 
 
   def floor_image
@@ -23,6 +26,7 @@ class ImagesController < ApplicationController
     end
   end
 
+
   def logo
     company = Company.find_by_id(current_admin_user.company_id)
     if !company.nil?
@@ -39,8 +43,7 @@ class ImagesController < ApplicationController
     id = params[:id]
     @f = CompanyImages.where(company_id:id, style: @s)
     response.headers['Cache-Control'] = "public, max-age=#{12.hours.to_i}"
-    response.headers['Content-Type'] = 'image/png'
     response.headers['Content-Disposition'] = 'inline'
-    render :text => @f[0].file_contents
+    render :text => @f[0].file_contents, :content_type => 'image/png'
   end
 end

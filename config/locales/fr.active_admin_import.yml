@@ -1,0 +1,16 @@
+fr:
+  active_admin:
+    import: "Importer"
+  active_admin_import:
+    file_format_error: "Vous pouvez uniquement importer des ficher csv valide"
+    file_empty_error: "Vous ne pouvez pas importer de fichier vide"
+    no_file_error: "Merci de séléctionner un fichier à importer"
+    imported:
+      one: "Le %{model} a bien été importé"
+      other: "Import réussi pour %{count} %{plural_model}"
+    failed:
+      one:   "Echec de l'import 1 %{model}"
+      other: "Echec de l'import %{count} %{plural_model}"
+    import_model: "Importer %{model}"
+    import_btn: "Importer"
+    import_btn_disabled: "Patientez..."

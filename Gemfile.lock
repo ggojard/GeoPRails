@@ -27,10 +27,16 @@ GEM
       activesupport (= 4.1.5)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
+    actionpack-action_caching (1.1.1)
+      actionpack (>= 4.0.0, < 5.0)
     actionview (4.1.5)
       activesupport (= 4.1.5)
       builder (~> 3.1)
       erubis (~> 2.7.0)
+    active_admin_import (2.1.1)
+      activeadmin (>= 0.6.0)
+      activerecord-import (~> 0.4, >= 0.4.1)
+      rubyzip (~> 1.0, >= 1.0.0)
     activeadmin-translate (0.2.2)
       activeadmin
       globalize3
@@ -42,6 +48,8 @@ GEM
       activemodel (= 4.1.5)
       activesupport (= 4.1.5)
       arel (~> 5.0.0)
+    activerecord-import (0.5.0)
+      activerecord (>= 3.0)
     activesupport (4.1.5)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
@@ -215,6 +223,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionpack-action_caching
+  active_admin_import
   activeadmin!
   activeadmin-translate
   axlsx
