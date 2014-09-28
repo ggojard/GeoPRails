@@ -27,7 +27,7 @@ GeoP::Application.routes.draw do
   put '/floors/:id' => 'floors#update'
   get '/floors/images/:id' => 'images#floor_image'
   get "floors/:id/json" => 'floors#show_json'
-  get '/companies/images/:id.png' => 'images#company_image'
+  get '/companies/images/:id' => 'images#company_image'
 
   get '/images/logo_small.png' => 'images#logo_small'
   get '/images/logo.png' => 'images#logo'
