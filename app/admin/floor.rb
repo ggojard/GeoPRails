@@ -1,14 +1,12 @@
 ActiveAdmin.register Floor do
 
   permit_params :name, :image, :building_id
-  # I18n.t('formtastic.labels.floor.name')
   index do
     selectable_column
     id_column
     column I18n.t('activerecord.models.building.one'), :building
     column I18n.t('formtastic.labels.floor.name'), :name
     column I18n.t('formtastic.labels.floor.level'), :level
-    # column "Image Dimensions", :image_dimensions
     actions
   end
 

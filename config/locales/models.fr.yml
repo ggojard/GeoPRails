@@ -4,43 +4,62 @@ fr:
     update: 'Mettre à jour %{model}'
     labels:
       room:
+        id: "Identifiant pièce"
         name: "Nom"
-        area: "Aire"
+        area: "Aire (m²)"
         network: "Ports Réseau"
         affectations: "Affectations"
-        perimeter: "Périmètre"
+        perimeter: "Périmètre (m)"
         free_desk_number: "Places libres"
         evacuation_zone: "Zone d'évacuation"
+        room_ground_type: "Nature des sols"
+        room_type: "Type de pièce"
+        organization: "Organisation"
+        floor: "Etage"
       building:
+        id: "Identifiant bâtiment"
         name: "Nom"
         company: "Entreprise"
         color: "Couleur de fond"
+      inventory:
+        id: "Identifiant inventaire"
+        item: "Item"
+        room: "Pièce"
+        quantity: "Quantité"
       company:
+        id: "Identifiant entreprise"
         name : "Nom"
       evacuation_zone:
+        id: "Identifiant zone d'évacuation"
         name : "Nom"
         color: "Couleur"
       admin_user_type:
+        id: "Identifiant type d'utilisateur"
         name: "Nom"
         code: "Code"
       floor:
+        id: "Identifiant étage"
         name : "Nom"
         building: "Bâtiment"
         level : "Niveau"
         image : "Plan"
       item:
+        id: "Identifiant item"
         name : "Nom"
         code : "Code"
         description : "Description"
       organization:
+        id: "Identifiant organisation"
         name : "Nom"
         color: "Couleur"
         organization: "Organisation Père"
         organization_type : "Type"
         company : "Entreprise"
       organization_type:
+        id: "Identifiant type d'organisation"
         name : "Nom"
       person:
+        id: "Identifiant personne"
         fistname : "Prénom"
         lastname : "Nom"
         person_code: "Matricule"
@@ -52,13 +71,19 @@ fr:
         monitorreference: "Référence écran"
         computerreference: "Référence ordinateur"
       person_state:
+        id: "Identifiant staut personne"
         name : "Nom"
       room_ground_type :
+        id: "Identifiant nature des sols"
         name : "Nom"
         color: "Couleur"
       room_type:
+        id: "Identifiant type de pièce"
         name : "Nom"
         color: "Couleur"
+      affectation:
+        person: "Personne"
+        room : "Pièce"
   activerecord:
     models:
       admin_user: 
@@ -75,7 +100,7 @@ fr:
         other : "Bâtiments"
       company: 
         one :  "Entreprise"
-        other : "Entreprise"
+        other : "Entreprises"
       evacuation_zone: 
         one :  "Zone d'évacuation"
         other : "Zones d'évacuations"
@@ -97,11 +122,15 @@ fr:
       person:
         one :  "Personne"
         other :  "Personnes"
-      person_state: "Statut des personnes"
+      person_state: 
+        one: "Statut des personnes"
+        other : "Statut des personnes"
       room: 
         one :  "Pièce"
         other : "Pièces"
-      room_ground_type: "Nature des sols"
+      room_ground_type: 
+        one : "Nature des sols"
+        other : "Nature des sols"
       room_type: 
         one :  "Type de pièce"
         other : "Types des pièces"

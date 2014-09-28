@@ -1,31 +1,17 @@
 ActiveAdmin.register Room do
 
-  # See permitted parameters documentation:
-  # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # permit_params :list, :of, :attributes, :on, :model
-  #
-  # or
-  #
-  # permit_params do
-  #  permitted = [:permitted, :attributes]
-  #  permitted << :other if resource.something?
-  #  permitted
-  # end
-  #
-
   show do |c|
     attributes_table do
       row "Visualiser" do link_to("Ouvrir", room_path(c.id), {}) end
-      row "Etage" do link_to c.floor.fullname, admin_floor_path(c.floor.id), {} end
-      row "Nom" do c.name end
-      row "Type" do c.room_type end
-      row "Organisation" do c.organization end
-      row "Aire" do c.area.to_s + ' m²' end
-      row "Périmètre" do c.perimeter end
-      row "Nature des sols" do c.room_ground_type end
-      row "Zone d'évacuation" do c.evacuation_zone end
-      row "Ports Réseau" do c.network end
+      row I18n.t('formtastic.labels.room.floor') do link_to c.floor.fullname, admin_floor_path(c.floor.id), {} end
+      row I18n.t('formtastic.labels.room.name') do c.name end
+      row I18n.t('formtastic.labels.room.room_type') do c.room_type end
+      row I18n.t('formtastic.labels.room.organization') do c.organization end
+      row I18n.t('formtastic.labels.room.area') do "%d m²" % c.area end
+      row I18n.t('formtastic.labels.room.perimeter') do c.perimeter end
+      row I18n.t('formtastic.labels.room.room_ground_type') do c.room_ground_type end
+      row I18n.t('formtastic.labels.room.evacuation_zone') do c.evacuation_zone end
+      row I18n.t('formtastic.labels.room.network') do c.network end
       row I18n.t('formtastic.labels.room.free_desk_number') do c.free_desk_number end
     end
 
@@ -63,42 +49,42 @@ ActiveAdmin.register Room do
   index do
     selectable_column
     id_column
-    column "Etage", :floor
-    column "Nom", :name
-    column "Type", :room_type
-    column "Organisation", :organization
-    column "Nature des sol", :room_ground_type
-    column "Aire", :area
-    column "Périmètre", :perimeter
+    column I18n.t('formtastic.labels.room.floor'), :floor
+    column I18n.t('formtastic.labels.room.name'), :name
+    column I18n.t('formtastic.labels.room.room_type'), :room_type
+    column I18n.t('formtastic.labels.room.organization'), :organization
+    column I18n.t('formtastic.labels.room.room_ground_type'), :room_ground_type
+    column I18n.t('formtastic.labels.room.area'), :area
+    column I18n.t('formtastic.labels.room.perimeter'), :perimeter
     actions
   end
 
   form do |f|
     f.inputs "Details" do
-      f.input :id, label: "Visualiser", input_html: { class: 'room-link' }
-      f.input :floor, label: "Etage", :as => :select, :collection => Floor.all.map {|f| [f.fullname, f.id]}, :include_blank => false
+      # f.input :id, label: "Visualiser", input_html: { class: 'room-link' }
+      f.input :floor, :as => :select, :collection => Floor.all.map {|f| [f.fullname, f.id]}, :include_blank => false
       f.input :name
-      f.input :room_type, label: "Type"
-      f.input :organization, label: "Organisation"
-      f.input :room_ground_type, label: "Nature des sol"
-      f.input :evacuation_zone, label: "Zone d'évacuation"
+      f.input :room_type
+      f.input :organization
+      f.input :room_ground_type
+      f.input :evacuation_zone
       f.input :free_desk_number
-      f.input :network, label: "Ports Réseau"      
+      f.input :network
     end
 
     f.has_many :affectations do |app_f|
       if !app_f.object.nil?
         app_f.input :_destroy, :as => :boolean, :label => "Retirer l'affectation"
       end
-      app_f.input :person, label: "Nom", as: :select, :collection => Person.all.map{|u| [u.fullname, u.id]}
+      app_f.input :person, label: I18n.t('formtastic.labels.person.name'), as: :select, :collection => Person.all.map{|u| [u.fullname, u.id]}
     end
 
     f.has_many :inventories do |app_f|
       if !app_f.object.nil?
         app_f.input :_destroy, :as => :boolean, :label => "Retirer l'item"
       end
-      app_f.input :item, label: "Nom", as: :select, :collection => Item.all.map{|u| ["#{u.name}", u.id]}
-      app_f.input :quantity, label: "Quantité"
+      app_f.input :item, label: I18n.t('formtastic.labels.item.name'), as: :select, :collection => Item.all.map{|u| ["#{u.name}", u.id]}
+      app_f.input :quantity, label: I18n.t('formtastic.labels.inventory.quantity')
     end
 
 

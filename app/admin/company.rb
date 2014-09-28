@@ -9,7 +9,6 @@ ActiveAdmin.register Company do
         image_tag(c.image.url(:thumb))
       end
     end
-
     panel I18n.t('activerecord.models.building.other') do
       table_for c.buildings do
         column I18n.t('formtastic.labels.building.name') do |b| link_to b.name ,[:admin, b] end
@@ -17,26 +16,12 @@ ActiveAdmin.register Company do
     end
   end
 
-
   index do
     selectable_column
     id_column
     column I18n.t('formtastic.labels.company.name'), :name
     actions
   end
-
-
-  # form :html => { :enctype => "multipart/form-data" } do |f|
-  #   f.inputs do
-  #     f.input :name
-  #     f.input :building
-  #     f.input :level
-  #     f.input :image, :required => false, :as => :file
-  #   end
-  #   f.actions
-  # end
-
-
 
   form :html => { :enctype => "multipart/form-data" } do |company|
     company.inputs  do
@@ -55,19 +40,6 @@ ActiveAdmin.register Company do
     company.actions
   end
 
-  # See permitted parameters documentation:
-  # https://github.com/gregbell/active_admin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # permit_params :list, :of, :attributes, :on, :model
-  #
-  # or
-  #
-  # permit_params do
-  #  permitted = [:permitted, :attributes]
-  #  permitted << :other if resource.something?
-  #  permitted
-  # end
-  #
   controller do
     def scoped_collection
       Company.includes(:buildings)

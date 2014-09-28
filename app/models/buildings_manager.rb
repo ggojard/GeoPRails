@@ -3,8 +3,6 @@ class BuildingsManager
     @building = Building.find_by_id(buildingId)
   end
 
-
-
   def delete_recursive
     if !@building.nil?
       @building.floors.each do |f|
