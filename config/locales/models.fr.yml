@@ -60,6 +60,7 @@ fr:
         name : "Nom"
       person:
         id: "Identifiant personne"
+        name: "Nom"
         fistname : "Prénom"
         lastname : "Nom"
         person_code: "Matricule"

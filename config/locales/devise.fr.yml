@@ -2,14 +2,12 @@
 # I18n French translation for Devise (http://github.com/plataformatec/devise)
 # I18n traduction française pour Devise        
 ######################################################################################################### 
- 
 fr:
   errors:
     messages:
       not_found: "n'a pas été trouvé(e)"
       already_confirmed: "a déjà été confirmé(e)"
       not_locked: "n'était pas verrouillé(e)"
- 
   devise:
     failure:
       unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
@@ -40,7 +38,6 @@ fr:
       confirmation_instructions: "Instructions de confirmation"
       reset_password_instructions: "Instructions pour changer le mot de passe"
       unlock_instructions: "Instructions pour déverrouiller le compte"
-      
     ##########################################################################################################
     # For generated views: By "rails generate devise_views".
     #                      Assuming to use I18n "Lazy" lookup, except for the ones under "common" namespace.
