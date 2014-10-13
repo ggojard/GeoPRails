@@ -28,10 +28,10 @@
       editor = this,
       line = 0,
       heightOfLine = 64,
-      fontSize = 24,
+      fontSize = 20,
       legendWidth = 300,
       bg, svgElements = [],
-      imageName, savedCamera, saveScale, html, $svg, h, $c, canvasDom;
+      imageName, savedCamera, saveScale, html, $svg, h, $c, canvasDom, filters, filtersStatus;
     imageName = this.getFloorFullName();
 
     savedCamera = {
@@ -56,18 +56,21 @@
       fill: 'white'
     });
 
-    Object.keys(editor.mapFilter.filters).map(function(fKey) {
-      Object.keys(editor.mapFilter.filters[fKey]).map(function(fId) {
-        var filter, text;
-        filter = editor.mapFilter.filters[fKey][fId];
-        if (filter.state === true) {
+    filters = editor.mapFilter.bfilters[editor.json.building_id][editor.json.id];
+    filtersStatus = editor.mapFilter.bfilters[editor.json.building_id].belongsToItems;
+    Object.keys(filters).map(function(fKey) {
+      Object.keys(filters[fKey]).map(function(fId) {
+        var filter, text, fstatus;
+        filter = filters[fKey][fId];
+        fstatus = filtersStatus[fKey][fId];
+        if (fstatus.state === true) {
           bg = editor.canvas.rect(editor.bgBox.w, line * heightOfLine, legendWidth, heightOfLine);
           svgElements.push(bg);
           bg.attr({
-            'fill': filter.color,
+            'fill': fstatus.color,
             'stroke': 'white'
           });
-          text = editor.canvas.text(editor.bgBox.w + legendWidth / 2, line * heightOfLine + fontSize + ((heightOfLine - fontSize) / 2), filter.name);
+          text = editor.canvas.text(editor.bgBox.w + legendWidth / 2, line * heightOfLine + fontSize + ((heightOfLine - fontSize) / 2), fstatus.name);
           text.attr({
             'fill': 'black'
           });
