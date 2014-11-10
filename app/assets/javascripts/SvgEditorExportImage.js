@@ -2,7 +2,8 @@
 (function(geoP, canvg, $) {
   'use strict';
 
-  var SvgEditor = geoP.SvgEditor;
+  var SvgEditor = geoP.SvgEditor,
+    legendWidth = 300;
 
   function getBlobUrl(canvasdata) {
     /*global atob:true,ArrayBuffer:true,Uint8Array:true, Blob:true, self:true, DataView:true */
@@ -23,15 +24,47 @@
     return newurl;
   }
 
-  SvgEditor.prototype.exportToImage = function() {
-    var svgContainerId = this.svgId,
+
+
+  SvgEditor.prototype.setLegendAndGetElements = function() {
+    var filters, filtersStatus,
       editor = this,
       line = 0,
       heightOfLine = 64,
-      fontSize = 20,
-      legendWidth = 300,
       bg, svgElements = [],
-      imageName, savedCamera, saveScale, html, $svg, h, $c, canvasDom, filters, filtersStatus;
+      fontSize = 20;
+    filters = editor.mapFilter.bfilters[editor.json.building_id][editor.json.id];
+    filtersStatus = editor.mapFilter.bfilters[editor.json.building_id].belongsToItems;
+    Object.keys(filters).map(function(fKey) {
+      Object.keys(filters[fKey]).map(function(fId) {
+        var text, fstatus;
+        // filter = filters[fKey][fId];
+        fstatus = filtersStatus[fKey][fId];
+        if (fstatus.state === true) {
+          bg = editor.canvas.rect(editor.bgBox.w, line * heightOfLine, legendWidth, heightOfLine);
+          svgElements.push(bg);
+          bg.attr({
+            'fill': fstatus.color,
+            'stroke': 'white'
+          });
+          text = editor.canvas.text(editor.bgBox.w + legendWidth / 2, line * heightOfLine + fontSize + ((heightOfLine - fontSize) / 2), fstatus.name);
+          text.attr({
+            'fill': 'black'
+          });
+          text.node.style.cssText = 'font-size:' + fontSize + 'px;font-family:arial;fill:black;text-anchor:middle';
+          svgElements.push(text);
+          line += 1;
+        }
+      });
+    });
+  };
+
+  SvgEditor.prototype.exportToImage = function() {
+    var svgContainerId = this.svgId,
+      editor = this,
+      bg,
+      svgElements = [],
+      imageName, savedCamera, saveScale, html, $svg, h, $c, canvasDom;
     imageName = this.getFloorFullName();
 
     savedCamera = {
@@ -56,30 +89,7 @@
       fill: 'white'
     });
 
-    filters = editor.mapFilter.bfilters[editor.json.building_id][editor.json.id];
-    filtersStatus = editor.mapFilter.bfilters[editor.json.building_id].belongsToItems;
-    Object.keys(filters).map(function(fKey) {
-      Object.keys(filters[fKey]).map(function(fId) {
-        var filter, text, fstatus;
-        filter = filters[fKey][fId];
-        fstatus = filtersStatus[fKey][fId];
-        if (fstatus.state === true) {
-          bg = editor.canvas.rect(editor.bgBox.w, line * heightOfLine, legendWidth, heightOfLine);
-          svgElements.push(bg);
-          bg.attr({
-            'fill': fstatus.color,
-            'stroke': 'white'
-          });
-          text = editor.canvas.text(editor.bgBox.w + legendWidth / 2, line * heightOfLine + fontSize + ((heightOfLine - fontSize) / 2), fstatus.name);
-          text.attr({
-            'fill': 'black'
-          });
-          text.node.style.cssText = 'font-size:' + fontSize + 'px;font-family:arial;fill:black;text-anchor:middle';
-          svgElements.push(text);
-          line += 1;
-        }
-      });
-    });
+    svgElements = this.setLegendAndGetElements();
 
     html = $svg[0].outerHTML;
 
