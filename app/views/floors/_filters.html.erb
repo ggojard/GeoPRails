@@ -28,7 +28,7 @@
                     <div class="checkbox">
                       <label><input type="checkbox" ng-model="rt.state" ng-change="f[filter.name].filterStateChange(rt)">
                       <span class="badge pull-right">{{f[filter.name].filters.values[id].areaSum}} m²</span>
-                      <span class="badge pull-right">{{f[filter.name].filters.values[id].perimeterSum}} m</span>
+                      <!-- <span class="badge pull-right">{{f[filter.name].filters.values[id].perimeterSum}} m</span> -->
                       <span ng-if="f[filter.name].filters.values[id].count > 0" class="badge pull-right">{{f[filter.name].filters.values[id].count}} <i class="fa fa-codepen"></i></span>
                       <span ng-if="f[filter.name].filters.values[id].nbPeople > 0" class="badge pull-right">{{f[filter.name].filters.values[id].nbPeople}} <i class="fa fa-user"></i></span>
                       <span ng-if="f[filter.name].filters.values[id].ratio > 0" class="badge pull-right">{{f[filter.name].filters.values[id].ratio}} <i class="fa fa-user"></i> / m²</span>
