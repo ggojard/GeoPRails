@@ -37,7 +37,7 @@ class BuildingsController < GeopController
 
 
   def export
-    exporter = BuildingsExport.new(@building)
+    exporter = BuildingsExport.new([@building], @building.name)
     contents = exporter.export
     filename = exporter.filename
     content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

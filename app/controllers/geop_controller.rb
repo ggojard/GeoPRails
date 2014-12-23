@@ -10,7 +10,7 @@ class GeopController < ApplicationController
     if !current_admin_user.nil?
       @global_company = Company.includes(:buildings => :floors).find_by_id(current_admin_user.company_id)
       if !@global_company.nil?
-        gon.company = @global_company.as_json(:include => {:buildings => {:include => :floors, :methods => [:url]}})
+        gon.company = @global_company.as_json({:methods => [:url], :include => {:buildings => {:include => :floors, :methods => [:url]}}})
       end
       gon.i18n = I18n.t('formtastic.labels');
     end

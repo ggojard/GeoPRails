@@ -13,6 +13,16 @@ class CompaniesController < GeopController
     gon.organizations = Organization.all.as_json()
   end
 
+  def export
+    exporter = BuildingsExport.new(@global_company.buildings, @global_company.name)
+    contents = exporter.export
+    filename = exporter.filename
+    content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    response.headers["Content-Disposition"] = "attachment; filename=\"#{filename}\""
+    render :text => contents, :content_type => content_type
+  end
+
+
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.
