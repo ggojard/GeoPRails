@@ -4,7 +4,6 @@
   geoP.app.controller('DisplayTextCtrl', function($scope, $rootScope) {
 
     var storedDisplayNames, displayNamesByName, p;
-    // delete localStorage.displayNames;
     if (localStorage && localStorage.displayNames !== undefined) {
       storedDisplayNames = JSON.parse(localStorage.displayNames);
       displayNamesByName = {};
@@ -12,8 +11,6 @@
         displayNamesByName[displayName.name] = displayName;
       });
     }
-
-
     function getDisplayNameFilter(name, value, format, merge) {
       if (value === undefined) {
         value = false;
@@ -72,7 +69,6 @@
       }
     };
 
-
     $rootScope.buildings.forEach(function(bId) {
       var $displayTextContent = $('#display-text-' + bId + '-content');
 
@@ -84,30 +80,23 @@
       });
     });
 
-
-
     $scope.properties = p;
     $rootScope.displayNames = p;
 
     $scope.dragControlListeners = {
-      //sourceItemHandleScope, destSortableScope
       accept: function() {
         return true;
       },
-      // itemMoved: function() {},
       orderChanged: function() {
         var i;
         for (i = 0; i < $scope.properties.length; i += 1) {
           $scope.properties[i].order = i;
         }
-
         $scope.updateDisplayText();
       },
-      containment: '#display-text-content' //optional param.
+      containment: '#display-text-content'
     };
-
     $scope.updateDisplayText();
-
 
   });
 }(GeoP, jQuery));
