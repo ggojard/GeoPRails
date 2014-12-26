@@ -35,7 +35,6 @@ class BuildingsController < GeopController
     render json: {"status" => "OK", "message" => 'Suppression du bâtiment numéro %d.' % id}
   end
 
-
   def export
     exporter = BuildingsExport.new([@building], @building.name)
     contents = exporter.export
@@ -45,12 +44,10 @@ class BuildingsController < GeopController
     render :text => contents, :content_type => content_type
   end
 
-
   private
   # Use callbacks to share common setup or constraints between actions.
   def set
     @building = Building.includes([:company, :floors => FloorsController.selection]).find_by_id(params[:id])
   end
-
 
 end

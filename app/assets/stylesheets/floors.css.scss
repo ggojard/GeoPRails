@@ -22,6 +22,17 @@ svg {
     }
 }
 
+a.filter-open-icon{
+    &{
+        color:black;
+    }
+    &:hover{
+    i{
+        color:white;
+    }
+}
+}
+
 #globalSearch {
     &.invalid {
         border: 2px solid red;

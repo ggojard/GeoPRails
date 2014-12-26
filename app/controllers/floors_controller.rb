@@ -1,7 +1,6 @@
 class FloorsController < GeopController
   before_action :set, only: [:show, :edit, :update, :show_json]
 
-
   def self.selection
     [:building, :rooms => RoomsController.selection]
   end
