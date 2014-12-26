@@ -55,6 +55,8 @@ ul.search-results {
     padding: 0;
     li {
         list-style: none;
+        word-break: break-word;
+        margin: 2px;
     }
 }
 
@@ -144,6 +146,10 @@ ul.network {
     padding-left: 15px;
 }
 
+button, .btn, #globalSearch{
+    border-radius: 0;
+}
+
 ul.filters {
     padding: 0px;
     margin: 0px;
@@ -156,7 +162,7 @@ ul.filters {
         margin-right: 10px;
         padding: 5px;
         padding-top: 0px;
-        border-radius: 5px;
+        border-radius: 0;
         vertical-align: middle;
         margin-top: 5px;
     }

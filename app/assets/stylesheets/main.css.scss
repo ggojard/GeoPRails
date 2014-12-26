@@ -10,6 +10,19 @@ body, label, button, input, #upload-file, input[type="file"] {
     font-size: 14px;
 }
 
+.panel-group, .tab-pane, .panel-map, .panel-default{
+       border-radius: 0;
+.panel, .panel-heading{
+    border-radius: 0;
+}
+}
+.nav > li{
+    &, & a{
+border-radius: 0;        
+    }
+
+}
+
 //
 svg {
     width: 100%;
