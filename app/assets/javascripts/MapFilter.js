@@ -120,6 +120,7 @@
       that.registerFilterStateChange(filterName, function() {
         for (j = 0; j < that.editors.length; j += 1) {
           that.editors[j].mapOnItems('fillFromFilterColor', filterName);
+          that.editors[j].setLegend();
         }
       });
     }

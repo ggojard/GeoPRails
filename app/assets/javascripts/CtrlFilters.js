@@ -22,6 +22,7 @@
     $rootScope.$on(filterName + '_filters.Update', function(e, filters) {
       /*jslint unparam:true */
       $scope.f[filterName].filters = filters;
+
     });
   }
 
@@ -43,6 +44,7 @@
         setTimeout(function() {
           var $id, $chart;
           $id = $('#filter-chart-' + bId + '-content');
+
           $id.on('shown.bs.collapse', function() {
             var filterName = {
               name: 'room_type'

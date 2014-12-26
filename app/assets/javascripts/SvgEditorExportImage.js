@@ -24,39 +24,89 @@
     return newurl;
   }
 
+  function addToWrap(texts, words, t, maxWidth) {
+    t.attr("text", words.join(' '));
+    if (t.getBBox().width > maxWidth) {
+      var text = words.join(' ');
+      texts.push(text.substring(0, text.length / 2));
+      texts.push(text.substring(text.length / 2));
+    } else {
+      texts.push(words.join(' '));
+    }
+    return texts;
+  }
 
+  function textWrap(canvas, fontStyle, maxWidth, content) {
+    var t = canvas.text(0, 0, "");
+    t.node.style.cssText = fontStyle;
+    var texts = [];
+    var words = content.split(" ");
+    var tempText = [words[0]];
+    for (var i = 1; i < words.length; i += 1) {
+      var test = tempText.concat(words[i]);
+      t.attr("text", test.join(' '));
+      if (t.getBBox().width > maxWidth) {
+        texts = addToWrap(texts, tempText, t, maxWidth);
+        tempText = [words[i]];
+      } else {
+        tempText.push(words[i]);
+      }
+    }
+    texts = addToWrap(texts, tempText, t, maxWidth);
+    t.remove();
+    return texts;
+  }
 
-  SvgEditor.prototype.setLegendAndGetElements = function() {
+  SvgEditor.prototype.setLegend = function() {
     var filters, filtersStatus,
       editor = this,
       line = 0,
-      heightOfLine = 64,
       bg, svgElements = [],
-      fontSize = 20;
+      fontSize = 16,
+      heightOfLine = fontSize;
+    editor.removeLegend();
     filters = editor.mapFilter.bfilters[editor.json.building_id][editor.json.id];
     filtersStatus = editor.mapFilter.bfilters[editor.json.building_id].belongsToItems;
     Object.keys(filters).map(function(fKey) {
       Object.keys(filters[fKey]).map(function(fId) {
         var text, fstatus;
-        // filter = filters[fKey][fId];
         fstatus = filtersStatus[fKey][fId];
         if (fstatus.state === true) {
-          bg = editor.canvas.rect(editor.bgBox.w, line * heightOfLine, legendWidth, heightOfLine);
+          var fontStyle = 'font-size:' + fontSize + 'px;font-family:arial;fill:black;alignment-baseline:before-edge;text-anchor:middle';
+          var texts = textWrap(editor.canvas, fontStyle, legendWidth, fstatus.name);
+          var boxHeight = heightOfLine + texts.length * fontSize;
+          bg = editor.canvas.rect(editor.bgBox.w, line, legendWidth, boxHeight);
           svgElements.push(bg);
           bg.attr({
             'fill': fstatus.color,
             'stroke': 'white'
           });
-          text = editor.canvas.text(editor.bgBox.w + legendWidth / 2, line * heightOfLine + fontSize + ((heightOfLine - fontSize) / 2), fstatus.name);
-          text.attr({
-            'fill': 'black'
-          });
-          text.node.style.cssText = 'font-size:' + fontSize + 'px;font-family:arial;fill:black;text-anchor:middle';
-          svgElements.push(text);
-          line += 1;
+          bg.addClass('map-legend');
+
+          for (var i = 0; i < texts.length; i++) {
+            var content = texts[i];
+            var y = line + i * fontSize + heightOfLine / 2;
+            text = editor.canvas.text(editor.bgBox.w + legendWidth / 2, y, content);
+            text.node.style.cssText = fontStyle;
+            text.addClass('map-legend');
+            text.attr({
+              'fill': 'black'
+            });
+            svgElements.push(text);
+          };
+          line += heightOfLine + texts.length * fontSize;
         }
       });
     });
+    this.svgElements = svgElements;
+  };
+
+  SvgEditor.prototype.removeLegend = function() {
+    if (this.svgElements !== undefined) {
+      this.svgElements.forEach(function(e) {
+        e.remove();
+      });
+    }
   };
 
   SvgEditor.prototype.exportToImage = function() {
@@ -89,11 +139,7 @@
       fill: 'white'
     });
 
-    svgElements = this.setLegendAndGetElements();
-
     html = $svg[0].outerHTML;
-
-
 
     editor.camera = savedCamera;
     editor.applyTransform();
@@ -115,10 +161,6 @@
       $c.remove();
       $svg.attr('width', editor.bgBox.w);
       $svg.attr('height', editor.bgBox.h);
-      svgElements.forEach(function(e) {
-        e.remove();
-      });
-
     }, 500);
   };
 }(GeoP, canvg, jQuery));
