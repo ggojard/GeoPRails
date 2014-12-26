@@ -138,6 +138,7 @@
     bg.attr({
       fill: 'white'
     });
+    editor.setLegend();
 
     html = $svg[0].outerHTML;
 

@@ -381,7 +381,10 @@
       id = displayText.name;
       text = this.json[id];
       if (displayText.value === true && text !== null) {
-        texts = texts.concat(this.putInTextArray(displayText.format(text), bbox.width, displayText.merge));
+        var value = this.putInTextArray(displayText.format(text), bbox.width, displayText.merge);
+        if (value.join('').length > 0) {
+          texts = texts.concat(value);
+        }
       }
     }
 

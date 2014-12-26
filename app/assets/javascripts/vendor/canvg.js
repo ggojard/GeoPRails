@@ -132,7 +132,14 @@
 		
 		// parse xml
 		svg.parseXml = function(xml) {
-			if (window.DOMParser)
+			if (typeof(Windows) != 'undefined' && typeof(Windows.Data) != 'undefined' && typeof(Windows.Data.Xml) != 'undefined') {
+				var xmlDoc = new Windows.Data.Xml.Dom.XmlDocument();
+				var settings = new Windows.Data.Xml.Dom.XmlLoadSettings();
+				settings.prohibitDtd = false;
+				xmlDoc.loadXml(xml, settings);
+				return xmlDoc;
+			}
+			else if (window.DOMParser)
 			{
 				var parser = new DOMParser();
 				return parser.parseFromString(xml, 'text/xml');
@@ -536,7 +543,24 @@
 					ctx.transform(this.m[0], this.m[1], this.m[2], this.m[3], this.m[4], this.m[5]);
 				}
 				this.unapply = function(ctx) {
-					ctx.transform(this.m[0], this.m[1], this.m[2], this.m[3], -1.0 * this.m[4], -1.0 * this.m[5]);
+					var a = this.m[0];
+					var b = this.m[2];
+					var c = this.m[4];
+					var d = this.m[1];
+					var e = this.m[3];
+					var f = this.m[5];
+					var g = 0.0;
+					var h = 0.0;
+					var i = 1.0;
+					var det = 1 / (a*(e*i-f*h)-b*(d*i-f*g)+c*(d*h-e*g));
+					ctx.transform(
+						det*(e*i-f*h),
+						det*(f*g-d*i),
+						det*(c*h-b*i),
+						det*(a*i-c*g),
+						det*(b*f-c*e),
+						det*(c*d-a*f)
+					);
 				}
 				this.applyToPoint = function(p) {
 					p.applyTransform(this.m);
@@ -735,18 +759,6 @@
 			}
 				
 			if (node != null && node.nodeType == 1) { //ELEMENT_NODE
-				// add children
-				for (var i=0; i<node.childNodes.length; i++) {
-					var childNode = node.childNodes[i];
-					if (childNode.nodeType == 1) this.addChild(childNode, true); //ELEMENT_NODE
-					if (this.captureTextNodes && (childNode.nodeType == 3 || childNode.nodeType == 4)) {
-						var text = childNode.nodeValue || childNode.text || '';
-						if (svg.trim(svg.compressSpaces(text)) != '') {
-							this.addChild(new svg.Element.tspan(childNode), false); // TEXT_NODE
-						}
-					}
-				}
-				
 				// add attributes
 				for (var i=0; i<node.attributes.length; i++) {
 					var attribute = node.attributes[i];
@@ -809,6 +821,18 @@
 						svg.Definitions[this.attribute('id').value] = this;
 					}
 				}
+				
+				// add children
+				for (var i=0; i<node.childNodes.length; i++) {
+					var childNode = node.childNodes[i];
+					if (childNode.nodeType == 1) this.addChild(childNode, true); //ELEMENT_NODE
+					if (this.captureTextNodes && (childNode.nodeType == 3 || childNode.nodeType == 4)) {
+						var text = childNode.nodeValue || childNode.text || '';
+						if (svg.trim(svg.compressSpaces(text)) != '') {
+							this.addChild(new svg.Element.tspan(childNode), false); // TEXT_NODE
+						}
+					}
+				}
 			}
 		}
 		
@@ -825,7 +849,7 @@
 				else if (this.style('fill').hasValue()) {
 					var fillStyle = this.style('fill');
 					if (fillStyle.value == 'currentColor') fillStyle.value = this.style('color').value;
-					ctx.fillStyle = (fillStyle.value == 'none' ? 'rgba(0,0,0,0)' : fillStyle.value);
+					if (fillStyle.value != 'inherit') ctx.fillStyle = (fillStyle.value == 'none' ? 'rgba(0,0,0,0)' : fillStyle.value);
 				}
 				if (this.style('fill-opacity').hasValue()) {
 					var fillStyle = new svg.Property('fill', ctx.fillStyle);
@@ -841,7 +865,7 @@
 				else if (this.style('stroke').hasValue()) {
 					var strokeStyle = this.style('stroke');
 					if (strokeStyle.value == 'currentColor') strokeStyle.value = this.style('color').value;
-					ctx.strokeStyle = (strokeStyle.value == 'none' ? 'rgba(0,0,0,0)' : strokeStyle.value);
+					if (strokeStyle.value != 'inherit') ctx.strokeStyle = (strokeStyle.value == 'none' ? 'rgba(0,0,0,0)' : strokeStyle.value);
 				}
 				if (this.style('stroke-opacity').hasValue()) {
 					var strokeStyle = new svg.Property('stroke', ctx.strokeStyle);
@@ -2209,7 +2233,7 @@
 			this.base = svg.Element.TextElementBase;
 			this.base(node);
 			
-			this.hasText = true;
+			this.hasText = node.childNodes.length > 0;
 			for (var i=0; i<node.childNodes.length; i++) {
 				if (node.childNodes[i].nodeType != 3) this.hasText = false;
 			}
@@ -2228,7 +2252,7 @@
 					var fontSize = new svg.Property('fontSize', svg.Font.Parse(svg.ctx.font).fontSize);
 					svg.Mouse.checkBoundingBox(this, new svg.BoundingBox(this.x, this.y - fontSize.toPixels('y'), this.x + this.measureText(ctx), this.y));					
 				}
-				else {
+				else if (this.children.length > 0) {
 					// render as temporary group
 					var g = new svg.Element.g();
 					g.children = this.children;
