@@ -14,7 +14,7 @@
 
     filterMethod = function(fName, filter, filterNames, bId) {
       $scope.chart = null;
-      $rootScope.$on(fName + '_' + bId + '_filters.Selected', function() {
+      $rootScope.$on(fName + '_' + bId + '_charts.Selected', function() {
         chartsData[bId][fName]();
       });
 
@@ -49,7 +49,6 @@
     $rootScope.$on('MapFilter.Ready', function(mapFilter) {
       var filters, filterName, f, filterNames, bId;
       if ($rootScope.mapFilter !== undefined) {
-
         bId = $rootScope.mapFilter.buildingId;
         filters = $rootScope.mapFilter.mergedFiltersForBuildings[bId];
         filterNames = $rootScope.mapFilter.bfilters[bId].belongsToItems;

@@ -36,38 +36,51 @@
     }
 
     $scope.filterPaneClick = function(filter, bId) {
-      $rootScope.$emit(filter.name + '_' + bId + '_filters.Selected', filter);
+      // $rootScope.$emit(filter.name + '_' + bId + '_filters.Selected', filter);
     };
 
-    $scope.init = function(bId) {
-
-        setTimeout(function() {
-          var $id, $chart;
-          $id = $('#filter-chart-' + bId + '-content');
-
-          $id.on('shown.bs.collapse', function() {
-            var filterName = {
-              name: 'room_type'
-            };
-            $chart.show();
-            $rootScope.$emit(filterName.name + '_' + bId + '_filters.Selected', filterName);
-            $rootScope.$emit('MapFilter.Ready', $rootScope.mapFilter);
-            $chart.addClass('animated fadeIn');
-            $rootScope.mapFilter.updateEditorsRoomPositions();
-          });
-          $id.on('show.bs.collapse', function() {
-            $chart = $('#chart_div_' + bId);
-            $chart.hide();
-          });
-
-          $id.on('hidden.bs.collapse', function() {
-            $rootScope.mapFilter.updateEditorsRoomPositions();
-          });
-        }, 0);
-
+    $scope.chartPaneClick = function(filter, bId) {
+      $rootScope.$emit(filter.name + '_' + bId + '_charts.Selected', filter);
     };
 
+    var filterName = {
+      name: 'room_type'
+    };
 
+    $scope.init_chart = function(bId) {
+      setTimeout(function() {
+        var $id, $chart;
+        $id = $('#chart-' + bId + '-content');
+        $id.on('show.bs.collapse', function() {
+          $chart = $('#chart_div_' + bId);
+          $chart.hide();
+        });
+        $id.on('shown.bs.collapse', function() {
+          $chart.show();
+          $rootScope.$emit(filterName.name + '_' + bId + '_charts.Selected', filterName);
+          $rootScope.mapFilter.updateEditorsRoomPositions();
+          $chart.addClass('animated fadeIn');
+        });
+        $id.on('hidden.bs.collapse', function() {
+          $rootScope.mapFilter.updateEditorsRoomPositions();
+        });
+      }, 0);
+    };
+
+    $scope.init_filter = function(bId) {
+      setTimeout(function() {
+        var $id, $chart;
+        $id = $('#filter-' + bId + '-content');
+        $id.on('shown.bs.collapse', function() {
+          $rootScope.$emit(filterName.name + '_' + bId + '_chart.Selected', filterName);
+          $rootScope.$emit('MapFilter.Ready', $rootScope.mapFilter);
+          $rootScope.mapFilter.updateEditorsRoomPositions();
+        });
+        $id.on('hidden.bs.collapse', function() {
+          $rootScope.mapFilter.updateEditorsRoomPositions();
+        });
+      }, 0);
+    };
 
   });
 
