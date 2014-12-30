@@ -1,18 +1,3 @@
-<!-- <div class="panel panel-default" id="display-floors">
-  <div class="panel-heading"  style="background-color: {{bgColor[buildingId]}}">
-    <h3 class="panel-title">
-    <a data-toggle="collapse" data-parent="display-floors" href="#display-floors-content">
-      <h3 class="panel-title"></h3>
-      Accès direct aux étages
-    </a>
-    </h3>
-  </div>
-  <div id="display-floors-content" class='panel-collapse collapse'>
-    <div  class="panel-body">
-    </div>
-  </div>
-</div>
--->
 <ul class="display_floors">
   <li ng-repeat="f in building.floors"><a href="{{f.url}}">{{f.name}}</a></li>
 </ul>

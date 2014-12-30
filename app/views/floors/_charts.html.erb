@@ -1,19 +1,3 @@
-<!-- <div class="panel-group" id="chart-{{buildingId}}" ng-init="init_chart(buildingId)" ng-controller="FiltersCtrl">
-  <div class="panel panel-default">
-    <div class="panel-heading" style="background-color: {{bgColor[buildingId]}}">
-      <h3 class="panel-title">
-      <a data-toggle="collapse" data-parent="#chart-{{buildingId}}"
-        href="#chart-{{buildingId}}-content">Rapports
-      </a>
-      </h3>
-    </div>
-    <div id="chart-{{buildingId}}-content" class="panel-collapse collapse">
-      <div class="panel-body">
-      </div>
-    </div>
-  </div>
-</div>
--->
 <div  class="filter-container" ng-controller="FiltersCtrl">
   <ul id="myTabChart" class="nav nav-pills nav-justified" role="tablist" >
     <li ng-repeat="filter in filterNames" ng-class="{active : $first}">

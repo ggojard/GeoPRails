@@ -24,8 +24,6 @@
         c.chart.draw(c.a, c.options);
       });
 
-      // $rootScope.currentChart
-
       if (chartsData[bId] === undefined) {
         chartsData[bId] = {};
       }

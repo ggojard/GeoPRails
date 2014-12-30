@@ -11,15 +11,3 @@
   <li ng-repeat="b in svgEditors[f.id].dragPointsOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
 </ul>
 <div id='debugger'></div>
-<!--
-<ul>
-  <li>
-    <label for="scale">Zoom : </label> <input name="scale" type="number" value="editor.camera.scale" ng-model="editor.camera.scale" ng-change="applyTransform()" step="0.1" min="0"/>
-  </li>
-  <li>
-    <label for="x">X :</label> <input name="x" type="number" value="editor.camera.x" ng-model="editor.camera.x" ng-change="applyTransform()" step="10"/>
-  </li>
-  <li>
-    <label for="y">Y :</label> <input name="y" type="number" value="editor.camera.y" ng-model="editor.camera.y" ng-change="applyTransform()" step="10"/>
-  </li>
-</ul> -->
