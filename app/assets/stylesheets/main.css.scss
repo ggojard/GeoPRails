@@ -10,7 +10,13 @@ body, label, button, input, #upload-file, input[type="file"] {
     font-size: 14px;
 }
 
-.panel-group, .tab-pane, .panel-map, .panel-default{
+.tab-content-main{
+    border:1px solid;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.panel-group, .tab-pane, .panel-map, .panel-default, .panel-danger{
        border-radius: 0;
 .panel, .panel-heading{
     border-radius: 0;

@@ -16,7 +16,15 @@
       $scope.chart = null;
       $rootScope.$on(fName + '_' + bId + '_charts.Selected', function() {
         chartsData[bId][fName]();
+        $rootScope.mapFilter.updateEditorsRoomPositions();        
       });
+      $rootScope.$on('Refresh.CurrentChart', function(e, buildingId) {
+        var c = $rootScope.currentChart[buildingId];        
+        c.$element.show();
+        c.chart.draw(c.a, c.options);
+      });
+
+      // $rootScope.currentChart
 
       if (chartsData[bId] === undefined) {
         chartsData[bId] = {};
@@ -40,9 +48,15 @@
         if (data.length > 1) {
           a = google.visualization.arrayToDataTable(data);
           options = {};
-          chart = new google.visualization.ColumnChart(document.getElementById('chart_div_' + bId));
+          var e = document.getElementById('chart_div_' + bId);
+          chart = new google.visualization.ColumnChart(e);
           chart.draw(a, options);
           $scope.chart = chart;
+
+          if ($rootScope.currentChart === undefined){
+            $rootScope.currentChart = {};
+          }
+          $rootScope.currentChart[bId] = {a:a, options:options, chart:chart, $element : $(e)};
         }
       };
     };

@@ -4,9 +4,11 @@
 
   geoP.app.controller('BuildingCtrl', function($scope, $http, $rootScope) {
 
+    geoP.handleTabHeaderClick($rootScope, $scope);
+
     $scope.floorsByBuildingId = {};
     $scope.loading = true;
-    GeoP.handleKeyEventsForScope($scope);
+    geoP.handleKeyEventsForScope($scope);
 
     $http.get(gon.building.url + '.json').success(function(b) {
       $scope.buildings = [b.id];

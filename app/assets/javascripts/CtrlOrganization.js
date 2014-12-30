@@ -4,6 +4,7 @@
   geoP.app.controller('OrganizationCtrl', function($scope, $http, $rootScope) {
     var i, floors, r, floorsArray, floorsMax, fId, buildings, buildingId, floorId;
     geoP.handleKeyEventsForScope($scope);
+    geoP.handleTabHeaderClick($rootScope, $scope);
     $scope.o = gon.organization;
     $scope.floorsByBuildingId = {};
     floors = {};

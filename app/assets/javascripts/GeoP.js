@@ -36,6 +36,18 @@ var GeoP = {};
     }
   };
 
+  geoP.handleTabHeaderClick = function($rootScope, $scope) {
+    $scope.tabHeaderClick = function(e, bId) {
+      if (e === 'charts') {
+        $rootScope.currentChart[bId].$element.hide();
+      }
+      setTimeout(function() {
+        $rootScope.$emit('Refresh.CurrentChart', bId);
+        $rootScope.mapFilter.updateEditorsRoomPositions();
+      }, 250);
+    }
+
+  }
 
   geoP.$apply = function($scope) {
     setTimeout(function() {

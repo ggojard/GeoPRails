@@ -1,0 +1,30 @@
+<!-- <div class="panel panel-default" ng-show="filter">
+  <div class="panel-heading" style="background-color: {{bgColor[buildingId]}}" >
+    <h3 class="panel-title">Informations pour {{buildingsById[buildingId].name}}</h3>
+  </div>
+  <div class="panel-body">
+  </div>
+</div>
+ -->
+     <table class="room">
+      <tr>
+        <th>Nombres de piéces</th>
+        <td>{{filter[buildingId].count}}</td>
+      </tr>
+      <tr>
+        <th>Surface occupée</th>
+        <td>{{filter[buildingId].areaSum}} m²</td>
+      </tr>
+      <tr ng-if="filter[buildingId].nbPeople > 0">
+        <th>Nombre de personnes</th>
+        <td>{{filter[buildingId].nbPeople}}</td>
+      </tr>
+      <tr ng-if="filter[buildingId].ratio > 0">
+        <th>Ratio affectations</th>
+        <td>{{filter[buildingId].ratio}} personnes / m²</td>
+      </tr>
+      <tr ng-if="filter[buildingId].ratio > 0">
+        <th>Présence sur nombre d'étages</th>
+        <td>{{floorsByBuildingId[buildingId].length}}</td>
+      </tr>
+    </table>

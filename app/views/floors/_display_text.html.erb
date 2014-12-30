@@ -1,4 +1,4 @@
-<div class="panel-group" id="display-text-{{buildingId}}" ng-controller="DisplayTextCtrl">
+<!-- <div class="panel-group" id="display-text-{{buildingId}}" ng-controller="DisplayTextCtrl">
   <div class="panel panel-default">
     <div class="panel-heading"  style="background-color: {{bgColor[buildingId]}}">
       <h3 class="panel-title">
@@ -7,20 +7,19 @@
       </a>
       </h3>
     </div>
-    <!-- collapse -->
     <div id="display-text-{{buildingId}}-content" class="panel-collapse collapse">
       <div class="panel-body">
-        <form class="form-horizontal" >
-          <ul class="filters" sortable="dragControlListeners" ng-model="properties">
-            <li class="check-all color-filter" ng-repeat="p in properties" sortable-item>
-              <div class="checkbox" >
-                <i sortable-item-handle class="fa fa-exchange"></i>
-                <label><input type="checkbox" ng-change="updateDisplayText()" id="select-display-name-{{p.name}}" ng-model="p.value"><span>{{p.label}}</span></label>
-              </div>
-            </li>
-          </ul>
-        </form>
       </div>
     </div>
   </div>
-</div>
+</div> -->
+<form class="form-horizontal" ng-controller="DisplayTextCtrl">
+  <ul class="filters" sortable="dragControlListeners" ng-model="properties">
+    <li class="check-all color-filter" ng-repeat="p in properties" sortable-item>
+      <div class="checkbox" >
+        <i sortable-item-handle class="fa fa-exchange"></i>
+        <label><input type="checkbox" ng-change="updateDisplayText()" id="select-display-name-{{p.name}}" ng-model="p.value"><span>{{p.label}}</span></label>
+      </div>
+    </li>
+  </ul>
+</form>

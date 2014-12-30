@@ -93,6 +93,15 @@ ul.people {
     }
 }
 
+.panel-body ul {
+    margin-bottom: 0;
+}
+
+ul.display_floors{
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
 div#debugger {
     background-color: white;
     position: fixed;
@@ -100,7 +109,7 @@ div#debugger {
     border: 1px solid green;
 }
 
-.jumbotron {
+.jumbotron, .jumbotron-surfy {
     h1, h2, h3, p {
         display: inline-block;
         margin: 0;
@@ -109,6 +118,9 @@ div#debugger {
     h1 {
         margin-left: 10px;
     }
+}
+.jumbotron-surfy {
+    padding: 10px;
 }
 
 div.panel-default .panel-heading {
