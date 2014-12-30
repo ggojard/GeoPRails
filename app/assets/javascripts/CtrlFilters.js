@@ -1,8 +1,6 @@
 /*global GeoP:true, jQuery:true*/
 (function(geoP, $) {
   'use strict';
-
-
   function registerFilterCtrl($scope, $rootScope, filterName) {
     $scope.f[filterName] = {};
     $scope.f[filterName].checkAll = false;
@@ -22,7 +20,6 @@
     $rootScope.$on(filterName + '_filters.Update', function(e, filters) {
       /*jslint unparam:true */
       $scope.f[filterName].filters = filters;
-
     });
   }
 
@@ -48,7 +45,5 @@
     var filterName = {
       name: 'room_type'
     };
-
   });
-
 }(GeoP, jQuery));
