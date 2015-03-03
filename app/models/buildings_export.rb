@@ -66,7 +66,11 @@ class BuildingsExport
     wb.add_worksheet(:name => "Organizations") do |sheet|
       sheet.add_row ["Identifiant", "Nom", "Identifiant Type", "Type"]
       Organization.all().each do |o|
-        sheet.add_row [o.id, o.name, o.organization_type.id, o.organization_type.name]
+        list = [o.id, o.name]
+        if !o.organization_type.nil?
+          list += [o.organization_type.id, o.organization_type.name]
+        end
+        sheet.add_row list
       end
     end
 
@@ -78,9 +82,16 @@ class BuildingsExport
     end
 
     wb.add_worksheet(:name => I18n.t('activerecord.models.person.other')) do |sheet|
-      sheet.add_row ["Identifiant", "Prénom", "Nom de famille", "Téléphone", "Portable", "Référence Ordinateur", "Référence écran", "Email"]
+      sheet.add_row ["Identifiant", "Prénom", "Nom de famille", "Téléphone", "Portable", "Référence Ordinateur", "Référence écran", "Email", "Organisation", "Identifiant Organisation", "Etat", "Identifiant Etat"]
       Person.all().each do |o|
-        sheet.add_row [o.id, o.firstname, o.lastname, o.telephone, o.cellphone, o.computerreference, o.monitorreference, o.email], :types => [nil, nil, nil, :string, :string, nil, nil, nil]
+        list = [o.id, o.firstname, o.lastname, o.telephone, o.cellphone, o.computerreference, o.monitorreference, o.email]
+        if !o.organization.nil?
+          list += [o.organization.name, o.organization.id]
+        end
+        if !o.person_state.nil?
+          list += [o.person_state.name, o.person_state.id]
+        end
+        sheet.add_row list , :types => [nil, nil, nil, :string, :string, nil, nil, nil]
       end
     end
 
