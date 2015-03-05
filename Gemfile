@@ -60,7 +60,6 @@ gem "haml"
 gem 'jquery-minicolors-rails'
 gem "gon"
 gem 'axlsx'
-gem 'newrelic_rpm'
 gem 'rails-patch-json-encode'
 gem "oj"
 gem "active_admin_import"
