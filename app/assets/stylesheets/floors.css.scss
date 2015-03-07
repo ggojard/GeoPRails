@@ -13,6 +13,10 @@ ul.map-options {
     }
 }
 
+.navbar-form{
+    float: left;
+}
+
 svg {
     polygon:hover, text:hover {
         cursor: pointer;
@@ -34,6 +38,7 @@ a.filter-open-icon{
 }
 
 #globalSearch {
+    // float:right;
     &.invalid {
         border: 2px solid red;
     }
@@ -53,6 +58,9 @@ ul.search-results {
     z-index: 100;
     margin: 0;
     padding: 0;
+    // right:10px;
+    // max-width: 300px;
+    // width: 300px;
     li {
         list-style: none;
         word-break: break-word;
