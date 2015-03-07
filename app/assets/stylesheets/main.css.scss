@@ -27,9 +27,14 @@ body, label, button, input, #upload-file, input[type="file"] {
     &, & a {
         border-radius: 0;
     }
-    & > a{
-        padding-left: 2px;
-        padding-right: 2px;        
+}
+
+.main-menu {
+    .nav > li {
+        & > a {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
     }
 }
 
@@ -337,7 +342,6 @@ div.panel-room {
 }
 
 @media screen and (min-width: 240px) and (max-width: 639px) {
-
     .home {
         .buildings {
             div.building {
