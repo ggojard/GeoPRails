@@ -26,8 +26,10 @@ body, label, button, input, #upload-file, input[type="file"] {
 .nav > li {
     &, & a {
         border-radius: 0;
+    }
+    & > a{
         padding-left: 2px;
-        padding-right: 2px;
+        padding-right: 2px;        
     }
 }
 
