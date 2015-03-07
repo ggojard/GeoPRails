@@ -81,16 +81,23 @@ class BuildingsExport
       end
     end
 
-    wb.add_worksheet(:name => I18n.t('activerecord.models.person.other')) do |sheet|
-      sheet.add_row ["Identifiant", "Prénom", "Nom de famille", "Téléphone", "Portable", "Référence Ordinateur", "Référence écran", "Email", "Organisation", "Identifiant Organisation", "Etat", "Identifiant Etat"]
-      Person.all().each do |o|
-        list = [o.id, o.firstname, o.lastname, o.telephone, o.cellphone, o.computerreference, o.monitorreference, o.email]
+    personHeaders = ["Identifiant Personne", "Prénom", "Nom de famille", "Nom complet", "Téléphone", "Portable", "Référence Ordinateur", "Référence écran", "Email", "Organisation", "Identifiant Organisation", "Etat", "Identifiant Etat"]
+
+    def personData o
+        list = [o.id, o.firstname, o.lastname, o.fullname, o.telephone, o.cellphone, o.computerreference, o.monitorreference, o.email]
         if !o.organization.nil?
           list += [o.organization.name, o.organization.id]
         end
         if !o.person_state.nil?
           list += [o.person_state.name, o.person_state.id]
         end
+        return list
+    end
+
+    wb.add_worksheet(:name => I18n.t('activerecord.models.person.other')) do |sheet|
+      sheet.add_row personHeaders
+      Person.all().each do |o|
+        list = personData(o)
         sheet.add_row list , :types => [nil, nil, nil, :string, :string, nil, nil, nil]
       end
     end
@@ -124,10 +131,15 @@ class BuildingsExport
     end
 
     wb.add_worksheet(:name => "Affectations") do |sheet|
-      sheet.add_row ["Identifiant",  "Prénom", "Nom", "Nom complet", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment"]
+      headers = ["Identifiant", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment"]
+      headers += personHeaders
+      sheet.add_row  headers
+
       Affectation.all().each do |o|
         if !o.person.nil? and !o.room.nil? and !o.room.floor.nil? and !o.room.floor.building.nil? and @buildings.include?(o.room.floor.building)
-          sheet.add_row [o.id, o.person.firstname, o.person.lastname, o.person.fullname, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name]
+          row = [o.id, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name]
+          row += personData(o.person)
+          sheet.add_row row
         end
       end
     end
