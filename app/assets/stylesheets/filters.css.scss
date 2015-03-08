@@ -3,14 +3,25 @@ ul.filters {
     margin: 0px;
     box-sizing: initial;
     line-height: 1;
+    
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    flex-flow: row wrap;
+
     & > li {
-        // border: 1px solid black;
         list-style: none;
-        display: inline-block;
         margin: 0px;
         border-radius: 0;
         vertical-align: top;
         width: 33.333%;
+
+        .checkbox label{
+          cursor: inherit;
+        }
         ul.filter-zone {
             margin: 0;
             padding: 0;
