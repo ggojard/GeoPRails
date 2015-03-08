@@ -152,14 +152,7 @@ div.tab-content {
     }
 }
 
-div.checkbox {
-    .badge {
-        background-color: #eee;
-        color: black;
-        margin-right: 5px;
-        font-weight: normal;
-    }
-}
+
 
 ul.network {
     margin: 0;
@@ -170,32 +163,6 @@ button, .btn, #globalSearch{
     border-radius: 0;
 }
 
-ul.filters {
-    padding: 0px;
-    margin: 0px;
-    box-sizing: initial;
-    line-height: 1;
-    li {
-        list-style: none;
-        display: inline-block;
-        margin: 0;
-        margin-right: 10px;
-        padding: 5px;
-        padding-top: 0px;
-        border-radius: 0;
-        vertical-align: middle;
-        margin-top: 5px;
-    }
-    li.check-all {
-        background-color: #eee;
-    }
-    ul {
-        margin: 0px;
-        padding: 0px;
-        // padding-left: 5px;
-   
-    }
-}
 
 .chart_div {
     width: 100%;

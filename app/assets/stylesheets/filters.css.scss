@@ -1,0 +1,79 @@
+ul.filters {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: initial;
+    line-height: 1;
+    & > li {
+        // border: 1px solid black;
+        list-style: none;
+        display: inline-block;
+        margin: 0px;
+        border-radius: 0;
+        vertical-align: top;
+        width: 33.333%;
+        ul.filter-zone {
+            margin: 0;
+            padding: 0;
+            display: table;
+            width: 100%;
+            min-height: 30px;
+
+            li {
+                display: table-cell;
+                vertical-align: middle;
+            }
+            li.selection-name{
+              word-break: break-word;
+            }
+            li.selection-checkbox, .selection-organization {
+                width: 16px;
+                min-width: 16px;
+                text-align: center;
+            }
+            li.filter-kpis {
+                text-align: right;
+                span {
+                    display: inline-block;
+                }
+            }
+        }
+        div.checkbox {
+            padding: 0px;
+            margin: 2px;
+            input {
+                margin: 0;
+            }
+            .badge {
+                background-color: #eee;
+                color: black;
+                font-weight: normal;
+                margin: 2px;
+            }
+        }
+    }
+    .check-all {
+        background-color: #eee;
+        line-height: 27px;
+    }
+    ul {
+        margin: 0px;
+        padding: 0px;
+   
+    }
+}
+
+@media screen and (min-width: 640px) and (max-width: 1023px) {
+    ul.filters {
+        &>li {
+            width: 50%;
+        }
+    }
+}
+
+@media screen and (min-width: 240px) and (max-width: 639px) {
+    ul.filters {
+        &>li {
+            width: 100%;
+        }
+    }
+}

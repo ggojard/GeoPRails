@@ -317,6 +317,13 @@ div.panel-room {
     border-radius: 0;
 }
 
+
+
+
+
+
+
+
 @media screen and (min-width: 768px) {
     // .main-menu {
     //     width: 250px;
@@ -339,6 +346,10 @@ div.panel-room {
     // body {
     //     padding-left: 250px;
     // }
+}
+
+@media screen and (min-width: 640px) and (max-width: 1023px) {
+
 }
 
 @media screen and (min-width: 240px) and (max-width: 639px) {
