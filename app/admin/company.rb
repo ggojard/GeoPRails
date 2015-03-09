@@ -5,6 +5,8 @@ ActiveAdmin.register Company do
   show do |c|
     attributes_table do
       row I18n.t('formtastic.labels.company.name') do c.name end
+      row I18n.t('formtastic.labels.company.analytics_code') do c.analytics_code end
+
       row "Logo" do
         image_tag(c.image.url(:thumb))
       end
@@ -27,6 +29,7 @@ ActiveAdmin.register Company do
     company.inputs  do
       company.input :name
       company.input :image, :required => false, :as => :file
+      company.input :analytics_code
     end
 
     company.has_many :buildings do |b|
