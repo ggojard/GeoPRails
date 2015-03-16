@@ -361,6 +361,11 @@ div.panel-room {
     border-radius: 0;
 }
 
+.container-fluid{
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
     .home {
         .buildings {
             div.building {
@@ -373,6 +378,7 @@ div.panel-room {
                 background: none;
                 min-height: 0;
                 margin: 0;
+                padding: 2px 0;
             }
         }
     }
