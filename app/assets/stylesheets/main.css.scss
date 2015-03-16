@@ -353,6 +353,14 @@ div.panel-room {
 }
 
 @media screen and (min-width: 240px) and (max-width: 639px) {
+
+div.panel-room {
+    position: static;
+    width: 100%;
+    z-index: 999;
+    border-radius: 0;
+}
+
     .home {
         .buildings {
             div.building {
