@@ -3,6 +3,9 @@ fr:
     create: 'Créer %{model}'
     update: 'Mettre à jour %{model}'
     labels:
+      admin_user_role_to_building:
+        admin_user_role:"Rôle"
+        building:"Bâtiment"
       room:
         id: "Identifiant pièce"
         name: "Nom"
@@ -91,6 +94,9 @@ fr:
         room : "Pièce"
   activerecord:
     models:
+      admin_user_role_to_building:
+        one : "Rôle à Bâtiment"
+        other : "Rôles à Bâtiments"
       admin_user_role:
         one : "Rôle"
         other : "Rôles"
