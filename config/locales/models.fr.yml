@@ -16,6 +16,9 @@ fr:
         room_type: "Type de pièce"
         organization: "Organisation"
         floor: "Etage"
+      admin_user_role:
+        id: "Identifiant"
+        name: "Nom"
       building:
         id: "Identifiant bâtiment"
         name: "Nom"
@@ -88,6 +91,9 @@ fr:
         room : "Pièce"
   activerecord:
     models:
+      admin_user_role:
+        one : "Rôle"
+        other : "Rôles"
       admin_user: 
         one :  "Utilisateur"
         other : "Utilisateurs"
