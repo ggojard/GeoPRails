@@ -31,4 +31,5 @@ GeoP::Application.configure do
 
   # config.assets.precompile += %w( *.css *.js )
 
+
 end

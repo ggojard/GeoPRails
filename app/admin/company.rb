@@ -1,4 +1,6 @@
 ActiveAdmin.register Company do
+  # authorize_resource
+  # include ActiveAdminCanCan
 
   permit_params :name, :image
 

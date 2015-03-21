@@ -3,9 +3,10 @@ class GeopController < ApplicationController
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-
   before_action :set_geop
+
   private
+
   def set_geop
     if !current_admin_user.nil?
       @global_company = Company.includes(:buildings => :floors).find_by_id(current_admin_user.company_id)

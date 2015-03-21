@@ -11,7 +11,7 @@ ActiveAdmin.register AdminUser do
     column :sign_in_count
     # column :created_at
     column :company
-    # column :admin_user_type
+    column :admin_user_type
     actions
   end
 

@@ -64,6 +64,7 @@ gem 'rails-patch-json-encode'
 gem "oj"
 gem "active_admin_import"
 gem 'actionpack-action_caching'
+gem 'cancan'
 
 
 
