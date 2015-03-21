@@ -8,6 +8,7 @@ class GeopController < ApplicationController
   private
 
   def set_geop
+    gon.userType = @global_user_type
     if !current_admin_user.nil?
       @global_company = Company.includes(:buildings => :floors).find_by_id(current_admin_user.company_id)
       if !@global_company.nil?

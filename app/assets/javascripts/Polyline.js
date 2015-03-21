@@ -766,6 +766,9 @@
 
   Polyline.prototype.addEditPolylineOption = function() {
     var that = this;
+    if (this.svgEditor.$rootScope.userType === 'READ') {
+      return null;
+    }
     this.optionsOnMap.push({
       label: 'Modifier',
       classes: 'btn-default',

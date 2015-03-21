@@ -1,5 +1,8 @@
   <div class="thumbnail">
+
+    <% if @global_user_type != 'READ' %>
     <a class="edit-person fa fa-edit" href="/admin/people/{{a.person.id}}/edit"></a>
+    <% end %>
     <a class="open-person fa fa-arrow-circle-right" href="/people/{{a.person.id}}"></a>
     <!-- <img src="/assets/person.png"/> -->
     <div class="caption">

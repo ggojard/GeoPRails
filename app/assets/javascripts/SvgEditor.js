@@ -367,7 +367,11 @@
         this.mapOptions = this.mapOptions.concat([stopEditMode, createPolyline]);
         break;
       case 'show':
-        this.mapOptions = this.mapOptions.concat([editMode, saveToImage, editModeAdmin]);
+        var options = [saveToImage];
+        if (this.$rootScope.userType !== 'READ'){
+          options.push(editMode, editModeAdmin)
+        }
+        this.mapOptions = this.mapOptions.concat(options);
         break;
     }
     this.mapOptions.push();
