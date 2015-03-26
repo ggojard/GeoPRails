@@ -3,8 +3,7 @@ class Ability
 
   def initialize(user)
 
-    # u_type = 'READ'
-    u_type = 'ADMIN'
+    u_type = 'READ'
 
     if !user.nil?
       if !user.admin_user_type.nil?
@@ -20,10 +19,6 @@ class Ability
     end
     # user ||= User.new # guest user (not logged in)
 
-    # u_type = 'A'
-
-
-
     if u_type == 'ADMIN'
       can :manage, :all
     elsif u_type == 'WRITE'
@@ -33,8 +28,6 @@ class Ability
     else
       can :read, :all
     end
-
-    can :manage, :all
 
     # puts 'ROLE %s' % user.admin_user_role.name
 

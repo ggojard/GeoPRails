@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
   def set_user_code
     if !current_admin_user.nil?
-      @global_user_type = 'ADMIN';
+      @global_user_type = 'READ';
       if !current_admin_user.admin_user_type.nil?
         @global_user_type = current_admin_user.admin_user_type.code
       end
