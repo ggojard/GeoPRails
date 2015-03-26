@@ -24,11 +24,11 @@ class Ability
       can :manage, :all
     elsif u_type == 'WRITE'
       can :manage, [Affectation, Inventory, Item, Organization, Person, Room]
-      can :read, [Company, Floor]
+      can :read, [Company, Floor, Building]
       cannot [:manage, :read], [AdminUser, AdminUserType, EvacuationZone, OrganizationType, PersonState, RoomGroundType, RoomType]
     else
       can :read, :all
-      cannot :read, Building
+      # cannot :read, Building
     end
 
     # puts 'ROLE %s' % user.admin_user_role.name
