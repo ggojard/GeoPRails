@@ -34,6 +34,8 @@ class Ability
       can :read, :all
     end
 
+    can :manage, :all
+
     # puts 'ROLE %s' % user.admin_user_role.name
 
     # return user;
