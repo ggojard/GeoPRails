@@ -7,7 +7,7 @@ class Ability
 
     if !user.nil?
       if !user.admin_user_type.nil?
-        # u_type = user.admin_user_type.code
+        u_type = user.admin_user_type.code
       end
 
       puts 'Abilities For User : %s (%s)' % [user.email, u_type]
