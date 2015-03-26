@@ -10,6 +10,7 @@ ul.filters {
     display: -webkit-flex;
     display: flex;
 
+    -webkit-flex-flow : row wrap;
     flex-flow: row wrap;
 
     & > li {
@@ -84,8 +85,10 @@ ul.filters {
 
 @media screen and (min-width: 240px) and (max-width: 639px) {
     ul.filters {
+        // display:block;
         &>li {
             width: 100%;
+            // display:block;
         }
     }
 }
