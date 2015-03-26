@@ -20,16 +20,18 @@ class Ability
 
     # u_type = 'A'
 
-    if u_type == 'ADMIN'
-      can :manage, :all
-    elsif u_type == 'WRITE'
-      can :manage, [Affectation, Inventory, Item, Organization, Person, Room]
-      can :read, [Company, Floor, Building]
-      cannot [:manage, :read], [AdminUser, AdminUserType, EvacuationZone, OrganizationType, PersonState, RoomGroundType, RoomType]
-    else
-      can :read, :all
-      # cannot :read, Building
-    end
+
+    can :manage, :all
+
+    # if u_type == 'ADMIN'
+    #   can :manage, :all
+    # elsif u_type == 'WRITE'
+    #   can :manage, [Affectation, Inventory, Item, Organization, Person, Room]
+    #   can :read, [Company, Floor, Building]
+    #   cannot [:manage, :read], [AdminUser, AdminUserType, EvacuationZone, OrganizationType, PersonState, RoomGroundType, RoomType]
+    # else
+    #   can :read, :all
+    # end
 
     # puts 'ROLE %s' % user.admin_user_role.name
 
