@@ -4,7 +4,7 @@ ActiveAdmin.register Building do
   show do |f|
     attributes_table do
       row I18n.t('formtastic.labels.building.name') do f.name end
-
+      row I18n.t('formtastic.labels.building.company') do f.company end
     end
 
     panel I18n.t('activerecord.models.floor.other') do

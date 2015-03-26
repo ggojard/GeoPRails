@@ -10,7 +10,6 @@ ActiveAdmin.register AdminUserRoleToBuilding do
     actions
   end
 
-
   controller do
     def permitted_params
       params.permit!

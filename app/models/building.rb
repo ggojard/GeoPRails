@@ -1,7 +1,11 @@
 class Building < ActiveRecord::Base
+
+
+
   belongs_to :company
   has_many :floors
   accepts_nested_attributes_for :floors, :allow_destroy => true
+
 
   has_many :admin_user_role_to_buildings
   has_many :admin_user_roles, :through => :admin_user_role_to_buildings

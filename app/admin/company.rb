@@ -13,8 +13,8 @@ ActiveAdmin.register Company do
         image_tag(c.image.url(:thumb))
       end
     end
-    panel I18n.t('activerecord.models.building.other') do
-      table_for c.buildings do
+    panel I18n.t('activerecord.models.building.other') do      
+      table_for c.buildings.select{|b| can? :read, b}  do
         column I18n.t('formtastic.labels.building.name') do |b| link_to b.name ,[:admin, b] end
       end
     end
@@ -46,9 +46,14 @@ ActiveAdmin.register Company do
   end
 
   controller do
-    def scoped_collection
-      Company.includes(:buildings)
-    end
+
+    # def b1
+    #   self.buildings
+    # end
+
+    # def scoped_collection
+    #   Company.includes(:buildings)
+    # end
     def permitted_params
       params.permit!
     end

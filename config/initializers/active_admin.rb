@@ -68,7 +68,7 @@ ActiveAdmin.setup do |config|
   # ensure that there is a user with proper rights. You can use
   # CanCanAdapter or make your own. Please refer to documentation.
   config.authorization_adapter = ActiveAdmin::CanCanAdapter
-  config.on_unauthorized_access = :access_denied
+  # config.on_unauthorized_access = :access_denied
 
   # You can customize your CanCan Ability class name here.
   # config.cancan_ability_class = "Ability"
@@ -109,7 +109,7 @@ ActiveAdmin.setup do |config|
   # link. For example :get, :delete, :put, etc..
   #
   # Default:
-  config.logout_link_method = :delete
+  # config.logout_link_method = :delete
 
 
   # == Root

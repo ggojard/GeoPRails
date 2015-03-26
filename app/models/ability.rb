@@ -4,24 +4,40 @@ class Ability
   def initialize(user)
 
     u_type = 'READ'
-    if !user.admin_user_type.nil?
-      u_type = user.admin_user_type.code
+    if !user.nil?
+      if !user.admin_user_type.nil?
+        u_type = user.admin_user_type.code
+      end
+
+      puts 'Abilities For User : %s (%s)' % [user.email, u_type]
+      # puts tob.building.name
+      # user.admin_user_role.admin_user_role_to_buildings.each do |tob|
+      #   can :read, Building,:id => tob.building.id
+      # end
+
     end
+    # user ||= User.new # guest user (not logged in)
 
-    puts 'Abilities For User : %s (%s)' % [user.email, u_type]
-
-
-    user ||= User.new # guest user (not logged in)
+    # u_type = 'A'
 
     if u_type == 'ADMIN'
       can :manage, :all
     elsif u_type == 'WRITE'
       can :manage, [Affectation, Inventory, Item, Organization, Person, Room]
-      can :read, [Company, Floor, Building]
+      can :read, [Company, Floor]
       cannot [:manage, :read], [AdminUser, AdminUserType, EvacuationZone, OrganizationType, PersonState, RoomGroundType, RoomType]
     else
       can :read, :all
+      cannot :read, Building
     end
+
+    # puts 'ROLE %s' % user.admin_user_role.name
+
+    # return user;
+
+    # can :read, Company
+    # can :read, Building, :id => 50
+    # can :read, Building, :id => 1
 
     # Define abilities for the passed in user here. For example:
     #

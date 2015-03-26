@@ -3,6 +3,8 @@ require_dependency 'buildings_manager'
 class BuildingsController < GeopController
   before_action :set, only: [:export]
 
+  # load_and_authorize_resource :nested => :company  
+
   def show
     respond_to do |format|
       format.html{
