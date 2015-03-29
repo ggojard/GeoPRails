@@ -18,10 +18,16 @@ class BuildingsExport
     p = Axlsx::Package.new
     wb = p.workbook
     wb.add_worksheet(:name => I18n.t('activerecord.models.building.other')) do |sheet|
-      sheet.add_row [I18n.t('formtastic.labels.building.id'), I18n.t('formtastic.labels.building.name'), I18n.t('formtastic.labels.building.company')]
+      sheet.add_row [I18n.t('formtastic.labels.building.id'), I18n.t('formtastic.labels.building.name'), I18n.t('formtastic.labels.building.company'), I18n.t('formtastic.labels.company.id')]
 
       @buildings.each do |building|
-        sheet.add_row [building.id, building.name, building.company.name]
+        list =  [building.id, building.name]
+        if !building.company.nil?
+          list += [building.company.name, building.company.id]
+        else 
+          list += ['', '']
+        end
+        sheet.add_row list
       end
     end
 
@@ -64,9 +70,21 @@ class BuildingsExport
     end
 
     wb.add_worksheet(:name => "Organizations") do |sheet|
-      sheet.add_row ["Identifiant", "Nom", "Identifiant Type", "Type"]
+      sheet.add_row ["Identifiant", "Nom", "Couleur", "Organisation Père", "Identifiant Entreprise", "Entreprise", "Identifiant Type", "Type"]
       Organization.all().each do |o|
-        list = [o.id, o.name]
+        list = [o.id, o.name, o.color]
+
+        if !o.organization.nil?
+          list += [o.organization.id]
+        else
+          list += ['']
+        end
+
+        if !o.company.nil?
+          list += [o.company.id, o.company.name]
+        else
+          list += ['', '']
+        end
         if !o.organization_type.nil?
           list += [o.organization_type.id, o.organization_type.name]
         end
@@ -84,14 +102,18 @@ class BuildingsExport
     personHeaders = ["Identifiant Personne", "Prénom", "Nom de famille", "Nom complet", "Téléphone", "Portable", "Référence Ordinateur", "Référence écran", "Email", "Organisation", "Identifiant Organisation", "Etat", "Identifiant Etat"]
 
     def personData o
-        list = [o.id, o.firstname, o.lastname, o.fullname, o.telephone, o.cellphone, o.computerreference, o.monitorreference, o.email]
-        if !o.organization.nil?
-          list += [o.organization.name, o.organization.id]
-        end
-        if !o.person_state.nil?
-          list += [o.person_state.name, o.person_state.id]
-        end
-        return list
+      list = [o.id, o.firstname, o.lastname, o.fullname, o.telephone, o.cellphone, o.computerreference, o.monitorreference, o.email]
+      if !o.organization.nil?
+        list += [o.organization.name, o.organization.id]
+      else
+        list += ['', '']
+      end
+      if !o.person_state.nil?
+        list += [o.person_state.name, o.person_state.id]
+      else
+        list += ['', '']
+      end
+      return list
     end
 
     wb.add_worksheet(:name => I18n.t('activerecord.models.person.other')) do |sheet|
@@ -153,6 +175,12 @@ class BuildingsExport
       end
     end
 
+    wb.add_worksheet(:name => "Entreprise") do |sheet|
+      sheet.add_row ["Identifiant",  "Nom"]
+      Company.all().each do |o|
+        sheet.add_row [o.id, o.name]
+      end
+    end
 
     time = DateTime.now.strftime('%Y-%m-%d-%Hh%M')
     @filename = sanitize_filename("export-#{@title}-#{time}.xlsx")

@@ -15,12 +15,10 @@ GeoP::Application.routes.draw do
   resources :organizations
   resources :people
   resources :floors
-  resources :buildings
 
   get '/login_page' => 'login#login'
 
 
-  get '/buildings/:id' => 'buildings#show'
   get '/floors/:id' => 'floors#show'
   get '/floors/:id/edit' => 'floors#edit'
   get '/floors/:id/room/:room_id' => 'floors#show'
@@ -47,11 +45,14 @@ GeoP::Application.routes.draw do
   get '/organizations/:id' => 'organizations#show'
 
 
+  get '/buildings/import' => 'buildings#import'
   get '/buildings/:id/export' => 'buildings#export'
   get '/buildings/:id/duplicate' => 'buildings#duplicate'
   get '/buildings/:id/delete_all' => 'buildings#delete_all'
 
   # map.connect ':controller/:action/:id'
+
+  resources :buildings
 
 
   # get "/logout" => :to "admin/logout" # Add a custom sing out route for user sign out

@@ -37,6 +37,35 @@ class BuildingsController < GeopController
     render json: {"status" => "OK", "message" => 'Suppression du bâtiment numéro %d.' % id}
   end
 
+  def import
+
+    importer = BuildingsImport.new("/Users/pouya//Downloads/c.xlsx")
+
+
+    # s = Roo::Excelx.new()
+
+    # s.default_sheet = s.sheets[1]
+    # s.each  do |r|
+    #   puts r.inspect
+    #   puts r[0]
+    # end
+    
+    # puts s.last_row
+    # i = 1
+    # begin 
+    #   puts s.cell(i,1) 
+    #   i += 1
+    # end until i > s.last_row
+
+
+    # s.each_row_streaming do |row|
+    #     puts row.inspect # Array of Excelx::Cell objects
+    # end
+
+
+    render json: {"status" => "OK"}
+  end
+
   def export
     exporter = BuildingsExport.new([@building], @building.name)
     contents = exporter.export
