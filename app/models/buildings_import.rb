@@ -13,7 +13,10 @@ class BuildingsImport
     import_evacuation_zone
     import_company
     import_organization
-    import_person    
+    import_person
+    import_buildings
+    import_floors
+    import_room
   end
 
   def set_sheet number
@@ -22,15 +25,61 @@ class BuildingsImport
 
 
   def import_buildings
+    set_sheet(0)
+    @map_building = {}
+    2.upto(@s.last_row) do |r|
+      id = @s.cell(r, 1)
+      name = @s.cell(r, 2)
+
+      b =  Building.find_or_create_by(name: name)
+      b.color = @s.cell(r, 3)
+      b.company = @map_company[@s.cell(r, 5)]
+      b.save
+
+      @map_building[id] = b
+    end
   end
 
   def import_floors
+    set_sheet(1)
+    @map_floor = {}
+    2.upto(@s.last_row) do |r|
+      id = @s.cell(r, 1)
+      name = @s.cell(r, 2)
+      level = @s.cell(r, 4)
+      building_id = @s.cell(r, 3)
+      conditions = {name: name, level: level, building: @map_building[building_id]}
+      @map_floor[id] = Floor.where(conditions).first_or_create
+    end
   end
 
   def import_room
-  end
+    set_sheet(2)
+    @map_room = {}
+    2.upto(@s.last_row) do |r|
+      id = @s.cell(r, 1)
+      name = @s.cell(r, 2)
+      floor_id = @s.cell(r, 14)
+      conditions = {name: name, floor: @map_floor[floor_id]}
+      room = Room.where(conditions).first_or_create
 
-  def getHash (row, listColumns)
+      room.area = @s.cell(r, 3)
+      room.perimeter = @s.cell(r, 4)
+      room.free_desk_number = @s.cell(r, 5)
+
+      room.room_type = @map_room_type[@s.cell(r, 7)]
+      room.room_ground_type = @map_room_ground_type[@s.cell(r, 9)]
+
+      room.evacuation_zone = @map_evacuation_zone[@s.cell(r, 11)]
+      room.organization = @map_organization[@s.cell(r, 13)]
+
+      room.points = @s.cell(r, 17)
+      room.network = @s.cell(r, 18)
+
+      @map_room[id] = room;
+    end
+
+
   end
 
   def import_company
@@ -70,10 +119,12 @@ class BuildingsImport
 
   def import_evacuation_zone
     set_sheet(9)
+    @map_evacuation_zone = {}
     2.upto(@s.last_row) do |r|
+      id = @s.cell(r, 1)
       name = @s.cell(r, 2)
       color = @s.cell(r, 3)
-      EvacuationZone.where({name: name, color: color}).first_or_create
+      @map_evacuation_zone[id] = EvacuationZone.where({name: name, color: color}).first_or_create
     end
   end
 
@@ -89,19 +140,23 @@ class BuildingsImport
 
   def import_room_type
     set_sheet(8)
+    @map_room_type = {}
     2.upto(@s.last_row) do |r|
+      id =@s.cell(r, 1)
       name = @s.cell(r, 2)
       color = @s.cell(r, 3)
-      RoomType.where({name: name, color: color}).first_or_create
+      @map_room_type[id] = RoomType.where({name: name, color: color}).first_or_create
     end
   end
 
   def import_room_ground_type
     set_sheet(7)
+    @map_room_ground_type = {}
     2.upto(@s.last_row) do |r|
+      id =@s.cell(r, 1)
       name = @s.cell(r, 2)
       color = @s.cell(r, 3)
-      RoomGroundType.where({name: name, color: color}).first_or_create
+      @map_room_ground_type[id] = RoomGroundType.where({name: name, color: color}).first_or_create
     end
   end
 
@@ -129,13 +184,11 @@ class BuildingsImport
       email = @s.cell(r, 9)
       organization_id = @s.cell(r, 11)
       person_state_id = @s.cell(r, 13)
-      conditions = {firstname: fistname, lastname: lastname, telephone: telephone, cellphone: cellphone, 
-        computerreference: computerreference, monitorreference:monitorreference, email: email, 
-        organization: @map_organization[organization_id], person_state: @map_person_state[person_state_id]}
+      conditions = {firstname: fistname, lastname: lastname, telephone: telephone, cellphone: cellphone,
+                    computerreference: computerreference, monitorreference:monitorreference, email: email,
+                    organization: @map_organization[organization_id], person_state: @map_person_state[person_state_id]}
       Person.where(conditions).first_or_create
     end
-
-
   end
 
 

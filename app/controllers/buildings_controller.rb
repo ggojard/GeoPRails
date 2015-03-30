@@ -39,7 +39,7 @@ class BuildingsController < GeopController
 
   def import
 
-    importer = BuildingsImport.new("/Users/pouya//Downloads/c.xlsx")
+    importer = BuildingsImport.new("/Users/pouya//Downloads/d.xlsx")
 
 
     # s = Roo::Excelx.new()

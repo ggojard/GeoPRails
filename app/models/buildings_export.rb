@@ -18,10 +18,10 @@ class BuildingsExport
     p = Axlsx::Package.new
     wb = p.workbook
     wb.add_worksheet(:name => I18n.t('activerecord.models.building.other')) do |sheet|
-      sheet.add_row [I18n.t('formtastic.labels.building.id'), I18n.t('formtastic.labels.building.name'), I18n.t('formtastic.labels.building.company'), I18n.t('formtastic.labels.company.id')]
+      sheet.add_row [I18n.t('formtastic.labels.building.id'), I18n.t('formtastic.labels.building.name'), "Color", I18n.t('formtastic.labels.building.company'), I18n.t('formtastic.labels.company.id')]
 
       @buildings.each do |building|
-        list =  [building.id, building.name]
+        list =  [building.id, building.name, building.color]
         if !building.company.nil?
           list += [building.company.name, building.company.id]
         else 
@@ -32,11 +32,11 @@ class BuildingsExport
     end
 
     wb.add_worksheet(:name => I18n.t('activerecord.models.floor.other')) do |sheet|
-      sheet.add_row [I18n.t('formtastic.labels.floor.id'), I18n.t('formtastic.labels.floor.name'), I18n.t('formtastic.labels.building.id'), I18n.t('formtastic.labels.floor.level')]
+      sheet.add_row [I18n.t('formtastic.labels.floor.id'), I18n.t('formtastic.labels.floor.name'), I18n.t('formtastic.labels.building.id'), I18n.t('formtastic.labels.floor.level'), "Échelle x1", "Échelle y1", "Échelle x2", "Échelle y2", "Échelle Taille"]
 
       wb.add_worksheet(:name => I18n.t('activerecord.models.room.other')) do |sheet_p|
 
-        titleRow = [I18n.t('formtastic.labels.room.id'), I18n.t('formtastic.labels.room.name'), I18n.t('formtastic.labels.room.area'), I18n.t('formtastic.labels.room.perimeter')]
+        titleRow = [I18n.t('formtastic.labels.room.id'), I18n.t('formtastic.labels.room.name'), I18n.t('formtastic.labels.room.area'), I18n.t('formtastic.labels.room.perimeter'), "Places Libre"]
         titleRow += [I18n.t('formtastic.labels.room.room_type'), I18n.t('formtastic.labels.room_type.id'), I18n.t('formtastic.labels.room.room_ground_type'), I18n.t('formtastic.labels.room_ground_type.id'), I18n.t('formtastic.labels.room.evacuation_zone'), I18n.t('formtastic.labels.evacuation_zone.id'), I18n.t('formtastic.labels.room.organization'), I18n.t('formtastic.labels.organization.id')]
         titleRow += [I18n.t('formtastic.labels.floor.id'), "Nom Etage", "Nom Batiment"]
         titleRow += ['Points', 'Ports Réseau']
@@ -45,10 +45,10 @@ class BuildingsExport
         @buildings.each do |building|
 
           building.floors.each do |f|
-            sheet.add_row [f.id, f.name, building.id, f.level]
+            sheet.add_row [f.id, f.name, building.id, f.level, f.map_scale_x1, f.map_scale_y1, f.map_scale_x2, f.map_scale_y2, f.map_scale_length]
             f.rooms.each do |r|
 
-              row = [r.id, r.name, r.area, r.perimeter]
+              row = [r.id, r.name, r.area, r.perimeter, r.free_desk_number]
               row += add_belongs_to_property_in_row r, 'room_type'
               row += add_belongs_to_property_in_row r, 'room_ground_type'
               row += add_belongs_to_property_in_row r, 'evacuation_zone'
@@ -99,10 +99,10 @@ class BuildingsExport
       end
     end
 
-    personHeaders = ["Identifiant Personne", "Prénom", "Nom de famille", "Nom complet", "Téléphone", "Portable", "Référence Ordinateur", "Référence écran", "Email", "Organisation", "Identifiant Organisation", "Etat", "Identifiant Etat"]
+    personHeaders = ["Identifiant Personne", "Prénom", "Nom de famille", "Nom complet", "Téléphone", "Portable", "Référence Ordinateur", "Référence écran", "Email", "Matricule", "Organisation", "Identifiant Organisation", "Etat", "Identifiant Etat"]
 
     def personData o
-      list = [o.id, o.firstname, o.lastname, o.fullname, o.telephone, o.cellphone, o.computerreference, o.monitorreference, o.email]
+      list = [o.id, o.firstname, o.lastname, o.fullname, o.telephone, o.cellphone, o.computerreference, o.monitorreference, o.email, o.person_code]
       if !o.organization.nil?
         list += [o.organization.name, o.organization.id]
       else
