@@ -36,7 +36,7 @@ class BuildingsExport
 
       wb.add_worksheet(:name => I18n.t('activerecord.models.room.other')) do |sheet_p|
 
-        titleRow = [I18n.t('formtastic.labels.room.id'), I18n.t('formtastic.labels.room.name'), I18n.t('formtastic.labels.room.area'), I18n.t('formtastic.labels.room.perimeter'), "Places Libre"]
+        titleRow = [I18n.t('formtastic.labels.room.id'), I18n.t('formtastic.labels.room.name'), I18n.t('formtastic.labels.room.area'), I18n.t('formtastic.labels.room.perimeter'), "Places Libre", "Anchrage Texte"]
         titleRow += [I18n.t('formtastic.labels.room.room_type'), I18n.t('formtastic.labels.room_type.id'), I18n.t('formtastic.labels.room.room_ground_type'), I18n.t('formtastic.labels.room_ground_type.id'), I18n.t('formtastic.labels.room.evacuation_zone'), I18n.t('formtastic.labels.evacuation_zone.id'), I18n.t('formtastic.labels.room.organization'), I18n.t('formtastic.labels.organization.id')]
         titleRow += [I18n.t('formtastic.labels.floor.id'), "Nom Etage", "Nom Batiment"]
         titleRow += ['Points', 'Ports Réseau']
@@ -48,7 +48,7 @@ class BuildingsExport
             sheet.add_row [f.id, f.name, building.id, f.level, f.map_scale_x1, f.map_scale_y1, f.map_scale_x2, f.map_scale_y2, f.map_scale_length]
             f.rooms.each do |r|
 
-              row = [r.id, r.name, r.area, r.perimeter, r.free_desk_number]
+              row = [r.id, r.name, r.area, r.perimeter, r.free_desk_number, r.anchor_text_point]
               row += add_belongs_to_property_in_row r, 'room_type'
               row += add_belongs_to_property_in_row r, 'room_ground_type'
               row += add_belongs_to_property_in_row r, 'evacuation_zone'

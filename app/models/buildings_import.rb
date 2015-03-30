@@ -63,18 +63,21 @@ class BuildingsImport
       conditions = {name: name, floor: @map_floor[floor_id]}
       room = Room.where(conditions).first_or_create
 
+
       room.area = @s.cell(r, 3)
       room.perimeter = @s.cell(r, 4)
       room.free_desk_number = @s.cell(r, 5)
+      room.anchor_text_point = @s.cell(r, 6)
 
-      room.room_type = @map_room_type[@s.cell(r, 7)]
-      room.room_ground_type = @map_room_ground_type[@s.cell(r, 9)]
 
-      room.evacuation_zone = @map_evacuation_zone[@s.cell(r, 11)]
-      room.organization = @map_organization[@s.cell(r, 13)]
+      room.room_type = @map_room_type[@s.cell(r, 8)]
+      room.room_ground_type = @map_room_ground_type[@s.cell(r, 10)]
 
-      room.points = @s.cell(r, 17)
-      room.network = @s.cell(r, 18)
+      room.evacuation_zone = @map_evacuation_zone[@s.cell(r, 12)]
+      room.organization = @map_organization[@s.cell(r, 14)]
+
+      room.points = @s.cell(r, 18)
+      room.network = @s.cell(r, 19)
 
       room.save
 
