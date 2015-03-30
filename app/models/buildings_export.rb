@@ -182,6 +182,14 @@ class BuildingsExport
       end
     end
 
+    wb.add_worksheet(:name => "Item") do |sheet|
+      sheet.add_row ["Identifiant",  "Nom", "Description"]
+      Item.all().each do |o|
+        sheet.add_row [o.id, o.name, o.description]
+      end
+    end
+
+
     time = DateTime.now.strftime('%Y-%m-%d-%Hh%M')
     @filename = sanitize_filename("export-#{@title}-#{time}.xlsx")
     path = "/tmp/#{@filename}"

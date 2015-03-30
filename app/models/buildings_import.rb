@@ -17,6 +17,7 @@ class BuildingsImport
     import_buildings
     import_floors
     import_room
+    import_person_in_affectations
   end
 
   def set_sheet number
@@ -58,7 +59,7 @@ class BuildingsImport
     @map_room = {}
     2.upto(@s.last_row) do |r|
       id = @s.cell(r, 1)
-      name = @s.cell(r, 2)
+      name = @s.cell(r, 2).to_s
       floor_id = @s.cell(r, 14)
       conditions = {name: name, floor: @map_floor[floor_id]}
       room = Room.where(conditions).first_or_create
@@ -123,7 +124,7 @@ class BuildingsImport
 
 
 
-    def import_person #merge
+  def import_person #merge
     set_sheet(5)
     @map_person = {}
     2.upto(@s.last_row) do |r|
@@ -189,6 +190,25 @@ class BuildingsImport
   end
 
 
+  def import_affectation
+    set_sheet(10)
+    @map_evacuation_zone = {}
+    2.upto(@s.last_row) do |r|
+      @map_evacuation_zone[id] = Affectation.where({room: @s.cell(r, 6), person: @s.cell(r, 3)}).first_or_create
+    end
+  end
+
+
+  def import_inventory
+    set_sheet(11)
+    @map_evacuation_zone = {}
+    2.upto(@s.last_row) do |r|
+      i = Inventory.where({room: @s.cell(r, 6), item: @s.cell(r, 5)}).first_or_create
+      i.quantity = @s.cell(r, 2)
+      i.save
+      @map_inventory[id] = i
+    end
+  end
 
   def import_company
     set_sheet(12)
@@ -197,6 +217,18 @@ class BuildingsImport
       id = @s.cell(r, 1)
       name = @s.cell(r, 2)
       @map_company[id] =  Company.find_or_create_by(name: name)
+    end
+  end
+
+  def import_item
+    set_sheet(13)
+    @map_item = {}
+    2.upto(@s.last_row) do |r|
+      id = @s.cell(r, 1)
+      name = @s.cell(r, 2)
+      i =  Item.find_or_create_by(name: name)
+      i.description = @s.cell(r, 3)
+      @map_item[id]  = i
     end
   end
 
