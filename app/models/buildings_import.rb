@@ -76,24 +76,14 @@ class BuildingsImport
       room.points = @s.cell(r, 17)
       room.network = @s.cell(r, 18)
 
+      room.save
+
       @map_room[id] = room;
     end
-
-
   end
 
-  def import_company
-    set_sheet(12)
-    @map_company = {}
-    2.upto(@s.last_row) do |r|
-      id = @s.cell(r, 1)
-      name = @s.cell(r, 2)
-      @map_company[id] =  Company.find_or_create_by(name: name)
-    end
-  end
 
   def import_organization
-
     @map_organization = {}
     set_sheet(3)
     2.upto(@s.last_row) do |r|
@@ -117,16 +107,6 @@ class BuildingsImport
   end
 
 
-  def import_evacuation_zone
-    set_sheet(9)
-    @map_evacuation_zone = {}
-    2.upto(@s.last_row) do |r|
-      id = @s.cell(r, 1)
-      name = @s.cell(r, 2)
-      color = @s.cell(r, 3)
-      @map_evacuation_zone[id] = EvacuationZone.where({name: name, color: color}).first_or_create
-    end
-  end
 
   def import_organization_type
     set_sheet(4)
@@ -138,14 +118,37 @@ class BuildingsImport
     end
   end
 
-  def import_room_type
-    set_sheet(8)
-    @map_room_type = {}
+
+
+    def import_person #merge
+    set_sheet(5)
+    @map_person = {}
+    2.upto(@s.last_row) do |r|
+      id = @s.cell(r, 1)
+      fistname = @s.cell(r, 2).to_s
+      lastname = @s.cell(r, 3).to_s
+      telephone = @s.cell(r, 5).to_s
+      cellphone = @s.cell(r, 6).to_s
+      computerreference = @s.cell(r, 7).to_s
+      monitorreference = @s.cell(r, 8).to_s
+      email = @s.cell(r, 9).to_s
+      organization_id = @s.cell(r, 11)
+      person_state_id = @s.cell(r, 13)
+      conditions = {firstname: fistname, lastname: lastname, telephone: telephone, cellphone: cellphone,
+                    computerreference: computerreference, monitorreference:monitorreference, email: email,
+                    organization: @map_organization[organization_id], person_state: @map_person_state[person_state_id]}
+      @map_person[id] = Person.where(conditions).first_or_create
+    end
+  end
+
+
+  def import_person_state
+    set_sheet(6)
+    @map_person_state = {}
     2.upto(@s.last_row) do |r|
       id =@s.cell(r, 1)
       name = @s.cell(r, 2)
-      color = @s.cell(r, 3)
-      @map_room_type[id] = RoomType.where({name: name, color: color}).first_or_create
+      @map_person_state[id] = PersonState.find_or_create_by(name: name)
     end
   end
 
@@ -159,38 +162,40 @@ class BuildingsImport
       @map_room_ground_type[id] = RoomGroundType.where({name: name, color: color}).first_or_create
     end
   end
-
-  def import_person_state
-    set_sheet(6)
-    @map_person_state = {}
+  def import_room_type
+    set_sheet(8)
+    @map_room_type = {}
     2.upto(@s.last_row) do |r|
       id =@s.cell(r, 1)
       name = @s.cell(r, 2)
-      @map_person_state[id] = PersonState.find_or_create_by(name: name)
+      color = @s.cell(r, 3)
+      @map_room_type[id] = RoomType.where({name: name, color: color}).first_or_create
     end
   end
 
-  def import_person #merge
-    set_sheet(5)
-    @map_person = {}
+
+  def import_evacuation_zone
+    set_sheet(9)
+    @map_evacuation_zone = {}
     2.upto(@s.last_row) do |r|
       id = @s.cell(r, 1)
-      fistname = @s.cell(r, 2)
-      lastname = @s.cell(r, 3)
-      telephone = @s.cell(r, 5).to_s
-      cellphone = @s.cell(r, 6).to_s
-      computerreference = @s.cell(r, 7)
-      monitorreference = @s.cell(r, 8)
-      email = @s.cell(r, 9)
-      organization_id = @s.cell(r, 11)
-      person_state_id = @s.cell(r, 13)
-      conditions = {firstname: fistname, lastname: lastname, telephone: telephone, cellphone: cellphone,
-                    computerreference: computerreference, monitorreference:monitorreference, email: email,
-                    organization: @map_organization[organization_id], person_state: @map_person_state[person_state_id]}
-      Person.where(conditions).first_or_create
+      name = @s.cell(r, 2)
+      color = @s.cell(r, 3)
+      @map_evacuation_zone[id] = EvacuationZone.where({name: name, color: color}).first_or_create
     end
   end
 
+
+
+  def import_company
+    set_sheet(12)
+    @map_company = {}
+    2.upto(@s.last_row) do |r|
+      id = @s.cell(r, 1)
+      name = @s.cell(r, 2)
+      @map_company[id] =  Company.find_or_create_by(name: name)
+    end
+  end
 
 
 end
