@@ -39,7 +39,8 @@ class BuildingsController < GeopController
 
   def import
 
-    importer = BuildingsImport.new("/Users/pouya//Downloads/export_maracdet.xlsx")
+    importer = BuildingsImport.new("http://localhost:3000/assets/export_maracdet3.xlsx");
+    # importer = BuildingsImport.new("/Users/pouya//Downloads/export_maracdet3.xlsx")
 
 
     # s = Roo::Excelx.new()

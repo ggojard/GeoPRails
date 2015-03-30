@@ -8,8 +8,6 @@ class ImagesController < ApplicationController
 
   # caches_action :company_image, :if => Proc.new { |c| result = c.headers["Content-Type"] = 'image/png; charset=UTF-8' if result; result }
 
-
-
   def floor_image
     @s = params[:style]
     if @s == nil

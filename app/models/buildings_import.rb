@@ -17,7 +17,9 @@ class BuildingsImport
     import_buildings
     import_floors
     import_room
-    import_person_in_affectations
+    import_affectation
+    import_item
+    import_inventory
   end
 
   def set_sheet number
@@ -50,7 +52,18 @@ class BuildingsImport
       level = @s.cell(r, 4)
       building_id = @s.cell(r, 3)
       conditions = {name: name, level: level, building: @map_building[building_id]}
-      @map_floor[id] = Floor.where(conditions).first_or_create
+      f = Floor.where(conditions).first_or_create
+
+      f.map_scale_x1 = @s.cell(r, 5)
+      f.map_scale_x2 = @s.cell(r, 6)
+      f.map_scale_y1 = @s.cell(r, 7)
+      f.map_scale_xy = @s.cell(r, 8)
+      f.map_scale_length = @s.cell(r, 9)
+
+
+      f.save
+      @map_floor[id] = f
+
     end
   end
 
@@ -60,7 +73,7 @@ class BuildingsImport
     2.upto(@s.last_row) do |r|
       id = @s.cell(r, 1)
       name = @s.cell(r, 2).to_s
-      floor_id = @s.cell(r, 14)
+      floor_id = @s.cell(r, 15)
       conditions = {name: name, floor: @map_floor[floor_id]}
       room = Room.where(conditions).first_or_create
 
@@ -192,17 +205,19 @@ class BuildingsImport
 
   def import_affectation
     set_sheet(10)
-    @map_evacuation_zone = {}
+    @map_affectation = {}
     2.upto(@s.last_row) do |r|
-      @map_evacuation_zone[id] = Affectation.where({room: @s.cell(r, 6), person: @s.cell(r, 3)}).first_or_create
+      id = @s.cell(r, 1)
+      @map_affectation[id] = Affectation.where({room: @s.cell(r, 6), person: @s.cell(r, 3)}).first_or_create
     end
   end
 
 
   def import_inventory
     set_sheet(11)
-    @map_evacuation_zone = {}
+    @map_inventory = {}
     2.upto(@s.last_row) do |r|
+      id = @s.cell(r, 1)
       i = Inventory.where({room: @s.cell(r, 6), item: @s.cell(r, 5)}).first_or_create
       i.quantity = @s.cell(r, 2)
       i.save
