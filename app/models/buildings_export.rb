@@ -183,9 +183,9 @@ class BuildingsExport
     end
 
     wb.add_worksheet(:name => "Item") do |sheet|
-      sheet.add_row ["Identifiant",  "Nom", "Description"]
+      sheet.add_row ["Identifiant",  "Nom", "Description", "Code"]
       Item.all().each do |o|
-        sheet.add_row [o.id, o.name, o.description]
+        sheet.add_row [o.id, o.name, o.description, o.code]
       end
     end
 

@@ -40,7 +40,7 @@ class BuildingsController < GeopController
   def import
 
     puts Dir.pwd
-    importer = BuildingsImport.new(Dir.pwd + "/app/assets/files/export_maracdet3.xlsx");
+    importer = BuildingsImport.new(Dir.pwd + "/app/assets/files/export_maracadet.xlsx");
     # importer = BuildingsImport.new("http://localhost:3000/assets/export_maracdet3.xlsx");
     # importer = BuildingsImport.new("/Users/pouya//Downloads/export_maracdet3.xlsx")
 

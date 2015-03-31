@@ -235,7 +235,7 @@ class BuildingsImport
     @map_inventory = {}
     2.upto(@s.last_row) do |r|
       id = @s.cell(r, 1)
-      i = Inventory.where({room: @map_room[@s.cell(r, 6)], item: @map_item[@s.cell(r, 5)]}).first_or_create
+      i = Inventory.where({room: @map_room[@s.cell(r, 6)], item: @map_item[@s.cell(r, 10)]}).first_or_create
       i.quantity = @s.cell(r, 2)
       i.save
       @map_inventory[id] = i
