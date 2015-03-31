@@ -17,8 +17,8 @@ class BuildingsImport
     import_buildings
     import_floors
     import_room
-    import_affectation
     import_item
+    import_affectation
     import_inventory
   end
 
@@ -57,7 +57,7 @@ class BuildingsImport
       f.map_scale_x1 = @s.cell(r, 5)
       f.map_scale_x2 = @s.cell(r, 6)
       f.map_scale_y1 = @s.cell(r, 7)
-      f.map_scale_xy = @s.cell(r, 8)
+      f.map_scale_x2 = @s.cell(r, 8)
       f.map_scale_length = @s.cell(r, 9)
 
 
@@ -144,17 +144,32 @@ class BuildingsImport
       id = @s.cell(r, 1)
       fistname = @s.cell(r, 2).to_s
       lastname = @s.cell(r, 3).to_s
+      conditions = {firstname: fistname, lastname: lastname}
+      person = Person.where(conditions).first_or_create
+
+
+      # work on person items
       telephone = @s.cell(r, 5).to_s
       cellphone = @s.cell(r, 6).to_s
       computerreference = @s.cell(r, 7).to_s
       monitorreference = @s.cell(r, 8).to_s
       email = @s.cell(r, 9).to_s
-      organization_id = @s.cell(r, 11)
-      person_state_id = @s.cell(r, 13)
-      conditions = {firstname: fistname, lastname: lastname, telephone: telephone, cellphone: cellphone,
-                    computerreference: computerreference, monitorreference:monitorreference, email: email,
-                    organization: @map_organization[organization_id], person_state: @map_person_state[person_state_id]}
-      @map_person[id] = Person.where(conditions).first_or_create
+      person_code = @s.cell(r, 10).to_s
+
+      organization_id = @s.cell(r, 12)
+      person_state_id = @s.cell(r, 14)
+
+      person.telephone = telephone
+      person.cellphone =  cellphone
+      person.computerreference =  computerreference
+      person.monitorreference = monitorreference
+      person.email =  email
+      person.person_code = person_code
+      person.organization =  @map_organization[organization_id]
+      person.person_state =  @map_person_state[person_state_id]
+
+      person.save
+      @map_person[id] = person;
     end
   end
 
@@ -208,7 +223,9 @@ class BuildingsImport
     @map_affectation = {}
     2.upto(@s.last_row) do |r|
       id = @s.cell(r, 1)
-      @map_affectation[id] = Affectation.where({room: @s.cell(r, 6), person: @s.cell(r, 3)}).first_or_create
+      room_id = @s.cell(r, 3)
+      person_id = @s.cell(r, 6)
+      @map_affectation[id] = Affectation.where({room: @map_room[room_id], person: @map_person[person_id]}).first_or_create
     end
   end
 
@@ -218,7 +235,7 @@ class BuildingsImport
     @map_inventory = {}
     2.upto(@s.last_row) do |r|
       id = @s.cell(r, 1)
-      i = Inventory.where({room: @s.cell(r, 6), item: @s.cell(r, 5)}).first_or_create
+      i = Inventory.where({room: @map_room[@s.cell(r, 6)], item: @map_item[@s.cell(r, 5)]}).first_or_create
       i.quantity = @s.cell(r, 2)
       i.save
       @map_inventory[id] = i
@@ -243,6 +260,7 @@ class BuildingsImport
       name = @s.cell(r, 2)
       i =  Item.find_or_create_by(name: name)
       i.description = @s.cell(r, 3)
+      i.save
       @map_item[id]  = i
     end
   end
