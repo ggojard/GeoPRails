@@ -260,6 +260,7 @@ class BuildingsImport
       name = @s.cell(r, 2)
       i =  Item.find_or_create_by(name: name)
       i.description = @s.cell(r, 3)
+      i.code = @s.cell(r, 4)
       i.save
       @map_item[id]  = i
     end
