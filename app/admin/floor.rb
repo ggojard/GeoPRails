@@ -16,6 +16,10 @@ ActiveAdmin.register Floor do
       f.input :building
       f.input :level
       f.input :image, :required => false, :as => :file
+      f.input :map_scale_x1
+      f.input :map_scale_y1
+      f.input :map_scale_x2
+      f.input :map_scale_y2
     end
     f.actions
   end
