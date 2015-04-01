@@ -37,7 +37,7 @@
         <th>Ports Réseau</th><td ><ul class="network"><li ng-repeat="n in room.json.network.split('\r\n')">{{n}}</li> </ul></td>
       </tr>
       <tr ng-if="room.json.affectations.length > 0">
-        <th>Ratio Affectations</th><td>{{room.json.ratio}} personnes / m²</td>
+        <th>Ratio Affectations</th><td>{{room.json.ratio}} m&#178; / personnes</td>
       </tr>
       <tr ng-if="room.json.affectations.length > 0">
         <th>Nombre de personnes</th><td>{{room.json.affectations.length}}</td>
