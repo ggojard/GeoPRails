@@ -55,7 +55,7 @@ class BuildingsImport
       f = Floor.where(conditions).first_or_create
 
       f.map_scale_x1 = @s.cell(r, 5)
-      f.map_scale_x2 = @s.cell(r, 6)
+      f.map_scale_y1 = @s.cell(r, 6)
       f.map_scale_x2 = @s.cell(r, 7)
       f.map_scale_y2 = @s.cell(r, 8)
       f.map_scale_length = @s.cell(r, 9)

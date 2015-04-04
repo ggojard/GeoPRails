@@ -13,6 +13,19 @@
       <li ng-repeat="o in organizations"><a target="_self" href="/organizations/{{o.id}}">{{o.name}}</a></li>
     </ul>
   </div>
-  <hr>
+  <hr/>
   <a href="{{company.url}}/export" download>Exporter l'ensemble des bâtiments</a>
+  <hr/>
+
+<h4>Importer un fichier Excel</h4>
+
+<%= form_tag import_companies_path, multipart: true do %>
+  <div class="form-group">
+  <label >Fichier Excel</label>
+  <%= file_field_tag :file %>
+  </div>
+
+  <%= submit_tag "Importer", {:class => 'btn btn-default '} %>
+<% end %>
+<hr/>
 </div>

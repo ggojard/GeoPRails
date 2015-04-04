@@ -1,5 +1,6 @@
 class CompaniesController < GeopController
-  
+require 'fileutils'
+
   def index
     if current_admin_user != nil
       c = Company.find_by_id(current_admin_user.company_id)
@@ -11,6 +12,20 @@ class CompaniesController < GeopController
 
   def show
     gon.organizations = Organization.all.as_json()
+  end
+
+  def import
+  
+    begin
+      file = params[:file]
+      FileUtils.copy(file.path, file.path + '.xlsx')
+      importer = BuildingsImport.new(file.path + '.xlsx');
+    rescue
+      puts "Error #{$!}"
+      return render json: {"status" => "KO", "error" => "Error #{$!}"}
+    end
+    redirect_to root_path
+    # render json: {"status" => "OK"}
   end
 
   def export
