@@ -19,6 +19,7 @@ class Ability
     end
 
     if !user.nil? and user.email == 'admin@example.com'
+      puts 'User is a Special User.'
       u_type = 'ADMIN'
     end
     # user ||= User.new # guest user (not logged in)
