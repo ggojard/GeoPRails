@@ -31,6 +31,9 @@ class ApplicationController < ActionController::Base
       if !current_admin_user.admin_user_type.nil?
         @global_user_type = current_admin_user.admin_user_type.code
       end
+      if current_admin_user.email == "admin@example.com"
+        @global_user_type = 'ADMIN'
+      end
     end
   end
 

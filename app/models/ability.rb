@@ -15,7 +15,6 @@ class Ability
       # user.admin_user_role.admin_user_role_to_buildings.each do |tob|
       #   can :read, Building,:id => tob.building.id
       # end
-
     end
 
     if !user.nil? and user.email == 'admin@example.com'
