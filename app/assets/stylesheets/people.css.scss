@@ -1,3 +1,16 @@
 // Place all the styles related to the People controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+ul.people{
+  margin:0;
+  padding: 0;
+  &>li{
+    display: inline-block;
+    width: 100%;
+  }
+}
+    hr.affectations{
+      margin: 0;
+      margin-top: 5px;
+    }

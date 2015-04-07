@@ -1,5 +1,6 @@
 class RoomsController < GeopController
   before_action :set_room, only: [:show, :update, :delete]
+  # before_action :room_params, only: [:create]
 
 
   def self.selection
@@ -10,7 +11,6 @@ class RoomsController < GeopController
   end
 
   def self.json_single_selection
-    # ,
     {:methods =>:area_unit, :include => [{:inventories => {:include => :item}}, :room_type, :evacuation_zone, :organization, :room_ground_type, { :affectations => {:include =>{:person =>{:methods => PeopleController.json_methods, :include => [:person_state, {:organization => {:methods => [:url]}}]}} }}]}
   end
 

@@ -2,7 +2,7 @@
   <div class="panel-heading">
     <h3 class="panel-title">{{room.json.name}}</h3>
   </div>
-  <div class="panel-body">
+  <div class="panel-body box">
     <ul class="map-options">
       <li ng-repeat="b in room.optionsOnMap" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
     </ul>
@@ -10,7 +10,7 @@
       <li ng-repeat="b in svgEditors[room.json.floor_id].dragPointsOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
     </ul>
     
-    <table class='room'>
+    <table>
       <tr ng-if="room.json.name">
         <th>Nom</th><td>{{room.json.name}}</td>
       </tr>
