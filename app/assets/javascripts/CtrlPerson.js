@@ -7,4 +7,12 @@
       person: p
     };
   });
+
+  geoP.app.controller('PeopleCtrl', function($scope) {
+    $scope.people = gon.people.map(function(p){
+      return {
+        person : p
+      };
+    });
+  });  
 }(GeoP));

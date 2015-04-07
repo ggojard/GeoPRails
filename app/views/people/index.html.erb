@@ -1,4 +1,10 @@
-<h1>Annuaire des personnes</h1>
-<p>
-<a href="/admin/people">Visualiser</a>
-</p>
+<div ng-controller="PeopleCtrl">
+  <h1>Annuaire des personnes</h1>
+  <!-- <input type="text" ng-model="people.search" class="search-query-items" placeholder="Rechercher dans l'annuaire des personnes"> -->
+  <div class="boxes people">
+  <div class="box" ng-repeat="a in people">
+    <%= render '/floors/person' %>
+  </div>
+  </div>
+</div>
+

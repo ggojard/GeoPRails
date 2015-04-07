@@ -12,12 +12,12 @@ GeoP::Application.routes.draw do
   resources :homes
   resources :rooms
   resources :companies do 
-    post 'import', on: :collection
-    # collection { post :import }
+        post 'import', on: :collection
   end
   resources :organizations
   resources :people
   resources :floors
+  resources :items
 
   get '/login_page' => 'login#login'
 

@@ -1,9 +1,5 @@
-@mixin transition($speed) {
-    -o-transition: all $speed ease-out;
-    -moz-transition: all $speed ease-out;
-    -webkit-transition: all $speed ease-out;
-    transition: all $speed ease-out;
-}
+
+@import './mixins/*';
 
 body, label, button, input, #upload-file, input[type="file"] {
     font-family: arial;
@@ -318,34 +314,7 @@ div.panel-room {
 }
 
 
-
-
-
-
-
-
 @media screen and (min-width: 768px) {
-    // .main-menu {
-    //     width: 250px;
-    //     position: fixed;
-    //     left: 0;
-    //     top: 0;
-    //     .container-fluid {
-    //         padding: 0;
-    //         .nav.navbar-nav > li {
-    //             float: none;
-    //         }
-    //         .navbar-form {
-    //             margin: 0;
-    //             padding: 0;
-    //             text-align: center;
-    //             float: none;
-    //         }
-    //     }
-    // }
-    // body {
-    //     padding-left: 250px;
-    // }
 }
 
 @media screen and (min-width: 640px) and (max-width: 1023px) {

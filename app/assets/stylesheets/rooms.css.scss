@@ -4,26 +4,6 @@
 
 
 table.room{
-  width:100%;
-  margin-top:15px;
-  border-collapse: collapse;
-
-  th, td, &{
-    border:1px solid #eee;
-  }
-  th, td{
-    padding: 2px;
-    width: 50%;
-  }
-  th{
-    text-align: right;
-    padding-right: 8px
-  }
-  td{
-    text-align: left;
-    padding-left: 8px;
-    word-break: break-word;    
-  }
   td.email{
         word-break: break-all;
   }

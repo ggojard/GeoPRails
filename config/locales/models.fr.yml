@@ -55,6 +55,7 @@ fr:
         name : "Nom"
         code : "Code"
         description : "Description"
+        price: "Prix (€)"
       organization:
         id: "Identifiant organisation"
         name : "Nom"

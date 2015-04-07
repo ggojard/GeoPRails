@@ -1,0 +1,42 @@
+// Place all the styles related to the items controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.search-query-items {
+    width: 404px;
+    margin: 2px;
+}
+
+.highlighted {
+    background-color: #eee;
+}
+
+div.items {
+    div.box {
+        tr.description {
+            th {
+                display: none;
+            }
+        }
+    }
+}
+
+.box {
+    tr.description {
+        th {
+            text-align: center;
+        }
+    }
+}
+
+@media screen and (min-width: 640px) and (max-width: 1023px) {
+    .search-query-items {
+        margin: 0;
+    }
+}
+
+@media screen and (min-width: 240px) and (max-width: 639px) {
+    .search-query-items {
+        margin: 0;
+    }
+}

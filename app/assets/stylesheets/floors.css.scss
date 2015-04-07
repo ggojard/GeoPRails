@@ -68,38 +68,18 @@ ul.search-results {
     }
 }
 
-ul.people {
-    margin: 0;
-    padding: 0;
-    >  li {
-        display: inline-block;
-        max-width: 300px;
-        width: 100%;
-        margin-right: 10px;
-        vertical-align: top;
-    }
-}
+// ul.people {
+//     margin: 0;
+//     padding: 0;
+//     >  li {
+//         display: inline-block;
+//         max-width: 300px;
+//         width: 100%;
+//         margin-right: 10px;
+//         vertical-align: top;
+//     }
+// }
 
-.thumbnail {
-    a.edit-person, a.open-person {
-        position: relative;
-        z-index: 10;
-        margin-right: 5px;
-        float: right;
-        &:hover {
-            text-decoration: none;
-        }
-    }
-    img {
-        width: 120px;
-        margin-top: 15px;
-    }
-    h3,h4 {
-        text-align: center;
-        margin: 0;
-        margin-bottom: 5px;
-    }
-}
 
 .panel-body ul {
     margin-bottom: 0;
@@ -152,8 +132,6 @@ div.tab-content {
     }
 }
 
-
-
 ul.network {
     margin: 0;
     padding-left: 15px;
@@ -162,7 +140,6 @@ ul.network {
 button, .btn, #globalSearch{
     border-radius: 0;
 }
-
 
 .chart_div {
     width: 100%;

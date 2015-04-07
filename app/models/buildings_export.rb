@@ -7,16 +7,35 @@ class BuildingsExport
   def export
     require 'axlsx'
 
-
     labels = I18n.t('formtastic.labels')
     models = I18n.t('activerecord.models')
 
-    ret = "hi\n"
-
-    # building = @buildings[0]
-
     p = Axlsx::Package.new
     wb = p.workbook
+
+    export_building(wb)
+    export_floor(wb)
+    export_organization(wb)
+    export_organization_type(wb)
+    personHeaders = export_person(wb)
+    export_person_state(wb)
+    export_room_ground_type(wb)
+    export_room_type(wb)
+    export_evacuation_zone(wb)
+    export_affectation(wb, personHeaders)
+    export_inventory(wb)
+    export_company(wb)
+    export_item(wb)
+
+    time = DateTime.now.strftime('%Y-%m-%d-%Hh%M')
+    @filename = sanitize_filename("export-#{@title}-#{time}.xlsx")
+    path = "/tmp/#{@filename}"
+    p.serialize(path)
+
+    contents = IO.binread(path)
+  end
+
+  def export_building wb
     wb.add_worksheet(:name => I18n.t('activerecord.models.building.other')) do |sheet|
       sheet.add_row [I18n.t('formtastic.labels.building.id'), I18n.t('formtastic.labels.building.name'), "Color", I18n.t('formtastic.labels.building.company'), I18n.t('formtastic.labels.company.id')]
 
@@ -24,13 +43,15 @@ class BuildingsExport
         list =  [building.id, building.name, building.color]
         if !building.company.nil?
           list += [building.company.name, building.company.id]
-        else 
+        else
           list += ['', '']
         end
         sheet.add_row list
       end
     end
+  end
 
+  def export_floor wb
     wb.add_worksheet(:name => I18n.t('activerecord.models.floor.other')) do |sheet|
       sheet.add_row [I18n.t('formtastic.labels.floor.id'), I18n.t('formtastic.labels.floor.name'), I18n.t('formtastic.labels.building.id'), I18n.t('formtastic.labels.floor.level'), "Échelle x1", "Échelle y1", "Échelle x2", "Échelle y2", "Échelle Taille"]
 
@@ -58,17 +79,14 @@ class BuildingsExport
               row += [r.points, r.network]
 
               sheet_p.add_row row
-              # ret += row.to_s
-
             end
           end
-
         end
-
-
       end
     end
+  end
 
+  def export_organization wb
     wb.add_worksheet(:name => "Organizations") do |sheet|
       sheet.add_row ["Identifiant", "Nom", "Couleur", "Organisation Père", "Identifiant Entreprise", "Entreprise", "Identifiant Type", "Type"]
       Organization.all().each do |o|
@@ -92,12 +110,17 @@ class BuildingsExport
       end
     end
 
+  end
+  def export_organization_type wb
     wb.add_worksheet(:name => I18n.t('activerecord.models.organization_type.other')) do |sheet|
       sheet.add_row ["Identifiant", "Nom"]
       OrganizationType.all().each do |o|
         sheet.add_row [o.id, o.name]
       end
     end
+
+  end
+  def export_person wb
 
     personHeaders = ["Identifiant Personne", "Prénom", "Nom de famille", "Nom complet", "Téléphone", "Portable", "Référence Ordinateur", "Référence écran", "Email", "Matricule", "Organisation", "Identifiant Organisation", "Etat", "Identifiant Etat"]
 
@@ -116,6 +139,7 @@ class BuildingsExport
       return list
     end
 
+
     wb.add_worksheet(:name => I18n.t('activerecord.models.person.other')) do |sheet|
       sheet.add_row personHeaders
       Person.all().each do |o|
@@ -124,6 +148,12 @@ class BuildingsExport
       end
     end
 
+    return personHeaders
+
+  end
+
+
+  def export_person_state wb
     wb.add_worksheet(:name => I18n.t('activerecord.models.person_state.other')) do |sheet|
       sheet.add_row ["Identifiant", "Nom"]
       PersonState.all().each do |o|
@@ -131,13 +161,19 @@ class BuildingsExport
       end
     end
 
+  end
+
+
+  def export_room_ground_type wb
     wb.add_worksheet(:name => "Nature des sols") do |sheet|
       sheet.add_row ["Identifiant", "Nom", "Couleur"]
       RoomGroundType.all().each do |o|
         sheet.add_row [o.id, o.name, o.color]
       end
     end
+  end
 
+  def export_room_type wb
     wb.add_worksheet(:name => "Type des pièces") do |sheet|
       sheet.add_row ["Identifiant", "Nom", "Couleur"]
       RoomType.all().each do |o|
@@ -145,6 +181,9 @@ class BuildingsExport
       end
     end
 
+  end
+
+  def export_evacuation_zone wb
     wb.add_worksheet(:name => "Zones d'évacuation") do |sheet|
       sheet.add_row ["Identifiant", "Nom", "Couleur"]
       EvacuationZone.all().each do |o|
@@ -152,6 +191,9 @@ class BuildingsExport
       end
     end
 
+  end
+
+  def export_affectation wb, personHeaders
     wb.add_worksheet(:name => "Affectations") do |sheet|
       headers = ["Identifiant", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment"]
       headers += personHeaders
@@ -166,6 +208,9 @@ class BuildingsExport
       end
     end
 
+  end
+
+  def export_inventory wb
     wb.add_worksheet(:name => "Inventaire") do |sheet|
       sheet.add_row ["Identifiant",  "Quantité", "Code", "Nom item", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment", "Item", "Identifiant Item"]
       Inventory.all().each do |o|
@@ -174,30 +219,25 @@ class BuildingsExport
         end
       end
     end
+  end
 
+  def export_company wb
     wb.add_worksheet(:name => "Entreprise") do |sheet|
       sheet.add_row ["Identifiant",  "Nom"]
       Company.all().each do |o|
         sheet.add_row [o.id, o.name]
       end
     end
-
-    wb.add_worksheet(:name => "Item") do |sheet|
-      sheet.add_row ["Identifiant",  "Nom", "Description", "Code"]
-      Item.all().each do |o|
-        sheet.add_row [o.id, o.name, o.description, o.code]
-      end
-    end
-
-
-    time = DateTime.now.strftime('%Y-%m-%d-%Hh%M')
-    @filename = sanitize_filename("export-#{@title}-#{time}.xlsx")
-    path = "/tmp/#{@filename}"
-    p.serialize(path)
-
-    contents = IO.binread(path)
   end
 
+  def export_item wb
+    wb.add_worksheet(:name => "Item") do |sheet|
+      sheet.add_row ["Identifiant",  "Nom", "Description", "Code", "Prix"]
+      Item.all().each do |o|
+        sheet.add_row [o.id, o.name, o.description, o.code, o.price]
+      end
+    end
+  end
 
   def filename
     return @filename
