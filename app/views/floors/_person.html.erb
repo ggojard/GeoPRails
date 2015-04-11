@@ -5,7 +5,7 @@
     <a class="option open-person fa fa-arrow-circle-right" href="/people/{{a.person.id}}"></a>
     <!-- <img src="/assets/person.png"/> -->
     <div class="box-content">
-      <h4 >{{a.person.fullname}}</h4>
+      <h4 ng-bind-html="a.person.fullname | highlight:query">{{a.person.fullname}}</h4>
       <table class="">
         <tr ng-if="a.person.person_state">
           <th>Etat</th>
