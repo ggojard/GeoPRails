@@ -1,24 +1,24 @@
-<div class="item box" ng-repeat="i in items | filter:{name:items.search, description:items.search}">
+<div class="item box" ng-repeat="i in items | filter:itemFilter">
   <% if @global_user_type != 'READ' %>
   <a class="option fa fa-edit" href="/admin/items/{{i.id}}/edit" title="Editer"></a>
   <% end %>
   <a class="option fa fa-arrow-circle-right" href="/items/{{i.id}}" title="Voir"></a>
-  <div class="box-content">
-    <h4 ng-bind-html="i.name | highlight:items.search">{{i.name}}</h4>
+  <div class="box-content" >
+    <h4 ng-bind-html="i.name | highlight:query">{{i.name}}</h4>
     <table class="item">
       <tr class="description" ng-if="i.description">
         <th colspan="2">Description</th>
       </tr>
       <tr class="description" ng-if="i.description">
-        <td colspan="2" ng-bind-html="i.description | highlight:items.search">{{i.description}}</td>
+        <td ng-bind-html="i.description | highlight:query" colspan="2" >{{i.description}}</td>
       </tr>
       <tr ng-if="i.code">
         <th>Code</th>
-        <td class="email">{{i.code}}</td>
+        <td ng-bind-html="i.code | highlight:query">{{i.code}}</td>
       </tr>
       <tr ng-if="i.price > 0">
         <th>Prix</th>
-        <td class="email">{{i.price}} &euro;</td>
+        <td>{{i.price}} &euro;</td>
       </tr>
     </table>
   </div>
