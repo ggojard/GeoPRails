@@ -9,7 +9,9 @@
 
 .highlighted {
     background-color: #E60132;
-    color:white;
+    color: white;
+    border-radius: 16px;
+    padding: 4px;
 }
 
 div.items {
@@ -20,12 +22,61 @@ div.items {
             }
         }
     }
+    hr.inventory-separator {
+        display: none;
+    }
+}
+
+ul.inventories-in-room {
+    margin: 0;
+    padding-left: 15px;
 }
 
 .box {
-    tr.description {
-        th {
+    table.box-details {
+        tr.center {
+            th {
+                text-align: center;
+            }
+        }
+    }
+}
+
+table.inventory {
+    width: 100%;
+    border-collapse: collapse;
+    tr {
+        & > th.inventory {
             text-align: center;
+        }
+        th, td {
+            padding: 4px;
+            border: 1px solid #eee;
+        }
+        .inventory-room {
+            text-align: right;
+        }
+        .inventory-price {
+            width: 45%;
+            text-align: left;
+        }
+        .inventory-quantity {
+            width: 10%;
+            text-align: center;
+        }
+    }
+}
+
+div.inventory {
+    h3 {
+        margin: 0;
+        padding: 5px;
+    }
+    margin-bottom: 10px;
+    &.noprice {
+        .inventory-quantity {
+            width: 50%;
+            text-align: left;
         }
     }
 }
@@ -39,5 +90,13 @@ div.items {
 @media screen and (min-width: 240px) and (max-width: 639px) {
     .search-query-items {
         margin: 0;
+    }
+    table.inventory {
+        tr {
+            .inventory-price {
+                width: 20%;
+                text-align: center;
+            }
+        }
     }
 }

@@ -5,8 +5,8 @@
   <a class="option fa fa-arrow-circle-right" href="/items/{{i.id}}" title="Voir"></a>
   <div class="box-content" >
     <h4 ng-bind-html="i.name | highlight:query">{{i.name}}</h4>
-    <table class="item">
-      <tr class="description" ng-if="i.description">
+    <table class="box-details">
+      <tr class="description center" ng-if="i.description">
         <th colspan="2">Description</th>
       </tr>
       <tr class="description" ng-if="i.description">
@@ -20,6 +20,36 @@
         <th>Prix</th>
         <td>{{i.price}} &euro;</td>
       </tr>
+      <!--       <tr ng-if="i.inventories.length > 0" class="center">
+        <th colspan="2">
+          Inventaire
+        </th>
+      </tr>
+      <tr ng-if="i.inventories.length > 0">
+        <td colspan="2">
+        </td>
+      </tr> -->
     </table>
+    <hr class="inventory-separator"/>
+    <div ng-repeat="(bId, building) in buildingsById" style="border: 1px solid {{building.color}}" class="inventory" ng-class="{noprice:!i.price}">
+      <h3 style="background-color: {{building.color}}">{{building.name}}</h3>
+      <table class="inventory">
+        <tr>
+          <th class="inventory-room">Pièce</th>
+          <th class="inventory-quantity">Quantité</th>
+          <th class="inventory-price" ng-if="i.price > 0">Prix</th>
+        </tr>
+        <tr ng-repeat="inventory in inventoryByBuilding[bId]">
+          <td class="inventory-room"><a href="{{inventory.room.url}}">{{inventory.room.fullname}}</a></td>
+          <td class="inventory-quantity">{{inventory.quantity}}</td>
+          <td class="inventory-price" ng-if="i.price > 0">{{inventory.quantity * i.price}} &euro;</td>
+        </tr>
+        <tr>
+          <th class="inventory-room">Total</th>
+          <td class="inventory-quantity">{{totalByBuildingId[bId]}}</td>
+          <td class="inventory-price" ng-if="i.price > 0">{{totalByBuildingId[bId] * i.price}} &euro;</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>

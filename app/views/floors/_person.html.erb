@@ -6,7 +6,7 @@
     <!-- <img src="/assets/person.png"/> -->
     <div class="box-content">
       <h4 ng-bind-html="a.person.fullname | highlight:query">{{a.person.fullname}}</h4>
-      <table class="">
+      <table class="box-details">
         <tr ng-if="a.person.person_state">
           <th>Etat</th>
           <td>{{a.person.person_state.name}}</td>

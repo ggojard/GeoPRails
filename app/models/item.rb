@@ -6,4 +6,9 @@ class Item < ActiveRecord::Base
   accepts_nested_attributes_for :inventories, :allow_destroy => true
   accepts_nested_attributes_for :rooms, :allow_destroy => true
 
+  def url
+    '/items/%d' % self.id
+  end
+
+
 end

@@ -9,12 +9,9 @@
   });
 
   geoP.app.controller('PeopleCtrl', function($scope) {
-
     $scope.personFilter = function(a) {
-      // return true;
       return a.person.fullname.search(new RegExp($scope.query, "i")) !== -1;
     };
-
     $scope.people = gon.people.map(function(p) {
       return {
         person: p
