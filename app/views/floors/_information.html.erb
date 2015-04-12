@@ -1,0 +1,14 @@
+<table class="box-details">
+  <tr>
+    <th>Nombre de pièces</th>
+    <td>{{floorJson.rooms.length}}</td>
+  </tr>
+  <tr>
+    <th>Nombre de personnes</th>
+    <td>{{countPeopleFromRooms(floorJson.rooms)}}</td>
+  </tr>
+  <tr>
+    <th>Nombre de places libres</th>
+    <td>{{countFreeSpacesFromRooms(floorJson.rooms)}}</td>
+  </tr>
+</table>

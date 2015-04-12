@@ -11,6 +11,7 @@
         displayNamesByName[displayName.name] = displayName;
       });
     }
+
     function getDisplayNameFilter(name, value, format, merge) {
       if (value === undefined) {
         value = false;
@@ -50,6 +51,14 @@
     p.push(getDisplayNameFilter('network', false, function(v) {
       return v.split('\r\n');
     }));
+    p.push(getDisplayNameFilter('free_desk_number', false, function(v) {
+      if (v === 1) {
+        return [v + ' place libre'];
+      } else {
+        return [v + ' places libres'];
+      }
+    }));
+
     p.push(getDisplayNameFilter('affectations', false, function(v) {
       return v.filter(function(f) {
         return f.person !== undefined;

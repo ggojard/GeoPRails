@@ -135,7 +135,7 @@
       mapFilter.registerFiltersStateChange();
       $rootScope.mapFilter = mapFilter;
       mapFilter.ready();
-      if ($rootScope.mapFilterByBuildingId === undefined){
+      if ($rootScope.mapFilterByBuildingId === undefined) {
         $rootScope.mapFilterByBuildingId = {};
       }
       $rootScope.mapFilterByBuildingId[buildingId] = mapFilter;
@@ -229,6 +229,21 @@
       $scope.loading = false;
     });
 
+    $scope.countPeopleFromRooms = function(rooms) {
+      return rooms.reduce(function(a, b) {
+        return a + b.affectations.length;
+      }, 0);
+    }
+
+    $scope.countFreeSpacesFromRooms = function(rooms) {
+      return rooms.reduce(function(a, b) {
+        var res = a;
+        if (b.free_desk_number !== null){
+          res += b.free_desk_number;
+        }
+        return res;
+      }, 0);
+    }
 
 
   });
