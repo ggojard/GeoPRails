@@ -1,5 +1,4 @@
-
-@import './mixins/*';
+@import "./mixins/*";
 
 body, label, button, input, #upload-file, input[type="file"] {
     font-family: arial;
@@ -70,6 +69,13 @@ svg {
                 &:hover {
                     cursor: move;
                 }
+            }
+        }
+    }
+    &.mode-edit {
+        g.select {
+            polygon {
+                fill: rgba(29, 200, 254, 0.25);
             }
         }
     }
@@ -313,28 +319,21 @@ div.panel-room {
     border-radius: 0;
 }
 
+@media screen and (min-width: 768px) {}
 
-@media screen and (min-width: 768px) {
-}
-
-@media screen and (min-width: 640px) and (max-width: 1023px) {
-
-}
+@media screen and (min-width: 640px) and (max-width: 1023px) {}
 
 @media screen and (min-width: 240px) and (max-width: 639px) {
-
-div.panel-room {
-    position: static;
-    width: 100%;
-    z-index: 999;
-    border-radius: 0;
-}
-
-.container-fluid.main-container{
-    padding-left: 2px;
-    padding-right: 2px;
-}
-
+    div.panel-room {
+        position: static;
+        width: 100%;
+        z-index: 999;
+        border-radius: 0;
+    }
+    .container-fluid.main-container {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
     .home {
         .buildings {
             div.building {
