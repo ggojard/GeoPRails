@@ -212,10 +212,14 @@ class BuildingsExport
 
   def export_inventory wb
     wb.add_worksheet(:name => "Inventaire") do |sheet|
-      sheet.add_row ["Identifiant",  "Quantité", "Code", "Nom item", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment", "Item", "Identifiant Item"]
+      sheet.add_row ["Identifiant",  "Quantité", "Code", "Nom item", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment", "Item", "Identifiant Item", "Prix"]
       Inventory.all().each do |o|
         if !o.item.nil? and !o.room.nil? and !o.item.nil?
-          sheet.add_row [o.id, o.quantity, o.item.code, o.item.name, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name, o.item.name, o.item.id]
+          price = 0
+          if !o.quantity.nil? and !o.item.price.nil?
+            price = o.quantity * o.item.price
+          end
+          sheet.add_row [o.id, o.quantity, o.item.code, o.item.name, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name, o.item.name, o.item.id, price]
         end
       end
     end

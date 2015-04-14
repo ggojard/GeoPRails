@@ -261,6 +261,7 @@ class BuildingsImport
       i =  Item.find_or_create_by(name: name)
       i.description = @s.cell(r, 3)
       i.code = @s.cell(r, 4)
+      i.price = @s.cell(r, 5)
       i.save
       @map_item[id]  = i
     end

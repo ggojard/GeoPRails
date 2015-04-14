@@ -16,16 +16,15 @@
   <hr/>
   <a href="{{company.url}}/export" download>Exporter l'ensemble des bâtiments</a>
   <hr/>
-
-<h4>Importer un fichier Excel</h4>
-
-<%= form_tag import_companies_path, multipart: true do %>
+  <% if @global_user_type == 'ADMIN' %>
+  <h4>Importer un fichier Excel</h4>
+  <%= form_tag import_companies_path, multipart: true do %>
   <div class="form-group">
-  <label >Fichier Excel</label>
-  <%= file_field_tag :file %>
+    <label >Fichier Excel</label>
+    <%= file_field_tag :file %>
   </div>
-
   <%= submit_tag "Importer", {:class => 'btn btn-default '} %>
-<% end %>
-<hr/>
+  <% end %>
+  <hr/>
+  <% end %>
 </div>
