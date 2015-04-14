@@ -99,8 +99,6 @@ svg {
 
 .home {
     .buildings {
-        // display: -webkit-box;
-        // -webkit-box-orient: horizontal;
         max-width: 100%;
         .building {
             @include transition(250ms);
