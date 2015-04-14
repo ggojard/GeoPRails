@@ -50,6 +50,7 @@ fr:
         building: "Bâtiment"
         level : "Niveau"
         image : "Plan"
+        background_opacity: "Transparence Image"
       item:
         id: "Identifiant item"
         name : "Nom"

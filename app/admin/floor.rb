@@ -16,6 +16,7 @@ ActiveAdmin.register Floor do
       f.input :building
       f.input :level
       f.input :image, :required => false, :as => :file
+      f.input :background_opacity
       f.input :map_scale_x1
       f.input :map_scale_y1
       f.input :map_scale_x2
@@ -30,6 +31,7 @@ ActiveAdmin.register Floor do
       row I18n.t('formtastic.labels.floor.name') do ad.name end
       row I18n.t('activerecord.models.building.one') do  ad.building end
       row I18n.t('formtastic.labels.floor.level') do ad.level end
+        row I18n.t('formtastic.labels.floor.background_opacity') do ad.background_opacity end
       # "Image Plan",
       row "Plan" do
         image_tag(ad.image.url(:thumb))

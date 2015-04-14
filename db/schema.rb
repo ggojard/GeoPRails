@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150404102815) do
+ActiveRecord::Schema.define(version: 20150414193125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 20150404102815) do
     t.float    "map_scale_length"
     t.string   "image_dimensions"
     t.integer  "level"
+    t.float    "background_opacity", default: 0.25
   end
 
   add_index "floors", ["building_id"], name: "index_floors_on_building_id", using: :btree
