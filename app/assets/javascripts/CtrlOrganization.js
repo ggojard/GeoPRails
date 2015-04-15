@@ -6,6 +6,7 @@
     geoP.handleKeyEventsForScope($scope);
     geoP.handleTabHeaderClick($rootScope, $scope);
     $scope.o = gon.organization;
+    $scope.i18n = gon.i18n;
     $scope.floorsByBuildingId = {};
     floors = {};
     buildings = {};
