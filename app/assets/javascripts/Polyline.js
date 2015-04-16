@@ -123,7 +123,7 @@
 
     l = polygonArea(points);
     // reparse to handle toFixed to float
-    l = parseFloat(parseFloat(l, 10).toFixed(1), 10);
+    l = parseFloat(parseFloat(l, 10).toFixed(2), 10);
     return l;
   };
 
@@ -430,15 +430,19 @@
 
 
   Polyline.prototype.loadFromJson = function(json) {
-    var points, i, p;
+    var points, i, p, num_person;
     this.json = json;
 
     if (this.json.points === null) {
       return;
     }
 
-    if (this.json.affectations.length > 0) {
-      this.json.ratio = parseFloat(this.json.area / this.json.affectations.length, 10).toFixed(2);
+    if (this.json.affectations.length > 0 || this.json.free_desk_number > 0) {
+      num_person = this.json.affectations.length;
+      if (this.json.free_desk_number > 0){
+        num_person += this.json.free_desk_number;
+      }
+      this.json.ratio = parseFloat(this.json.area / num_person, 10).toFixed(2);
     }
 
     if (this.json.points !== null) {

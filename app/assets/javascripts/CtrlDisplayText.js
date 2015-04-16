@@ -43,7 +43,7 @@
     p = [];
     p.push(getDisplayNameFilter('name', true));
     p.push(getDisplayNameFilter('area', true, function(v) {
-      return [v + ' m²'];
+      return [v.toFixed(2) + ' m²'];
     }));
     p.push(getDisplayNameFilter('perimeter', false, function(v) {
       return [v + ' m'];
