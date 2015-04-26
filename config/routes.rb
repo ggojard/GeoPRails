@@ -18,6 +18,8 @@ GeoP::Application.routes.draw do
   resources :people
   resources :floors
   resources :items
+  resources :cuby
+
 
   get '/login_page' => 'login#login'
 
@@ -46,6 +48,7 @@ GeoP::Application.routes.draw do
   get '/search/:q' => 'homes#search'
 
   get '/organizations/:id' => 'organizations#show'
+
 
 
   get '/buildings/import' => 'buildings#import'
