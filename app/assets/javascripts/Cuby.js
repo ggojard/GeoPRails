@@ -57,7 +57,18 @@ function cuby_init(building) {
   camera = new THREE.PerspectiveCamera(45, canvasWidth / window.innerHeight, 1, 10000);
   camera.position.set(4500, 4000, 4000);
 
-  controls = new THREE.TrackballControls(camera);
+
+  renderer = new THREE.WebGLRenderer({
+    antialias: true
+  });
+  renderer.setClearColor(0xffffff);
+  renderer.setPixelRatio(window.devicePixelRatio);
+
+  renderer.setSize(canvasWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);
+
+
+  controls = new THREE.TrackballControls(camera, renderer.domElement);
   controls.rotateSpeed = 1.0;
   controls.zoomSpeed = 1.2;
   controls.panSpeed = 0.8;
@@ -93,7 +104,7 @@ function cuby_init(building) {
 
 
     var vectricesMaterial = new THREE.MeshBasicMaterial({
-      color: 0xaaaaaa, // vectrices
+      color: 0xdddddd, // vectrices
       shading: THREE.FlatShading,
       wireframe: true,
       transparent: true,
@@ -202,15 +213,7 @@ function cuby_init(building) {
   //   // return;
   // }
 
-  renderer = new THREE.WebGLRenderer({
-    antialias: true
-  });
-  renderer.setClearColor(0xffffff);
-  renderer.setPixelRatio(window.devicePixelRatio);
 
-  renderer.setSize(canvasWidth, window.innerHeight);
-
-  container.appendChild(renderer.domElement);
 
   stats = new Stats();
   stats.domElement.style.position = 'absolute';
