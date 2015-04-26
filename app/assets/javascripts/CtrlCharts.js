@@ -16,10 +16,10 @@
       $scope.chart = null;
       $rootScope.$on(fName + '_' + bId + '_charts.Selected', function() {
         chartsData[bId][fName]();
-        $rootScope.mapFilter.updateEditorsRoomPositions();        
+        $rootScope.mapFilter.updateEditorsRoomPositions();
       });
       $rootScope.$on('Refresh.CurrentChart', function(e, buildingId) {
-        var c = $rootScope.currentChart[buildingId];        
+        var c = $rootScope.currentChart[buildingId];
         c.$element.show();
         c.chart.draw(c.a, c.options);
       });
@@ -51,10 +51,15 @@
           chart.draw(a, options);
           $scope.chart = chart;
 
-          if ($rootScope.currentChart === undefined){
+          if ($rootScope.currentChart === undefined) {
             $rootScope.currentChart = {};
           }
-          $rootScope.currentChart[bId] = {a:a, options:options, chart:chart, $element : $(e)};
+          $rootScope.currentChart[bId] = {
+            a: a,
+            options: options,
+            chart: chart,
+            $element: $(e)
+          };
         }
       };
     };

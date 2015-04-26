@@ -64,6 +64,11 @@
       bg, svgElements = [],
       fontSize = 16,
       heightOfLine = fontSize;
+
+      if (editor.paper === null){
+        return;
+      }
+
     editor.removeLegend();
     filters = editor.mapFilter.bfilters[editor.json.building_id][editor.json.id];
     filtersStatus = editor.mapFilter.bfilters[editor.json.building_id].belongsToItems;

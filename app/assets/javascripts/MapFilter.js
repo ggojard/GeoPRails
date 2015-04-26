@@ -6,26 +6,52 @@
     this.filters = {};
     this.bfilters = {};
     this.editors = [];
+    this.floorJsons = [];
     this.$rootScope = $rootScope;
+    this.$rootScope.mapFilter = this;
     this.buildingId = buildingId;
     this.mergedFiltersForBuildings = {};
+    this.cuby = null;
   };
 
-  MapFilter.prototype.addEditor = function(editor) {
-    this.editors.push(editor);
+  MapFilter.prototype.addEditor = function(editor, floorJson) {
+    if (editor !== null && editor !== undefined) {
+      this.editors.push(editor);
+    }
+    if (floorJson !== undefined) {
+      this.floorJsons.push(floorJson);
+    } else {
+      this.floorJsons.push(editor.json);
+    }
   };
+
+  // MapFilter.prototype.filterData = function() {
+  //   var filters, filterName, f, filterNames, bId;
+  //   if ($rootScope.mapFilter !== undefined) {
+  //     bId = $rootScope.mapFilter.buildingId;
+  //     filters = $rootScope.mapFilter.mergedFiltersForBuildings[bId];
+  //     filterNames = $rootScope.mapFilter.bfilters[bId].belongsToItems;
+  //     for (filterName in filters) {
+  //       if (filters.hasOwnProperty(filterName)) {
+  //         f = filters[filterName];
+  //         (filterMethod(filterName, f, filterNames, bId));
+  //       }
+  //     }
+  //     // chartsData[bId][geoP.filtersNames[0].name]();
+  //   }
+  // };
 
   MapFilter.prototype.ready = function() {
     this.$rootScope.$emit('MapFilter.Ready', this);
   };
 
 
-  MapFilter.prototype.loadFilter = function(editor) {
+  MapFilter.prototype.loadFilter = function(floorJson) {
     var filtersNames = GeoP.filtersNames,
       i, that = this;
 
     function load(filterName) {
-      that.loadBelongsToFilter(editor.json, filterName);
+      that.loadBelongsToFilter(floorJson, filterName);
     }
     for (i = 0; i < filtersNames.length; i += 1) {
       load(filtersNames[i].name);
@@ -35,11 +61,10 @@
   MapFilter.prototype.loadFilters = function() {
     var j, that = this,
       bId, mergedFilters, fName;
-    for (j = 0; j < that.editors.length; j += 1) {
-      this.loadFilter(that.editors[j]);
+    for (j = 0; j < that.floorJsons.length; j += 1) {
+      this.loadFilter(that.floorJsons[j]);
     }
     this.createMergedFiltersByBuilding();
-
     bId = this.buildingId;
     mergedFilters = this.mergedFiltersForBuildings[bId];
     for (fName in mergedFilters) {
@@ -122,6 +147,9 @@
           that.editors[j].mapOnItems('fillFromFilterColor', filterName);
           that.editors[j].setLegend();
         }
+        if (that.cuby !== null) {
+          that.cuby.applyFilters(filterName);
+        }
       });
     }
     for (i = 0; i < filtersNames.length; i += 1) {
@@ -152,10 +180,20 @@
     }
   };
 
+  MapFilter.prototype.setup = function() {
+    this.loadFilters();
+    this.registerFiltersStateChange();
+    this.ready();
+    if (this.$rootScope.mapFilterByBuildingId === undefined) {
+      this.$rootScope.mapFilterByBuildingId = {};
+    }
+    this.$rootScope.mapFilterByBuildingId[this.buildingId] = this;
+  };
+
 
   MapFilter.prototype.updateEditorsRoomPositions = function() {
     this.editors.forEach(function(editor) {
-      if ($(editor.paper.node).find('g.select').length > 0) {
+      if (editor.paper !== null && $(editor.paper.node).find('g.select').length > 0) {
         editor.updateRoomOffset();
         geoP.$apply(editor.$scope);
       }

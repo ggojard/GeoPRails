@@ -41,30 +41,32 @@
 
     var dim, bgBox, border, imagePath, that = this;
 
+    this.mapFilter = mapFilter;
+    this.json = floorJson;
+    this.$scope = $scope;
+    this.$http = $http;
+    this.$rootScope = $rootScope;
+    this.createPolylineLine = null;
+    this.createPolylinePolyline = null;
+    this.newPoint = null;
+    this.items = [];
+    this.itemsById = {};
+    this.lastMovePosition = null;
+    this.currentOptions = [];
+    this.dragPointsOptions = [];
+
+
     this.svgId = 'map-' + floorJson.id;
     this.paper = snap('#' + this.svgId);
     if (this.paper === null) {
       return;
     }
 
-    this.mapFilter = mapFilter;
 
-    this.json = floorJson;
-    this.$scope = $scope;
-    this.$http = $http;
-    this.$rootScope = $rootScope;
     this.loadCamera();
-    this.createPolylineLine = null;
-    this.createPolylinePolyline = null;
-    this.newPoint = null;
-    this.items = [];
-    this.itemsById = {};
-    $rootScope.itemsById = this.itemsById;
+    // $rootScope.itemsById = this.itemsById;
     this.canvas = this.paper.g();
     this.canvas.node.id = 'viewport-' + floorJson.id;
-    this.lastMovePosition = null;
-    this.currentOptions = [];
-    this.dragPointsOptions = [];
 
     that.displayProperties = $rootScope.displayNames;
 
@@ -272,6 +274,7 @@
   SvgEditor.prototype.createRoomFromJson = function(json) {
     var b = new geoP.Polyline(this);
     b.loadFromJson(json);
+    b.createInPaper();
     this.items.push(b);
     this.itemsById[b.json.id] = b;
   };
@@ -377,6 +380,7 @@
     this.mapOptions.push();
   };
 
+  // a1..N ... are facultatif
   SvgEditor.prototype.mapOnItems = function(methodName, a1, a2) {
     var i = 0;
     for (i = 0; i < this.items.length; i += 1) {

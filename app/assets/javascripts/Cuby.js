@@ -10,16 +10,52 @@ var radious = 1600,
   onMouseDownPhi = 60;
 
 var isMouseDown, ray, onMouseDownPosition, controls, projector;
+var canvasWidth = window.innerWidth - 350;
 
-// extrudeSettings = {}, controls;
+rooms3dById = {};
 
-function init() {
-  container = document.createElement('div');
-  document.body.appendChild(container);
+var Cuby = function($rootScope, buildingJson) {
+  cuby_init(buildingJson)
+  this.buildingJson = buildingJson;
+  this.$rootScope = $rootScope;
+  $rootScope.mapFilter.cuby = this;
+  cuby_animate();
+
+};
+
+Cuby.prototype.applyFilters = function(filterName) {
+
+  for (var oId in rooms3dById) {
+    var room3d = rooms3dById[oId];
+    room3d.three.material = room3d.material.vectrices;
+
+
+    value = room3d.json[filterName];
+    if (value !== undefined) {
+      var item = this.$rootScope.mapFilter.bfilters[this.buildingJson.id].belongsToItems[filterName][value.id];
+      if (item.state === true) {
+        room3d.three.material = room3d.material.fill;
+        room3d.three.material.color.setHex(item.color.replace('#', '0x'));
+      }
+    }
+
+    // room3d.three.material = fillMaterial;
+  }
+
+  // material.color.setHex(0xff0000);
+  // rooms3dById[r.id].material.color.setHex(0xff0000);
+};
+
+var floorAmount = 200;
+var floorSpace = 300;
+
+
+function cuby_init(building) {
+  container = document.getElementById('CubyWebGL');
 
   var lookAt = new THREE.Vector3(2000, 0, 0);
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-  camera.position.set(2500, 2500, 3000);
+  camera = new THREE.PerspectiveCamera(45, canvasWidth / window.innerHeight, 1, 10000);
+  camera.position.set(4500, 4000, 4000);
 
   controls = new THREE.TrackballControls(camera);
   controls.rotateSpeed = 1.0;
@@ -34,17 +70,16 @@ function init() {
 
   scene = new THREE.Scene();
 
-
   var light = new THREE.AmbientLight(0xffffff); // soft white light
   scene.add(light);
   grid();
 
-  function addShape(shape, floor) {
+  function addShape(shape, roomJson, floorLevel) {
     var color;
     var points = shape.createPointsGeometry();
     var spacedPoints = shape.createSpacedPointsGeometry(0);
     var options = {
-      amount: 200,
+      amount: floorAmount,
       curveSegments: 0,
       steps: 0,
       bevelEnabled: true,
@@ -54,6 +89,25 @@ function init() {
     // 3d shape
     var geometry = new THREE.ExtrudeGeometry(shape, options);
     // var radius = 200;
+
+
+
+    var vectricesMaterial = new THREE.MeshBasicMaterial({
+      color: 0xaaaaaa, // vectrices
+      shading: THREE.FlatShading,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.125
+    });
+
+    var fillMaterial = new THREE.MeshLambertMaterial({
+      color: 0x00ff00,
+      shading: THREE.FlatShading,
+      vertexColors: THREE.VertexColors,
+      transparent: true,
+      opacity: 0.75
+    });
+
 
     // var materials = [
     //   new THREE.MeshLambertMaterial({
@@ -74,57 +128,63 @@ function init() {
     //   vertexColors: THREE.VertexColors
     // });
 
-    material = new THREE.MeshBasicMaterial({
-      color: 0xaaaaaa, // vectrices
-      shading: THREE.FlatShading,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.125
-    });
+
+
     // material = new THREE.MeshBasicMaterial({color:0x00ff00});
 
     // var group1 = THREE.SceneUtils.createMultiMaterialObject(geometry, materials);
-    var group1 = new THREE.Mesh(geometry, material);
+    var group1 = new THREE.Mesh(geometry, vectricesMaterial);
     group1.rotation.x = -Math.PI / 2;
-    group1.position.y = (floor * 275);
+    group1.position.y = (floorLevel * (floorAmount + floorSpace));
+    // group1.json = 
     scene.add(group1);
+    rooms3dById[roomJson.id] = {
+      json: roomJson,
+      three: group1,
+      material: {
+        vectrices: vectricesMaterial,
+        fill: fillMaterial
+      }
+    };
+    // return material;
   }
 
-  function cubyFloor(floor) {
-    $.getJSON('/floors/' + floor.id, function(f) {
-      var min = {
-        x: 0,
-        y: 0
-      };
-      var max = {
-        x: 0,
-        y: 0
-      };
-      for (var i = 0; i < f.rooms.length; i++) {
-        // for (var i = 0; i < 1; i++) {
-        var r = f.rooms[i];
-        var points = JSON.parse(r.points);
-        if (points === null) {
-          continue;
-        }
-        var roomPoints = points.map(function(p) {
-          min.x = Math.min(p.x, min.x);
-          min.y = Math.min(p.y, min.y);
-          max.x = Math.min(p.x, max.x);
-          max.y = Math.min(p.y, max.y);
-          return new THREE.Vector2(p.x, -p.y);
-        });
-        var shape = new THREE.Shape(roomPoints);
-        addShape(shape, floor.level);
+  function cubyFloor(f) {
+    // $.getJSON('/floors/' + floor.id, function(f) {
+    var min = {
+      x: 0,
+      y: 0
+    };
+    var max = {
+      x: 0,
+      y: 0
+    };
+    for (var i = 0; i < f.rooms.length; i++) {
+      // for (var i = 0; i < 1; i++) {
+      var r = f.rooms[i];
+      var points = JSON.parse(r.points);
+      if (points === null) {
+        continue;
       }
+      var roomPoints = points.map(function(p) {
+        min.x = Math.min(p.x, min.x);
+        min.y = Math.min(p.y, min.y);
+        max.x = Math.min(p.x, max.x);
+        max.y = Math.min(p.y, max.y);
+        return new THREE.Vector2(p.x, -p.y);
+      });
+      var shape = new THREE.Shape(roomPoints);
+      addShape(shape, r, f.level);
 
-      var center = {
-        x: max.x - min.x,
-        y: max.y - min.y,
-        z: 0
-      };
-      // camera.lookAt(center);
-    });
+    }
+
+    var center = {
+      x: max.x - min.x,
+      y: max.y - min.y,
+      z: 0
+    };
+    // camera.lookAt(center);
+    // });
   }
 
   function cubyBuilding(b) {
@@ -135,7 +195,7 @@ function init() {
       // return;
     }
   }
-  cubyBuilding(gon.company.buildings[1]);
+  cubyBuilding(building);
   // for (var i = 0; i < gon.company.buildings.length; i++) {
   //   var b = gon.company.buildings[i];
   //   cubyBuilding(b);
@@ -148,8 +208,7 @@ function init() {
   renderer.setClearColor(0xffffff);
   renderer.setPixelRatio(window.devicePixelRatio);
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-
+  renderer.setSize(canvasWidth, window.innerHeight);
 
   container.appendChild(renderer.domElement);
 
@@ -162,19 +221,10 @@ function init() {
   window.addEventListener('resize', onWindowResize, false);
 }
 
-function start() {
-  $(function() {
-    init();
-    animate();
-  });
-}
-
 function onWindowResize() {
-
-  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = canvasWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(canvasWidth, window.innerHeight);
   controls.handleResize();
 }
 
@@ -228,14 +278,17 @@ function grid() {
   // scene.add(line);
 }
 
-function animate() {
-  requestAnimationFrame(animate);
-  controls.update();
+function cuby_animate() {
+  requestAnimationFrame(cuby_animate);
+  updates();
   render();
+}
+
+function updates() {
+  controls.update();
   stats.update();
 }
 
 function render() {
-  var timer = Date.now() * 0.0001;
   renderer.render(scene, camera);
 }

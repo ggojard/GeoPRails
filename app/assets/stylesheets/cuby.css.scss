@@ -5,3 +5,43 @@ canvas.cuby{
   width: 100%;
   height: 100%;
 }
+
+#stats{
+  right: 0;
+}
+
+#CubyContainer{
+  // position: absolute;
+  // left: 0;
+  // top:80;
+  border:1px solid #eee;
+  // width: 330px;
+  // height: 800px;
+  background: white;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: table;
+  &>li{
+    display: table-cell;
+    vertical-align: top;
+    &.CubyMenu{
+      width:330px;
+    }
+  }
+  .CubyMenu{
+    .filter-container{
+      width: 100%;
+    }
+    ul.filters, #myTabFilter{
+        width: 100%;
+        display: block;
+        & > li{
+            width: 100%;
+            display: block;
+        }
+    }
+}
+
+}
+

@@ -20,7 +20,9 @@
                 </li>
               </ul>
             </div>
-          </li><li ng-repeat="(id, rt) in f[filter.name].filters.names" class='color-filter animated flipInX'>
+          </li>
+          <!-- <li>{{f[filter.name].filters}}</li> -->
+          <li ng-repeat="(id, rt) in f[filter.name].filters.names" class='color-filter animated flipInX'>
           <div class="checkbox" style="background-color: {{rt.color}}">
             <ul class="filter-zone">
               <li class="selection-checkbox"><label><input type="checkbox" ng-model="rt.state" ng-change="f[filter.name].filterStateChange(rt)">

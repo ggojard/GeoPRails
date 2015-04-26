@@ -1,0 +1,16 @@
+<div ng-controller="CubyController">
+  <div ng-show="loading" class="loading"><img alt="chargement..."></div>
+  <div ng-show="!loading">
+    <ul id="CubyContainer">
+      <li class="CubyMenu">
+        <div ng-repeat="buildingId in buildings">
+          <%= render '/floors/filters' %>
+        </div>
+      </li>
+      <li id="CubyWebGL"></li>
+    </ul>
+  </div>
+</div>
+<script>
+// start();
+</script>

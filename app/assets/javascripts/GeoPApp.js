@@ -131,15 +131,7 @@
         editor.setOptions();
         mapFilter.addEditor(editor);
       }
-      mapFilter.loadFilters();
-      mapFilter.registerFiltersStateChange();
-      $rootScope.mapFilter = mapFilter;
-      mapFilter.ready();
-      if ($rootScope.mapFilterByBuildingId === undefined) {
-        $rootScope.mapFilterByBuildingId = {};
-      }
-      $rootScope.mapFilterByBuildingId[buildingId] = mapFilter;
-
+      mapFilter.setup();
       geoP.selectPolylineIfIsInHash($scope);
 
       $scope.$apply();
