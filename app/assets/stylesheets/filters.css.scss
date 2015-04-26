@@ -14,6 +14,10 @@ ul.filters {
     flex-flow: row wrap;
 
     & > li {
+
+        &:hover{
+            cursor: pointer;
+        }
         list-style: none;
         margin: 0px;
         border-radius: 0;

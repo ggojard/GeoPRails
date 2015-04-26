@@ -7,6 +7,12 @@
     $scope.f[filterName].filterStateChange = function(filter) {
       $rootScope.$emit(filterName + '_filters.StateChange', filter);
     };
+    $scope.f[filterName].clickOnFilter = function(filter) {
+      filter.state = !filter.state;
+      $rootScope.$emit(filterName + '_filters.StateChange', filter);
+    };
+
+
     $scope.f[filterName].CheckAll = function() {
       var key, filter;
       for (key in $scope.f[filterName].filters.names) {

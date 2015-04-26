@@ -8,7 +8,7 @@
     <div class="tab-pane" ng-class="{active : $first, in : $first}" id="{{filter.name}}_filter" ng-repeat="filter in filterNames" >
       <form class="form-horizontal">
         <ul class="filters">
-          <li class="animated flipInX ">
+          <li class="animated flipInX " ng-click="f[filter.name].checkAll = !f[filter.name].checkAll;f[filter.name].CheckAll();">
             <div class="checkbox check-all color-filter ">
               <ul class="filter-zone">
                 <li class="selection-checkbox">  <input type="checkbox" ng-model="f[filter.name].checkAll" ng-change="f[filter.name].CheckAll()"></li>
@@ -22,10 +22,10 @@
             </div>
           </li>
           <!-- <li>{{f[filter.name].filters}}</li> -->
-          <li ng-repeat="(id, rt) in f[filter.name].filters.names" class='color-filter animated flipInX'>
+          <li ng-repeat="(id, rt) in f[filter.name].filters.names" class='color-filter animated flipInX' ng-click="f[filter.name].clickOnFilter(rt)">
           <div class="checkbox" style="background-color: {{rt.color}}">
             <ul class="filter-zone">
-              <li class="selection-checkbox"><label><input type="checkbox" ng-model="rt.state" ng-change="f[filter.name].filterStateChange(rt)">
+              <li class="selection-checkbox" ><label><input type="checkbox" ng-model="rt.state" ng-change="f[filter.name].filterStateChange(rt)">
             </li>
             <li class="selection-organization" ng-if="filter.name === 'organization'"><a href="/organizations/{{id}}" class="filter-open-icon"><i class="fa fa-info-circle"></i></a></li>
             <li class="selection-name">{{f[filter.name].filters.names[id].name}}</li>
