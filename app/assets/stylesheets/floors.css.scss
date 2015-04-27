@@ -21,6 +21,9 @@ svg {
     polygon:hover, text:hover {
         cursor: pointer;
     }
+    polygon{
+        opacity: 0.69;
+    }
     circle:hover{
         cursor: move;
     }

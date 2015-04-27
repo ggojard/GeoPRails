@@ -11,7 +11,8 @@
           <li class="animated flipInX " ng-click="f[filter.name].checkAll = !f[filter.name].checkAll;f[filter.name].CheckAll();">
             <div class="checkbox check-all color-filter ">
               <ul class="filter-zone">
-                <li class="selection-checkbox">  <input type="checkbox" ng-model="f[filter.name].checkAll" ng-change="f[filter.name].CheckAll()"></li>
+               <!-- ng-change="f[filter.name].CheckAll()" -->
+                <li class="selection-checkbox">  <input type="checkbox" ng-model="f[filter.name].checkAll" disabled></li>
                 <li class="selection-name">
                   <label>
                     <span ng-if="f[filter.name].checkAll == true">Tout décocher</span>
@@ -25,7 +26,8 @@
           <li ng-repeat="(id, rt) in f[filter.name].filters.names" class='color-filter animated flipInX' ng-click="f[filter.name].clickOnFilter(rt)">
           <div class="checkbox" style="background-color: {{rt.color}}">
             <ul class="filter-zone">
-              <li class="selection-checkbox" ><label><input type="checkbox" ng-model="rt.state" ng-change="f[filter.name].filterStateChange(rt)">
+             <!-- ng-change="f[filter.name].filterStateChange(rt)" -->
+              <li class="selection-checkbox" ><label><input type="checkbox" ng-model="rt.state" disabled/>
             </li>
             <li class="selection-organization" ng-if="filter.name === 'organization'"><a href="/organizations/{{id}}" class="filter-open-icon"><i class="fa fa-info-circle"></i></a></li>
             <li class="selection-name">{{f[filter.name].filters.names[id].name}}</li>
