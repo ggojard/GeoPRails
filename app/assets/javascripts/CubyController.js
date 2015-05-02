@@ -14,25 +14,25 @@
     geoP.handleKeyEventsForScope($scope);
 
     $http.get(gon.building.url + '.json').success(function(b) {
-
-
       $scope.buildings = [b.id];
       $rootScope.buildings = $scope.buildings;
 
       $rootScope.$emit('SetBodyColor', b);
-      // $scope.mapMode = 'show';
       $scope.building = b;
       $scope.floorsByBuildingId[b.id] = b.floors;
 
       geoP.setFloorMaps(b.id, b.floors, $scope, $http, $rootScope);
 
-      var cuby = new Cuby($rootScope, b);      
-      // cuby.animate();
+      $scope.loading = false;
+      var cuby = new GeoP.Cuby($rootScope, b);
+      setTimeout(function() {
 
-      
+        cuby.initDomIsReady();
+
+      }, 500);
 
       // geoP.setFloorMaps(b.id, b.floors, $scope, $http, $rootScope);
-      $scope.loading = false;
+
     });
 
 

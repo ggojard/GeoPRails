@@ -1,95 +1,157 @@
-// if (!Detector.webgl) Detector.addGetWebGLMessage();
+(function() {
+  'use strict';
+  /*global THREE, Stats, GeoP, requestAnimationFrame*/
 
-var container, stats;
+  var floorAmount = 200,
+    floorSpace = 300,
+    // canvasWidth = window.innerWidth - 350,
+    Cuby;
 
-var camera, scene, renderer;
-var radious = 1600,
-  theta = 45,
-  onMouseDownTheta = 45,
-  phi = 60,
-  onMouseDownPhi = 60;
+  Cuby = function($rootScope, buildingJson) {
+    this.buildingJson = buildingJson;
+    this.rooms3dById = {};
+    this.$rootScope = $rootScope;
+    $rootScope.mapFilter.cuby = this;
+    this.init();
+  };
 
-var isMouseDown, ray, onMouseDownPosition, controls, projector;
-var canvasWidth = window.innerWidth - 350;
+  Cuby.prototype.applyFilters = function(filterName) {
+    var oId, room3d, item, value;
+    for (oId in this.rooms3dById) {
+      if (this.rooms3dById.hasOwnProperty(oId)) {
+        room3d = this.rooms3dById[oId];
+        room3d.three.material = room3d.material.vectrices;
+        value = room3d.json[filterName];
+        if (value !== undefined) {
+          item = this.$rootScope.mapFilter.bfilters[this.buildingJson.id].belongsToItems[filterName][value.id];
+          if (item.state === true) {
+            room3d.three.material = room3d.material.fill;
+            room3d.three.material.color.setHex(item.color.replace('#', '0x'));
+          }
+        }
+      }
+    }
+  };
 
-rooms3dById = {};
+  Cuby.prototype.setupCamera = function() {
+    this.camera = new THREE.PerspectiveCamera(45, this.container.clientWidth / this.container.clientHeight, 1, 10000);
+    this.camera.position.set(4500, 4000, 4000);
+  };
 
-var Cuby = function($rootScope, buildingJson) {
-  cuby_init(buildingJson)
-  this.buildingJson = buildingJson;
-  this.$rootScope = $rootScope;
-  $rootScope.mapFilter.cuby = this;
-  cuby_animate();
+  Cuby.prototype.setupControls = function() {
+    this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
+    this.controls.rotateSpeed = 1.0;
+    this.controls.zoomSpeed = 1.2;
+    this.controls.panSpeed = 0.8;
+    this.controls.noZoom = false;
+    this.controls.noPan = false;
+    this.controls.staticMoving = true;
+    this.controls.dynamicDampingFactor = 0.3;
+    this.controls.keys = [65, 83, 68];
+    this.controls.addEventListener('change', this.render.bind(this));
+  };
 
-};
+  Cuby.prototype.setupRenderer = function() {
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true
+    });
+    this.renderer.setClearColor(0xffffff);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+    this.container.appendChild(this.renderer.domElement);
+  };
 
-Cuby.prototype.applyFilters = function(filterName) {
+  Cuby.prototype.init = function() {
+    this.container = document.getElementById('CubyWebGL');
+  };
 
-  for (var oId in rooms3dById) {
-    var room3d = rooms3dById[oId];
-    room3d.three.material = room3d.material.vectrices;
+  Cuby.prototype.initDomIsReady = function() {
+    this.setupCamera();
+    this.setupRenderer();
+    this.setupSceneAndLight();
+    this.setupAxes();
+    this.createBuilding(this.buildingJson);
+    this.setupControls();
+    window.addEventListener('resize', this.onWindowResize.bind(this), false);
+    this.animate();
+
+  };
+
+  Cuby.prototype.onWindowResize = function() {
+    this.renderer.domElement.style.height = window.innerHeight + 'px';
+    this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+    this.controls.handleResize();
+  };
 
 
-    value = room3d.json[filterName];
-    if (value !== undefined) {
-      var item = this.$rootScope.mapFilter.bfilters[this.buildingJson.id].belongsToItems[filterName][value.id];
-      if (item.state === true) {
-        room3d.three.material = room3d.material.fill;
-        room3d.three.material.color.setHex(item.color.replace('#', '0x'));
+  Cuby.prototype.setupSceneAndLight = function() {
+    this.scene = new THREE.Scene();
+    var light = new THREE.AmbientLight(0xffffff); // soft white light
+    this.scene.add(light);
+  };
+
+  Cuby.prototype.setupStats = function() {
+    this.stats = new Stats();
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.top = '60px';
+    this.stats.domElement.style.zIndex = 100;
+    this.container.appendChild(this.stats.domElement);
+  };
+
+  Cuby.prototype.createBuilding = function(b) {
+    var i, f;
+    for (i = 0; i < b.floors.length; i += 1) {
+      f = b.floors[i];
+      this.createFloor(f);
+    }
+  };
+
+  Cuby.prototype.createFloor = function(f) {
+    var min, max, i, r, points, roomPoints, shape;
+    min = {
+      x: 0,
+      y: 0
+    };
+    max = {
+      x: 0,
+      y: 0
+    };
+
+    function getVector(p) {
+      min.x = Math.min(p.x, min.x);
+      min.y = Math.min(p.y, min.y);
+      max.x = Math.min(p.x, max.x);
+      max.y = Math.min(p.y, max.y);
+      return new THREE.Vector2(p.x, -p.y);
+    }
+
+    for (i = 0; i < f.rooms.length; i += 1) {
+      r = f.rooms[i];
+      points = JSON.parse(r.points);
+      if (points !== null) {
+        roomPoints = points.map(getVector);
+        shape = new THREE.Shape(roomPoints);
+        this.addShape(shape, r, f.level);
       }
     }
 
-    // room3d.three.material = fillMaterial;
-  }
-
-  // material.color.setHex(0xff0000);
-  // rooms3dById[r.id].material.color.setHex(0xff0000);
-};
-
-var floorAmount = 200;
-var floorSpace = 300;
+    // center = {
+    //   x: max.x - min.x,
+    //   y: max.y - min.y,
+    //   z: 0
+    // };
+    // camera.lookAt(center);
+  };
 
 
-function cuby_init(building) {
-  container = document.getElementById('CubyWebGL');
-
-  var lookAt = new THREE.Vector3(2000, 0, 0);
-  camera = new THREE.PerspectiveCamera(45, canvasWidth / window.innerHeight, 1, 10000);
-  camera.position.set(4500, 4000, 4000);
-
-
-  renderer = new THREE.WebGLRenderer({
-    antialias: true
-  });
-  renderer.setClearColor(0xffffff);
-  renderer.setPixelRatio(window.devicePixelRatio);
-
-  renderer.setSize(canvasWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
-
-
-  controls = new THREE.TrackballControls(camera, renderer.domElement);
-  controls.rotateSpeed = 1.0;
-  controls.zoomSpeed = 1.2;
-  controls.panSpeed = 0.8;
-  controls.noZoom = false;
-  controls.noPan = false;
-  controls.staticMoving = true;
-  controls.dynamicDampingFactor = 0.3;
-  controls.keys = [65, 83, 68];
-  controls.addEventListener('change', render);
-
-  scene = new THREE.Scene();
-
-  var light = new THREE.AmbientLight(0xffffff); // soft white light
-  scene.add(light);
-  grid();
-
-  function addShape(shape, roomJson, floorLevel) {
-    var color;
-    var points = shape.createPointsGeometry();
-    var spacedPoints = shape.createSpacedPointsGeometry(0);
-    var options = {
+  Cuby.prototype.addShape = function(shape, roomJson, floorLevel) {
+    // var points, spacedPoints;
+    var options, geometry, vectricesMaterial, fillMaterial, group1;
+    // points = shape.createPointsGeometry();
+    // spacedPoints = shape.createSpacedPointsGeometry(0);
+    options = {
       amount: floorAmount,
       curveSegments: 0,
       steps: 0,
@@ -98,12 +160,9 @@ function cuby_init(building) {
     };
 
     // 3d shape
-    var geometry = new THREE.ExtrudeGeometry(shape, options);
-    // var radius = 200;
+    geometry = new THREE.ExtrudeGeometry(shape, options);
 
-
-
-    var vectricesMaterial = new THREE.MeshBasicMaterial({
+    vectricesMaterial = new THREE.MeshBasicMaterial({
       color: 0xdddddd, // vectrices
       shading: THREE.FlatShading,
       wireframe: true,
@@ -111,45 +170,18 @@ function cuby_init(building) {
       opacity: 0.125
     });
 
-    var fillMaterial = new THREE.MeshLambertMaterial({
+    fillMaterial = new THREE.MeshLambertMaterial({
       color: 0x00ff00,
       shading: THREE.FlatShading,
       vertexColors: THREE.VertexColors,
       transparent: true,
       opacity: 0.75
     });
-
-
-    // var materials = [
-    //   new THREE.MeshLambertMaterial({
-    //     color: 0x00ff00,
-    //     shading: THREE.FlatShading,
-    //     vertexColors: THREE.VertexColors
-    //   }),
-    //   new THREE.MeshBasicMaterial({
-    //     color: 0xff0000, // vectrices
-    //     shading: THREE.FlatShading,
-    //     wireframe: true,
-    //     transparent: true
-    //   })
-    // ];
-    // material = new THREE.MeshLambertMaterial({
-    //   color: 0x00ff00,
-    //   shading: THREE.FlatShading,
-    //   vertexColors: THREE.VertexColors
-    // });
-
-
-
-    // material = new THREE.MeshBasicMaterial({color:0x00ff00});
-
-    // var group1 = THREE.SceneUtils.createMultiMaterialObject(geometry, materials);
-    var group1 = new THREE.Mesh(geometry, vectricesMaterial);
+    group1 = new THREE.Mesh(geometry, vectricesMaterial);
     group1.rotation.x = -Math.PI / 2;
     group1.position.y = (floorLevel * (floorAmount + floorSpace));
-    // group1.json = 
-    scene.add(group1);
-    rooms3dById[roomJson.id] = {
+    this.scene.add(group1);
+    this.rooms3dById[roomJson.id] = {
       json: roomJson,
       three: group1,
       material: {
@@ -157,141 +189,65 @@ function cuby_init(building) {
         fill: fillMaterial
       }
     };
-    // return material;
-  }
+  };
 
-  function cubyFloor(f) {
-    // $.getJSON('/floors/' + floor.id, function(f) {
-    var min = {
-      x: 0,
-      y: 0
-    };
-    var max = {
-      x: 0,
-      y: 0
-    };
-    for (var i = 0; i < f.rooms.length; i++) {
-      // for (var i = 0; i < 1; i++) {
-      var r = f.rooms[i];
-      var points = JSON.parse(r.points);
-      if (points === null) {
-        continue;
-      }
-      var roomPoints = points.map(function(p) {
-        min.x = Math.min(p.x, min.x);
-        min.y = Math.min(p.y, min.y);
-        max.x = Math.min(p.x, max.x);
-        max.y = Math.min(p.y, max.y);
-        return new THREE.Vector2(p.x, -p.y);
-      });
-      var shape = new THREE.Shape(roomPoints);
-      addShape(shape, r, f.level);
 
+  Cuby.prototype.setupAxes = function() {
+    var line, geometry, materialRed, materialGreen, materialBlue;
+
+    materialRed = new THREE.LineBasicMaterial({
+      color: 0xff0000
+    });
+    materialGreen = new THREE.LineBasicMaterial({
+      color: 0x00ff00
+    });
+    materialBlue = new THREE.LineBasicMaterial({
+      color: 0x0000ff
+    });
+
+    geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+    geometry.vertices.push(new THREE.Vector3(2000, 0, 0));
+    line = new THREE.Line(geometry, materialRed, THREE.LineStrip);
+    this.scene.add(line);
+
+
+    geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+    geometry.vertices.push(new THREE.Vector3(0, 1000, 0));
+    line = new THREE.Line(geometry, materialGreen, THREE.LineStrip);
+    this.scene.add(line);
+
+
+    geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+    geometry.vertices.push(new THREE.Vector3(0, 0, 1000));
+    line = new THREE.Line(geometry, materialBlue, THREE.LineStrip);
+    this.scene.add(line);
+  };
+
+  Cuby.prototype.animate = function() {
+    requestAnimationFrame(this.animate.bind(this));
+    this.updates();
+    this.render();
+  };
+
+  Cuby.prototype.updates = function() {
+    if (this.controls !== undefined) {
+      this.controls.update();
     }
-
-    var center = {
-      x: max.x - min.x,
-      y: max.y - min.y,
-      z: 0
-    };
-    // camera.lookAt(center);
-    // });
-  }
-
-  function cubyBuilding(b) {
-    // cubyFloor(b.floors[0]);
-    for (var i = 0; i < b.floors.length; i++) {
-      var f = b.floors[i];
-      cubyFloor(f);
-      // return;
+    if (this.stats !== undefined) {
+      this.stats.update();
     }
-  }
-  cubyBuilding(building);
-  // for (var i = 0; i < gon.company.buildings.length; i++) {
-  //   var b = gon.company.buildings[i];
-  //   cubyBuilding(b);
-  //   // return;
-  // }
+  };
+
+  Cuby.prototype.render = function() {
+    if (this.renderer !== undefined) {
+      this.renderer.render(this.scene, this.camera);
+    }
+  };
 
 
+  GeoP.Cuby = Cuby;
 
-  stats = new Stats();
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.top = '60px';
-  stats.domElement.style.zIndex = 100;
-  container.appendChild(stats.domElement);
-
-  window.addEventListener('resize', onWindowResize, false);
-}
-
-function onWindowResize() {
-  camera.aspect = canvasWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(canvasWidth, window.innerHeight);
-  controls.handleResize();
-}
-
-function grid() {
-  var line, geometry;
-
-  var materialRed = new THREE.LineBasicMaterial({
-    color: 0xff0000
-  });
-  var materialGreen = new THREE.LineBasicMaterial({
-    color: 0x00ff00
-  });
-  var materialBlue = new THREE.LineBasicMaterial({
-    color: 0x0000ff
-  });
-
-
-  geometry = new THREE.Geometry()
-  geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-  geometry.vertices.push(new THREE.Vector3(2000, 0, 0));
-  line = new THREE.Line(geometry, materialRed, THREE.LineStrip);
-  scene.add(line);
-
-
-  geometry = new THREE.Geometry()
-  geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-  geometry.vertices.push(new THREE.Vector3(0, 1000, 0));
-  line = new THREE.Line(geometry, materialGreen, THREE.LineStrip);
-  scene.add(line);
-
-
-  geometry = new THREE.Geometry()
-  geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-  geometry.vertices.push(new THREE.Vector3(0, 0, 1000));
-  line = new THREE.Line(geometry, materialBlue, THREE.LineStrip);
-  scene.add(line);
-
-  // var line_material = new THREE.LineBasicMaterial({
-  //     color: 0x303030
-  //   }),
-  //   geometry = new THREE.Geometry(),
-  //   floor = -75,
-  //   step = 25;
-  // for (var i = 0; i <= 40; i++) {
-  //   geometry.vertices.push(new THREE.Vector3(-500, floor, i * step - 500));
-  //   geometry.vertices.push(new THREE.Vector3(500, floor, i * step - 500));
-  //   geometry.vertices.push(new THREE.Vector3(i * step - 500, floor, -500));
-  //   geometry.vertices.push(new THREE.Vector3(i * step - 500, floor, 500));
-  // }
-  // var line = new THREE.Line(geometry, line_material, THREE.LinePieces);
-  // scene.add(line);
-}
-
-function cuby_animate() {
-  requestAnimationFrame(cuby_animate);
-  updates();
-  render();
-}
-
-function updates() {
-  controls.update();
-  stats.update();
-}
-
-function render() {
-  renderer.render(scene, camera);
-}
+}());
