@@ -1,7 +1,7 @@
 <div keepscrolltop class="home" ng-controller="FloorMapCtrl">
   <div ng-show="loading" class="loading"><img alt="chargement..."></div>
   <div ng-show="!loading">
-    <div class="jumbotron-surfy"  style="background-color: {{bgColor[buildingId]}}">
+    <div class="jumbotron-surfy" style="background-color: {{bgColor[buildingId]}}">
       <h2><a href="{{floorJson.building.url}}">{{floorJson.building.name}}</a></h2>
       <h2>> <a href="{{floorJson.url}}">{{floorJson.name}}</a></h2>
     </div>

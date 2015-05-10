@@ -1,12 +1,13 @@
-<div  class="filter-container" ng-controller="FiltersCtrl">
+<div  class="filter-container" ng-controller="ChartController" ng-init="init();">
   <ul id="myTabChart" class="nav nav-pills nav-justified" role="tablist" >
     <li ng-repeat="filter in filterNames" ng-class="{active : $first}">
-      <a href="#{{filter.name}}_chart" ng-click="chartPaneClick(filter, buildingId);" >{{filter.label}}</a>
+      <a href="#{{filter.name}}_chart" ng-click="chartPaneClick(filter, buildingId);" data-toggle="tab">{{filter.label}}</a>
     </li>
   </ul>
   <div class="tab-content">
-    <div ng-controller="ChartsCtrl">
-      <div id="chart_div_{{buildingId}}" class="chart_div" ng-if="chart !== null"></div>
+    <div class="chart-zone">
+    <!-- chart : {{chart}} -->
+      <div id="chart_div_{{buildingId}}" class="chart_div" setup-chart></div>
     </div>
   </div>
 </div>

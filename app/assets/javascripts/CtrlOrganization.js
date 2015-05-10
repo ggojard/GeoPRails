@@ -15,15 +15,13 @@
       r = $scope.o.rooms[i];
       floorId = r.floor.id;
       buildingId = r.floor.building_id;
-      if (buildings[buildingId] === undefined) {
-        buildings[buildingId] = [];
-      }
-      buildings[buildingId].push(floorId);
+      // if (buildings[buildingId] === undefined) {
+      //   buildings[buildingId] = [];
+      // }
+      // buildings[buildingId].push(floorId);
       floors[r.floor.id] = r.floor;
     }
 
-    $scope.buildings = Object.keys(buildings);
-    $rootScope.buildings = $scope.buildings;
 
     function loadFloors(floorsArrayLocal) {
       var buildingsById = {},
@@ -36,7 +34,15 @@
           floorsByBuildingId[f.building_id] = [];
         }
         floorsByBuildingId[f.building_id].push(f);
+      if (buildings[f.building_id] === undefined) {
+        buildings[f.building_id] = [];
+      }
+      buildings[f.building_id].push(f.id);
+
       });
+
+    $scope.buildings = Object.keys(buildings);
+    $rootScope.buildings = $scope.buildings;
 
       Object.keys(buildings).forEach(function(bId) {
         floorsByBuildingId[bId].sort(function(a, b) {
@@ -50,19 +56,20 @@
       $scope.mapMode = 'show';
       $scope.filter = {};
 
-      function loadMapCallback(mapFilter, localBuildingId) {
-        $scope.filter[localBuildingId] = mapFilter.mergedFiltersForBuildings[localBuildingId].organization[$scope.o.id];
-        var filter = mapFilter.bfilters[localBuildingId].belongsToItems.organization[$scope.o.id];
-        filter.state = true;
-        $rootScope.$emit('organization_filters.StateChange', filter);
-        $scope.$apply();
-      }
+      // function loadMapCallback(mapFilter, localBuildingId) {
+      // $scope.$apply();
+      // }
 
       function loadBuilding(localBuildingId) {
+        console.log('load building', localBuildingId, $rootScope.f);
+        var mapFilter, filter;
         $rootScope.$emit('SetBodyColor', buildingsById[localBuildingId]);
-        geoP.setFloorMaps(localBuildingId, $scope.floorsByBuildingId[localBuildingId], $scope, $http, $rootScope, function(mapFilter) {
-          loadMapCallback(mapFilter, localBuildingId);
-        });
+        geoP.setFloorsMaps(localBuildingId, $scope.floorsByBuildingId[localBuildingId], $rootScope, $http);
+        mapFilter = $rootScope.mapFilter[localBuildingId];
+        $scope.filter[localBuildingId] = mapFilter.mergedFiltersForBuildings[localBuildingId].organization[$scope.o.id];
+        filter = mapFilter.bfilters[localBuildingId].belongsToItems.organization[$scope.o.id];
+        filter.state = true;
+        $rootScope.$emit('organization_filters.StateChange', filter);
       }
 
       for (bId in buildings) {
@@ -94,10 +101,11 @@
     $scope.init = function(bId) {
       setTimeout(function() {
         var $id;
+
         $id = $('#tab-oraganization-' + bId);
 
         $id.on('show.bs.tab', function() {
-          $scope.roomInfoTopOffset = 0;
+          $rootScope.roomInfoTopOffset = 0;
         });
 
         $id.on('shown.bs.tab', function() {

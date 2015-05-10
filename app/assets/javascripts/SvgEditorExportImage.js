@@ -25,7 +25,7 @@
   }
 
   function addToWrap(texts, words, t, maxWidth) {
-    t.attr("text", words.join(' '));
+    t.attr('text', words.join(' '));
     if (t.getBBox().width > maxWidth) {
       var text = words.join(' ');
       texts.push(text.substring(0, text.length / 2));
@@ -37,14 +37,15 @@
   }
 
   function textWrap(canvas, fontStyle, maxWidth, content) {
-    var t = canvas.text(0, 0, "");
+    var t, texts, words, tempText, i, test;
+    t = canvas.text(0, 0, '');
     t.node.style.cssText = fontStyle;
-    var texts = [];
-    var words = content.split(" ");
-    var tempText = [words[0]];
-    for (var i = 1; i < words.length; i += 1) {
-      var test = tempText.concat(words[i]);
-      t.attr("text", test.join(' '));
+    texts = [];
+    words = content.split(' ');
+    tempText = [words[0]];
+    for (i = 1; i < words.length; i += 1) {
+      test = tempText.concat(words[i]);
+      t.attr('text', test.join(' '));
       if (t.getBBox().width > maxWidth) {
         texts = addToWrap(texts, tempText, t, maxWidth);
         tempText = [words[i]];
@@ -65,32 +66,32 @@
       fontSize = 16,
       heightOfLine = fontSize;
 
-      if (editor.paper === null){
-        return;
-      }
+    if (editor.paper === null) {
+      return;
+    }
 
     editor.removeLegend();
     filters = editor.mapFilter.bfilters[editor.json.building_id][editor.json.id];
     filtersStatus = editor.mapFilter.bfilters[editor.json.building_id].belongsToItems;
     Object.keys(filters).map(function(fKey) {
       Object.keys(filters[fKey]).map(function(fId) {
-        var text, fstatus;
+        var text, fstatus, fontStyle, texts, boxHeight, i, content, y;
         fstatus = filtersStatus[fKey][fId];
         if (fstatus.state === true) {
-          var fontStyle = 'font-size:' + fontSize + 'px;font-family:arial;fill:black;alignment-baseline:before-edge;text-anchor:middle';
-          var texts = textWrap(editor.canvas, fontStyle, legendWidth, fstatus.name);
-          var boxHeight = heightOfLine + texts.length * fontSize;
+          fontStyle = 'font-size:' + fontSize + 'px;font-family:arial;fill:black;alignment-baseline:before-edge;text-anchor:middle';
+          texts = textWrap(editor.canvas, fontStyle, legendWidth, fstatus.name);
+          boxHeight = heightOfLine + texts.length * fontSize;
           bg = editor.canvas.rect(editor.bgBox.w, line, legendWidth, boxHeight);
           svgElements.push(bg);
           bg.attr({
-            'fill': fstatus.color,
+            'fill': fstatus.colorOpacity,
             'stroke': 'white'
           });
           bg.addClass('map-legend');
 
-          for (var i = 0; i < texts.length; i++) {
-            var content = texts[i];
-            var y = line + i * fontSize + heightOfLine / 2;
+          for (i = 0; i < texts.length; i += 1) {
+            content = texts[i];
+            y = line + i * fontSize + heightOfLine / 2;
             text = editor.canvas.text(editor.bgBox.w + legendWidth / 2, y, content);
             text.node.style.cssText = fontStyle;
             text.addClass('map-legend');
@@ -98,7 +99,7 @@
               'fill': 'black'
             });
             svgElements.push(text);
-          };
+          }
           line += heightOfLine + texts.length * fontSize;
         }
       });

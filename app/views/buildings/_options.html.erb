@@ -1,0 +1,21 @@
+<div class="panel panel-default">
+  <div class="panel-heading" style="background-color: {{bgColor[buildingId]}}">
+    <h3 class="panel-title">Opérations</h3>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li><a href="{{building.url}}/duplicate">Dupliquer le bâtiment</a></li>
+      <li><a href="{{building.url}}/export">Exporter le bâtiment</a></li>
+    </ul>
+  </div>
+</div>
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">Zone de danger</h3>
+  </div>
+  <div class="panel-body">
+    <ul>
+      <li><a ng-click="deleteBuilding()" href="#">Supprimer ce bâtiment et l'ensemble des étages et pièces associés</a></li>
+    </ul>
+  </div>
+</div>

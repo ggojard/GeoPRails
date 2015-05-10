@@ -4,8 +4,6 @@
 
   geoP.app.controller('CubyController', function($scope, $http, $rootScope) {
 
-    $scope.svgEditors = {};
-
     $scope.i18n = gon.i18n;
     geoP.handleTabHeaderClick($rootScope, $scope);
 

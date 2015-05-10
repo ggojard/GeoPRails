@@ -2,27 +2,44 @@
 (function(geoP, $) {
   'use strict';
 
-  var MapFilter = function($rootScope, buildingId) {
+  var MapFilter = function($rootScope, $http, buildingId) {
     this.filters = {};
     this.bfilters = {};
     this.editors = [];
+    this.editorsByFloorId = {};
+    this.floorJsonById = {};
     this.floorJsons = [];
     this.$rootScope = $rootScope;
-    this.$rootScope.mapFilter = this;
+    if (this.$rootScope.mapFilter === undefined) {
+      this.$rootScope.mapFilter = {};
+    }
+    this.$rootScope.mapFilter[buildingId] = this;
+    this.$rootScope.f = {};
+    this.$http = $http;
     this.buildingId = buildingId;
     this.mergedFiltersForBuildings = {};
     this.cuby = null;
+    this.registerFilters(buildingId);
   };
 
-  MapFilter.prototype.addEditor = function(editor, floorJson) {
+
+  MapFilter.prototype.addFloorJson = function(floorJson) {
+    this.floorJsons.push(floorJson);
+    this.floorJsonById[floorJson.id] = floorJson;
+  };
+
+  MapFilter.prototype.addEditor = function(editor) {
     if (editor !== null && editor !== undefined) {
       this.editors.push(editor);
+      this.editorsByFloorId[editor.json.id] = editor;
     }
-    if (floorJson !== undefined) {
-      this.floorJsons.push(floorJson);
-    } else {
-      this.floorJsons.push(editor.json);
-    }
+    // if (floorJson !== undefined) {
+    //   this.floorJsons.push(floorJson);
+    //   this.floorJsonById[floorJson.id] = floorJson;
+    // } else {
+    //   this.floorJsons.push(editor.json);
+    //   this.floorJsonById[editor.json.id] = editor.json;
+    // }
   };
 
   // MapFilter.prototype.filterData = function() {
@@ -42,6 +59,7 @@
   // };
 
   MapFilter.prototype.ready = function() {
+    console.log('emit map ready');
     this.$rootScope.$emit('MapFilter.Ready', this);
   };
 
@@ -55,6 +73,77 @@
     }
     for (i = 0; i < filtersNames.length; i += 1) {
       load(filtersNames[i].name);
+    }
+  };
+
+  function hexToRgba(hex) {
+    var result, resVar;
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    hex = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
+      /*jslint unparam:true*/
+      return r + r + g + g + b + b;
+    });
+
+    result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    resVar = result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+    return ['rgba(', resVar.r, ',', resVar.g, ',', resVar.b, ',', 0.69, ')'].join('');
+  }
+
+  function updateFilterColors(filterObj) {
+    var key, filter;
+    for (key in filterObj.filters.names) {
+      if (filterObj.filters.names.hasOwnProperty(key)) {
+        filter = filterObj.filters.names[key];
+        filter.colorOpacity = hexToRgba(filter.color);
+      }
+    }
+  }
+
+  MapFilter.prototype.registerFilterCtrl = function(buildingId, filterName) {
+    var filterObj = {},
+      that = this;
+    filterObj.checkAll = false;
+    filterObj.filterStateChange = function(filter) {
+      that.$rootScope.$emit(filterName + '_filters.StateChange', filter);
+    };
+    filterObj.clickOnFilter = function(filter) {
+      filter.state = !filter.state;
+      that.$rootScope.$emit(filterName + '_filters.StateChange', filter);
+    };
+
+    filterObj.CheckAll = function() {
+      var key, filter;
+      for (key in filterObj.filters.names) {
+        if (filterObj.filters.names.hasOwnProperty(key)) {
+          filter = filterObj.filters.names[key];
+          filter.state = filterObj.checkAll;
+          that.$rootScope.$emit(filterName + '_filters.StateChange', filter);
+        }
+      }
+    };
+
+
+    that.$rootScope.$on(filterName + '_filters.Update', function(e, filters) {
+      /*jslint unparam:true */
+      filterObj.filters = filters;
+      updateFilterColors(filterObj);
+    });
+    if (this.$rootScope.f[buildingId] === undefined) {
+      this.$rootScope.f[buildingId] = {};
+    }
+    this.$rootScope.f[buildingId][filterName] = filterObj;
+  };
+
+
+  MapFilter.prototype.registerFilters = function(buildingId) {
+    var i, filter;
+    for (i = 0; i < geoP.filtersNames.length; i += 1) {
+      filter = geoP.filtersNames[i];
+      this.registerFilterCtrl(buildingId, filter.name);
     }
   };
 
@@ -77,26 +166,19 @@
   MapFilter.prototype.createMergedFiltersByBuilding = function() {
     var bId, filtersForFloorObject, belongsToName, belongsToId, fId, o, n;
 
-
     for (bId in this.bfilters) {
       if (this.bfilters.hasOwnProperty(bId)) {
-
         for (fId in this.bfilters[bId]) {
           if (this.bfilters[bId].hasOwnProperty(fId) && fId !== 'belongsToItems') {
             filtersForFloorObject = this.bfilters[bId][fId];
-
-
             if (this.mergedFiltersForBuildings[bId] === undefined) {
               this.mergedFiltersForBuildings[bId] = {};
             }
-
             for (belongsToName in filtersForFloorObject) {
               if (filtersForFloorObject.hasOwnProperty(belongsToName)) {
-
                 if (this.mergedFiltersForBuildings[bId][belongsToName] === undefined) {
                   this.mergedFiltersForBuildings[bId][belongsToName] = {};
                 }
-
                 for (belongsToId in filtersForFloorObject[belongsToName]) {
                   if (filtersForFloorObject[belongsToName].hasOwnProperty(belongsToId)) {
 
@@ -188,6 +270,7 @@
       this.$rootScope.mapFilterByBuildingId = {};
     }
     this.$rootScope.mapFilterByBuildingId[this.buildingId] = this;
+    // debugger;
   };
 
 
@@ -195,7 +278,7 @@
     this.editors.forEach(function(editor) {
       if (editor.paper !== null && $(editor.paper.node).find('g.select').length > 0) {
         editor.updateRoomOffset();
-        geoP.$apply(editor.$scope);
+        // geoP.$apply(editor.$scope);
       }
     });
   };
@@ -223,7 +306,6 @@
         belongsToItem.state = false;
         this.bfilters[buildingId].belongsToItems[belongsToKeyName][belongsToItem.id] = belongsToItem;
         // this.bfilters[buildingId].belongsToItems[belongsToKeyName].state = false;
-
 
         if (kpis[belongsToItem.id] === undefined) {
           kpis[belongsToItem.id] = {

@@ -1,49 +1,48 @@
-<div class="panel panel-default panel-room animated fadeInRight" ng-if='room != null && roomInfoTopOffset > 0' style="top:{{roomInfoTopOffset}}px">
+<div class="panel panel-default panel-room animated fadeInRight" ng-if='$root.room != null && $root.roomInfoTopOffset > 0' style="top:{{$root.roomInfoTopOffset}}px">
   <div class="panel-heading">
-    <h3 class="panel-title">{{room.json.name}}</h3>
+    <h3 class="panel-title">{{$root.room.json.name}}</h3>
   </div>
   <div class="panel-body box">
     <ul class="map-options">
-      <li ng-repeat="b in room.optionsOnMap" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+      <li ng-repeat="b in $root.room.optionsOnMap" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
     </ul>
     <ul class="map-options">
-      <li ng-repeat="b in svgEditors[room.json.floor_id].dragPointsOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+      <li ng-repeat="b in $root.mapFilter.editorsByFloorId[$root.room.json.floor_id].dragPointsOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
     </ul>
     
     <table class="box-details">
-      <tr ng-if="room.json.name">
-        <th>Nom</th><td>{{room.json.name}}</td>
+      <tr ng-if="$root.room.json.name">
+        <th>Nom</th><td>{{$root.room.json.name}}</td>
       </tr>
-      <tr ng-if="room.json.room_type">
-        <th>Type</th><td>{{room.json.room_type.name}}</td>
+      <tr ng-if="$root.room.json.room_type">
+        <th>Type</th><td>{{$root.room.json.room_type.name}}</td>
       </tr>
-      <tr  ng-if="room.json.area_unit">
-        <th>Surface</th><td>{{room.json.area_unit}}</td>
+      <tr  ng-if="$root.room.json.area_unit">
+        <th>Surface</th><td>{{$root.room.json.area_unit}}</td>
       </tr>
-      <tr  ng-if="room.json.perimeter">
-        <th>Périmètre</th><td>{{room.json.perimeter}} m</td>
+      <tr  ng-if="$root.room.json.perimeter">
+        <th>Périmètre</th><td>{{$root.room.json.perimeter}} m</td>
       </tr>
-      <tr  ng-if="room.json.room_ground_type">
-        <th>Nature des sols</th><td >{{room.json.room_ground_type.name}}</td>
+      <tr  ng-if="$root.room.json.room_ground_type">
+        <th>Nature des sols</th><td >{{$root.room.json.room_ground_type.name}}</td>
       </tr>
-      <tr  ng-if="room.json.evacuation_zone">
-        <th>{{i18n.room.evacuation_zone}}</th><td >{{room.json.evacuation_zone.name}}</td>
+      <tr  ng-if="$root.room.json.evacuation_zone">
+        <th>{{i18n.room.evacuation_zone}}</th><td >{{$root.room.json.evacuation_zone.name}}</td>
       </tr>
-
-      <tr  ng-if="room.json.organization">
-        <th>Organisation</th><td><a href="/organizations/{{room.json.organization.id}}">{{room.json.organization.name}}</a> <i ng-if="room.json.organization.organization_type.name">[{{room.json.organization.organization_type.name}}]</i></td>
+      <tr  ng-if="$root.room.json.organization">
+        <th>Organisation</th><td><a href="/organizations/{{$root.room.json.organization.id}}">{{$root.room.json.organization.name}}</a> <i ng-if="$root.room.json.organization.organization_type.name">[{{$root.room.json.organization.organization_type.name}}]</i></td>
       </tr>
-      <tr ng-if="room.json.network.length > 0">
-        <th>Ports Réseau</th><td ><ul class="network"><li ng-repeat="n in room.json.network.split('\r\n')">{{n}}</li> </ul></td>
+      <tr ng-if="$root.room.json.network.length > 0">
+        <th>Ports Réseau</th><td ><ul class="network"><li ng-repeat="n in $root.room.json.network.split('\r\n')">{{n}}</li> </ul></td>
       </tr>
-      <tr ng-if="room.json.affectations.length > 0">
-        <th>Ratio Affectations</th><td>{{room.json.ratio}} m&#178; / personnes</td>
+      <tr ng-if="$root.room.json.affectations.length > 0">
+        <th>Ratio Affectations</th><td>{{$root.room.json.ratio}} m&#178; / personnes</td>
       </tr>
-      <tr ng-if="room.json.affectations.length > 0">
-        <th>Nombre de personnes</th><td>{{room.json.affectations.length}}</td>
+      <tr ng-if="$root.room.json.affectations.length > 0">
+        <th>Nombre de personnes</th><td>{{$root.room.json.affectations.length}}</td>
       </tr>
-      <tr ng-if="room.json.free_desk_number > 0">
-        <th>{{i18n.room.free_desk_number}}</th><td>{{room.json.free_desk_number}}</td>
+      <tr ng-if="$root.room.json.free_desk_number > 0">
+        <th>{{i18n.room.free_desk_number}}</th><td>{{$root.room.json.free_desk_number}}</td>
       </tr>
     </table>
     

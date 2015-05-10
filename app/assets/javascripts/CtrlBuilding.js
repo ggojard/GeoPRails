@@ -6,26 +6,26 @@
 
     $scope.i18n = gon.i18n;
     geoP.handleTabHeaderClick($rootScope, $scope);
-
     $scope.floorsByBuildingId = {};
-    $scope.loading = true;
+    $scope.loading = false;
     geoP.handleKeyEventsForScope($scope);
 
+    $rootScope.room = null;
+    $rootScope.roomInfoTopOffset = 0;
+
     $http.get(gon.building.url + '.json').success(function(b) {
+      // $scope.loading = false;
       $scope.buildings = [b.id];
       $rootScope.buildings = $scope.buildings;
-
       $rootScope.$emit('SetBodyColor', b);
       $scope.mapMode = 'show';
       $scope.building = b;
       $scope.floorsByBuildingId[b.id] = b.floors;
-
-      geoP.setFloorMaps(b.id, b.floors, $scope, $http, $rootScope);
-      $scope.loading = false;
+      geoP.setFloorsMaps(b.id, b.floors, $rootScope, $http);
+      // $scope.mapFilter = $rootScope.mapFilter;
     });
 
-
-    $scope.deleteBuilding = function(bId) {
+    $scope.deleteBuilding = function() {
       $rootScope.$emit('RightPopupShow', 'Supprimer le Bâtiment ' + $scope.building.name, 'L\'ensemble des étages et pièces associés à ce bâtiment seront supprimés sans possibilité de retour en arrière.', [{
         'label': 'Confirmer',
         classes: 'btn-success',
@@ -41,7 +41,7 @@
         }
       }]);
 
-    }
+    };
 
   });
 

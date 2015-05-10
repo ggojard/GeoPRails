@@ -6,9 +6,8 @@
     </div>
   </div>
   <div class="panel-body">
-    <div class="resizable-svg" ng-class="['shift-' + isShift, 'mode-' + mapMode, 'ctrl-' + isZKeyDown]">
-      
-      <svg id="map-{{f.id}}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink" version="1.1" ng-class="[mode,'shift-' + isShift, 'mode-' + mapMode, 'ctrl-' + isZKeyDown]"  />
+    <div class="resizable-svg" ng-class="['shift-' + isShift, 'mode-' + mapMode, 'ctrl-' + isZKeyDown]" ng-if="f.id !== undefined">
+      <svg data-floor-id="{{f.id}}" data-building-id="{{buildingId}}" id="map-{{f.id}}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink" version="1.1" ng-class="[mode,'shift-' + isShift, 'mode-' + mapMode, 'ctrl-' + isZKeyDown]" setup-editor/>
     </div>
   </div>
 </div>

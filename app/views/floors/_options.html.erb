@@ -1,13 +1,13 @@
 <ul class="map-options">
-  <li ng-repeat="b in svgEditors[f.id].mapOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+  <li ng-repeat="b in mapFilter[buildingId].editorsByFloorId[f.id].mapOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
   <li ng-if="mapMode === 'edit'">
     <label for="mapScale">Echelle (mètre): </label> <input name="mapScale" type="number" step="any" ng-model="mapScale.length" ng-change="mapScale.updateMapScale()"/>
   </li>
 </ul>
 <ul class="map-options">
-  <li ng-repeat="b in svgEditors[f.id].currentOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+  <li ng-repeat="b in mapFilter[buildingId].editorsByFloorId[f.id].currentOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
 </ul>
 <ul class="map-options">
-  <li ng-repeat="b in svgEditors[f.id].dragPointsOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+  <li ng-repeat="b in mapFilter[buildingId].editorsByFloorId[f.id].dragPointsOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
 </ul>
 <div id='debugger'></div>

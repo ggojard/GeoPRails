@@ -1,8 +1,6 @@
 var GeoP = {};
 
-
-
-/*global GeoP:true, jQuery:true*/
+/*global GeoP, jQuery*/
 (function(geoP, $) {
   'use strict';
 
@@ -38,21 +36,21 @@ var GeoP = {};
 
   geoP.handleTabHeaderClick = function($rootScope, $scope) {
     $scope.tabHeaderClick = function(e, bId) {
-      if (e === 'charts') {
-        $rootScope.currentChart[bId].$element.hide();
+      if (e === 'charts' && $rootScope.currentCharts !== undefined) {
+        $rootScope.currentCharts[bId].$element.hide();
+        setTimeout(function() {
+          $rootScope.$emit('Refresh.CurrentChart', bId);
+        }, 0);
       }
-      setTimeout(function() {
-        $rootScope.$emit('Refresh.CurrentChart', bId);
-        $rootScope.mapFilter.updateEditorsRoomPositions();
-      }, 250);
-    }
-
-  }
+      $rootScope.mapFilter[bId].updateEditorsRoomPositions();
+      return false;
+    };
+  };
 
   geoP.$apply = function($scope) {
     setTimeout(function() {
       $scope.$apply();
-    });
+    }, 0);
   };
 
   geoP.getRoomIdFromHash = function() {
@@ -88,13 +86,13 @@ var GeoP = {};
   }];
 
 
-  $(function() {
-    setTimeout(function() {
-      $('.nav.nav-pills a').click(function(e) {
-        e.preventDefault();
-        $(this).tab('show');
-      });
-    }, 1000);
-  });
+  // setTimeout(function() {
+  // $('a[data-toggle="tab"]').on('shown', function(e) {
+  //   debugger;
+  //   location.hash = $(e.target).attr('href').substr(1);
+  //   $(this).focus();
+  //   return false; // or true - whichever you prefer
+  // });
+  // }, 1000);
 
 }(GeoP, jQuery));

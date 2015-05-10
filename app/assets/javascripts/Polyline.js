@@ -422,7 +422,6 @@
 
   Polyline.prototype.doActionIfItemIsSelected = function() {
     if (this.svgEditor.$scope.roomId && this.svgEditor.$scope.roomId === this.json.id) {
-      this.optionsOnMap = [];
       this.group.node.setAttribute('class', 'select');
       this.svgEditor.setCurrentRoom(this);
     }
@@ -792,10 +791,11 @@
   Polyline.prototype.selectPolyline = function() {
     var that = this,
       link;
+    this.optionsOnMap = [];
     that.svgEditor.$scope.roomId = that.json.id;
-    that.doActionIfItemIsSelected();
     that.addEditPolylineOption();
     that.addZoomOnItemOption();
+    that.doActionIfItemIsSelected();
     this.group.node.setAttribute('class', 'select');
     link = '#' + that.json.id;
     document.location.hash = link;
@@ -829,7 +829,6 @@
     if (this.dragMode === true) {
       this.group.undrag();
     }
-
     switch ($scope.mapMode) {
       case 'normal':
       case 'edit':
@@ -848,7 +847,7 @@
         break;
     }
 
-    geoP.$apply($scope);
+    // geoP.$apply($scope);
   };
 
   Polyline.prototype.close = function() {

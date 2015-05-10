@@ -38,8 +38,6 @@
   });
 
   var app = angular.module('GeoP', ['ui.sortable']).run(function($rootScope) { // instance-injector
-    $rootScope.filters = [];
-
     try {
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
@@ -49,9 +47,28 @@
 
   });
 
+  app.directive('setupEditor', function() {
+    return {
+      scope: true,
+      replace: true,
+      link: function($scope, element, attrs) {
+
+        var editor, floor, floorId, mapFilter, buildingId;
+        floorId = attrs.floorId;
+        buildingId = attrs.buildingId;
+        console.log('load editor', floorId);
+        mapFilter = $scope.mapFilter[buildingId];
+        floor = mapFilter.floorJsonById[floorId];
+        editor = new geoP.SvgEditor(floor, mapFilter, $scope, element[0]);
+        editor.loadRooms();
+        editor.setOptions();
+        mapFilter.addEditor(editor);
+        geoP.selectPolylineIfIsInHash($scope);
+      }
+    };
+  });
+
   geoP.app = app;
-
-
 
   app.directive('keepscrolltop', function($window) {
     var count = 0;
@@ -71,46 +88,22 @@
     }
   ]);
 
-  // function unCheckAllFilters($rootScope) {
-  // for (var i = 0; i < $rootScope.filters.length; i++) {
-  //   var $scope = $rootScope.filters[i];
-  //   $scope.checkAll = false;
-  // for (var j = 0; j < $scope.filters.length; j++) {
-  //   var filters = $scope.filters[j];
-  //   for (var key in filters) {
-  //     if (filters.hasOwnProperty(key)) {
-  //       filters[key].state = false;
-  //     }
-  //   }
-  // }
-  // }
-  // }
-
 
   app.controller('CompanyCtrl', function($scope) {
     $scope.company = gon.company;
     $scope.organizations = gon.organizations;
   });
 
-  // app.controller('FloorHeaderCtrl', function($scope) {
-  //   $scope.floorJson = gon.floor;
-  // });
-
-
   geoP.selectPolylineIfIsInHash = function($scope) {
     var roomId, floorId, floorEditor;
-
-    function apply() {
-      $scope.$apply();
-    }
     roomId = geoP.getRoomIdFromHash();
-    for (floorId in $scope.svgEditors) {
-      if ($scope.svgEditors.hasOwnProperty(floorId)) {
-        floorEditor = $scope.svgEditors[floorId];
+
+    for (floorId in $scope.mapFilter.editorsByFloorId) {
+      if ($scope.mapFilter.editorsByFloorId.hasOwnProperty(floorId)) {
+        floorEditor = $scope.mapFilter.editorsByFloorId[floorId];
         if (floorEditor.itemsById[roomId]) {
           $scope.roomId = roomId;
           floorEditor.itemsById[$scope.roomId].selectPolyline();
-          setTimeout(apply, 0);
           return floorEditor.itemsById[$scope.roomId];
         }
       }
@@ -118,25 +111,14 @@
     return null;
   };
 
-  geoP.setFloorMaps = function(buildingId, floors, $scope, $http, $rootScope, callback) {
-    $scope.svgEditors = {};
-    var mapFilter = new geoP.MapFilter($rootScope, buildingId);
-    setTimeout(function() {
-      var i, floor, editor;
-      for (i = 0; i < floors.length; i += 1) {
-        floor = floors[i];
-        editor = new geoP.SvgEditor(floor, $scope, $http, $rootScope, mapFilter);
-        $scope.svgEditors[floor.id] = editor;
-        editor.loadRooms();
-        editor.setOptions();
-        mapFilter.addEditor(editor);
-      }
-      mapFilter.setup();
-      geoP.selectPolylineIfIsInHash($scope);
-
-      $scope.$apply();
-      return callback && callback(mapFilter);
-    }, 0);
+  geoP.setFloorsMaps = function(buildingId, floors, $rootScope, $http) {
+    var i, floor, mapFilter;
+    mapFilter = new geoP.MapFilter($rootScope, $http, buildingId);
+    for (i = 0; i < floors.length; i += 1) {
+      floor = floors[i];
+      mapFilter.addFloorJson(floor);
+    }
+    mapFilter.setup();
   };
 
   geoP.handleKeyEventsForScope = function($scope) {
@@ -175,7 +157,7 @@
         if (key === 90) {
           $scope.isZKeyDown = true;
         }
-        $scope.$apply();
+        // $scope.$apply();
       }
 
     }
@@ -188,7 +170,7 @@
         if (key === 90) {
           $scope.isZKeyDown = false;
         }
-        $scope.$apply();
+        // $scope.$apply();
       }
     }
 
@@ -200,14 +182,14 @@
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
     geoP.handleTabHeaderClick($rootScope, $scope);
     $scope.floorsByBuildingId = {};
-    $scope.loading = true;
+    // $scope.loading = true;
     $scope.mapMode = gon.mode;
     $scope.i18n = gon.i18n;
 
     $http.get('/floors/' + gon.floor.id + '.json').success(function(floor) {
 
       $rootScope.$emit('SetBodyColor', floor.building);
-      $scope.room = null;
+      $rootScope.room = null;
       $scope.roomId = geoP.getRoomIdFromHash();
       $scope.buildings = [floor.building_id];
       $rootScope.buildings = $scope.buildings;
@@ -217,7 +199,7 @@
       geoP.handleKeyEventsForScope($scope);
 
       $scope.floorJson = floor;
-      geoP.setFloorMaps(floor.building_id, $scope.floorsByBuildingId[floor.building_id], $scope, $http, $rootScope);
+      geoP.setFloorsMaps(floor.building_id, $scope.floorsByBuildingId[floor.building_id], $rootScope, $http);
       $scope.loading = false;
     });
 
@@ -225,17 +207,17 @@
       return rooms.reduce(function(a, b) {
         return a + b.affectations.length;
       }, 0);
-    }
+    };
 
     $scope.countFreeSpacesFromRooms = function(rooms) {
       return rooms.reduce(function(a, b) {
         var res = a;
-        if (b.free_desk_number !== null){
+        if (b.free_desk_number !== null) {
           res += b.free_desk_number;
         }
         return res;
       }, 0);
-    }
+    };
 
 
   });

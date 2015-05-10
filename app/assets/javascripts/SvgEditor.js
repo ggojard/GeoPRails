@@ -1,4 +1,4 @@
-/*global GeoP:true, Snap:true, jQuery:true */
+/*global GeoP, Snap, jQuery */
 
 
 
@@ -37,15 +37,15 @@
     geoP.currentEvent = null;
   }
 
-  SvgEditor = function(floorJson, $scope, $http, $rootScope, mapFilter) {
+  SvgEditor = function(floorJson, mapFilter, $scope, dom) {
 
     var dim, bgBox, border, imagePath, that = this;
 
     this.mapFilter = mapFilter;
     this.json = floorJson;
     this.$scope = $scope;
-    this.$http = $http;
-    this.$rootScope = $rootScope;
+    this.$rootScope = this.mapFilter.$rootScope;
+    this.$http = this.mapFilter.$http;
     this.createPolylineLine = null;
     this.createPolylinePolyline = null;
     this.newPoint = null;
@@ -57,21 +57,21 @@
 
 
     this.svgId = 'map-' + floorJson.id;
-    this.paper = snap('#' + this.svgId);
+    // this.paper = snap('#' + this.svgId);
+    this.paper = snap(dom);
     if (this.paper === null) {
       return;
     }
-
 
     this.loadCamera();
     // $rootScope.itemsById = this.itemsById;
     this.canvas = this.paper.g();
     this.canvas.node.id = 'viewport-' + floorJson.id;
 
-    that.displayProperties = $rootScope.displayNames;
+    that.displayProperties = this.$rootScope.displayNames;
 
     $((function() {
-      $('#' + that.svgId).svgPan(that.canvas.node.id, that);
+      $(dom).svgPan(that.canvas.node.id, that);
     }()));
 
     dim = JSON.parse(this.json.image_dimensions);
@@ -117,9 +117,7 @@
       this.centerMap();
     }
 
-
-
-    $rootScope.$on('DisplayNames.Update', function(e, displayNames) {
+    this.$rootScope.$on('DisplayNames.Update', function(e, displayNames) {
       /*jslint unparam:true*/
       that.displayProperties = displayNames;
       that.mapOnItems('removeDisplayTexts');
@@ -139,14 +137,15 @@
   };
 
   SvgEditor.prototype.setCurrentRoom = function(polyline) {
-    this.$scope.room = polyline;
+    this.mapFilter.$rootScope.room = polyline;
     this.updateRoomOffset();
   };
 
   SvgEditor.prototype.updateRoomOffset = function() {
     var offsetTop = this.paper.node.offsetTop;
     if (offsetTop > 0) {
-      this.$scope.roomInfoTopOffset = offsetTop;
+      this.mapFilter.$rootScope.roomInfoTopOffset = offsetTop;
+      geoP.$apply(this.$scope);
     }
   };
 
@@ -284,7 +283,7 @@
   SvgEditor.prototype.setOptions = function() {
     var $scope = this.$scope,
       that = this,
-      createPolyline, mapZoomDefault, editMode, editModeAdmin, stopEditMode, saveToImage;
+      createPolyline, mapZoomDefault, editMode, editModeAdmin, stopEditMode, saveToImage, options;
 
     createPolyline = {
       label: 'Créer une pièce',
@@ -370,9 +369,9 @@
         this.mapOptions = this.mapOptions.concat([stopEditMode, createPolyline]);
         break;
       case 'show':
-        var options = [saveToImage];
-        if (this.$rootScope.userType !== 'READ'){
-          options.push(editMode, editModeAdmin)
+        options = [saveToImage];
+        if (this.$rootScope.userType !== 'READ') {
+          options.push(editMode, editModeAdmin);
         }
         this.mapOptions = this.mapOptions.concat(options);
         break;
@@ -401,7 +400,7 @@
 
   SvgEditor.prototype.unSelectItems = function() {
     this.mapFilter.editors.forEach(function(editor) {
-      editor.$scope.room = null;
+      editor.mapFilter.$rootScope.room = null;
       editor.mapOnItems('unSelect');
     });
   };
