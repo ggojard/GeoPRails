@@ -34,14 +34,8 @@ var GeoP = {};
     }
   };
 
+
   geoP.handleTabHeaderClick = function($rootScope, $scope) {
-    $scope.tabHeaderClick = function(e, bId) {
-      if (e === 'charts' && $rootScope.currentCharts !== undefined) {
-        geoP.refreshCurrentChart(bId, $rootScope);
-      }
-      $rootScope.mapFilter[bId].updateEditorsRoomPositions();
-      return false;
-    };
   };
 
   geoP.$apply = function($scope) {

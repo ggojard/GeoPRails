@@ -224,8 +224,6 @@
     if (this.bfilters[buildingId][floorId] === undefined) {
       this.bfilters[buildingId][floorId] = {};
     }
-
-
     if (this.bfilters[buildingId][floorId] === undefined) {
       this.bfilters[buildingId][floorId] = {};
     }
@@ -244,10 +242,10 @@
     this.$rootScope.mapFilterByBuildingId[this.buildingId] = this;
   };
 
-
   MapFilter.prototype.updateEditorsRoomPositions = function() {
     this.editors.forEach(function(editor) {
-      if (editor.paper !== null && $(editor.paper.node).find('g.select').length > 0) {
+      // && $(editor.paper.node).find('g.select').length > 0
+      if (editor.paper !== null) {
         editor.updateRoomOffset();
       }
     });
@@ -258,25 +256,19 @@
 
     buildingId = floorJson.building.id;
     floorId = floorJson.id;
-
     this.initBuildingFilter(buildingId, floorId, belongsToKeyName);
-
     kpis = {};
 
     for (i = 0; i < floorJson.rooms.length; i += 1) {
       room = floorJson.rooms[i];
       belongsToItem = room[belongsToKeyName];
       if (belongsToItem !== undefined && belongsToItem !== null) {
-
-
         if (this.bfilters[buildingId].belongsToItems[belongsToKeyName] === undefined) {
           this.bfilters[buildingId].belongsToItems[belongsToKeyName] = {};
         }
-
         belongsToItem.state = false;
         this.bfilters[buildingId].belongsToItems[belongsToKeyName][belongsToItem.id] = belongsToItem;
         // this.bfilters[buildingId].belongsToItems[belongsToKeyName].state = false;
-
         if (kpis[belongsToItem.id] === undefined) {
           kpis[belongsToItem.id] = {
             count: 0,
@@ -328,7 +320,6 @@
       if (a.name < b.name) {
         return -1;
       }
-      // a doit être égale à b
       return 0;
     });
     return filter;

@@ -15,10 +15,6 @@
       r = $scope.o.rooms[i];
       floorId = r.floor.id;
       buildingId = r.floor.building_id;
-      // if (buildings[buildingId] === undefined) {
-      //   buildings[buildingId] = [];
-      // }
-      // buildings[buildingId].push(floorId);
       floors[r.floor.id] = r.floor;
     }
 
@@ -108,7 +104,7 @@
           editors.forEach(function(editor) {
             editor.mapOnItems('updateTextPosition');
           });
-          geoP.selectPolylineIfIsInHash($scope);
+          geoP.selectPolylineIfIsInHash($scope, bId);
         });
       }, 0);
     };

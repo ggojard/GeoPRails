@@ -35,6 +35,8 @@
       }
     });
 
+
+
   });
 
   var app = angular.module('GeoP', ['ui.sortable']).run(function($rootScope) { // instance-injector
@@ -44,7 +46,6 @@
     } catch (e) {
       return e;
     }
-
   });
 
   app.directive('setupEditor', function() {
@@ -61,12 +62,31 @@
         editor.loadRooms();
         editor.setOptions();
         mapFilter.addEditor(editor);
-        geoP.selectPolylineIfIsInHash($scope);
+        setTimeout(function(){
+          geoP.selectPolylineIfIsInHash($scope, buildingId);
+        }, 1000);
       }
     };
   });
 
   geoP.app = app;
+
+  app.directive('tabHeader', function() {
+    return {
+      scope: true,
+      replace: true,
+      link: function($scope, element, attr) {
+        $(element).on('shown.bs.tab', function() {
+          if (attr.type === 'charts') {
+            geoP.refreshCurrentChart(attr.buildingId, $scope);
+          }
+          $scope.mapFilter[attr.buildingId].updateEditorsRoomPositions();
+        });
+      }
+    };
+  });
+
+
 
   app.directive('keepscrolltop', function($window) {
     var count = 0;
@@ -92,13 +112,13 @@
     $scope.organizations = gon.organizations;
   });
 
-  geoP.selectPolylineIfIsInHash = function($scope) {
+  geoP.selectPolylineIfIsInHash = function($scope, buildingId) {
     var roomId, floorId, floorEditor;
     roomId = geoP.getRoomIdFromHash();
 
-    for (floorId in $scope.mapFilter.editorsByFloorId) {
-      if ($scope.mapFilter.editorsByFloorId.hasOwnProperty(floorId)) {
-        floorEditor = $scope.mapFilter.editorsByFloorId[floorId];
+    for (floorId in $scope.mapFilter[buildingId].editorsByFloorId) {
+      if ($scope.mapFilter[buildingId].editorsByFloorId.hasOwnProperty(floorId)) {
+        floorEditor = $scope.mapFilter[buildingId].editorsByFloorId[floorId];
         if (floorEditor.itemsById[roomId]) {
           $scope.roomId = roomId;
           floorEditor.itemsById[$scope.roomId].selectPolyline();

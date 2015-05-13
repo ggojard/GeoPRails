@@ -1,4 +1,4 @@
-/*global GeoP, google, $*/
+/*global GeoP, google, $, angular*/
 (function(geoP) {
   'use strict';
   google.load('visualization', '1.0', {
@@ -17,31 +17,31 @@
     chartElement = document.getElementById('chart_div_' + bId);
     angular.element(chartElement).css('display', 'none');
     c = $rootScope.currentCharts[bId];
-    setTimeout(function() {
-      geoP.createColumnChart(bId, chartElement, c.data);
-    }, 0);
+    geoP.createColumnChart(bId, chartElement, c.data);
   };
 
   geoP.createColumnChart = function(bId, element, data) {
     var a, options, chart;
     a = google.visualization.arrayToDataTable(data);
-    options = {};
+    options = {
+      animation: {
+        duration: 1000,
+        easing: 'out',
+        startup: true
+      }
+    };
     if (element === null) {
       return;
     }
     angular.element(element).css('display', 'block');
     chart = new google.visualization.ColumnChart(element);
     chart.draw(a, options);
-    (function(a, options, chart) {
-      currentCharts[bId] = {
-        a: a,
-        options: options,
-        chart: chart,
-        data: data
-      };
-    }(a, options, chart));
-
-
+    currentCharts[bId] = {
+      a: a,
+      options: options,
+      chart: chart,
+      data: data
+    };
   };
 
   filterMethod = function(fName, filter, filterNames, bId) {
@@ -109,7 +109,5 @@
       c = currentCharts[bId];
       c.chart.draw(c.a, c.options);
     };
-
-
   });
 }(GeoP));
