@@ -7,10 +7,7 @@
     $scope.f = $rootScope.f;
     $scope.filterNames = GeoP.filtersNames;
 
-    console.log('start filter', $rootScope.f);
-
     $scope.initFilter = function() {
-      console.log('init filter');
     };
 
     $scope.filterPaneClick = function(filter, bId) {

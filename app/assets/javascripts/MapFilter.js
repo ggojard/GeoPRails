@@ -35,33 +35,9 @@
       this.editors.push(editor);
       this.editorsByFloorId[editor.json.id] = editor;
     }
-    // if (floorJson !== undefined) {
-    //   this.floorJsons.push(floorJson);
-    //   this.floorJsonById[floorJson.id] = floorJson;
-    // } else {
-    //   this.floorJsons.push(editor.json);
-    //   this.floorJsonById[editor.json.id] = editor.json;
-    // }
   };
 
-  // MapFilter.prototype.filterData = function() {
-  //   var filters, filterName, f, filterNames, bId;
-  //   if ($rootScope.mapFilter !== undefined) {
-  //     bId = $rootScope.mapFilter.buildingId;
-  //     filters = $rootScope.mapFilter.mergedFiltersForBuildings[bId];
-  //     filterNames = $rootScope.mapFilter.bfilters[bId].belongsToItems;
-  //     for (filterName in filters) {
-  //       if (filters.hasOwnProperty(filterName)) {
-  //         f = filters[filterName];
-  //         (filterMethod(filterName, f, filterNames, bId));
-  //       }
-  //     }
-  //     // chartsData[bId][geoP.filtersNames[0].name]();
-  //   }
-  // };
-
   MapFilter.prototype.ready = function() {
-    console.log('emit map ready');
     this.$rootScope.$emit('MapFilter.Ready', this);
   };
 
@@ -266,7 +242,6 @@
       this.$rootScope.mapFilterByBuildingId = {};
     }
     this.$rootScope.mapFilterByBuildingId[this.buildingId] = this;
-    // debugger;
   };
 
 
@@ -274,7 +249,6 @@
     this.editors.forEach(function(editor) {
       if (editor.paper !== null && $(editor.paper.node).find('g.select').length > 0) {
         editor.updateRoomOffset();
-        // geoP.$apply(editor.$scope);
       }
     });
   };

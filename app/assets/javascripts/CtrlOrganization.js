@@ -56,12 +56,7 @@
       $scope.mapMode = 'show';
       $scope.filter = {};
 
-      // function loadMapCallback(mapFilter, localBuildingId) {
-      // $scope.$apply();
-      // }
-
       function loadBuilding(localBuildingId) {
-        console.log('load building', localBuildingId);
         var mapFilter, filter;
         $rootScope.$emit('SetBodyColor', buildingsById[localBuildingId]);
         geoP.setFloorsMaps(localBuildingId, $scope.floorsByBuildingId[localBuildingId], $rootScope, $http);

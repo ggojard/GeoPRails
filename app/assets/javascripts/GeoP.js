@@ -37,31 +37,7 @@ var GeoP = {};
   geoP.handleTabHeaderClick = function($rootScope, $scope) {
     $scope.tabHeaderClick = function(e, bId) {
       if (e === 'charts' && $rootScope.currentCharts !== undefined) {
-        var e, c;
-        e = document.getElementById('chart_div_' + bId);
-
-        // $rootScope.mapFilter[bId].updateEditorsRoomPositions();
-        c = $rootScope.currentCharts[bId];
-
-        // geoP.chartsData[bId]['room_type'](e);
-        // console.log('on refresh chart', c);
-        // c.$element.show();
-
-        setTimeout(function() {
-
-          geoP.createColumnChart(bId, e, c.data);
-          console.log('chartPaneClick', $(e).width(), bId, c);
-          // c.chart.draw(c.a, c.options);
-        }, 0);
-
-
-        // $rootScope.currentCharts[bId]
-        // geoP.chartsData[bId]()
-        // debugger;
-        // $rootScope.currentCharts[bId].$element.hide();
-        // setTimeout(function() {
-        //   $rootScope.$emit('Refresh.CurrentChart', bId);
-        // }, 250);
+        geoP.refreshCurrentChart(bId, $rootScope);
       }
       $rootScope.mapFilter[bId].updateEditorsRoomPositions();
       return false;
@@ -106,14 +82,5 @@ var GeoP = {};
     label: "Zones d'évacuations"
   }];
 
-
-  // setTimeout(function() {
-  // $('a[data-toggle="tab"]').on('shown', function(e) {
-  //   debugger;
-  //   location.hash = $(e.target).attr('href').substr(1);
-  //   $(this).focus();
-  //   return false; // or true - whichever you prefer
-  // });
-  // }, 1000);
 
 }(GeoP, jQuery));
