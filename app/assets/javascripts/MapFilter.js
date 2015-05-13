@@ -310,7 +310,6 @@
       values: this.mergedFiltersForBuildings[buildingId][belongsToKeyName]
     };
     filter.sortedNames = [];
-    console.log(filter.names);
     if (filter.names !== undefined) {
       names = Object.keys(filter.names);
       for (i = 0; i < names.length; i += 1) {
