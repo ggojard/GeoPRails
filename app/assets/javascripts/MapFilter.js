@@ -14,7 +14,9 @@
       this.$rootScope.mapFilter = {};
     }
     this.$rootScope.mapFilter[buildingId] = this;
-    this.$rootScope.f = {};
+    if (this.$rootScope.f === undefined) {
+      this.$rootScope.f = {};
+    }
     this.$http = $http;
     this.buildingId = buildingId;
     this.mergedFiltersForBuildings = {};
@@ -126,12 +128,6 @@
       }
     };
 
-
-    that.$rootScope.$on(filterName + '_filters.Update', function(e, filters) {
-      /*jslint unparam:true */
-      filterObj.filters = filters;
-      updateFilterColors(filterObj);
-    });
     if (this.$rootScope.f[buildingId] === undefined) {
       this.$rootScope.f[buildingId] = {};
     }
@@ -158,14 +154,14 @@
     mergedFilters = this.mergedFiltersForBuildings[bId];
     for (fName in mergedFilters) {
       if (mergedFilters.hasOwnProperty(fName)) {
-        this.$rootScope.$emit(fName + '_filters.Update', this.getFilterForBelongsToKeyName(bId, fName));
+        that.$rootScope.f[bId][fName].filters = this.getFilterForBelongsToKeyName(bId, fName);
+        updateFilterColors(that.$rootScope.f[bId][fName]);
       }
     }
   };
 
   MapFilter.prototype.createMergedFiltersByBuilding = function() {
     var bId, filtersForFloorObject, belongsToName, belongsToId, fId, o, n;
-
     for (bId in this.bfilters) {
       if (this.bfilters.hasOwnProperty(bId)) {
         for (fId in this.bfilters[bId]) {
@@ -341,10 +337,27 @@
   };
 
   MapFilter.prototype.getFilterForBelongsToKeyName = function(buildingId, belongsToKeyName) {
-    return {
+    var filter, names, i;
+    filter = {
       names: this.bfilters[buildingId].belongsToItems[belongsToKeyName],
       values: this.mergedFiltersForBuildings[buildingId][belongsToKeyName]
     };
+    filter.sortedNames = [];
+    names = Object.keys(filter.names);
+    for (i = 0; i < names.length; i += 1) {
+      filter.sortedNames.push(filter.names[names[i]]);
+    }
+    filter.sortedNames.sort(function(a, b) {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      // a doit être égale à b
+      return 0;
+    });
+    return filter;
   };
 
   MapFilter.prototype.loadBelongsToFilter = function(floorJson, belongsToKeyName) {

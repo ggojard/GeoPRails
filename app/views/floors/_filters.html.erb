@@ -1,11 +1,11 @@
 <div class="filter-container" ng-controller="FiltersCtrl" ng-init="initFilter();">
   <ul id="myTabFilter" class="nav nav-pills nav-justified" role="tablist" >
     <li ng-repeat="filter in filterNames" ng-class="{active : $first}">
-      <a href="#{{filter.name}}_filter" ng-click="filterPaneClick(filter, buildingId);" data-toggle="tab">{{filter.label}}</a>
+      <a href="#{{filter.name}}_filter_{{buildingId}}" ng-click="filterPaneClick(filter, buildingId);" data-toggle="tab">{{filter.label}}</a>
     </li>
   </ul>
   <div class="tab-content" >
-    <div class="tab-pane" ng-class="{active : $first, in : $first}" id="{{filter.name}}_filter" ng-repeat="filter in filterNames" ng-init="filterObj=f[buildingId][filter.name]" >
+    <div class="tab-pane" ng-class="{active : $first, in : $first}" id="{{filter.name}}_filter_{{buildingId}}" ng-repeat="filter in filterNames" ng-init="filterObj=f[buildingId][filter.name]" >
       <form class="form-horizontal">
         <ul class="filters">
           <li class="animated flipInX " ng-click="filterObj.checkAll = !filterObj.checkAll;filterObj.CheckAll();">
@@ -23,13 +23,13 @@
             </div>
           </li>
           <!-- <li>{{filterObj.filters}}</li> -->
-          <li ng-repeat="(id, rt) in f[buildingId][filter.name].filters.names" class='color-filter animated flipInX' ng-click="filterObj.clickOnFilter(rt)" ng-init="filter_name=f[buildingId][filter.name].filters.names[id];filter_value=f[buildingId][filter.name].filters.values[id];">
+          <li ng-repeat="rt in f[buildingId][filter.name].filters.sortedNames" class='color-filter animated flipInX' ng-click="filterObj.clickOnFilter(rt)" ng-init="filter_name=f[buildingId][filter.name].filters.names[rt.id];filter_value=f[buildingId][filter.name].filters.values[rt.id];">
           <div class="checkbox" style="background-color: {{rt.colorOpacity}}">
             <ul class="filter-zone">
              <!-- ng-change="filterObj.filterStateChange(rt)" -->
               <li class="selection-checkbox" ><label><input type="checkbox" ng-model="rt.state" disabled/>
             </li>
-            <li class="selection-organization" ng-if="filter.name === 'organization'"><a href="/organizations/{{id}}" class="filter-open-icon"><i class="fa fa-info-circle"></i></a></li>
+            <li class="selection-organization" ng-if="filter.name === 'organization'"><a href="/organizations/{{rt.id}}" class="filter-open-icon"><i class="fa fa-info-circle"></i></a></li>
             <li class="selection-name">{{filter_name.name}}</li>
             <li class="filter-kpis"><span title="Aire" class="badge ">{{filter_value.areaSum}} m²</span><span ng-if="filter_value.count > 0" title="Nombre de pièces" class="badge ">{{filter_value.count}} <i class="fa fa-codepen"></i></span><span ng-if="filter_value.nbPeople > 0" title="Nombre de personnes" class="badge ">{{filter_value.nbPeople}} <i class="fa fa-user"></i></span><span ng-if="filter_value.ratio > 0" title="Ratio m&#178; / personnes" class="badge ">{{filter_value.ratio}} m&#178; / <i class="fa fa-user"></i></span>
             </li>

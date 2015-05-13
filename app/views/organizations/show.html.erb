@@ -10,7 +10,7 @@
   <div class="tab-content" >
     <div class="tab-pane fade" ng-class="{active : $first, in : $first}" id="b{{buildingId}}" ng-repeat="buildingId in buildings">
       <ul id="myTabBuilding" class="nav nav-pills" role="tablist" style="border:1px solid {{bgColor[buildingId]}}" >
-        <li  class="active"><a data-toggle="tab"  ng-click="tabHeaderClick('organization_information', buildingId);" href="#tab-information-{{buildingId}}">Information</a></li>
+        <li class="active"><a data-toggle="tab"  ng-click="tabHeaderClick('organization_information', buildingId);" href="#tab-information-{{buildingId}}">Information</a></li>
         <li ><a href="#tab-filters-{{buildingId}}" ng-click="tabHeaderClick('filters', buildingId);" data-toggle="tab">Filtres</a></li>
         <li ><a href="#tab-charts-{{buildingId}}"  ng-click="tabHeaderClick('charts', buildingId);" data-toggle="tab">Rapports</a></li>
         <li ><a href="#tab-display-text-{{buildingId}}"  ng-click="tabHeaderClick('display-text', buildingId);" data-toggle="tab">Afficher dans les pièces</a></li>

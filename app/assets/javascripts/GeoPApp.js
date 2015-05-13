@@ -56,7 +56,7 @@
         var editor, floor, floorId, mapFilter, buildingId;
         floorId = attrs.floorId;
         buildingId = attrs.buildingId;
-        console.log('load editor', floorId);
+        console.log('load editor', floorId, element);
         mapFilter = $scope.mapFilter[buildingId];
         floor = mapFilter.floorJsonById[floorId];
         editor = new geoP.SvgEditor(floor, mapFilter, $scope, element[0]);
