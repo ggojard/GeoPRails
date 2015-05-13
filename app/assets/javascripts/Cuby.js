@@ -11,7 +11,8 @@
     this.buildingJson = buildingJson;
     this.rooms3dById = {};
     this.$rootScope = $rootScope;
-    $rootScope.mapFilter.cuby = this;
+    this.mapFilter = $rootScope.mapFilter[this.buildingJson.id];
+    this.mapFilter.cuby = this;
     this.init();
   };
 
@@ -23,7 +24,7 @@
         room3d.three.material = room3d.material.vectrices;
         value = room3d.json[filterName];
         if (value !== undefined) {
-          item = this.$rootScope.mapFilter.bfilters[this.buildingJson.id].belongsToItems[filterName][value.id];
+          item = this.mapFilter.bfilters[this.buildingJson.id].belongsToItems[filterName][value.id];
           if (item.state === true) {
             room3d.three.material = room3d.material.fill;
             room3d.three.material.color.setHex(item.color.replace('#', '0x'));

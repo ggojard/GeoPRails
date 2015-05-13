@@ -19,7 +19,7 @@
       $scope.building = b;
       $scope.floorsByBuildingId[b.id] = b.floors;
 
-      geoP.setFloorMaps(b.id, b.floors, $scope, $http, $rootScope);
+      geoP.setFloorsMaps(b.id, b.floors, $rootScope, $http);
 
       $scope.loading = false;
       var cuby = new GeoP.Cuby($rootScope, b);
@@ -29,7 +29,6 @@
 
       }, 500);
 
-      // geoP.setFloorMaps(b.id, b.floors, $scope, $http, $rootScope);
 
     });
 
