@@ -15,6 +15,7 @@
   geoP.refreshCurrentChart = function(bId, $rootScope) {
     var chartElement, c;
     chartElement = document.getElementById('chart_div_' + bId);
+    angular.element(chartElement).css('display', 'none');
     c = $rootScope.currentCharts[bId];
     setTimeout(function() {
       geoP.createColumnChart(bId, chartElement, c.data);
@@ -28,6 +29,7 @@
     if (element === null) {
       return;
     }
+    angular.element(element).css('display', 'block');
     chart = new google.visualization.ColumnChart(element);
     chart.draw(a, options);
     (function(a, options, chart) {
