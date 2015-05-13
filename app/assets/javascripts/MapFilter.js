@@ -258,6 +258,7 @@
     floorId = floorJson.id;
     this.initBuildingFilter(buildingId, floorId, belongsToKeyName);
     kpis = {};
+    // this.bfilters[buildingId].belongsToItems[belongsToKeyName] = {};
 
     for (i = 0; i < floorJson.rooms.length; i += 1) {
       room = floorJson.rooms[i];
@@ -309,19 +310,22 @@
       values: this.mergedFiltersForBuildings[buildingId][belongsToKeyName]
     };
     filter.sortedNames = [];
-    names = Object.keys(filter.names);
-    for (i = 0; i < names.length; i += 1) {
-      filter.sortedNames.push(filter.names[names[i]]);
+    console.log(filter.names);
+    if (filter.names !== undefined) {
+      names = Object.keys(filter.names);
+      for (i = 0; i < names.length; i += 1) {
+        filter.sortedNames.push(filter.names[names[i]]);
+      }
+      filter.sortedNames.sort(function(a, b) {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        return 0;
+      });
     }
-    filter.sortedNames.sort(function(a, b) {
-      if (a.name > b.name) {
-        return 1;
-      }
-      if (a.name < b.name) {
-        return -1;
-      }
-      return 0;
-    });
     return filter;
   };
 

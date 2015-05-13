@@ -6,32 +6,18 @@
       <h2>> <a href="{{floorJson.url}}">{{floorJson.name}}</a></h2>
     </div>
     <div ng-repeat="buildingId in buildings">
-      <ul id="myTabBuilding" class="nav nav-pills" role="tablist" style="border:1px solid {{bgColor[buildingId]}}" >
-        
-        <li class="active"><a href="#tab-information"  ng-click="tabHeaderClick('information', buildingId);" data-toggle="tab">Information</a></li> 
-        
-
-        <li><a href="#tab-filters" ng-click="tabHeaderClick('filters', buildingId);" data-toggle="tab">Filtres</a></li>
-        <li><a href="#tab-charts"  ng-click="tabHeaderClick('charts', buildingId);" data-toggle="tab">Rapports</a></li>
-        <li><a href="#tab-display-text"  ng-click="tabHeaderClick('display-text', buildingId);" data-toggle="tab">Afficher dans les pièces</a></li>
+      <ul class="nav nav-pills" role="tablist" style="border:1px solid {{bgColor[buildingId]}}" >
+        <%= render '/common/tabs_information' %>
+        <%= render '/common/tabs_common' %>
       </ul>
       <div class="tab-content tab-content-main" style="border-color:{{bgColor[buildingId]}}">
-
         <div id="tab-information-{{buildingId}}" class="tab-pane active">
           <%= render '/floors/information' %>
         </div>
-        <div id="tab-filters-{{buildingId}}" class="tab-pane">
-          <%= render '/floors/filters' %>
-        </div>
-        <div id="tab-charts-{{buildingId}}"  class="tab-pane">
-          <%= render '/floors/charts' %>
-        </div>
-        <div id="tab-display-text-{{buildingId}}"  class="tab-pane">
-          <%= render '/floors/display_text' %>
-        </div>
+        <%= render '/common/tabs_common.content' %>
       </div>
-    <%= render '/floors/map_editor' %>
-    <%= render 'room' %>
+      <%= render '/floors/map_editor' %>
+      <%= render 'room' %>
     </div>
   </div>
 </div>

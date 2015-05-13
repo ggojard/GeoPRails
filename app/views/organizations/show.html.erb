@@ -10,26 +10,15 @@
   <div class="tab-content">
     <div class="tab-pane fade" ng-class="{active : $first, in : $first}" id="b{{buildingId}}" ng-repeat="buildingId in buildings">
       <ul class="nav nav-pills" role="tablist" style="border:1px solid {{bgColor[buildingId]}}">
-
-        <%= render '/common/tabs_information' %>    
-        <%= render '/common/tabs_common' %>    
-
+        <%= render '/common/tabs_information' %>
+        <%= render '/common/tabs_common' %>
       </ul>
       <div class="tab-content tab-content-main" style="border-color:{{bgColor[buildingId]}}">
         <div id="tab-information-{{buildingId}}"  class="tab-pane active">
           <%= render '/organizations/information' %>
         </div>
-        <div id="tab-filters-{{buildingId}}" class="tab-pane">
-          <%= render '/floors/filters' %>
-        </div>
-        <div id="tab-charts-{{buildingId}}"  class="tab-pane">
-          <%= render '/floors/charts' %>
-        </div>
-        <div id="tab-display-text-{{buildingId}}"  class="tab-pane">
-          <%= render '/floors/display_text' %>
-        </div>
+        <%= render '/common/tabs_common.content' %>
       </div>
-
       <div id="loading" ng-if="floors.length === 0">Chargement des plans des étages...</div>
       <%=  render '/floors/map_editor' %>
       <hr>

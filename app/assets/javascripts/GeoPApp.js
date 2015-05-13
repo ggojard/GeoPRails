@@ -62,7 +62,7 @@
         editor.loadRooms();
         editor.setOptions();
         mapFilter.addEditor(editor);
-        setTimeout(function(){
+        setTimeout(function() {
           geoP.selectPolylineIfIsInHash($scope, buildingId);
         }, 1000);
       }
@@ -85,8 +85,6 @@
       }
     };
   });
-
-
 
   app.directive('keepscrolltop', function($window) {
     var count = 0;
@@ -200,7 +198,7 @@
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
     geoP.handleTabHeaderClick($rootScope, $scope);
     $scope.floorsByBuildingId = {};
-    // $scope.loading = true;
+    $scope.loading = true;
     $scope.mapMode = gon.mode;
     $scope.i18n = gon.i18n;
 

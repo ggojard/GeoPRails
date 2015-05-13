@@ -1,11 +1,11 @@
 <div class="filter-container" ng-controller="FiltersCtrl" ng-init="initFilter();">
   <ul id="myTabFilter" class="nav nav-pills nav-justified" role="tablist" >
     <li ng-repeat="filter in filterNames" ng-class="{active : $first}">
-      <a href="#{{filter.name}}_filter_{{buildingId}}" ng-click="filterPaneClick(filter, buildingId);" data-toggle="tab">{{filter.label}}</a>
+      <a href="#{{filter.name}}_filter_{{buildingId}}" ng-click="filterPaneClick(filter, buildingId);" data-toggle="tab" ng-if="f[buildingId][filter.name].filters.sortedNames.length > 0">{{filter.label}}</a>
     </li>
   </ul>
   <div class="tab-content" >
-    <div class="tab-pane" ng-class="{active : $first, in : $first}" id="{{filter.name}}_filter_{{buildingId}}" ng-repeat="filter in filterNames" ng-init="filterObj=f[buildingId][filter.name]" >
+    <div class="tab-pane" ng-class="{active : $first, in : $first}" id="{{filter.name}}_filter_{{buildingId}}" ng-repeat="filter in filterNames" ng-init="filterObj=f[buildingId][filter.name]" ng-if="f[buildingId][filter.name].filters.sortedNames.length > 0">
       <form class="form-horizontal">
         <ul class="filters">
           <li class="animated flipInX " ng-click="filterObj.checkAll = !filterObj.checkAll;filterObj.CheckAll();">

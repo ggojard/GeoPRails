@@ -1,6 +1,6 @@
 <div  class="filter-container" ng-controller="ChartController" ng-init="init();">
   <ul id="myTabChart" class="nav nav-pills nav-justified" role="tablist" >
-    <li ng-repeat="filter in filterNames" ng-class="{active : $first}">
+    <li ng-repeat="filter in filterNames" ng-class="{active : $first}" ng-if="f[buildingId][filter.name].filters.sortedNames.length > 0">
       <a href="#{{filter.name}}_chart_{{buildingId}}" ng-click="chartPaneClick(filter, buildingId);" data-toggle="tab">{{filter.label}}</a>
     </li>
   </ul>

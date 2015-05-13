@@ -7,14 +7,13 @@
     $scope.i18n = gon.i18n;
     geoP.handleTabHeaderClick($rootScope, $scope);
     $scope.floorsByBuildingId = {};
-    $scope.loading = false;
+    $scope.loading = true;
     geoP.handleKeyEventsForScope($scope);
 
     $rootScope.room = null;
     $rootScope.roomInfoTopOffset = 0;
 
     $http.get(gon.building.url + '.json').success(function(b) {
-      // $scope.loading = false;
       $scope.buildings = [b.id];
       $rootScope.buildings = $scope.buildings;
       $rootScope.$emit('SetBodyColor', b);
@@ -22,7 +21,7 @@
       $scope.building = b;
       $scope.floorsByBuildingId[b.id] = b.floors;
       geoP.setFloorsMaps(b.id, b.floors, $rootScope, $http);
-      // $scope.mapFilter = $rootScope.mapFilter;
+      $scope.loading = false;
     });
 
     $scope.deleteBuilding = function() {

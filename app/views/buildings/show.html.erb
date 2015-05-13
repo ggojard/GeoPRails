@@ -1,34 +1,23 @@
 <div ng-controller="BuildingCtrl">
   <div ng-repeat="buildingId in buildings">
-    <!-- <div ng-show="loading" class="loading"><img alt="chargement..."></div> -->
-    <!-- ng-show="!loading" -->
-    <div >
+    <div ng-show="loading" class="loading"><img alt="chargement..."></div>
+    <div ng-show="!loading">
       <div class="jumbotron-surfy" style="background-color: {{bgColor[buildingId]}}"><h2>{{building.name}}</h2></div>      
-      <ul id="myTabBuilding" class="nav nav-pills" role="tablist" style="border:1px solid {{bgColor[buildingId]}}" >
+      <ul class="nav nav-pills" role="tablist" style="border:1px solid {{bgColor[buildingId]}}" >
         
-        <li class="active"><a data-toggle="tab" ng-click="tabHeaderClick('floors', buildingId);" href="#tab-floors">Accès direct aux étages</a></li>
-        
+        <li class="active"><a data-toggle="tab" ng-click="tabHeaderClick('floors', buildingId);" href="#tab-floors-{{buildingId}}">Accès direct aux étages</a></li>
 
         <%= render '/common/tabs_common' %>    
-
-<!--         <li><a href="#tab-filters" ng-click="tabHeaderClick('filters', buildingId);" data-toggle="tab">Filtres</a></li>
-        <li><a href="#tab-charts"  ng-click="tabHeaderClick('charts', buildingId);" data-toggle="tab">Rapports</a></li>
-        <li><a href="#tab-display-text"  ng-click="tabHeaderClick('display-text', buildingId);" data-toggle="tab">Afficher dans les pièces</a></li> -->
       </ul>
       <div class="tab-content tab-content-main" style="border-color:{{bgColor[buildingId]}}">
 
         <div id="tab-floors-{{buildingId}}"  class="tab-pane active">
           <%= render '/buildings/display_floors' %>
         </div>
-        <div id="tab-filters-{{buildingId}}" class="tab-pane">
-          <%= render '/floors/filters' %>
-        </div>
-        <div id="tab-charts-{{buildingId}}"  class="tab-pane">
-          <%= render '/floors/charts' %>
-        </div>
-        <div id="tab-display-text-{{buildingId}}"  class="tab-pane">
-          <%= render '/floors/display_text' %>
-        </div>
+
+
+        <%= render '/common/tabs_common.content' %>    
+
       </div>
       
       <%= render '/floors/map_editor' %>
