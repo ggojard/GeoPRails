@@ -28,7 +28,9 @@ editor
   - check all
   - uncheck all
   - legend get updated
+
 # charts
+
 # display texts
 - drag and drop order
 - display on map
