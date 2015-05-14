@@ -8,17 +8,17 @@ editor
 * zoom to room
 
 # edit map
-* create room
-* edit room 
-  * move text
-  * move polygone
--- edges
---- move edges
---- add edge
---- remove edge
-1. map
-  * center map
-  * save map to image
+- create room
+- edit room 
+  - move text
+  - move polygone
+  - edges
+    - move edges
+    - add edge
+    - remove edge
+- map
+  - center map
+  - save map to image
 
 # filters
 # charts
@@ -29,4 +29,4 @@ editor
 
 # room information
 - when page loads with room select the info popout offset is correct
--- pages are : floor, building, organization, person ?
+  - pages are : floor, building, organization, person ?
