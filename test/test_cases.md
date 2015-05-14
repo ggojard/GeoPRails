@@ -24,10 +24,10 @@ editor
 
 # filters
 - works on pages : floor, building, organization
-- filter each dimension
-- check all
-- uncheck all
-- legend get updated
+  - filter each dimension
+  - check all
+  - uncheck all
+  - legend get updated
 # charts
 # display texts
 - drag and drop order
