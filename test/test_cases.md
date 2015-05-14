@@ -4,14 +4,14 @@ editor
 
 
 # browse
-1. select room
-2. zoom to room
+* select room
+* zoom to room
 
 # edit map
-1. create room
+* create room
 * edit room 
-** move text
--- move polygone
+  * move text
+  * move polygone
 -- edges
 --- move edges
 --- add edge
