@@ -23,10 +23,7 @@ editor
     - width of legend is correct and text inside as well
 
 # filters
-- should work on
-  - floor pages
-  - building pages
-  - organization pages
+- works on pages : floor, building, organization
 - filter each dimension
 - check all
 - uncheck all
@@ -39,4 +36,4 @@ editor
 
 # room information
 - when page loads with room select the info popout offset is correct
-  - pages are : floor, building, organization, person ?
+  - works on pages : floor, building, organization
