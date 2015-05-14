@@ -19,8 +19,18 @@ editor
 - map
   - center map
   - save map to image
+    - legend is set correctly
+    - width of legend is correct and text inside as well
 
 # filters
+- should work on
+  - floor pages
+  - building pages
+  - organization pages
+- filter each dimension
+- check all
+- uncheck all
+- legend get updated
 # charts
 # display texts
 - drag and drop order
