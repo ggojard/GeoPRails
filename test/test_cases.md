@@ -16,9 +16,9 @@ editor
 --- move edges
 --- add edge
 --- remove edge
-- map
-  - center map
-  - save map to image
+1. map
+  * center map
+  * save map to image
 
 # filters
 # charts
