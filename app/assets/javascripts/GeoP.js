@@ -44,8 +44,6 @@ var GeoP = {};
   };
 
 
-  geoP.handleTabHeaderClick = function($rootScope, $scope) {};
-
   geoP.$apply = function($scope) {
     setTimeout(function() {
       $scope.$apply();

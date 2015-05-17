@@ -202,7 +202,6 @@
   };
 
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
-    geoP.handleTabHeaderClick($rootScope, $scope);
     $scope.floorsByBuildingId = {};
     $scope.mapMode = gon.mode;
     $scope.i18n = gon.i18n;

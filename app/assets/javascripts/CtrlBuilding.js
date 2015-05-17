@@ -5,7 +5,6 @@
   geoP.app.controller('BuildingCtrl', function($scope, $http, $rootScope) {
 
     $scope.i18n = gon.i18n;
-    geoP.handleTabHeaderClick($rootScope, $scope);
     $scope.floorsByBuildingId = {};
     geoP.handleKeyEventsForScope($scope);
 
