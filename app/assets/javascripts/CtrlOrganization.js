@@ -2,18 +2,20 @@
 (function(geoP, $) {
   'use strict';
   geoP.app.controller('OrganizationCtrl', function($scope, $http, $rootScope) {
-    var i, floors, r, floorsArray, floorsMax, fId, buildings, buildingId, floorId;
+    var i, floors, r, floorsArray, floorsMax, fId, buildings;
     geoP.handleKeyEventsForScope($scope);
     $scope.o = gon.organization;
     $scope.i18n = gon.i18n;
     $scope.floorsByBuildingId = {};
     floors = {};
     buildings = {};
+    geoP.registerEditorStopLoading($rootScope);
+
 
     for (i = 0; i < $scope.o.rooms.length; i += 1) {
       r = $scope.o.rooms[i];
-      floorId = r.floor.id;
-      buildingId = r.floor.building_id;
+      // floorId = r.floor.id;
+      // buildingId = r.floor.building_id;
       floors[r.floor.id] = r.floor;
     }
 
@@ -29,15 +31,15 @@
           floorsByBuildingId[f.building_id] = [];
         }
         floorsByBuildingId[f.building_id].push(f);
-      if (buildings[f.building_id] === undefined) {
-        buildings[f.building_id] = [];
-      }
-      buildings[f.building_id].push(f.id);
+        if (buildings[f.building_id] === undefined) {
+          buildings[f.building_id] = [];
+        }
+        buildings[f.building_id].push(f.id);
 
       });
 
-    $scope.buildings = Object.keys(buildings);
-    $rootScope.buildings = $scope.buildings;
+      $scope.buildings = Object.keys(buildings);
+      $rootScope.buildings = $scope.buildings;
 
       Object.keys(buildings).forEach(function(bId) {
         floorsByBuildingId[bId].sort(function(a, b) {
