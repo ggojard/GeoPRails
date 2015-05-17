@@ -367,7 +367,11 @@
 
 
   Polyline.prototype.setTexts = function() {
-    var displayNames, id, displayText, text, i, texts, bbox;
+    var displayNames, id, displayText, text, i, texts, bbox, value;
+    if (this.element === undefined) {
+      console.error('this shape don\'t get any elements', this.json);
+      return;
+    }
     bbox = this.element.node.getBBox();
     displayNames = this.svgEditor.displayProperties;
     if (displayNames === undefined) {
@@ -381,7 +385,7 @@
       id = displayText.name;
       text = this.json[id];
       if (displayText.value === true && text !== null) {
-        var value = this.putInTextArray(displayText.format(text), bbox.width, displayText.merge);
+        value = this.putInTextArray(displayText.format(text), bbox.width, displayText.merge);
         if (value.join('').length > 0) {
           texts = texts.concat(value);
         }
@@ -596,7 +600,9 @@
     if (this.hashCode !== currentHash) {
       this.save();
     }
-    this.group.node.setAttribute('class', 'unselected');
+    if (this.group !== undefined) {
+      this.group.node.setAttribute('class', 'unselected');
+    }
   };
 
   Polyline.prototype.zoomOnItem = function() {
@@ -853,7 +859,9 @@
   Polyline.prototype.close = function() {
     this.updateHashCode();
     this.unSelect();
-    this.element.click(this.select.bind(this));
+    if (this.element !== undefined) {
+      this.element.click(this.select.bind(this));
+    }
   };
 
 

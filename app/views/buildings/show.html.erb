@@ -1,12 +1,9 @@
-<div ng-controller="BuildingCtrl">
-  <div ng-repeat="buildingId in buildings">
-    <div ng-show="loading" class="loading"><img alt="chargement..."></div>
-    <div ng-show="!loading">
+<div ng-controller="BuildingCtrl" ng-cloak>
+  <div ng-repeat="buildingId in buildings">    
+    <div>
       <div class="jumbotron-surfy" style="background-color: {{bgColor[buildingId]}}"><h2>{{building.name}}</h2></div>      
       <ul class="nav nav-pills" role="tablist" style="border:1px solid {{bgColor[buildingId]}}" >
-        
         <li class="active"><a data-toggle="tab" ng-click="tabHeaderClick('floors', buildingId);" href="#tab-floors-{{buildingId}}">Accès direct aux étages</a></li>
-
         <%= render '/common/tabs_common' %>    
       </ul>
       <div class="tab-content tab-content-main" style="border-color:{{bgColor[buildingId]}}">
@@ -14,15 +11,10 @@
         <div id="tab-floors-{{buildingId}}"  class="tab-pane active">
           <%= render '/buildings/display_floors' %>
         </div>
-
-
         <%= render '/common/tabs_common.content' %>    
-
       </div>
-      
       <%= render '/floors/map_editor' %>
       <%= render '/buildings/options' %>      
-
       <%= render '/floors/room' %>
     </div>
   </div>

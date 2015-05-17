@@ -50,8 +50,8 @@
 
   app.directive('setupEditor', function() {
     return {
+      transclude: true,
       scope: true,
-      replace: true,
       link: function($scope, element, attrs) {
         var editor, floor, floorId, mapFilter, buildingId;
         floorId = attrs.floorId;
@@ -62,6 +62,7 @@
         editor.loadRooms();
         editor.setOptions();
         mapFilter.addEditor(editor);
+        $scope.$emit('editor-loaded');
         setTimeout(function() {
           geoP.selectPolylineIfIsInHash($scope, buildingId);
         }, 1000);
@@ -105,9 +106,10 @@
   ]);
 
 
-  app.controller('CompanyCtrl', function($scope) {
+  app.controller('CompanyCtrl', function($scope, $rootScope) {
     $scope.company = gon.company;
     $scope.organizations = gon.organizations;
+    $rootScope.$emit('stop-loading');
   });
 
   geoP.selectPolylineIfIsInHash = function($scope, buildingId) {
@@ -130,6 +132,10 @@
   geoP.setFloorsMaps = function(buildingId, floors, $rootScope, $http) {
     var i, floor, mapFilter;
     mapFilter = new geoP.MapFilter($rootScope, $http, buildingId);
+    if ($rootScope.floorsToLoad === undefined){
+      $rootScope.floorsToLoad = 0;
+    }
+    $rootScope.floorsToLoad += floors.length;
     for (i = 0; i < floors.length; i += 1) {
       floor = floors[i];
       mapFilter.addFloorJson(floor);
@@ -198,9 +204,9 @@
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
     geoP.handleTabHeaderClick($rootScope, $scope);
     $scope.floorsByBuildingId = {};
-    $scope.loading = true;
     $scope.mapMode = gon.mode;
     $scope.i18n = gon.i18n;
+    geoP.registerEditorStopLoading($rootScope);
 
     $http.get('/floors/' + gon.floor.id + '.json').success(function(floor) {
 
@@ -216,7 +222,6 @@
 
       $scope.floorJson = floor;
       geoP.setFloorsMaps(floor.building_id, $scope.floorsByBuildingId[floor.building_id], $rootScope, $http);
-      $scope.loading = false;
     });
 
     $scope.countPeopleFromRooms = function(rooms) {

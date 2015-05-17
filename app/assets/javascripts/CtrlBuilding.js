@@ -7,11 +7,12 @@
     $scope.i18n = gon.i18n;
     geoP.handleTabHeaderClick($rootScope, $scope);
     $scope.floorsByBuildingId = {};
-    $scope.loading = true;
     geoP.handleKeyEventsForScope($scope);
 
     $rootScope.room = null;
     $rootScope.roomInfoTopOffset = 0;
+
+    geoP.registerEditorStopLoading($rootScope);
 
     $http.get(gon.building.url + '.json').success(function(b) {
       $scope.buildings = [b.id];
@@ -21,7 +22,7 @@
       $scope.building = b;
       $scope.floorsByBuildingId[b.id] = b.floors;
       geoP.setFloorsMaps(b.id, b.floors, $rootScope, $http);
-      $scope.loading = false;
+
     });
 
     $scope.deleteBuilding = function() {

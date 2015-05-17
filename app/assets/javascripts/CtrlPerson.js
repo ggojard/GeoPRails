@@ -8,7 +8,7 @@
     };
   });
 
-  geoP.app.controller('PeopleCtrl', function($scope) {
+  geoP.app.controller('PeopleCtrl', function($scope, $rootScope) {
     $scope.personFilter = function(a) {
       return a.person.fullname.search(new RegExp($scope.query, "i")) !== -1;
     };
@@ -17,5 +17,6 @@
         person: p
       };
     });
+    $rootScope.$emit('stop-loading');
   });
 }(GeoP));

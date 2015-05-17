@@ -34,9 +34,17 @@ var GeoP = {};
     }
   };
 
-
-  geoP.handleTabHeaderClick = function($rootScope, $scope) {
+  geoP.registerEditorStopLoading = function($rootScope) {
+    $rootScope.$on('editor-loaded', function() {
+      $rootScope.floorsToLoad -= 1;
+      if ($rootScope.floorsToLoad === 0) {
+        $rootScope.$emit('stop-loading');
+      }
+    });
   };
+
+
+  geoP.handleTabHeaderClick = function($rootScope, $scope) {};
 
   geoP.$apply = function($scope) {
     setTimeout(function() {

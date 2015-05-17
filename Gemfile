@@ -66,6 +66,8 @@ gem "oj"
 gem "active_admin_import"
 gem 'actionpack-action_caching'
 gem 'cancan'
+gem 'actionpack-page_caching'
+gem 'cloudinary'
 
 
 

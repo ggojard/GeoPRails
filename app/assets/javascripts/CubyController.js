@@ -8,7 +8,6 @@
     geoP.handleTabHeaderClick($rootScope, $scope);
 
     $scope.floorsByBuildingId = {};
-    $scope.loading = true;
     geoP.handleKeyEventsForScope($scope);
 
     $http.get(gon.building.url + '.json').success(function(b) {
@@ -21,7 +20,6 @@
 
       geoP.setFloorsMaps(b.id, b.floors, $rootScope, $http);
 
-      $scope.loading = false;
       var cuby = new GeoP.Cuby($rootScope, b);
       setTimeout(function() {
 

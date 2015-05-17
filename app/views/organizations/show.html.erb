@@ -1,4 +1,4 @@
-<div ng-controller="OrganizationCtrl">
+<div ng-controller="OrganizationCtrl"  ng-cloak>
   <div class="jumbotron-surfy" style="background-color: {{o.color}}">
     <h2>{{o.name}}</h2>
   </div>
@@ -19,7 +19,6 @@
         </div>
         <%= render '/common/tabs_common.content' %>
       </div>
-      <div id="loading" ng-if="floors.length === 0">Chargement des plans des étages...</div>
       <%=  render '/floors/map_editor' %>
       <hr>
     </div>

@@ -1,0 +1,19 @@
+---
+development:
+  cloud_name: surfy
+  api_key: '997433595858947'
+  api_secret: HMZQRgPKoQ8D_pqoSuSzX3SkpD4
+  enhance_image_tag: true
+  static_image_support: false
+production:
+  cloud_name: surfy
+  api_key: '997433595858947'
+  api_secret: HMZQRgPKoQ8D_pqoSuSzX3SkpD4
+  enhance_image_tag: true
+  static_image_support: true
+test:
+  cloud_name: surfy
+  api_key: '997433595858947'
+  api_secret: HMZQRgPKoQ8D_pqoSuSzX3SkpD4
+  enhance_image_tag: true
+  static_image_support: false
