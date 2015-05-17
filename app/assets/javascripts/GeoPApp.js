@@ -48,6 +48,8 @@
     }
   });
 
+
+
   app.directive('setupEditor', function() {
     return {
       transclude: true,
@@ -132,7 +134,7 @@
   geoP.setFloorsMaps = function(buildingId, floors, $rootScope, $http) {
     var i, floor, mapFilter;
     mapFilter = new geoP.MapFilter($rootScope, $http, buildingId);
-    if ($rootScope.floorsToLoad === undefined){
+    if ($rootScope.floorsToLoad === undefined) {
       $rootScope.floorsToLoad = 0;
     }
     $rootScope.floorsToLoad += floors.length;

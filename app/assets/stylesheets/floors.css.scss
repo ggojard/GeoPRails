@@ -65,9 +65,20 @@ ul.search-results {
     // max-width: 300px;
     // width: 300px;
     li {
+
+        i.fa{
+            margin-right: 4px;
+        }
+
         list-style: none;
         word-break: break-word;
         margin: 2px;
+
+        .highlighted{
+            background-color: #5CC2B8;
+            padding: 2px 0px;
+            border-radius: 2px;
+        }
     }
 }
 
