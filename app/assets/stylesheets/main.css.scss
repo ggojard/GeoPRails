@@ -54,6 +54,16 @@ svg {
             stroke: #1dc8fe;
         }
     }
+
+    &.mode-edit{
+        g.unselected{
+            z-index:0;
+        }
+        g.select{
+            z-index:1000;
+        }
+    }
+
     g.select {
         polygon {
             fill: #1dc8fe;

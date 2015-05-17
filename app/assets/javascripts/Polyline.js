@@ -831,7 +831,6 @@
 
     this.selectPolyline();
 
-
     if (this.dragMode === true) {
       this.group.undrag();
     }
@@ -906,14 +905,19 @@
         y: mousePos.y / scale - camera.y / scale
       };
 
-      if (sourceIndex === 0) {
-        targetIndex += 1;
-      }
+      // if (sourceIndex === 0) {
+      //   targetIndex += 1;
+      // }
 
       point = polyline.createSvgPoint(pos.x, pos.y);
-      polyline.element.node.points.insertItemBefore(point, targetIndex);
-      polyline.addAndGetMovePoint(pos.x, pos.y, targetIndex);
 
+      if (targetIndex === 0) {
+        polyline.element.node.points.appendItem(point);
+        polyline.addAndGetMovePoint(pos.x, pos.y, polyline.element.node.points.numberOfItems - 1);
+      } else {
+        polyline.element.node.points.insertItemBefore(point, targetIndex);
+        polyline.addAndGetMovePoint(pos.x, pos.y, targetIndex);
+      }
 
       initMoveCirclesPointsIndex(polyline);
 
@@ -939,7 +943,7 @@
     for (i = 0; i < this.moveCircles.length - 1; i += 1) {
       createHoverLine(this, i, i + 1);
     }
-    createHoverLine(this, 0, this.moveCircles.length - 1);
+    createHoverLine(this, this.moveCircles.length - 1, 0);
 
   };
   geoP.Polyline = Polyline;
