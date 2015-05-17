@@ -49,8 +49,6 @@ GeoP::Application.routes.draw do
 
   get '/organizations/:id' => 'organizations#show'
 
-
-
   get '/buildings/import' => 'buildings#import'
   get '/buildings/:id/export' => 'buildings#export'
   get '/buildings/:id/duplicate' => 'buildings#duplicate'
