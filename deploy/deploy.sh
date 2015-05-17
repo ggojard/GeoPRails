@@ -4,7 +4,7 @@ contains() {
   [[ $1 =~ $2 ]] && exit 0 || exit 1
 }
 
-sites="mdm demo amf acf hi bouygues volskwagen heineken"
+sites="mdm demo amf acf hi bouygues volkswagen heineken"
 echo "load <$1> in <$sites>"
 
 if (contains "$sites" $1 -eq 0); then
