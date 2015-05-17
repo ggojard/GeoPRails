@@ -131,7 +131,7 @@
     for (i = 0; i < f.rooms.length; i += 1) {
       r = f.rooms[i];
       points = JSON.parse(r.points);
-      if (points !== null) {
+      if (points !== null && points.length > 2) {
         roomPoints = points.map(getVector);
         shape = new THREE.Shape(roomPoints);
         this.addShape(shape, r, f.level);
