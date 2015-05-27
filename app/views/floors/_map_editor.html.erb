@@ -1,4 +1,4 @@
-<div class="panel panel-default panel-map" ng-class="['shift-' + isShift, 'mode-' + mapMode, 'ctrl-' + isZKeyDown]" ng-repeat="f in floorsByBuildingId[buildingId]">
+<div class="panel panel-default panel-map" ng-repeat="f in floorsByBuildingId[buildingId]" ng-init="editor=$root.mapFilterByBuildingId[buildingId].editorsByFloorId[f.id]">
   <div class="panel-heading"  style="background-color: {{bgColor[buildingId]}}">
     <div class="panel-title">
       <h3 class="panel-title"><a href="{{f.url}}">Plan {{f.fullname}}</a></h3>

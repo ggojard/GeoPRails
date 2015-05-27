@@ -39,7 +39,7 @@
 
   });
 
-  var app = angular.module('GeoP', ['ui.sortable']).run(function($rootScope) { // instance-injector
+  var app = angular.module('GeoP', ['ui.sortable']).run(function() { // instance-injector
     try {
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
@@ -47,7 +47,6 @@
       return e;
     }
   });
-
 
 
   app.directive('setupEditor', function() {
