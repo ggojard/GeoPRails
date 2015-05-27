@@ -142,7 +142,7 @@
   };
 
   SvgEditor.prototype.updateRoomOffset = function() {
-    var offsetTop = this.paper.node.offsetTop;
+    var offsetTop = $(this.paper.node).offset().top;
     if (offsetTop > 0) {
       this.mapFilter.$rootScope.roomInfoTopOffset = offsetTop;
       geoP.$apply(this.$scope);
