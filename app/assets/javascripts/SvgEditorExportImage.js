@@ -78,7 +78,7 @@
         var text, fstatus, fontStyle, texts, boxHeight, i, content, y;
         fstatus = filtersStatus[fKey][fId];
         if (fstatus.state === true) {
-          fontStyle = 'font-size:' + fontSize + 'px;font-family:arial;fill:black;alignment-baseline:before-edge;text-anchor:middle';
+          fontStyle = 'font-size:' + fontSize + 'px;font-family:arial;fill:black;dominant-baseline:text-before-edge;text-anchor:middle';
           texts = textWrap(editor.canvas, fontStyle, legendWidth, fstatus.name);
           boxHeight = heightOfLine + texts.length * fontSize;
           bg = editor.canvas.rect(editor.bgBox.w, line, legendWidth, boxHeight);
