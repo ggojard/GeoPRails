@@ -69,6 +69,15 @@ gem 'cancan'
 gem 'actionpack-page_caching'
 gem 'cloudinary'
 
+group :test, :development do
+  gem "rspec"
+  gem "rspec-rails"
+  gem "webrat"
+  gem "cucumber"
+  gem "cucumber-rails",:require => false
+  gem 'database_cleaner'
+end
+
 
 
 
