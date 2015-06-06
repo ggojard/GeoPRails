@@ -35,6 +35,11 @@
           <th>Matricule</th>
           <td>{{a.person.person_code}}</td>
         </tr>        
+        <tr ng-if="a.person.badge_number">
+          <th>{{i18n.person.badge_number}}</th>
+          <td>{{a.person.badge_number}}</td>
+        </tr>        
+
         <tr ng-if="a.person.organization">
           <th>Organisation</th>
           <td><a href="{{a.person.organization.url}}">{{a.person.organization.name}}</a></td>

@@ -2,6 +2,7 @@
 (function(geoP) {
   'use strict';
   geoP.app.controller('PersonCtrl', function($scope, $rootScope) {
+    $scope.i18n = gon.i18n;
     var p = gon.person;
     $scope.a = {
       person: p

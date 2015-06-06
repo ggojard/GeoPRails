@@ -18,6 +18,7 @@ ActiveAdmin.register Person do
         row "Organisation" do c.organization end
         row "Email" do c.email end
         row "Matricule" do c.person_code end
+        row "Badge" do c.badge_number end
       end
     end
 
@@ -62,6 +63,7 @@ ActiveAdmin.register Person do
       f.input :organization
       f.input :email
       f.input :person_code
+      f.input :badge_number
     end
     f.inputs "Inventaire" do
       f.input :monitorreference
