@@ -1,4 +1,6 @@
 ActiveAdmin.register Company do
+  menu :parent => "Administration"
+
   # authorize_resource
   # include ActiveAdminCanCan
 

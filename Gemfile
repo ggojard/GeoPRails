@@ -68,6 +68,7 @@ gem 'actionpack-action_caching'
 gem 'cancan'
 gem 'actionpack-page_caching'
 gem 'cloudinary'
+gem 'active_skin'
 
 group :test, :development do
   gem "rspec"
