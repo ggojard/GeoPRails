@@ -67,8 +67,7 @@ gem "active_admin_import"
 gem 'actionpack-action_caching'
 gem 'cancan'
 gem 'actionpack-page_caching'
-gem 'cloudinary'
-gem 'active_skin'
+# gem 'cloudinary'
 
 group :test, :development do
   gem "rspec"
@@ -77,6 +76,8 @@ group :test, :development do
   gem "cucumber"
   gem "cucumber-rails",:require => false
   gem 'database_cleaner'
+  gem "capybara"
+  gem "launchy"
 end
 
 
