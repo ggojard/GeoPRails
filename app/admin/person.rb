@@ -35,8 +35,8 @@ ActiveAdmin.register Person do
 
     panel "Affectations" do
       table_for person.affectations do
-        # column "Pièces" do |b| link_to b.room.name + ' < ' + b.room.floor.name + ' < ' + b.room.floor.building.name  , admin_room_path(b.room.id) end
-        # column "Visualiser" do |b| link_to  "Visualiser" , room_path(b.room.id) end
+        column "Pièces" do |b| link_to b.room.fullname  , admin_room_path(b.room.id) end
+        column "Visualiser" do |b| link_to  "Visualiser" , room_path(b.room.id) end
       end
     end
 

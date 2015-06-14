@@ -1,33 +1,59 @@
 class Ability
   include CanCan::Ability
 
+  def set_arm user
+    $arm ||= {}
+    if !user.nil? 
+      $arm[user.id] ||= ArmUser.new(user.id, self)
+      puts 'ARM: Setup for (%s), (%s)' % [user.email, $arm[user.id].user_type]
+    end
+  end
+
+
   def initialize(user)
 
     u_type = 'READ'
 
-    if !user.nil?
-      if !user.admin_user_type.nil?
-        u_type = user.admin_user_type.code
-      end
 
-      puts 'Abilities For User : %s (%s)' % [user.email, u_type]
+    puts 'ARM: Initialize'
+
+
+    set_arm(user)
+
+    if !user.nil?
+
+
+      arm_user = $arm[user.id]
+      u_type = arm_user.user_type
+
+
+      # can :read, Building, :id => 56
+      # can :read, Building, :id => 1
+
+
       # puts tob.building.name
-      # user.admin_user_role.admin_user_role_to_buildings.each do |tob|
-      #   can :read, Building,:id => tob.building.id
+      # arm_user.buildings.each do |tob|
+      #   # byebug
+      #   if !tob.building.nil?
+      #     puts "ARM: User (%s) Can Read : (%s)" % [user.email, tob.building.name]
+      #     can :read, Building,:id => tob.building.id
+      #     # tob.building.floors.each do |floor|
+      #     #   if !floor.nil? 
+      #     #     can :read, Floor,:id => floor.id 
+      #     #   end
+      #     # end
+      #   end
       # end
     end
 
-    if !user.nil? and user.email == 'admin@example.com'
-      puts 'User is a Special User.'
-      u_type = 'ADMIN'
-    end
     # user ||= User.new # guest user (not logged in)
 
     if u_type == 'ADMIN'
       can :manage, :all
     elsif u_type == 'WRITE'
-      can :manage, [Affectation, Inventory, Item, Organization, Person, Room]
-      can :read, [Company, Floor, Building]
+      can :manage, [Item, Organization, Person]
+      can :read, [Company]
+      # Floor, Building, Room,Affectation, Inventory
       cannot [:manage, :read], [AdminUser, AdminUserType, EvacuationZone, OrganizationType, PersonState, RoomGroundType, RoomType]
     else
       can :read, :all

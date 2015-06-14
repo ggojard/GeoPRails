@@ -4,8 +4,8 @@ fr:
     update: 'Mettre à jour %{model}'
     labels:
       admin_user_role_to_building:
-        admin_user_role:"Rôle"
-        building:"Bâtiment"
+        admin_user_role: "Rôle"
+        building: "Bâtiment"
       room:
         id: "Identifiant pièce"
         name: "Nom"

@@ -13,8 +13,21 @@ class PeopleController < GeopController
   end
 
 	def show
-		p = Person.includes(@includes_people).find_by_id(params[:id])
-		gon.person = p.as_json(as_json_people)
+    u_arm_floors_id = $arm[current_admin_user.id].floors_id;
+
+		p = Person.includes(@includes_people).find_by_id(params[:id])    
+    gon.person = p.as_json(as_json_people)
+
+    affectations = []
+    gon.person['affectations'].each { |a|
+      room = a['room']
+      if !room.nil? and u_arm_floors_id.include? room['floor_id'].to_i
+        affectations << a
+      end
+    }
+    gon.person['affectations'] = affectations
+
+
 	end
 
 	def index

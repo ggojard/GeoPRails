@@ -37,5 +37,5 @@ class Room < ActiveRecord::Base
       '%.2f m²' % self.area
     end
   end
-
+  default_scope {order(:name)}
 end

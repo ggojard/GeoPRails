@@ -22,8 +22,6 @@ GeoP::Application.routes.draw do
 
 
   get '/login_page' => 'login#login'
-
-
   get '/floors/:id' => 'floors#show'
   get '/floors/:id/edit' => 'floors#edit'
   get '/floors/:id/room/:room_id' => 'floors#show'
@@ -31,11 +29,8 @@ GeoP::Application.routes.draw do
   get '/floors/images/:id' => 'images#floor_image'
   get "floors/:id/json" => 'floors#show_json'
   get '/companies/images/:id' => 'images#company_image'
-
   get '/images/logo_small.png' => 'images#logo_small'
   get '/images/logo.png' => 'images#logo'
-
-
   get "rooms/:id/delete" => 'rooms#delete'
 
   # root 'homes#home'
