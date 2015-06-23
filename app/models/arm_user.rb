@@ -11,7 +11,7 @@ class ArmUser
     @user_type ||= get_user_type(db_user)
     puts "ARM: ?? User (%d) Type is (%s)" % [user_id, @user_type]
     setup_cancan(db_user, ability)
-	# @db_user = db_user
+    # @db_user = db_user
   end
 
 
@@ -19,26 +19,28 @@ class ArmUser
 
   def setup_cancan db_user, ability
     puts 'ARM: Abilities For User : %s (%s)' % [db_user.email, @user_type]
-    db_user.admin_user_role.admin_user_role_to_buildings.each do |tob|
-      if !tob.building.nil?
-        puts "ARM: User (%s) Can Read Building : (%s)" % [db_user.email, tob.building.name]
-        buildings_id << tob.building.id
-        ability.can :read, Building,:id => tob.building.id
-        tob.building.floors.each do |floor|
-          if !floor.nil?
-            floors_id << floor.id
-            if (@user_type == 'READ')
-              ability.can :read, Floor,:id => floor.id
-              ability.can :read, Room, :floor_id => floor.id
-            elsif @user_type == 'WRITE'
-              ability.can :manage, Floor,:id => floor.id
-              ability.can :manage, Room, :floor_id => floor.id
-              # ability.can :manage, Affectation, Affectation do |a|
-              #   !a.room.nil? and a.room.floor_id == floor.id
-              # end
-              # ability.can :manage, Inventory, Inventory do |i|
-              #   !i.room.nil? and i.room.floor_id == floor.id
-              # end
+    if !db_user.nil? && !db_user.admin_user_role.nil?
+      db_user.admin_user_role.admin_user_role_to_buildings.each do |tob|
+        if !tob.building.nil?
+          puts "ARM: User (%s) Can Read Building : (%s)" % [db_user.email, tob.building.name]
+          buildings_id << tob.building.id
+          ability.can :read, Building,:id => tob.building.id
+          tob.building.floors.each do |floor|
+            if !floor.nil?
+              floors_id << floor.id
+              if (@user_type == 'READ')
+                ability.can :read, Floor,:id => floor.id
+                ability.can :read, Room, :floor_id => floor.id
+              elsif @user_type == 'WRITE'
+                ability.can :manage, Floor,:id => floor.id
+                ability.can :manage, Room, :floor_id => floor.id
+                # ability.can :manage, Affectation, Affectation do |a|
+                #   !a.room.nil? and a.room.floor_id == floor.id
+                # end
+                # ability.can :manage, Inventory, Inventory do |i|
+                #   !i.room.nil? and i.room.floor_id == floor.id
+                # end
+              end
             end
           end
         end
