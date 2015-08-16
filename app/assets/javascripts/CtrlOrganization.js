@@ -61,7 +61,9 @@
           if (editor.json.building_id === parseInt(localBuildingId, 10)) {
             filter = mapFilter.bfilters[localBuildingId].belongsToItems.organization[$scope.o.id];
             filter.state = true;
-            $rootScope.$emit('organization_filters.StateChange', filter);
+            $rootScope.f[localBuildingId].organization.filters.names[filter.id].state = true;
+            editor.mapOnItems('fillFromFilterColor', 'organization');
+            editor.setLegend();
           }
         });
 
