@@ -3,19 +3,22 @@ require_dependency 'buildings_manager'
 class BuildingsController < GeopController
   before_action :set, only: [:export]
 
-  # load_and_authorize_resource :nested => :company  
+  # load_and_authorize_resource :nested => :company
 
   def show
-    if !@current_ability.can?(:read, @building)
-      render_404
-    end    
     respond_to do |format|
       format.html{
         b = Building.find_by_id(params[:id])
+        if !@current_ability.can?(:read, b)
+          render_404
+        end
         gon.building = b.as_json(:methods => [:url])
       }
       format.json{
         b = Building.includes([:company, :floors => FloorsController.selection]).find_by_id(params[:id])
+        if !@current_ability.can?(:read, b)
+          render_404
+        end
         render json: b.as_json(:methods => [:url], :include => [:company, {:floors => {:include => FloorsController.json_selection, :methods => [:url, :fullname]}}])
       }
     end
@@ -41,34 +44,25 @@ class BuildingsController < GeopController
   end
 
   def import
-
     puts Dir.pwd
-    importer = BuildingsImport.new(Dir.pwd + "/app/assets/files/export_maracadet.xlsx");
+    # importer = BuildingsImport.new(Dir.pwd + "/app/assets/files/export_maracadet.xlsx");
     # importer = BuildingsImport.new("http://localhost:3000/assets/export_maracdet3.xlsx");
     # importer = BuildingsImport.new("/Users/pouya//Downloads/export_maracdet3.xlsx")
-
-
     # s = Roo::Excelx.new()
-
     # s.default_sheet = s.sheets[1]
     # s.each  do |r|
     #   puts r.inspect
     #   puts r[0]
     # end
-    
     # puts s.last_row
     # i = 1
-    # begin 
-    #   puts s.cell(i,1) 
+    # begin
+    #   puts s.cell(i,1)
     #   i += 1
     # end until i > s.last_row
-
-
     # s.each_row_streaming do |row|
     #     puts row.inspect # Array of Excelx::Cell objects
     # end
-
-
     render json: {"status" => "OK"}
   end
 

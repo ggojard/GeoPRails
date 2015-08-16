@@ -369,7 +369,7 @@
   Polyline.prototype.setTexts = function() {
     var displayNames, id, displayText, text, i, texts, bbox, value;
     if (this.element === undefined) {
-      console.error('this shape don\'t get any elements', this.json);
+      console.error('this shape don\'t get any elements (maybe missing points)', this.json);
       return;
     }
     bbox = this.element.node.getBBox();
