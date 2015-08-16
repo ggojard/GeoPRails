@@ -15,7 +15,9 @@ class ApplicationController < ActionController::Base
     redirect_to (root_path), :alert => exception.message
   end
 
-
+  def render_404
+    render file: "#{Rails.root}/public/404.html", layout: false, status: 404
+  end
 
   def current_ability
     @@the_user = current_admin_user

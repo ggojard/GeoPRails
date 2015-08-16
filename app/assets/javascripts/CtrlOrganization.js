@@ -11,14 +11,10 @@
     buildings = {};
     geoP.registerEditorStopLoading($rootScope);
 
-
     for (i = 0; i < $scope.o.rooms.length; i += 1) {
       r = $scope.o.rooms[i];
-      // floorId = r.floor.id;
-      // buildingId = r.floor.building_id;
       floors[r.floor.id] = r.floor;
     }
-
 
     function loadFloors(floorsArrayLocal) {
       var buildingsById = {},
@@ -59,17 +55,22 @@
         geoP.setFloorsMaps(localBuildingId, $scope.floorsByBuildingId[localBuildingId], $rootScope, $http);
         mapFilter = $rootScope.mapFilter[localBuildingId];
         $scope.filter[localBuildingId] = mapFilter.mergedFiltersForBuildings[localBuildingId].organization[$scope.o.id];
-        filter = mapFilter.bfilters[localBuildingId].belongsToItems.organization[$scope.o.id];
-        filter.state = true;
-        $rootScope.$emit('organization_filters.StateChange', filter);
-      }
 
+        $rootScope.$on('editor-loaded', function(e, editor) {
+          /*jslint unparam:true*/
+          if (editor.json.building_id === parseInt(localBuildingId, 10)) {
+            filter = mapFilter.bfilters[localBuildingId].belongsToItems.organization[$scope.o.id];
+            filter.state = true;
+            $rootScope.$emit('organization_filters.StateChange', filter);
+          }
+        });
+
+      }
       for (bId in buildings) {
         if (buildings.hasOwnProperty(bId)) {
           loadBuilding(bId);
         }
       }
-
     }
 
     floorsArray = [];
@@ -77,17 +78,29 @@
     i = 0;
 
     function floorLoaded(res) {
-      floorsArray.push(res);
+      if (res !== null) {
+        floorsArray.push(res);
+      }
       i += 1;
       if (i === floorsMax) {
         loadFloors(floorsArray);
       }
     }
 
+    function errorOnLoadingFloor() {
+      console.error('error getting floor, it will be escape');
+      floorLoaded(null);
+    }
+
     for (fId in floors) {
       if (floors.hasOwnProperty(fId)) {
-        $http.get('/floors/' + fId + '.json').success(floorLoaded);
+        $http.get('/floors/' + fId + '.json').success(floorLoaded).error(errorOnLoadingFloor);
       }
+    }
+
+    if (floorsMax === 0) {
+      $rootScope.$emit('stop-loading');
+      $scope.noRoomsForOrganization = true;
     }
 
     $scope.init = function(bId) {

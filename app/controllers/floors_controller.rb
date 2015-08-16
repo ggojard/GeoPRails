@@ -1,4 +1,5 @@
 class FloorsController < GeopController
+  before_action :current_ability
   before_action :set, only: [:show, :edit, :update, :show_json]
 
   def self.selection
@@ -10,6 +11,9 @@ class FloorsController < GeopController
   end
 
   def show
+    if !@current_ability.can?(:read, @floor)
+      return render_404
+    end
     respond_to do |format|
       format.html {
         gon.floor = @floor.as_json(:include => FloorsController.json_selection, :methods =>[:fullname, :url])

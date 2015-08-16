@@ -6,6 +6,9 @@ class BuildingsController < GeopController
   # load_and_authorize_resource :nested => :company  
 
   def show
+    if !@current_ability.can?(:read, @building)
+      render_404
+    end    
     respond_to do |format|
       format.html{
         b = Building.find_by_id(params[:id])

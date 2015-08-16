@@ -2,6 +2,7 @@
   <div class="jumbotron-surfy" style="background-color: {{o.color}}">
     <h2>{{o.name}}</h2>
   </div>
+  <h3 ng-if="noRoomsForOrganization === true">Il n'y a pas de pièce disponible pour cette organisation.</h3>
   <ul id="myTab-0" class="nav nav-pills nav-justified" role="tablist" >
     <li ng-repeat="buildingId in buildings" ng-class="{active : $first}" style="background-color: {{buildingsById[buildingId].color}}" ng-init="init(buildingId)" id="tab-oraganization-{{buildingId}}">
       <a data-toggle="tab" href="#b{{buildingId}}">{{buildingsById[buildingId].name}}</a>

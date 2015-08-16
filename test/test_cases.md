@@ -39,3 +39,9 @@ editor
 # room information
 - when page loads with room select the info popout offset is correct
   - works on pages : floor, building, organization
+
+# views with map
+- building / multiple
+- floor
+- organization
+- person ?

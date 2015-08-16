@@ -63,7 +63,7 @@
         editor.loadRooms();
         editor.setOptions();
         mapFilter.addEditor(editor);
-        $scope.$emit('editor-loaded');
+        $scope.$emit('editor-loaded', editor);
         setTimeout(function() {
           geoP.selectPolylineIfIsInHash($scope, buildingId);
         }, 1000);

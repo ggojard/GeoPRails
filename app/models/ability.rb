@@ -4,33 +4,22 @@ class Ability
   def set_arm user
     $arm ||= {}
     if !user.nil? 
-      $arm[user.id] ||= ArmUser.new(user.id, self)
+      $arm[user.id] = ArmUser.new(user.id, self)
       puts 'ARM: Setup for (%s), (%s)' % [user.email, $arm[user.id].user_type]
     end
   end
 
 
   def initialize(user)
-
     u_type = 'READ'
-
-
     puts 'ARM: Initialize'
-
-
     set_arm(user)
 
     if !user.nil?
-
-
       arm_user = $arm[user.id]
       u_type = arm_user.user_type
-
-
       # can :read, Building, :id => 56
       # can :read, Building, :id => 1
-
-
       # puts tob.building.name
       # arm_user.buildings.each do |tob|
       #   # byebug
