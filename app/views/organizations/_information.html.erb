@@ -1,4 +1,4 @@
-<table class="box-details">
+<table class="box-details" ng-init=" count_free_desk = countPeopleFromOrganization(buildingId)">
   <tr>
     <th>Nombres de piéces</th>
     <td>{{filter[buildingId].count}}</td>
@@ -19,4 +19,8 @@
     <th>Présence sur nombre d'étages</th>
     <td>{{floorsByBuildingId[buildingId].length}}</td>
   </tr>
+  <tr ng-if="count_free_desk > 0">
+    <th>Nombre de places libres</th>
+    <td>{{count_free_desk}}</td>
+  </tr>  
 </table>

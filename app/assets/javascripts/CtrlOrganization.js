@@ -103,6 +103,20 @@
       $scope.noRoomsForOrganization = true;
     }
 
+    $scope.countPeopleFromOrganization = function(building_id) {
+      var res = 0;
+      $scope.floorsByBuildingId[building_id].map(function(a) {
+        var rooms = a.rooms.filter(function(r) {
+          if (r.organization_id === $scope.o.id) {
+            return true;
+          }
+        });
+        res += geoP.countPeopleFromRooms(rooms);
+        return res;
+      });
+      return res;
+    };
+
     $scope.init = function(bId) {
       setTimeout(function() {
         var $id;

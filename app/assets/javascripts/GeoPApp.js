@@ -202,6 +202,16 @@
     document.onkeyup = keyUp;
   };
 
+  geoP.countPeopleFromRooms = function(rooms) {
+    return rooms.reduce(function(a, b) {
+      var res = a;
+      if (b.free_desk_number !== null) {
+        res += b.free_desk_number;
+      }
+      return res;
+    }, 0);
+  };
+
   app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
     $scope.floorsByBuildingId = {};
     $scope.mapMode = gon.mode;
@@ -231,13 +241,7 @@
     };
 
     $scope.countFreeSpacesFromRooms = function(rooms) {
-      return rooms.reduce(function(a, b) {
-        var res = a;
-        if (b.free_desk_number !== null) {
-          res += b.free_desk_number;
-        }
-        return res;
-      }, 0);
+      geoP.countPeopleFromRooms(rooms);
     };
 
 
