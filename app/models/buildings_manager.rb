@@ -20,26 +20,17 @@ class BuildingsManager
 
 
   def duplicate
-
-    # @text = ''
-    # Room.where('floor_id > 30').each do |r|
-    #   @text += "R : %d -" % r.id
-    #   r.destroy
-    # end
-    # Floor.where('building_id is null').each do |f|
-    #   @text += "F : %d -" % f.id
-    #   f.destroy
-    # end
-    # Building.where('id != 1').each do |b|
-    #   @text += "B %s - %d" % [b.name, b.id]
-    #   BuildingsDuplicate.new(b.id).delete_recursive
-    # end
-
-    # return
     new_b = @building.dup
     new_b.save
-
     new_b.name += " (%d)" % new_b.id
+
+    # add the building to the user role
+    @building.admin_user_role_to_buildings.each do |rtb|
+      new_rtb = rtb.dup
+      puts rtb
+      new_rtb.building_id = new_b.id
+      new_rtb.save
+    end
 
     @building.floors.each do |f|
       new_f = f.dup

@@ -1,17 +1,28 @@
 ActiveAdmin.register Building do
   # menu :label => "Bâtiments"
 
-  show do |f|
+  show do |building|
     attributes_table do
-      row I18n.t('formtastic.labels.building.name') do f.name end
-      row I18n.t('formtastic.labels.building.company') do f.company end
+      row I18n.t('formtastic.labels.building.name') do building.name end
+      row I18n.t('formtastic.labels.building.company') do building.company end
     end
 
     panel I18n.t('activerecord.models.floor.other') do
       table_for building.floors do
-        column I18n.t('formtastic.labels.floor.name') do |b| link_to b.name, [:admin, b] end
+        column I18n.t('formtastic.labels.floor.name') do |f| link_to f.name, [:admin, f] end
       end
     end
+
+    panel "Roles Associations" do
+      table_for building.admin_user_role_to_buildings do
+        column "User Roles" do |user_role|
+          if !user_role.admin_user_role.nil?
+            link_to user_role.admin_user_role.name, admin_admin_user_role_url(user_role.admin_user_role.id)
+          end
+        end
+      end
+    end
+
   end
 
   index do
