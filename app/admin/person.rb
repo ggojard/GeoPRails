@@ -34,7 +34,7 @@ ActiveAdmin.register Person do
 
 
     panel "Affectations" do
-      table_for person.affectations do
+      table_for person.affectations.select{|b| can? :read, b}  do
         column "Pièces" do |b| link_to b.room.fullname  , admin_room_path(b.room.id) end
         column "Visualiser" do |b| link_to  "Visualiser" , room_path(b.room.id) end
       end

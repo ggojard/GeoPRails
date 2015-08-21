@@ -241,7 +241,7 @@
     };
 
     $scope.countFreeSpacesFromRooms = function(rooms) {
-      geoP.countPeopleFromRooms(rooms);
+      return geoP.countPeopleFromRooms(rooms);
     };
 
 

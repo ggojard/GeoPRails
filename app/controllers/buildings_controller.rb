@@ -3,22 +3,16 @@ require_dependency 'buildings_manager'
 class BuildingsController < GeopController
   before_action :set, only: [:export]
 
-  # load_and_authorize_resource :nested => :company
-
   def show
     respond_to do |format|
       format.html{
         b = Building.find_by_id(params[:id])
-        if !@current_ability.can?(:read, b)
-          render_404
-        end
+        if !authorize_read? b; return render_404 end
         gon.building = b.as_json(:methods => [:url])
       }
       format.json{
         b = Building.includes([:company, :floors => FloorsController.selection]).find_by_id(params[:id])
-        if !@current_ability.can?(:read, b)
-          render_404
-        end
+        if !authorize_read? b; return render_json_404 end
         render json: b.as_json(:methods => [:url], :include => [:company, {:floors => {:include => FloorsController.json_selection, :methods => [:url, :fullname]}}])
       }
     end

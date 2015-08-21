@@ -68,6 +68,9 @@
     this.canvas = this.paper.g();
     this.canvas.node.id = 'viewport-' + floorJson.id;
 
+    console.log(this.canvas, $(this.canvas.node).is(':visible'));
+
+
     that.displayProperties = this.$rootScope.displayNames;
 
     $((function() {

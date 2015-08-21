@@ -137,10 +137,9 @@
     this.group = this.svgEditor.canvas.group(this.element);
     if (this.json !== null) {
       this.group.attr({
-        'id': 'g-' + this.json.id
+        'id': 'f-' + this.svgEditor.json.id + '-g-' + this.json.id
       });
     }
-
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 

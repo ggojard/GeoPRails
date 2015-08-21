@@ -11,15 +11,15 @@ class FloorsController < GeopController
   end
 
   def show
-    if !@current_ability.can?(:read, @floor)
-      return render_404
-    end
+    
     respond_to do |format|
       format.html {
+        if !authorize_read? @floor; return render_404 end
         gon.floor = @floor.as_json(:include => FloorsController.json_selection, :methods =>[:fullname, :url])
         gon.mode = 'show'
       }
       format.json{
+        if !authorize_read? @floor; return render_json_404 end
         if !@floor.nil?
           render json: @floor.as_json(:include => FloorsController.json_selection, :methods =>[:fullname, :url])
         else

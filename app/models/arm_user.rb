@@ -33,9 +33,9 @@ class ArmUser
               elsif @user_type == 'WRITE'
                 ability.can :manage, Floor,:id => floor.id
                 ability.can :manage, Room, :floor_id => floor.id
-                ability.can :manage, Affectation do |a|
-                  !a.room.nil? and a.room.floor_id == floor.id
-                end
+                # ability.can :manage, Affectation do |a|
+                  # !a.room.nil? and a.room.floor_id == floor.id
+                # end
                 # ability.can :manage, Inventory, Inventory do |i|
                 #   !i.room.nil? and i.room.floor_id == floor.id
                 # end
