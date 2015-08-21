@@ -144,7 +144,7 @@
   };
 
   Polyline.prototype.updateTextPosition = function() {
-    var bbox = this.element.node.getBBox(),
+    var bbox = this.getBBox(this.element.node),
       textBbox, lines, x, y;
     lines = this.text.selectAll('tspan');
 
@@ -371,7 +371,7 @@
       console.error('this shape don\'t get any elements (maybe missing points)', this.json);
       return;
     }
-    bbox = this.element.node.getBBox();
+    bbox = this.getBBox(this.element.node);
     displayNames = this.svgEditor.displayProperties;
     if (displayNames === undefined) {
       console.error('displayProperties is undefined');
@@ -486,16 +486,26 @@
   };
 
 
+  Polyline.prototype.getBBox = function(node) {
+    var b;
+    try {
+      b = node.getBBox();
+    } catch (e) {
+      b = this.svgEditor.paper.node.createSVGRect();
+    }
+    return b;
+  };
+
   Polyline.prototype.updateHashCode = function() {
     this.hashCode = this.getHash();
   };
 
   Polyline.prototype.getHash = function() {
     /*jslint nomen: true*/
-    var bbox, h;
+    var bbox, h, that = this;
     if (this.group !== undefined) {
       bbox = this.moveCircles.map(function(m) {
-        return m.node.getBBox();
+        return that.getBBox(m.node);
       });
       h = [bbox];
       if (this.json !== null) {

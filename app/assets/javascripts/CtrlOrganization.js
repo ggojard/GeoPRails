@@ -27,7 +27,6 @@
         return false;
       }
 
-      // console.log(floorsArrayLocal);
       floorsArrayLocal.forEach(function(f) {
         buildingsById[f.building_id] = f.building;
         if (floorsByBuildingId[f.building_id] === undefined) {
@@ -91,7 +90,6 @@
         floorsArray.push(res);
       }
       i += 1;
-      // console.log(i, floorsMax);
       if (i === floorsMax) {
         loadFloors(floorsArray);
       }
