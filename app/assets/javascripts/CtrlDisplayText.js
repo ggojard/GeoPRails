@@ -45,12 +45,17 @@
     p.push(getDisplayNameFilter('area', true, function(v) {
       return [v.toFixed(2) + ' m²'];
     }));
+    p.push(getDisplayNameFilter('ratio', true, function(v) {
+      return [v === undefined ? '' : parseFloat(v, 10).toFixed(2) + ' m² / personnes'];
+    }));
+
     p.push(getDisplayNameFilter('perimeter', false, function(v) {
       return [v + ' m'];
     }));
     p.push(getDisplayNameFilter('network', false, function(v) {
       return v.split('\r\n');
     }));
+
     p.push(getDisplayNameFilter('free_desk_number', false, function(v) {
       if (v === 1) {
         return [v + ' place libre'];

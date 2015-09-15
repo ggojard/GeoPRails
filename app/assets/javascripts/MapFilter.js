@@ -164,12 +164,14 @@
                       o.areaSum += n.areaSum;
                       o.perimeterSum += n.perimeterSum;
                       o.ratio += n.ratio;
+                      o.freeDeskNumberSum += n.freeDeskNumberSum;
 
                       o.count = parseFloat(o.count.toFixed(1), 10);
                       o.nbPeople = parseFloat(o.nbPeople.toFixed(1), 10);
                       o.areaSum = parseFloat(o.areaSum.toFixed(1), 10);
                       o.perimeterSum = parseFloat(o.perimeterSum.toFixed(1), 10);
                       o.ratio = parseFloat(o.ratio.toFixed(1), 10);
+                      o.freeDeskNumberSum = parseFloat(o.freeDeskNumberSum.toFixed(1), 10);
                       this.mergedFiltersForBuildings[bId][belongsToName][belongsToId] = o;
                     }
                   }
@@ -276,7 +278,8 @@
             nbPeople: 0,
             areaSum: 0,
             perimeterSum: 0,
-            ratio: 0
+            ratio: 0,
+            freeDeskNumberSum: 0
           };
         }
         belongsToKpi = kpis[belongsToItem.id];
@@ -284,6 +287,7 @@
         belongsToKpi.areaSum += room.area;
         belongsToKpi.perimeterSum += room.perimeter;
         belongsToKpi.nbPeople += room.affectations.length;
+        belongsToKpi.freeDeskNumberSum += room.free_desk_number;
       }
     }
     // clean the results
@@ -294,7 +298,7 @@
       if (kpiObject.nbPeople === 0) {
         kpiObject.ratio = 0;
       } else {
-        ratio = kpiObject.areaSum / kpiObject.nbPeople;
+        ratio = kpiObject.areaSum / (kpiObject.nbPeople + kpiObject.freeDeskNumberSum);
         kpiObject.ratio = parseFloat(ratio.toFixed(1), 10);
       }
       kpis[eId] = kpiObject;

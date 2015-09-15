@@ -19,6 +19,7 @@ fr:
         room_type: "Type de pièce"
         organization: "Organisation"
         floor: "Etage"
+        ratio: "Ratio m²/personnes"
       admin_user_role:
         id: "Identifiant"
         name: "Nom"

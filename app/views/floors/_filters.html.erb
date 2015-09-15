@@ -26,8 +26,8 @@
               <ul class="filter-zone">
                 <li class="selection-checkbox" ><input type="checkbox" ng-model="rt.state" disabled/></li>
                 <li class="selection-organization" ng-if="filter.name === 'organization'"><a href="/organizations/{{rt.id}}" class="filter-open-icon"><i class="fa fa-info-circle"></i></a></li>
-                <li class="selection-name">{{filter_name.name}}</li>
-                <li class="filter-kpis"><span title="Aire" class="badge ">{{filter_value.areaSum}} m²</span><span ng-if="filter_value.count > 0" title="Nombre de pièces" class="badge ">{{filter_value.count}} <i class="fa fa-codepen"></i></span><span ng-if="filter_value.nbPeople > 0" title="Nombre de personnes" class="badge ">{{filter_value.nbPeople}} <i class="fa fa-user"></i></span><span ng-if="filter_value.ratio > 0" title="Ratio m&#178; / personnes" class="badge ">{{filter_value.ratio}} m&#178; / <i class="fa fa-user"></i></span></li>
+              <li class="selection-name">{{filter_name.name}}</li>
+                <li class="filter-kpis"><span title="Aire" class="badge ">{{filter_value.areaSum}} m²</span><span ng-if="filter_value.count > 0" title="Nombre de pièces" class="badge ">{{filter_value.count}} <i class="fa fa-codepen"></i></span><span ng-if="filter_value.nbPeople > 0" title="Nombre de personnes" class="badge ">{{filter_value.nbPeople}} <i class="fa fa-user"></i></span><span ng-if="filter_value.ratio > 0" title="Ratio m&#178; / personnes" class="badge ">{{filter_value.ratio}} m&#178; / <i class="fa fa-user"></i></span><span ng-if="filter_value.freeDeskNumberSum > 0" title="Nombre de places libre" class="badge ">{{filter_value.freeDeskNumberSum}} <i class="fa fa-user-times"></i></span></li>
               </ul>
             </div>
           </li>
