@@ -10,6 +10,7 @@ ActiveAdmin.register Building do
     panel I18n.t('activerecord.models.floor.other') do
       table_for building.floors do
         column I18n.t('formtastic.labels.floor.name') do |f| link_to f.name, [:admin, f] end
+        column I18n.t('formtastic.labels.floor.level') do |f| f.level end
       end
     end
 
@@ -22,7 +23,6 @@ ActiveAdmin.register Building do
         end
       end
     end
-
   end
 
   index do

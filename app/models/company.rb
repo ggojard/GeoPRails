@@ -3,10 +3,6 @@ class Company < ActiveRecord::Base
   has_many :buildings
   accepts_nested_attributes_for :buildings, :allow_destroy => true
 
-
-
-  has_many :buildings_arm, -> {where(id:5)}, :class_name => 'Building'
-
   has_many :organizations
   accepts_nested_attributes_for :organizations, :allow_destroy => true
 

@@ -36,13 +36,11 @@ class BuildingsManager
       new_f = f.dup
       new_f.building_id = new_b.id
       new_f.save
-
       FloorsImage.where("floor_id = %d" % f.id).each do |fi|
         new_fi = fi.dup
         new_fi.floor_id = new_f.id
         new_fi.save
       end
-
       f.rooms.each do |r|
         new_r = r.dup
         new_r.floor_id = new_f.id
@@ -53,13 +51,9 @@ class BuildingsManager
           new_aff.room_id = new_r.id
           new_aff.save
         end
-
       end
-
     end
-
     new_b.save
-
     @b = new_b
   end
 

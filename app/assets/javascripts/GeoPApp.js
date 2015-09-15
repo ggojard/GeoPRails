@@ -106,7 +106,6 @@
     }
   ]);
 
-
   app.controller('CompanyCtrl', function($scope, $rootScope) {
     $scope.company = gon.company;
     $scope.organizations = gon.organizations;
