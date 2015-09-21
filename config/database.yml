@@ -17,7 +17,8 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: GeoP_development
+  # database: GeoP_development
+  database: mdmb
   pool: 5
   username: kgb
   password: kgb1

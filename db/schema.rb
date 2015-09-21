@@ -236,15 +236,10 @@ ActiveRecord::Schema.define(version: 20150606081238) do
     t.text     "network"
     t.float    "perimeter"
     t.string   "anchor_text_point"
-    t.integer  "free_desk_number"
+    t.integer  "free_desk_number",    default: 0
   end
 
   add_index "rooms", ["floor_id"], name: "index_rooms_on_floor_id", using: :btree
   add_index "rooms", ["room_type_id"], name: "index_rooms_on_room_type_id", using: :btree
-
-  create_table "roots", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
 end

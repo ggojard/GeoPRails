@@ -137,7 +137,7 @@
   };
 
   MapFilter.prototype.createMergedFiltersByBuilding = function() {
-    var bId, filtersForFloorObject, belongsToName, belongsToId, fId, o, n;
+    var bId, filtersForFloorObject, belongsToName, belongsToId, fId, o, n, allPeople;
     for (bId in this.bfilters) {
       if (this.bfilters.hasOwnProperty(bId)) {
         for (fId in this.bfilters[bId]) {
@@ -163,14 +163,19 @@
                       o.nbPeople += n.nbPeople;
                       o.areaSum += n.areaSum;
                       o.perimeterSum += n.perimeterSum;
-                      o.ratio += n.ratio;
+                      // o.ratio += n.ratio;
                       o.freeDeskNumberSum += n.freeDeskNumberSum;
+                      allPeople = o.nbPeople + o.freeDeskNumberSum;
 
                       o.count = parseFloat(o.count.toFixed(1), 10);
                       o.nbPeople = parseFloat(o.nbPeople.toFixed(1), 10);
                       o.areaSum = parseFloat(o.areaSum.toFixed(1), 10);
                       o.perimeterSum = parseFloat(o.perimeterSum.toFixed(1), 10);
-                      o.ratio = parseFloat(o.ratio.toFixed(1), 10);
+                      if (allPeople === 0) {
+                        o.ratio = 0;
+                      } else {
+                        o.ratio = parseFloat((o.areaSum / allPeople).toFixed(1), 10);
+                      }
                       o.freeDeskNumberSum = parseFloat(o.freeDeskNumberSum.toFixed(1), 10);
                       this.mergedFiltersForBuildings[bId][belongsToName][belongsToId] = o;
                     }
@@ -292,18 +297,18 @@
     }
     // clean the results
     Object.keys(kpis).forEach(function(eId) {
-      var kpiObject = kpis[eId];
+      var peopleCount, kpiObject = kpis[eId];
       kpiObject.areaSum = parseFloat(kpiObject.areaSum.toFixed(1), 10);
       kpiObject.perimeterSum = parseFloat(kpiObject.perimeterSum.toFixed(1), 10);
-      if (kpiObject.nbPeople === 0) {
+      peopleCount = kpiObject.nbPeople + kpiObject.freeDeskNumberSum;
+      if (peopleCount === 0) {
         kpiObject.ratio = 0;
       } else {
-        ratio = kpiObject.areaSum / (kpiObject.nbPeople + kpiObject.freeDeskNumberSum);
+        ratio = kpiObject.areaSum / peopleCount;
         kpiObject.ratio = parseFloat(ratio.toFixed(1), 10);
       }
       kpis[eId] = kpiObject;
     });
-
     this.bfilters[buildingId][floorId][belongsToKeyName] = kpis;
   };
 

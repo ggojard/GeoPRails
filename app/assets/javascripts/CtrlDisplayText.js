@@ -46,7 +46,7 @@
       return [v.toFixed(2) + ' m²'];
     }));
     p.push(getDisplayNameFilter('ratio', true, function(v) {
-      return [v === undefined ? '' : parseFloat(v, 10).toFixed(2) + ' m² / personnes'];
+      return [v === undefined ? '' : parseFloat(v, 10).toFixed(1) + ' m² / personnes'];
     }));
 
     p.push(getDisplayNameFilter('perimeter', false, function(v) {
