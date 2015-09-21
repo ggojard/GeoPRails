@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
       # puts 'get_global_company'
       # puts u_arm_buildings_id
       # $global_company = Company.includes(:buildings => :floors).find_by_id(current_admin_user.company_id)
-      arm.company ||= Company.includes(:buildings=> :floors ).where(buildings: {id: u_arm_buildings_id}).order("floors.level").find_by_id(current_admin_user.company_id)
+      arm.company ||= Company.includes(:buildings=> :floors ).where(buildings: {id: u_arm_buildings_id}).order("buildings.name, floors.level").find_by_id(current_admin_user.company_id)
       return arm.company
     end
   end
