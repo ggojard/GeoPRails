@@ -165,7 +165,7 @@
 
     vectricesMaterial = new THREE.MeshBasicMaterial({
       color: 0xdddddd, // vectrices
-      shading: THREE.FlatShading,
+      // shading: THREE.FlatShading,
       wireframe: true,
       transparent: true,
       opacity: 0.125
@@ -173,7 +173,7 @@
 
     fillMaterial = new THREE.MeshLambertMaterial({
       color: 0x00ff00,
-      shading: THREE.FlatShading,
+      // shading: THREE.FlatShading,
       vertexColors: THREE.VertexColors,
       transparent: true,
       opacity: 0.75
