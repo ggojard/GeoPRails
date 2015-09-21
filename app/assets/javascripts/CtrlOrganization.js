@@ -16,13 +16,31 @@
       floors[r.floor.id] = r.floor;
     }
 
+
+    $rootScope.$on('stop-loading', function() {
+
+      // update the text positions
+      setTimeout(function() {
+        if (Object.keys(buildings).length > 0) {
+          var bId = Object.keys(buildings)[0],
+            j;
+          if ($rootScope.mapFilterByBuildingId[bId].editors.length > 0) {
+            for (j = 0; j < $rootScope.mapFilterByBuildingId[bId].editors.length; j += 1) {
+              $rootScope.mapFilterByBuildingId[bId].editors[j].mapOnItems('updateTextPosition');
+            }
+          }
+        }
+      }, 250);
+    });
+
+
     function loadFloors(floorsArrayLocal) {
       var buildingsById = {},
         floorsByBuildingId = {},
         bId;
 
       if (floorsArrayLocal.length === 0) {
-        $rootScope.$emit('stop-loading');
+        // $rootScope.$emit('stop-loading');
         $scope.noRoomsForOrganization = true;
         return false;
       }
@@ -69,7 +87,6 @@
             filter.state = true;
             $rootScope.f[localBuildingId].organization.filters.names[filter.id].state = true;
             editor.mapOnItems('fillFromFilterColor', 'organization');
-            editor.setLegend();
           }
         });
 
