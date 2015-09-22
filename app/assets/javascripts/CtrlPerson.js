@@ -7,7 +7,6 @@
     $scope.a = {
       person: p
     };
-    console.log(p);
     $rootScope.$emit('stop-loading');
   });
 

@@ -82,6 +82,7 @@ fr:
         monitorreference: "Référence écran"
         computerreference: "Référence ordinateur"
         badge_number: "Numéro de Badge"
+        photo: "Photo"
       person_state:
         id: "Identifiant staut personne"
         name : "Nom"
