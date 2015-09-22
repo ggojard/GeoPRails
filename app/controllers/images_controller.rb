@@ -22,7 +22,6 @@ class ImagesController < GeopController
     render :text => @f[0].file_contents
   end
 
-
   def logo_small
     company = Company.find_by_id(current_admin_user.company_id)
     if !company.nil?
@@ -31,8 +30,8 @@ class ImagesController < GeopController
   end
 
   def logo
-    arm = $arm[current_admin_user.id]
-    @@company_logo_content ||= get_company_image_content(arm.company.id, 'original')
+    @@img_arm ||= $arm[current_admin_user.id]
+    @@company_logo_content ||= get_company_image_content(@@img_arm.company.id, 'original')
     render :text => @@company_logo_content, :content_type => 'image/png', :disposition => 'inline', :cache => true
   end
 

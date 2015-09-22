@@ -10,8 +10,7 @@ class FloorsController < GeopController
     [{:building => {:methods => [:url, :fullname]}}, RoomsController.json_selection]
   end
 
-  def show
-    
+  def show    
     respond_to do |format|
       format.html {
         if !authorize_read? @floor; return render_404 end
