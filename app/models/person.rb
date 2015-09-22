@@ -9,9 +9,19 @@ class Person < ActiveRecord::Base
   accepts_nested_attributes_for :rooms, :allow_destroy => true
   accepts_nested_attributes_for :affectations, :allow_destroy => true
 
+  mount_uploader :photo, AvatarUploader
+
   def fullname
     if !self.nil?
       self.firstname + ' ' + self.lastname
+    end
+  end
+
+  def photo_url
+    if !self.photo?
+      image_tag(self.photo.url(:thumbnail))
+    else
+      return nil
     end
   end
 

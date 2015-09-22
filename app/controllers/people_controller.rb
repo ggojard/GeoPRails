@@ -5,7 +5,7 @@ class PeopleController < GeopController
   @includes_people = [{:affectations => {:room => [{:floor => :building}, :room_type]}}, :person_state, :organization]
 
   def as_json_people
-    {:include => [{:affectations => {:include => {:room => {:methods=> [:fullname, :area_unit, :url], :include => [{:floor => {:include => :building}}, :room_type]  }}}}, :person_state, {:organization => {:methods => [:url]}}], :methods => PeopleController.json_methods}
+    {:include => [{:affectations => {:include => {:room => {:methods=> [:fullname, :area_unit, :url], :include => [{:floor => {:include => :building}}, :room_type]  }}}}, :person_state, {:organization => {:methods => [:url, :photo_url]}}], :methods => PeopleController.json_methods}
   end
 
   def self.json_methods

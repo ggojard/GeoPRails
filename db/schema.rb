@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150606081238) do
+ActiveRecord::Schema.define(version: 20150922191115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -200,6 +200,7 @@ ActiveRecord::Schema.define(version: 20150606081238) do
     t.string   "email"
     t.string   "person_code"
     t.string   "badge_number"
+    t.string   "photo"
   end
 
   create_table "person_states", force: true do |t|
@@ -236,7 +237,7 @@ ActiveRecord::Schema.define(version: 20150606081238) do
     t.text     "network"
     t.float    "perimeter"
     t.string   "anchor_text_point"
-    t.integer  "free_desk_number",    default: 0
+    t.integer  "free_desk_number"
   end
 
   add_index "rooms", ["floor_id"], name: "index_rooms_on_floor_id", using: :btree

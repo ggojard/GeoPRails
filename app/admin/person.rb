@@ -19,6 +19,10 @@ ActiveAdmin.register Person do
         row "Email" do c.email end
         row "Matricule" do c.person_code end
         row "Badge" do c.badge_number end
+        row "Plan" do
+          image_tag(c.photo.url(:thumbnail))
+        end
+
       end
     end
 
@@ -53,7 +57,8 @@ ActiveAdmin.register Person do
     actions
   end
 
-  form do |f|
+  form(:html => { :multipart => true }) do |f|
+
     f.inputs "Details" do
       f.input :firstname
       f.input :lastname
@@ -64,18 +69,22 @@ ActiveAdmin.register Person do
       f.input :email
       f.input :person_code
       f.input :badge_number
+      f.input :photo
     end
     f.inputs "Inventaire" do
       f.input :monitorreference
       f.input :computerreference
     end
 
+
+    rooms = Room.includes([{:floor=>:building}]).map{|u| [u.fullname, u.id]}
     f.has_many :affectations do |app_f|
       if !app_f.object.nil?
         app_f.input :_destroy, :as => :boolean, :label => "Retirer l'affectation"
       end
-      app_f.input :room, label: "Nom", as: :select, :collection => Room.all.map{|u| [u.fullname, u.id]}
-    end
+      # app_f.input :room, label: "Nom", as: :select, :collection => Room.all.map{|u| [u.fullname, u.id]}
+       app_f.input :room, label: "Nom", as: :select, :collection => rooms
+    end  
 
 
     f.actions

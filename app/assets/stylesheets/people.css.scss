@@ -2,15 +2,33 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-ul.people{
-  margin:0;
-  padding: 0;
-  &>li{
-    display: inline-block;
-    width: 100%;
-  }
-}
-    hr.affectations{
-      margin: 0;
-      margin-top: 5px;
+ul.people {
+    margin: 0;
+    padding: 0;
+    & > li {
+        display: inline-block;
+        width: 100%;
     }
+}
+
+div.box {
+    .person-photo {
+        text-align: center;
+        margin: 2px;
+        padding: 5px;
+    }
+}
+
+div.box {
+    div.person-options {
+        text-align: right;
+        a.option {
+            float: none;
+        }
+    }
+}
+
+hr.affectations {
+    margin: 0;
+    margin-top: 5px;
+}

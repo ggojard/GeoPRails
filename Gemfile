@@ -67,7 +67,9 @@ gem "active_admin_import"
 gem 'actionpack-action_caching'
 gem 'cancancan'
 gem 'actionpack-page_caching'
-# gem 'cloudinary'
+gem 'cloudinary'
+gem 'carrierwave'
+
 
 group :test, :development do
   gem "byebug"
