@@ -4,7 +4,7 @@ contains() {
   [[ $1 =~ $2 ]] && exit 0 || exit 1
 }
 
-sites="demo amf acf hi bouygues volkswagen heineken sodexo casewise"
+sites="demo amf acf hi bouygues volkswagen heineken sodexo casewise mdm"
 
 deply_site(){
 
