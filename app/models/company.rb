@@ -1,4 +1,6 @@
 class Company < ActiveRecord::Base
+  after_save :reset_image
+
 
   has_many :buildings
   accepts_nested_attributes_for :buildings, :allow_destroy => true
@@ -15,5 +17,12 @@ class Company < ActiveRecord::Base
   def url
     '/companies/%d' % self.id
   end
+
+
+  def reset_image
+    puts 'COMPANY SAVE'
+    $company_logo_content = nil
+  end
+
 
 end
