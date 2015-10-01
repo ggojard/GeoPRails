@@ -30,9 +30,9 @@ class ImagesController < GeopController
   end
 
   def logo
-    @@img_arm ||= $arm[current_admin_user.id]
-    @@company_logo_content ||= get_company_image_content(@@img_arm.company.id, 'original')
-    render :text => @@company_logo_content, :content_type => 'image/png', :disposition => 'inline', :cache => true
+    # @img_arm ||= $arm[current_admin_user.id]
+    @company_logo_content ||= get_company_image_content(current_admin_user.id, 'original')
+    render :text => @company_logo_content, :content_type => 'image/png', :disposition => 'inline', :cache => true
   end
 
   def company_image
