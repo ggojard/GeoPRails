@@ -58,6 +58,7 @@ class ArmUser
     if user.nil?
       return 'READ'
     end
+
     user_id = user.id
     puts "Get User Type For User Id (%d)" % user_id
     if user_id == 0
@@ -67,7 +68,7 @@ class ArmUser
       if !user.admin_user_type.nil?
         return user.admin_user_type.code
       end
-      if user.email == "admin@example.com"
+      if user.email == "admin@example.com" || user.email == "admin@surfy.pro"
         puts 'User is a Special User.'
         return 'ADMIN'
       end
