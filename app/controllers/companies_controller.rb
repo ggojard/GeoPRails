@@ -1,5 +1,5 @@
 class CompaniesController < GeopController
-require 'fileutils'
+  require 'fileutils'
 
   def index
     if current_admin_user != nil
@@ -15,7 +15,6 @@ require 'fileutils'
   end
 
   def import
-  
     begin
       file = params[:file]
       FileUtils.copy(file.path, file.path + '.xlsx')
