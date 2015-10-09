@@ -37,6 +37,7 @@ fr:
         id: "Identifiant entreprise"
         name : "Nom"
         analytics_code: "Code Google Analytics"
+        logo: "Logo Image"
       evacuation_zone:
         id: "Identifiant zone d'évacuation"
         name : "Nom"

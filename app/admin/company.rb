@@ -10,10 +10,7 @@ ActiveAdmin.register Company do
     attributes_table do
       row I18n.t('formtastic.labels.company.name') do c.name end
       row I18n.t('formtastic.labels.company.analytics_code') do c.analytics_code end
-
-      row "Logo" do
-        image_tag(c.image.url(:thumb))
-      end
+      row I18n.t('formtastic.labels.company.logo') do image_tag(c.logo.url(:small)) end
     end
     panel I18n.t('activerecord.models.building.other') do      
       table_for c.buildings.select{|b| can? :read, b}  do
@@ -32,8 +29,8 @@ ActiveAdmin.register Company do
   form :html => { :enctype => "multipart/form-data" } do |company|
     company.inputs  do
       company.input :name
-      company.input :image, :required => false, :as => :file
       company.input :analytics_code
+      company.input :logo
     end
 
     company.has_many :buildings do |b|
@@ -48,14 +45,6 @@ ActiveAdmin.register Company do
   end
 
   controller do
-
-    # def b1
-    #   self.buildings
-    # end
-
-    # def scoped_collection
-    #   Company.includes(:buildings)
-    # end
     def permitted_params
       params.permit!
     end

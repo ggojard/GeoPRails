@@ -1,7 +1,4 @@
 class Company < ActiveRecord::Base
-  after_save :reset_image
-
-
   has_many :buildings
   accepts_nested_attributes_for :buildings, :allow_destroy => true
 
@@ -11,18 +8,18 @@ class Company < ActiveRecord::Base
   has_many :admin_users
   accepts_nested_attributes_for :admin_users, :allow_destroy => true
 
-  has_attached_file :image,:styles => { :thumb => "42x42#" }, :storage => :database, :database_table => 'company_images'
-  validates_attachment :image, content_type: { content_type:     ["image/png"] }
+  mount_uploader :logo, LogoUploader
 
   def url
     '/companies/%d' % self.id
   end
 
-
-  def reset_image
-    puts 'COMPANY SAVE'
-    $company_logo_content = nil
+  def logo_url
+    if !self.logo?
+      image_tag(self.logo.url(:small))
+    else
+      return nil
+    end
   end
-
 
 end

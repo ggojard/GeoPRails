@@ -31,7 +31,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   def self.value
     ids = []
     if !@@the_user.nil?
@@ -58,7 +57,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_global_company_json
-    @global_company.as_json({:methods => [:url], :include => {:buildings => {:include => :floors, :methods => [:url]}}})
+    @global_company.as_json({:methods => [:url, :logo_small], :include => {:buildings => {:include => :floors, :methods => [:url]}}})
   end
 
   def set_user_globals

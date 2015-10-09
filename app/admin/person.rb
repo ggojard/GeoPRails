@@ -19,10 +19,7 @@ ActiveAdmin.register Person do
         row "Email" do c.email end
         row "Matricule" do c.person_code end
         row "Badge" do c.badge_number end
-        row "Photo" do
-          image_tag(c.photo.url(:thumbnail))
-        end
-
+        row "Photo" do image_tag(c.photo.url(:thumbnail)) end
       end
     end
 
