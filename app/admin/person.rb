@@ -20,6 +20,7 @@ ActiveAdmin.register Person do
         row "Matricule" do c.person_code end
         row "Badge" do c.badge_number end
         row "Photo" do image_tag(c.photo.url(:thumbnail)) end
+        row I18n.t('formtastic.labels.person.title') do c.title end
       end
     end
 
@@ -66,6 +67,7 @@ ActiveAdmin.register Person do
       f.input :person_code
       f.input :badge_number
       f.input :photo
+      f.input :title
     end
     f.inputs "Inventaire" do
       f.input :monitorreference

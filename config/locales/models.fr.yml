@@ -20,6 +20,7 @@ fr:
         organization: "Organisation"
         floor: "Etage"
         ratio: "Ratio m²/personnes"
+        capacity: "Capacité"
       admin_user_role:
         id: "Identifiant"
         name: "Nom"
@@ -84,6 +85,7 @@ fr:
         computerreference: "Référence ordinateur"
         badge_number: "Numéro de Badge"
         photo: "Photo"
+        title: "Intitulé de Poste"
       person_state:
         id: "Identifiant staut personne"
         name : "Nom"

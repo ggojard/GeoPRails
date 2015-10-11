@@ -59,10 +59,17 @@
     p.push(getDisplayNameFilter('free_desk_number', false, function(v) {
       if (v === 1) {
         return [v + ' place libre'];
-      } else {
-        return [v + ' places libres'];
       }
+      return [v + ' places libres'];
     }));
+
+    p.push(getDisplayNameFilter('capacity', false, function(v) {
+      if (v === 1) {
+        return [v + ' place'];
+      }
+      return [v + ' places'];
+    }));
+
 
     p.push(getDisplayNameFilter('affectations', false, function(v) {
       return v.filter(function(f) {

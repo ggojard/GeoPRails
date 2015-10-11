@@ -23,6 +23,9 @@
       <tr  ng-if="$root.room.json.perimeter">
         <th>Périmètre</th><td>{{$root.room.json.perimeter}} m</td>
       </tr>
+      <tr  ng-if="$root.room.json.capacity">
+        <th>{{i18n.room.capacity}}</th><td>{{$root.room.json.capacity}}</td>
+      </tr>
       <tr  ng-if="$root.room.json.room_ground_type">
         <th>Nature des sols</th><td >{{$root.room.json.room_ground_type.name}}</td>
       </tr>

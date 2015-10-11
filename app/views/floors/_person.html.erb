@@ -21,6 +21,10 @@
       <th>E-mail</th>
       <td class="email"><a href="mailto:{{a.person.email}}">{{a.person.email}}</a></td>
     </tr>
+    <tr ng-if="a.person.title">
+      <th>{{i18n.person.title}}</th>
+      <td>{{a.person.title}}</td>
+    </tr>
     <tr ng-if="a.person.format_telephone">
       <th>Téléphone</th>
       <td>{{a.person.format_telephone}}</td>

@@ -13,6 +13,7 @@ ActiveAdmin.register Room do
       row I18n.t('formtastic.labels.room.evacuation_zone') do c.evacuation_zone end
       row I18n.t('formtastic.labels.room.network') do c.network end
       row I18n.t('formtastic.labels.room.free_desk_number') do c.free_desk_number end
+      row I18n.t('formtastic.labels.room.capacity') do c.capacity end
     end
 
 
@@ -70,6 +71,7 @@ ActiveAdmin.register Room do
       f.input :evacuation_zone
       f.input :free_desk_number
       f.input :network
+      f.input :capacity
     end
 
     f.has_many :affectations do |app_f|
