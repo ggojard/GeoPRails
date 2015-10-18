@@ -31,11 +31,17 @@
             if (isNumber(inventory.quantity)) {
               $scope.totalByBuildingId[building.id] += inventory.quantity;
             }
-
           }
         }
       }
     }
+
+    $scope.formatDate = function(d) {
+      if (d !== undefined && d !== null) {
+        return moment(d).format('Do MMMM YYYY');
+      }
+      return '';
+    };
 
     $scope.itemFilter = function(item) {
       return item.name.search(new RegExp($scope.query, 'i')) !== -1 || item.code.search(new RegExp($scope.query, 'i')) !== -1 || item.description.search(new RegExp($scope.query, 'i')) !== -1;

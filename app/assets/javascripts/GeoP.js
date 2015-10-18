@@ -4,6 +4,9 @@ var GeoP = {};
 (function(geoP, $) {
   'use strict';
 
+  moment.locale('fr');
+
+
   geoP.currentEvent = null;
 
   geoP.Colors = {};
