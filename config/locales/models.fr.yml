@@ -60,6 +60,7 @@ fr:
         code : "Code"
         description : "Description"
         price: "Prix (€)"
+        purchase_date: "Date d'achat"
       organization:
         id: "Identifiant organisation"
         name : "Nom"

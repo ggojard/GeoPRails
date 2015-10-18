@@ -91,6 +91,7 @@
 
   geoP.app.directive('setupChart', function() {
     return {
+      restrict: 'A',
       scope: true,
       replace: true,
       link: function($scope, element) {
