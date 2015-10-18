@@ -20,6 +20,12 @@
         <th>Prix</th>
         <td>{{i.price}} &euro;</td>
       </tr>
+      <tr ng-if="i.purchase_date !== null">
+        <th>{{i18n.item.purchase_date}}</th>
+        <td>{{i.purchase_date}}</td>
+      </tr>
+
+
       <!--       <tr ng-if="i.inventories.length > 0" class="center">
         <th colspan="2">
           Inventaire

@@ -5,6 +5,7 @@
 
     var i, j, item, inventory, building;
 
+    $scope.i18n = gon.i18n;
     $scope.items = gon.items;
     $scope.inventoryByBuilding = {};
     $scope.buildingsById = {};
