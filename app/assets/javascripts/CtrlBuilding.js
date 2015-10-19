@@ -48,16 +48,15 @@
       };
 
       $scope.getTotalArea = function() {
-        return b.floors.map(function(f) {
+        var res = b.floors.map(function(f) {
           return f.rooms;
         }).reduce(function(a, b) {
           return a + b.reduce(function(c, d) {
             return c + d.area;
           }, 0);
         }, 0);
+        return res.toFixed(2);
       };
-
-
     });
 
 
