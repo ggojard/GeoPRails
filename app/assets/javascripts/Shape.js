@@ -1,4 +1,4 @@
-/*global GeoP:true */
+/*global GeoP */
 
 (function(geoP) {
   'use strict';
@@ -6,7 +6,6 @@
   var Shape = function(svgEditor) {
     this.svgEditor = svgEditor;
   };
-
 
   Shape.prototype.stroke = function(c) {
     if (this.element !== undefined) {
@@ -21,14 +20,6 @@
       'fill': c
     });
   };
-
-  // Shape.prototype.strokeAndFill = function(color) {
-  //   this.element.attr({
-  //     fill: color,
-  //     stroke: color
-  //   });
-  // };
-
 
   geoP.Shape = Shape;
 

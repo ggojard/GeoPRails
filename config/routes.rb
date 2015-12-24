@@ -36,6 +36,8 @@ GeoP::Application.routes.draw do
   # root 'homes#home'
   root 'companies#index'
   get '/companies/:id/export' => 'companies#export'
+  get '/companies/:id/export_template' => 'companies#export_template'
+  
 
   post 'upload' => 'homes#upload'
   get 'upload' => 'homes#upload'

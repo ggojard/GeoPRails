@@ -374,8 +374,7 @@
     bbox = this.getBBox(this.element.node);
     displayNames = this.svgEditor.displayProperties;
     if (displayNames === undefined) {
-      console.error('displayProperties is undefined');
-      return;
+      return console.error('displayProperties is undefined');
     }
     this.texts = [];
     texts = [];
@@ -408,7 +407,6 @@
     if (this.json[filterName] !== null) {
       value = this.json[filterName];
       if (value !== undefined) {
-
         item = this.svgEditor.mapFilter.bfilters[this.svgEditor.json.building_id].belongsToItems[filterName][value.id];
         if (item.state === true) {
           this.element.attr({
@@ -451,26 +449,6 @@
       this.setTexts();
       this.updateHashCode();
     }
-  };
-
-
-  Polyline.prototype.loadFromJson = function(json) {
-    var num_person;
-    this.json = json;
-
-    if (this.json.points === null) {
-      return;
-    }
-
-    if (this.json.affectations.length > 0 || this.json.free_desk_number > 0) {
-      num_person = this.json.affectations.length;
-      if (this.json.free_desk_number > 0) {
-        num_person += this.json.free_desk_number;
-      }
-      this.json.ratio = parseFloat(this.json.area / num_person, 10).toFixed(2);
-    }
-
-
   };
 
   Polyline.prototype.setMovePointsToVisibility = function(visibility) {
@@ -832,12 +810,10 @@
   Polyline.prototype.select = function(e) {
     var that = this,
       $scope = this.svgEditor.$scope;
-
     geoP.currentEvent = e;
 
     that.svgEditor.cleanDragPointOptions();
     that.svgEditor.unSelectItems();
-
     this.selectPolyline();
 
     if (this.dragMode === true) {
@@ -860,8 +836,6 @@
         that.addMoveTextOption(e);
         break;
     }
-
-    // geoP.$apply($scope);
   };
 
   Polyline.prototype.close = function() {
@@ -872,7 +846,6 @@
     }
   };
 
-
   function removeHoverLines(polyline) {
     var i = 0,
       linesCount = polyline.hoverLines.length;
@@ -881,8 +854,6 @@
     }
     polyline.hoverLines = [];
   }
-
-
 
   function createHoverLine(polyline, sourceIndex, targetIndex) {
     var mp, mpn, line, $b;
@@ -914,10 +885,6 @@
         y: mousePos.y / scale - camera.y / scale
       };
 
-      // if (sourceIndex === 0) {
-      //   targetIndex += 1;
-      // }
-
       point = polyline.createSvgPoint(pos.x, pos.y);
 
       if (targetIndex === 0) {
@@ -938,13 +905,9 @@
       removeHoverLines(polyline);
 
       polyline.save();
-
     });
-
     polyline.hoverLines.push(line);
-
   }
-
 
   Polyline.prototype.createHoverLines = function() {
     var i = 0;
@@ -953,7 +916,6 @@
       createHoverLine(this, i, i + 1);
     }
     createHoverLine(this, this.moveCircles.length - 1, 0);
-
   };
   geoP.Polyline = Polyline;
 }(GeoP, jQuery));

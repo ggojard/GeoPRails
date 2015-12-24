@@ -1,9 +1,11 @@
-/*global GeoP, google, $, angular*/
+/*global GeoP, google, $, angular, gon*/
 (function(geoP) {
   'use strict';
-  google.load('visualization', '1.0', {
-    packages: ['corechart']
-  });
+  if (typeof google !== 'undefined') {
+    google.load('visualization', '1.0', {
+      packages: ['corechart']
+    });
+  }
 
   var chartsData = {},
     currentCharts = {},
@@ -12,12 +14,38 @@
   geoP.chartsData = chartsData;
 
 
+  function setupChartsLoadMethods($rootScope, element) {
+    if ($rootScope.mapFilter !== undefined) {
+      var buildingsId, i, bId, mapFilter, filters, filterName, f, filterNames;
+      buildingsId = Object.keys($rootScope.mapFilter);
+      for (i = 0; i < buildingsId.length; i += 1) {
+        bId = buildingsId[i];
+        mapFilter = $rootScope.mapFilter[bId];
+        if (mapFilter !== undefined) {
+          bId = mapFilter.buildingId;
+          filters = mapFilter.mergedFiltersForBuildings[bId];
+          filterNames = mapFilter.bfilters[bId].belongsToItems;
+          for (filterName in filters) {
+            if (filters.hasOwnProperty(filterName)) {
+              f = filters[filterName];
+              (filterMethod(filterName, f, filterNames, bId, element));
+            }
+          }
+          chartsData[bId][geoP.filtersNames[0].name](element);
+        }
+      }
+    }
+  }
+
   geoP.refreshCurrentChart = function(bId, $rootScope) {
-    var chartElement, c;
-    chartElement = document.getElementById('chart_div_' + bId);
-    angular.element(chartElement).css('display', 'none');
-    c = $rootScope.currentCharts[bId];
-    geoP.createColumnChart(bId, chartElement, c.data);
+    setupChartsLoadMethods($rootScope, document.getElementById('chart_div_' + bId));
+    if ($rootScope.currentCharts !== undefined) {
+      var chartElement, c;
+      chartElement = document.getElementById('chart_div_' + bId);
+      angular.element(chartElement).css('display', 'none');
+      c = $rootScope.currentCharts[bId];
+      geoP.createColumnChart(bId, chartElement, c.data);
+    }
   };
 
   geoP.createColumnChart = function(bId, element, data) {
@@ -48,10 +76,13 @@
     if (chartsData[bId] === undefined) {
       chartsData[bId] = {};
     }
+    if (chartsData[bId[fName]] !== undefined) {
+      return false;
+    }
     chartsData[bId][fName] = function(element) {
       var data, itemId, item, itemName;
       data = [
-        [fName, 'Surface (m²)', {
+        [fName, gon.i18n.information.total_area + ' (m²)', {
           role: 'style'
         }]
       ];
@@ -67,38 +98,6 @@
       }
     };
   };
-
-  function setupChartsLoadMethods($rootScope, element) {
-    var buildingsId, i, bId, mapFilter, filters, filterName, f, filterNames;
-    buildingsId = Object.keys($rootScope.mapFilter);
-    for (i = 0; i < buildingsId.length; i += 1) {
-      bId = buildingsId[i];
-      mapFilter = $rootScope.mapFilter[bId];
-      if (mapFilter !== undefined) {
-        bId = mapFilter.buildingId;
-        filters = mapFilter.mergedFiltersForBuildings[bId];
-        filterNames = mapFilter.bfilters[bId].belongsToItems;
-        for (filterName in filters) {
-          if (filters.hasOwnProperty(filterName)) {
-            f = filters[filterName];
-            (filterMethod(filterName, f, filterNames, bId, element));
-          }
-        }
-        chartsData[bId][geoP.filtersNames[0].name](element);
-      }
-    }
-  }
-
-  geoP.app.directive('setupChart', function() {
-    return {
-      restrict: 'A',
-      scope: true,
-      replace: true,
-      link: function($scope, element) {
-        setupChartsLoadMethods($scope, element[0]);
-      }
-    };
-  });
 
   geoP.app.controller('ChartController', function($scope, $rootScope) {
     $rootScope.currentCharts = currentCharts;

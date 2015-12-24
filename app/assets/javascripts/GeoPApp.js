@@ -1,4 +1,4 @@
-/*global gon:true, jQuery:true, GeoP:true, angular:true*/
+/*global gon, jQuery, GeoP, angular*/
 
 (function(geoP, gon, $, angular) {
   'use strict';
@@ -34,12 +34,11 @@
         return e;
       }
     });
-
-
-
   });
 
-  var app = angular.module('GeoP', ['ui.sortable']).run(function() { // instance-injector
+
+
+  var app = angular.module('GeoP', ['as.sortable']).run(function() { // instance-injector
     try {
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
@@ -48,25 +47,31 @@
     }
   });
 
-
   app.directive('setupEditor', function() {
     return {
       transclude: true,
       scope: true,
       link: function($scope, element, attrs) {
-        var editor, floor, floorId, mapFilter, buildingId;
-        floorId = attrs.floorId;
-        buildingId = attrs.buildingId;
-        mapFilter = $scope.mapFilter[buildingId];
-        floor = mapFilter.floorJsonById[floorId];
-        editor = new geoP.SvgEditor(floor, mapFilter, $scope, element[0]);
-        editor.loadRooms();
-        editor.setOptions();
-        mapFilter.addEditor(editor);
-        $scope.$emit('editor-loaded', editor);
         setTimeout(function() {
-          geoP.selectPolylineIfIsInHash($scope, buildingId);
-        }, 1000);
+          var editor, floor, floorId, mapFilter, buildingId;
+          floorId = attrs.floorId;
+          buildingId = attrs.buildingId;
+          mapFilter = $scope.mapFilter[buildingId];
+          floor = mapFilter.floorJsonById[floorId];
+          editor = new geoP.SvgEditor(floor, mapFilter, $scope, element[0]);
+          editor.updateRoomsRatio();
+          editor.createRoomsPolylines();
+          editor.setOptions();
+
+          mapFilter.addEditor(editor);
+          geoP.$apply($scope);
+
+          $scope.$emit('editor-loaded', editor);
+          $scope.$emit('editor-loaded-' + buildingId, editor);
+          setTimeout(function() {
+            geoP.selectPolylineIfIsInHash($scope, buildingId);
+          }, 1000);
+        }, 0);
       }
     };
   });
@@ -106,11 +111,6 @@
     }
   ]);
 
-  app.controller('CompanyCtrl', function($scope, $rootScope) {
-    $scope.company = gon.company;
-    $scope.organizations = gon.organizations;
-    $rootScope.$emit('stop-loading');
-  });
 
   geoP.selectPolylineIfIsInHash = function($scope, buildingId) {
     var roomId, floorId, floorEditor;
@@ -181,7 +181,6 @@
         }
         // $scope.$apply();
       }
-
     }
 
     function keyUp(ev) {
@@ -195,14 +194,12 @@
         // $scope.$apply();
       }
     }
-
-
     document.onkeydown = keyDown;
     document.onkeyup = keyUp;
   };
 
-  geoP.countPeopleFromRooms = function(rooms) {
-    return rooms.reduce(function(a, b) {
+  geoP.countFreeDesksFromRooms = function(rooms) {
+    return rooms && rooms.reduce(function(a, b) {
       var res = a;
       if (b.free_desk_number !== null) {
         res += b.free_desk_number;
@@ -211,38 +208,12 @@
     }, 0);
   };
 
-  app.controller('FloorMapCtrl', function($scope, $http, $rootScope) {
-    $scope.floorsByBuildingId = {};
-    $scope.mapMode = gon.mode;
-    $scope.i18n = gon.i18n;
-    geoP.registerEditorStopLoading($rootScope);
-
-    $http.get('/floors/' + gon.floor.id + '.json').success(function(floor) {
-
-      $rootScope.$emit('SetBodyColor', floor.building);
-      $rootScope.room = null;
-      $scope.roomId = geoP.getRoomIdFromHash();
-      $scope.buildings = [floor.building_id];
-      $rootScope.buildings = $scope.buildings;
-      $scope.buildingId = floor.building_id;
-      $scope.floorsByBuildingId[floor.building_id] = [floor];
-
-      geoP.handleKeyEventsForScope($scope);
-
-      $scope.floorJson = floor;
-      geoP.setFloorsMaps(floor.building_id, $scope.floorsByBuildingId[floor.building_id], $rootScope, $http);
-    });
-
-    $scope.countPeopleFromRooms = function(rooms) {
-      return rooms.reduce(function(a, b) {
-        return a + b.affectations.length;
-      }, 0);
-    };
-
-    $scope.countFreeSpacesFromRooms = function(rooms) {
-      return geoP.countPeopleFromRooms(rooms);
-    };
+  geoP.getTotalArea = function(rooms) {
+    var res = rooms.reduce(function(a, b) {
+      return a + b.area;
+    }, 0);
+    return res.toFixed(2);
+  };
 
 
-  });
 }(GeoP, gon, jQuery, angular));

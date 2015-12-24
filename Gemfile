@@ -82,8 +82,7 @@ group :test, :development do
   gem 'database_cleaner'
   gem "capybara"
   gem "launchy"
+  gem "rails-erd"
 end
-
-
 
 

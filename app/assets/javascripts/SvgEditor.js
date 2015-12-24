@@ -28,19 +28,22 @@
 
   function mouseClick() {
     /*jshint validthis:true */
+    var that = this;
     if (geoP.currentEvent === null && this.$scope.mapMode !== 'create') {
-      this.unSelectItems();
-      this.cleanCurrentOptions();
-      this.cleanDragPointOptions();
-      this.$scope.$apply();
+      this.$scope.$apply(function() {
+        document.location.hash = '0';
+        that.unSelectItems();
+        that.cleanCurrentOptions();
+        that.cleanDragPointOptions();
+      });
     }
     geoP.currentEvent = null;
   }
 
   SvgEditor = function(floorJson, mapFilter, $scope, dom) {
+    var that = this;
 
-    var dim, bgBox, border, imagePath, that = this;
-
+    this.abc = 'abc';
     this.mapFilter = mapFilter;
     this.json = floorJson;
     this.$scope = $scope;
@@ -63,16 +66,40 @@
       return;
     }
 
+    this.displayProperties = geoP.displayNames.getDisplayNames(floorJson.building_id);
     this.loadCamera();
     // $rootScope.itemsById = this.itemsById;
     this.canvas = this.paper.g();
     this.canvas.node.id = 'viewport-' + floorJson.id;
-
-    that.displayProperties = this.$rootScope.displayNames;
-
     $((function() {
       $(dom).svgPan(that.canvas.node.id, that);
     }()));
+    this.setBackgroundImage();
+    this.applyTransform();
+
+    this.paper.mousemove(mouseMove.bind(this));
+    this.paper.click(mouseClick.bind(this));
+
+    this.mapScale = new geoP.MapScale(this);
+    this.mapScale.loadFromFloor(this.json);
+    this.$scope.mapScale = this.mapScale;
+
+    this.updateMapScaleVisibility();
+
+    if (this.camera.scale === geoP.DefaultCamera.scale) {
+      this.centerMap();
+    }
+
+  };
+
+  SvgEditor.prototype.updateDisplayNames = function(displayNames) {
+      this.displayProperties = displayNames;
+      this.mapOnItems('removeDisplayTexts');
+      this.mapOnItems('setTexts');
+  };
+
+  SvgEditor.prototype.setBackgroundImage = function() {
+    var imagePath, image, dim, bgBox, border, that = this;
 
     dim = JSON.parse(this.json.image_dimensions);
     if (dim === null) {
@@ -90,39 +117,22 @@
 
     this.bgBox = bgBox;
 
-    border = this.canvas.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
-    border.attr({
-      fill: 'white',
-      stroke: '#ffcf00'
-    });
-
     imagePath = 'http://' + window.location.host + '/floors/images/' + this.json.id + '?style=original';
-    this.bg = this.canvas.image(imagePath, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
-    this.bg.node.style.cssText = 'opacity: ' + this.json.background_opacity;
+    image = new Image();
+    image.src = imagePath;
 
+    image.onload = function() {
+      that.bg = that.paper.image(image.src, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
+      that.bg.node.style.cssText = 'opacity: ' + that.json.background_opacity;
+      that.canvas.prepend(that.bg);
 
-    this.applyTransform();
-
-
-    this.paper.mousemove(mouseMove.bind(this));
-    this.paper.click(mouseClick.bind(this));
-
-    this.mapScale = new geoP.MapScale(this);
-    this.mapScale.loadFromFloor(this.json);
-    this.$scope.mapScale = this.mapScale;
-
-    this.updateMapScaleVisibility();
-
-    if (this.camera.scale === geoP.DefaultCamera.scale) {
-      this.centerMap();
-    }
-
-    this.$rootScope.$on('DisplayNames.Update', function(e, displayNames) {
-      /*jslint unparam:true*/
-      that.displayProperties = displayNames;
-      that.mapOnItems('removeDisplayTexts');
-      that.mapOnItems('setTexts');
-    });
+      border = that.paper.rect(bgBox.x, bgBox.y, bgBox.w, bgBox.h);
+      border.attr({
+        fill: 'white',
+        stroke: '#ffcf00'
+      });
+      that.canvas.prepend(border);
+    };
   };
 
   SvgEditor.prototype.updateMapScaleVisibility = function() {
@@ -148,7 +158,6 @@
       geoP.$apply(this.$scope);
     }
   };
-
 
   SvgEditor.prototype.updateCamera = function() {
     var ctm = this.canvas.node.getCTM();
@@ -185,7 +194,6 @@
     return n;
   };
 
-
   SvgEditor.prototype.getMousePos = function(e) {
     if (e.hasOwnProperty('offsetX')) {
       return {
@@ -203,9 +211,7 @@
       x: xVal,
       y: yVal
     };
-
   };
-
 
   SvgEditor.prototype.drag = function(e, node, moveMethod) {
     var scale, mousePos, mx, my, ctm;
@@ -270,15 +276,29 @@
     this.applyTransform();
   };
 
+  SvgEditor.prototype.updateRoomsRatio = function() {
+    var num_person,
+      i, r;
+    for (i = 0; i < this.json.rooms.length; i += 1) {
+      r = this.json.rooms[i];
+      if (r.affectations.length > 0 || r.free_desk_number > 0) {
+        num_person = r.affectations.length;
+        if (this.json.free_desk_number > 0) {
+          num_person += r.free_desk_number;
+        }
+        r.ratio = parseFloat(r.area / num_person, 10).toFixed(2);
+      }
+    }
+  };
+
+
   SvgEditor.prototype.createRoomFromJson = function(json) {
     var b = new geoP.Polyline(this);
-    b.loadFromJson(json);
+    b.json = json;
     b.createInPaper();
     this.items.push(b);
     this.itemsById[b.json.id] = b;
   };
-
-
 
   SvgEditor.prototype.setOptions = function() {
     var $scope = this.$scope,
@@ -376,7 +396,6 @@
         this.mapOptions = this.mapOptions.concat(options);
         break;
     }
-    this.mapOptions.push();
   };
 
   // a1..N ... are facultatif
@@ -389,7 +408,7 @@
     }
   };
 
-  SvgEditor.prototype.loadRooms = function() {
+  SvgEditor.prototype.createRoomsPolylines = function() {
     var that = this,
       i, r;
     for (i = 0; i < this.json.rooms.length; i += 1) {

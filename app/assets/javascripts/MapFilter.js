@@ -85,12 +85,10 @@
     var filterObj = {},
       that = this;
     filterObj.checkAll = false;
-    filterObj.filterStateChange = function(filter) {
-      that.$rootScope.$emit(filterName + '_filters.StateChange', filter);
-    };
+
     filterObj.clickOnFilter = function(filter) {
       filter.state = !filter.state;
-      that.$rootScope.$emit(filterName + '_filters.StateChange', filter);
+      that.updateFilterStateAndContext(filterName, filter);
     };
 
     filterObj.CheckAll = function() {
@@ -99,9 +97,10 @@
         if (filterObj.filters.names.hasOwnProperty(key)) {
           filter = filterObj.filters.names[key];
           filter.state = filterObj.checkAll;
-          that.$rootScope.$emit(filterName + '_filters.StateChange', filter);
+          that.updateFilterState(filterName, filter);
         }
       }
+      that.updateContextAfterFilterStateChange(filterName);
     };
 
     if (this.$rootScope.f[buildingId] === undefined) {
@@ -189,32 +188,24 @@
     }
   };
 
-  MapFilter.prototype.registerFilterStateChange = function(belongsToKeyName, callback) {
-    var that = this;
-    this.$rootScope.$on(belongsToKeyName + '_filters.StateChange', function(e, item) {
-      that.bfilters[that.buildingId].belongsToItems[belongsToKeyName][item.id] = item;
-      return callback(e, item);
-    });
+  MapFilter.prototype.updateFilterState = function(filterName, item) {
+    this.bfilters[this.buildingId].belongsToItems[filterName][item.id] = item;
   };
 
-  MapFilter.prototype.registerFiltersStateChange = function() {
-    var that = this,
-      filtersNames = geoP.filtersNames,
-      j, i;
+  MapFilter.prototype.updateFilterStateAndContext = function(filterName, item) {
+    this.updateFilterState(filterName, item);
+    this.updateContextAfterFilterStateChange(filterName);
+  };
 
-    function register(filterName) {
-      that.registerFilterStateChange(filterName, function() {
-        for (j = 0; j < that.editors.length; j += 1) {
-          that.editors[j].mapOnItems('fillFromFilterColor', filterName);
-          that.editors[j].setLegend();
-        }
-        if (that.cuby !== null) {
-          that.cuby.applyFilters(filterName);
-        }
-      });
+
+  MapFilter.prototype.updateContextAfterFilterStateChange = function(filterName) {
+    var j;
+    for (j = 0; j < this.editors.length; j += 1) {
+      this.editors[j].mapOnItems('fillFromFilterColor', filterName);
+      this.editors[j].setLegend();
     }
-    for (i = 0; i < filtersNames.length; i += 1) {
-      register(filtersNames[i].name);
+    if (this.cuby !== null) {
+      this.cuby.applyFilters(filterName);
     }
   };
 
@@ -222,12 +213,9 @@
     if (this.bfilters[buildingId] === undefined) {
       this.bfilters[buildingId] = {};
     }
-
     if (this.bfilters[buildingId].belongsToItems === undefined) {
       this.bfilters[buildingId].belongsToItems = {};
     }
-
-
     if (this.bfilters[buildingId][floorId] === undefined) {
       this.bfilters[buildingId][floorId] = {};
     }
@@ -241,7 +229,6 @@
 
   MapFilter.prototype.setup = function() {
     this.loadFilters();
-    this.registerFiltersStateChange();
     this.ready();
     if (this.$rootScope.mapFilterByBuildingId === undefined) {
       this.$rootScope.mapFilterByBuildingId = {};
@@ -251,7 +238,6 @@
 
   MapFilter.prototype.updateEditorsRoomPositions = function() {
     this.editors.forEach(function(editor) {
-      // && $(editor.paper.node).find('g.select').length > 0
       if (editor.paper !== null) {
         editor.updateRoomOffset();
       }
@@ -265,8 +251,6 @@
     floorId = floorJson.id;
     this.initBuildingFilter(buildingId, floorId, belongsToKeyName);
     kpis = {};
-    // this.bfilters[buildingId].belongsToItems[belongsToKeyName] = {};
-
     for (i = 0; i < floorJson.rooms.length; i += 1) {
       room = floorJson.rooms[i];
       belongsToItem = room[belongsToKeyName];
@@ -276,7 +260,6 @@
         }
         belongsToItem.state = false;
         this.bfilters[buildingId].belongsToItems[belongsToKeyName][belongsToItem.id] = belongsToItem;
-        // this.bfilters[buildingId].belongsToItems[belongsToKeyName].state = false;
         if (kpis[belongsToItem.id] === undefined) {
           kpis[belongsToItem.id] = {
             count: 0,
@@ -295,7 +278,7 @@
         belongsToKpi.freeDeskNumberSum += room.free_desk_number;
       }
     }
-    // clean the results
+    // clean the results output format and update ratio
     Object.keys(kpis).forEach(function(eId) {
       var peopleCount, kpiObject = kpis[eId];
       kpiObject.areaSum = parseFloat(kpiObject.areaSum.toFixed(1), 10);

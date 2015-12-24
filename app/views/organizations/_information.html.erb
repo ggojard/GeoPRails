@@ -1,26 +1,26 @@
-<table class="box-details" ng-init=" count_free_desk = countPeopleFromOrganization(buildingId)">
+<table class="box-details">
   <tr>
-    <th>Nombres de piéces</th>
-    <td>{{filter[buildingId].count}}</td>
+    <th>{{i18n.information.number_of_rooms}}</th>
+    <td><span class="animated fadeIn" ng-if="information[buildingId].number_of_rooms !== undefined">{{information[buildingId].number_of_rooms}}</span></td>
   </tr>
   <tr>
-    <th>Surface occupée</th>
-    <td>{{filter[buildingId].areaSum}} m²</td>
+    <th>{{i18n.information.total_area}}</th>
+    <td><span class="animated fadeIn"  ng-if="information[buildingId].area_sum !== undefined">{{information[buildingId].area_sum}} m&#178;</span></td>
   </tr>
-  <tr ng-if="filter[buildingId].nbPeople > 0">
-    <th>Nombre de personnes</th>
-    <td>{{filter[buildingId].nbPeople}}</td>
+  <tr >
+    <th>{{i18n.information.number_of_people}}</th>
+    <td><span class="animated fadeIn"  ng-if="information[buildingId].number_of_people !== undefined">{{information[buildingId].number_of_people}}</span></td>
   </tr>
-  <tr ng-if="filter[buildingId].ratio > 0">
-    <th>Ratio affectations</th>
-    <td>{{filter[buildingId].ratio}} m&#178; / personnes</td>
+  <tr >
+    <th>{{i18n.information.ratio_affectations}}</th>
+    <td><span  class="animated fadeIn" ng-if="information[buildingId].ratio !== undefined">{{information[buildingId].ratio}} m&#178; / personnes</span></td>
   </tr>
-  <tr ng-if="filter[buildingId].ratio > 0">
-    <th>Présence sur nombre d'étages</th>
-    <td>{{floorsByBuildingId[buildingId].length}}</td>
+  <tr>
+    <th>{{i18n.information.presence_on_number_of_floors}}</th>
+    <td><span class="animated fadeIn"  ng-if="information[buildingId].available_on_number_of_floor !== undefined">{{information[buildingId].available_on_number_of_floor}}</span></td>
   </tr>
-  <tr ng-if="count_free_desk > 0">
-    <th>Nombre de places libres</th>
-    <td>{{count_free_desk}}</td>
+  <tr>
+    <th>{{i18n.information.number_of_freedesks}}</th>
+    <td><span class="animated fadeIn"  ng-if="information[buildingId].count_free_desk !== undefined">{{information[buildingId].count_free_desk}}</span></td>
   </tr>  
 </table>

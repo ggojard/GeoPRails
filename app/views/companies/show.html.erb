@@ -1,4 +1,4 @@
-<div ng-controller="CompanyCtrl" class="home" ng-cloak>
+<div ng-controller="CompanyController" class="home">
   <div class="buildings">
     <div ng-repeat="b in company.buildings" class="building animated flipInY" style="background-color: {{b.color}}">
       <h2><a href="{{b.url}}">{{b.name}}</a></h2>
@@ -16,6 +16,7 @@
   <hr/>
   <a href="{{company.url}}/export" download>Exporter l'ensemble des bâtiments</a>
   <hr/>
+  <a href="{{company.url}}/export_template">Gabarit d'import</a>
   <% if @global_user_type == 'ADMIN' %>
   <h4>Importer un fichier Excel</h4>
   <%= form_tag import_companies_path, multipart: true do %>

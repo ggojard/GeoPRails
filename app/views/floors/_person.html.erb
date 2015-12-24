@@ -8,7 +8,8 @@
 </div>
 
 <div class="box-content">
-  <div class='person-photo' ng-if="a.person.photo !== null">
+
+  <div class='person-photo' ng-if="a.person.photo && a.person.photo.url">
     <img ng-src="{{a.person.photo.thumbnail.url}}"/>
   </div>
   <h4 ng-bind-html="a.person.fullname | highlight:query">{{a.person.fullname}}</h4>

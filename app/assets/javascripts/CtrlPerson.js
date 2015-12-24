@@ -11,6 +11,7 @@
   });
 
   geoP.app.controller('PeopleCtrl', function($scope, $rootScope) {
+    $scope.i18n = gon.i18n;
     $scope.personFilter = function(a) {
       return a.person.fullname.search(new RegExp($scope.query, 'i')) !== -1;
     };

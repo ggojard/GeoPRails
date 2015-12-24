@@ -2,7 +2,47 @@
 (function(geoP) {
   'use strict';
 
-  geoP.app.controller('BuildingCtrl', function($scope, $http, $rootScope) {
+
+  function getNumberOfRooms(b) {
+    if (b === undefined) {
+      return 0;
+    }
+    return b.floors.reduce(function(a, b) {
+      return a + b.rooms.length;
+    }, 0);
+  }
+
+  function getNumberOfPeople(b) {
+    return b.floors.map(function(f) {
+      return f.rooms;
+    }).reduce(function(a, b) {
+      return a + b.reduce(function(c, d) {
+        return c + d.affectations.length;
+      }, 0);
+    }, 0);
+  }
+
+  function getNumberOfFreeDesk(b) {
+    return b.floors.map(function(f) {
+      return geoP.countFreeDesksFromRooms(f.rooms);
+    }).reduce(function(a, b) {
+      return a + b;
+    }, 0);
+  }
+
+  function getTotalArea(b) {
+    var res = b.floors.map(function(f) {
+      return f.rooms;
+    }).reduce(function(a, b) {
+      return a + b.reduce(function(c, d) {
+        return c + d.area;
+      }, 0);
+    }, 0);
+    return res.toFixed(2);
+  }
+
+
+  geoP.app.controller('BuildingController', function($scope, $http, $rootScope) {
 
     $scope.i18n = gon.i18n;
     $scope.floorsByBuildingId = {};
@@ -12,54 +52,28 @@
     $rootScope.roomInfoTopOffset = 0;
 
     geoP.registerEditorStopLoading($rootScope);
+    geoP.editorDisplayNames($scope, $rootScope, gon.building.id);
+
+    $scope.buildings = [gon.building.id];
+    $rootScope.$emit('SetBodyColor', gon.building);
 
     $http.get(gon.building.url + '.json').success(function(b) {
-      $scope.buildings = [b.id];
       $rootScope.buildings = $scope.buildings;
-      $rootScope.$emit('SetBodyColor', b);
       $scope.mapMode = 'show';
       $scope.building = b;
       $scope.floorsByBuildingId[b.id] = b.floors;
       geoP.setFloorsMaps(b.id, b.floors, $rootScope, $http);
 
 
-      $scope.getNumberOfRooms = function() {
-        return b.floors.reduce(function(a, b) {
-          return a + b.rooms.length;
-        }, 0);
+      $scope.information = {
+        numberOfRooms: getNumberOfRooms(b),
+        numberOfPeople: getNumberOfPeople(b),
+        numberOfFreeDesk: getNumberOfFreeDesk(b),
+        totalArea: getTotalArea(b)
       };
 
-      $scope.getNumberOfPeople = function() {
-        return b.floors.map(function(f) {
-          return f.rooms;
-        }).reduce(function(a, b) {
-          return a + b.reduce(function(c, d) {
-            return c + d.affectations.length;
-          }, 0);
-        }, 0);
-      };
 
-      $scope.getNumberOfFreeDesk = function() {
-        return b.floors.map(function(f) {
-          return geoP.countPeopleFromRooms(f.rooms);
-        }).reduce(function(a, b) {
-          return a + b;
-        }, 0);
-      };
-
-      $scope.getTotalArea = function() {
-        var res = b.floors.map(function(f) {
-          return f.rooms;
-        }).reduce(function(a, b) {
-          return a + b.reduce(function(c, d) {
-            return c + d.area;
-          }, 0);
-        }, 0);
-        return res.toFixed(2);
-      };
     });
-
-
 
     $scope.deleteBuilding = function() {
       $rootScope.$emit('RightPopupShow', 'Supprimer le Bâtiment ' + $scope.building.name, 'L\'ensemble des étages et pièces associés à ce bâtiment seront supprimés sans possibilité de retour en arrière.', [{
@@ -76,7 +90,6 @@
           });
         }
       }]);
-
     };
 
   });

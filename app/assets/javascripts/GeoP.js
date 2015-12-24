@@ -1,12 +1,10 @@
 var GeoP = {};
 
-/*global GeoP, jQuery*/
-(function(geoP, $) {
+/*global GeoP, moment*/
+(function(geoP) {
   'use strict';
 
   moment.locale('fr');
-
-
   geoP.currentEvent = null;
 
   geoP.Colors = {};
@@ -15,7 +13,6 @@ var GeoP = {};
 
   geoP.extend = function(Parent, child) {
     var p, prop, value;
-
     function construct(constructor, args) {
       function F() {
         return constructor.apply(this, args);
@@ -26,26 +23,24 @@ var GeoP = {};
     p = construct(Parent, Array.prototype.slice.call(arguments, 2));
     child.base = {};
     for (prop in p) {
-      // if (p.hasOwnProperty(prop)) {
       if (child[prop] === undefined) {
         value = p[prop];
         child[prop] = value;
       } else {
         child.base[prop] = Parent.prototype[prop];
       }
-      // }
     }
   };
 
   geoP.registerEditorStopLoading = function($rootScope) {
     $rootScope.$on('editor-loaded', function() {
       $rootScope.floorsToLoad -= 1;
-      if ($rootScope.floorsToLoad === 0) {
+      if ($rootScope.floorsToLoad <= 0) {
         $rootScope.$emit('stop-loading');
+        $rootScope.$emit('all-editors-loaded');
       }
     });
   };
-
 
   geoP.$apply = function($scope) {
     setTimeout(function() {
@@ -60,7 +55,6 @@ var GeoP = {};
       res = hash.replace('#', '');
       return parseInt(res, 10);
     }
-
   };
 
   geoP.hashCode = function(s) {
@@ -86,4 +80,4 @@ var GeoP = {};
   }];
 
 
-}(GeoP, jQuery));
+}(GeoP));

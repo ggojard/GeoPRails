@@ -1,36 +1,33 @@
-<div ng-controller="BuildingCtrl" ng-cloak>
+<div ng-controller="BuildingController">
   <div ng-repeat="buildingId in buildings">
     <div>
-      <div class="jumbotron-surfy" style="background-color: {{bgColor[buildingId]}}"><h2>{{building.name}}</h2></div>
-      <ul class="nav nav-pills" role="tablist" style="border:1px solid {{bgColor[buildingId]}}" >
+      <div class="jumbotron-surfy animated fadeIn" style="background-color: {{bgColor[buildingId]}}" ng-if="building !== undefined"><h2>{{building.name}}</h2></div>
+      <ul class="nav nav-pills" role="tablist" style="border:1px solid {{bgColor[buildingId]}}">
         <%= render '/common/tabs_information' %>
         <li><a data-toggle="tab" ng-click="tabHeaderClick('floors', buildingId);" href="#tab-floors-{{buildingId}}">Accès direct aux étages</a></li>
         <%= render '/common/tabs_common' %>
       </ul>
       <div class="tab-content tab-content-main" style="border-color:{{bgColor[buildingId]}}">
-        
         <div id="tab-information-{{buildingId}}" class="tab-pane active">
-          
-          <table class="box-details">
+          <table class="box-details" display-information-table>
             <tr>
-              <th>Nombre de pièces</th>
-              <td>{{getNumberOfRooms()}}</td>
+              <th>{{i18n.information.number_of_rooms}}</th>
+              <td><span ng-if="information.numberOfRooms" class="animated fadeIn">{{information.numberOfRooms}}</span></td>
+            </tr>          
+            <tr>
+              <th>{{i18n.information.number_of_people}}</th>
+              <td><span ng-if="information.numberOfPeople" class="animated fadeIn">{{information.numberOfPeople}}</span></td>
             </tr>
             <tr>
-              <th>Nombre de personnes</th>
-              <td>{{getNumberOfPeople()}}</td>
+              <th>{{i18n.information.number_of_freedesks}}</th>
+              <td><span ng-if="information.numberOfFreeDesk" class="animated fadeIn">{{information.numberOfFreeDesk}}</span></td>
             </tr>
             <tr>
-              <th>Nombre de places libres</th>
-              <td>{{getNumberOfFreeDesk()}}</td>
-            </tr>
-            <tr>
-              <th>Surface</th>
-              <td>{{getTotalArea()}} m&#178;</td>
+              <th>{{i18n.information.total_area}}</th>
+              <td><span ng-if="information.totalArea" class="animated fadeIn">{{information.totalArea}} m&#178;</span></td>
             </tr>
           </table>
         </div>
-        
         <div id="tab-floors-{{buildingId}}"  class="tab-pane">
           <%= render '/buildings/display_floors' %>
         </div>

@@ -1,7 +1,8 @@
 class BuildingsExport
-  def initialize buildings, title
+  def initialize buildings, title, exportData
     @buildings = buildings
     @title = title
+    @exportData = exportData
   end
 
   def export
@@ -38,15 +39,16 @@ class BuildingsExport
   def export_building wb
     wb.add_worksheet(:name => I18n.t('activerecord.models.building.other')) do |sheet|
       sheet.add_row [I18n.t('formtastic.labels.building.id'), I18n.t('formtastic.labels.building.name'), "Color", I18n.t('formtastic.labels.building.company'), I18n.t('formtastic.labels.company.id')]
-
-      @buildings.each do |building|
-        list =  [building.id, building.name, building.color]
-        if !building.company.nil?
-          list += [building.company.name, building.company.id]
-        else
-          list += ['', '']
+      if @exportData
+        @buildings.each do |building|
+          list =  [building.id, building.name, building.color]
+          if !building.company.nil?
+            list += [building.company.name, building.company.id]
+          else
+            list += ['', '']
+          end
+          sheet.add_row list
         end
-        sheet.add_row list
       end
     end
   end
@@ -60,25 +62,27 @@ class BuildingsExport
         titleRow = [I18n.t('formtastic.labels.room.id'), I18n.t('formtastic.labels.room.name'), I18n.t('formtastic.labels.room.area'), I18n.t('formtastic.labels.room.perimeter'), "Places Libre", "Anchrage Texte"]
         titleRow += [I18n.t('formtastic.labels.room.room_type'), I18n.t('formtastic.labels.room_type.id'), I18n.t('formtastic.labels.room.room_ground_type'), I18n.t('formtastic.labels.room_ground_type.id'), I18n.t('formtastic.labels.room.evacuation_zone'), I18n.t('formtastic.labels.evacuation_zone.id'), I18n.t('formtastic.labels.room.organization'), I18n.t('formtastic.labels.organization.id')]
         titleRow += [I18n.t('formtastic.labels.floor.id'), "Nom Etage", "Nom Batiment"]
-        titleRow += ['Points', 'Ports Réseau']
+        titleRow += ['Points', I18n.t('formtastic.labels.room.network')]
         sheet_p.add_row titleRow
 
-        @buildings.each do |building|
+        if @exportData
+          @buildings.each do |building|
 
-          building.floors.each do |f|
-            sheet.add_row [f.id, f.name, building.id, f.level, f.map_scale_x1, f.map_scale_y1, f.map_scale_x2, f.map_scale_y2, f.map_scale_length]
-            f.rooms.each do |r|
+            building.floors.each do |f|
+              sheet.add_row [f.id, f.name, building.id, f.level, f.map_scale_x1, f.map_scale_y1, f.map_scale_x2, f.map_scale_y2, f.map_scale_length]
+              f.rooms.each do |r|
 
-              row = [r.id, r.name, r.area, r.perimeter, r.free_desk_number, r.anchor_text_point]
-              row += add_belongs_to_property_in_row r, 'room_type'
-              row += add_belongs_to_property_in_row r, 'room_ground_type'
-              row += add_belongs_to_property_in_row r, 'evacuation_zone'
-              row += add_belongs_to_property_in_row r, 'organization'
+                row = [r.id, r.name, r.area, r.perimeter, r.free_desk_number, r.anchor_text_point]
+                row += add_belongs_to_property_in_row r, 'room_type'
+                row += add_belongs_to_property_in_row r, 'room_ground_type'
+                row += add_belongs_to_property_in_row r, 'evacuation_zone'
+                row += add_belongs_to_property_in_row r, 'organization'
 
-              row += [f.id, f.name, building.name]
-              row += [r.points, r.network]
+                row += [f.id, f.name, building.name]
+                row += [r.points, r.network]
 
-              sheet_p.add_row row
+                sheet_p.add_row row
+              end
             end
           end
         end
@@ -89,33 +93,37 @@ class BuildingsExport
   def export_organization wb
     wb.add_worksheet(:name => "Organizations") do |sheet|
       sheet.add_row ["Identifiant", "Nom", "Couleur", "Organisation Père", "Identifiant Entreprise", "Entreprise", "Identifiant Type", "Type"]
-      Organization.all().each do |o|
-        list = [o.id, o.name, o.color]
 
-        if !o.organization.nil?
-          list += [o.organization.id]
-        else
-          list += ['']
-        end
+      if @exportData
+        Organization.all().each do |o|
+          list = [o.id, o.name, o.color]
 
-        if !o.company.nil?
-          list += [o.company.id, o.company.name]
-        else
-          list += ['', '']
+          if !o.organization.nil?
+            list += [o.organization.id]
+          else
+            list += ['']
+          end
+
+          if !o.company.nil?
+            list += [o.company.id, o.company.name]
+          else
+            list += ['', '']
+          end
+          if !o.organization_type.nil?
+            list += [o.organization_type.id, o.organization_type.name]
+          end
+          sheet.add_row list
         end
-        if !o.organization_type.nil?
-          list += [o.organization_type.id, o.organization_type.name]
-        end
-        sheet.add_row list
       end
     end
-
   end
   def export_organization_type wb
     wb.add_worksheet(:name => I18n.t('activerecord.models.organization_type.other')) do |sheet|
       sheet.add_row ["Identifiant", "Nom"]
-      OrganizationType.all().each do |o|
-        sheet.add_row [o.id, o.name]
+      if @exportData
+        OrganizationType.all().each do |o|
+          sheet.add_row [o.id, o.name]
+        end
       end
     end
 
@@ -142,33 +150,36 @@ class BuildingsExport
 
     wb.add_worksheet(:name => I18n.t('activerecord.models.person.other')) do |sheet|
       sheet.add_row personHeaders
-      Person.all().each do |o|
-        list = personData(o)
-        sheet.add_row list , :types => [nil, nil, nil, :string, :string, nil, nil, nil]
+      if @exportData
+        Person.all().each do |o|
+          list = personData(o)
+          sheet.add_row list , :types => [nil, nil, nil, :string, :string, nil, nil, nil]
+        end
       end
     end
-
     return personHeaders
-
   end
 
 
   def export_person_state wb
     wb.add_worksheet(:name => I18n.t('activerecord.models.person_state.other')) do |sheet|
       sheet.add_row ["Identifiant", "Nom"]
-      PersonState.all().each do |o|
-        sheet.add_row [o.id, o.name]
+      if @exportData
+        PersonState.all().each do |o|
+          sheet.add_row [o.id, o.name]
+        end
       end
     end
-
   end
 
 
   def export_room_ground_type wb
     wb.add_worksheet(:name => "Nature des sols") do |sheet|
       sheet.add_row ["Identifiant", "Nom", "Couleur"]
-      RoomGroundType.all().each do |o|
-        sheet.add_row [o.id, o.name, o.color]
+      if @exportData
+        RoomGroundType.all().each do |o|
+          sheet.add_row [o.id, o.name, o.color]
+        end
       end
     end
   end
@@ -176,18 +187,21 @@ class BuildingsExport
   def export_room_type wb
     wb.add_worksheet(:name => "Type des pièces") do |sheet|
       sheet.add_row ["Identifiant", "Nom", "Couleur"]
-      RoomType.all().each do |o|
-        sheet.add_row [o.id, o.name, o.color]
+      if @exportData
+        RoomType.all().each do |o|
+          sheet.add_row [o.id, o.name, o.color]
+        end
       end
     end
-
   end
 
   def export_evacuation_zone wb
     wb.add_worksheet(:name => "Zones d'évacuation") do |sheet|
       sheet.add_row ["Identifiant", "Nom", "Couleur"]
-      EvacuationZone.all().each do |o|
-        sheet.add_row [o.id, o.name, o.color]
+      if @exportData
+        EvacuationZone.all().each do |o|
+          sheet.add_row [o.id, o.name, o.color]
+        end
       end
     end
 
@@ -198,28 +212,30 @@ class BuildingsExport
       headers = ["Identifiant", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment"]
       headers += personHeaders
       sheet.add_row  headers
-
-      Affectation.all().each do |o|
-        if !o.person.nil? and !o.room.nil? and !o.room.floor.nil? and !o.room.floor.building.nil? and @buildings.include?(o.room.floor.building)
-          row = [o.id, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name]
-          row += personData(o.person)
-          sheet.add_row row
+      if @exportData
+        Affectation.all().each do |o|
+          if !o.person.nil? and !o.room.nil? and !o.room.floor.nil? and !o.room.floor.building.nil? and @buildings.include?(o.room.floor.building)
+            row = [o.id, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name]
+            row += personData(o.person)
+            sheet.add_row row
+          end
         end
       end
     end
-
   end
 
   def export_inventory wb
     wb.add_worksheet(:name => "Inventaire") do |sheet|
       sheet.add_row ["Identifiant",  "Quantité", "Code", "Nom item", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment", "Item", "Identifiant Item", "Prix"]
-      Inventory.all().each do |o|
-        if !o.item.nil? and !o.room.nil? and !o.item.nil?
-          price = 0
-          if !o.quantity.nil? and !o.item.price.nil?
-            price = o.quantity * o.item.price
+      if @exportData
+        Inventory.all().each do |o|
+          if !o.item.nil? and !o.room.nil? and !o.item.nil?
+            price = 0
+            if !o.quantity.nil? and !o.item.price.nil?
+              price = o.quantity * o.item.price
+            end
+            sheet.add_row [o.id, o.quantity, o.item.code, o.item.name, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name, o.item.name, o.item.id, price]
           end
-          sheet.add_row [o.id, o.quantity, o.item.code, o.item.name, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name, o.item.name, o.item.id, price]
         end
       end
     end
@@ -228,8 +244,10 @@ class BuildingsExport
   def export_company wb
     wb.add_worksheet(:name => "Entreprise") do |sheet|
       sheet.add_row ["Identifiant",  "Nom"]
-      Company.all().each do |o|
-        sheet.add_row [o.id, o.name]
+      if @exportData
+        Company.all().each do |o|
+          sheet.add_row [o.id, o.name]
+        end
       end
     end
   end
@@ -237,8 +255,10 @@ class BuildingsExport
   def export_item wb
     wb.add_worksheet(:name => "Item") do |sheet|
       sheet.add_row ["Identifiant",  "Nom", "Description", "Code", "Prix"]
-      Item.all().each do |o|
-        sheet.add_row [o.id, o.name, o.description, o.code, o.price]
+      if @exportData
+        Item.all().each do |o|
+          sheet.add_row [o.id, o.name, o.description, o.code, o.price]
+        end
       end
     end
   end

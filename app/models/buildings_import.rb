@@ -120,10 +120,7 @@ class BuildingsImport
       @map_organization[id].organization = @map_organization[org_parent]
       @map_organization[id].save
     end
-
   end
-
-
 
   def import_organization_type
     set_sheet(4)
@@ -135,8 +132,6 @@ class BuildingsImport
     end
   end
 
-
-
   def import_person #merge
     set_sheet(5)
     @map_person = {}
@@ -146,7 +141,6 @@ class BuildingsImport
       lastname = @s.cell(r, 3).to_s
       conditions = {firstname: fistname, lastname: lastname}
       person = Person.where(conditions).first_or_create
-
 
       # work on person items
       telephone = @s.cell(r, 5).to_s

@@ -3,20 +3,17 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<%= render '/layouts/ios' %>
-		<title><%= !@global_company.nil? && @global_company.name%> / Surfy.pro / v0.7.04b</title>
+		<title><%= !@global_company.nil? && @global_company.name%> / Surfy.pro / v0.7.1b</title>
 		<%= include_gon %>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/locale/fr.js"></script>
 		<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 		<%= csrf_meta_tags %>
 
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"/>
 	</head>
-	<body id="body-container">
+	<body id="body-container" ng-cloak>
+		<div id="spinner-zone"></div>
 		<div  ng-controller="BodyCtrl">
 			<%= render 'layouts/notifications' %>
 			<%= render 'layouts/right_popup' %>

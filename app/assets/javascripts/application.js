@@ -16,6 +16,7 @@
 //= require vendor/jquery-svgpan
 //= require vendor/bootstrap
 //= require vendor/three
+//= require vendor/moment.min
 //= require_tree ./vendor
 //= require GeoP
 //= require GeoPApp

@@ -14,9 +14,7 @@ class LogoUploader < CarrierWave::Uploader::Base
   # end
 
   version :small do
-    cloudinary_transformation :transformation => [
-      {:height => 42},
-    ]
+     cloudinary_transformation :height => 42, :crop => :thumb
   end
 
 

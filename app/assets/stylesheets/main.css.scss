@@ -33,6 +33,23 @@ body, label, button, input, #upload-file, input[type="file"] {
     }
 }
 
+#spinner-zone{
+    $spinnerSize : 80px;
+    width: $spinnerSize;
+    height: $spinnerSize;
+    position: absolute;
+    // top:50%;
+    // right:50%;
+    top:120px;
+    right:$spinnerSize/4;
+    background-color:rgba(255, 255, 255, 0.5);
+    border-radius: $spinnerSize / 2;
+    margin-left: -$spinnerSize /2;
+    margin-top: -$spinnerSize/2;    
+    border:1px solid green;
+    z-index: 999;
+}
+
 //
 svg {
     width: 100%;
@@ -139,10 +156,12 @@ svg {
     }
 }
 
-.sortable-drag {
-    input[type=checkbox] {
-        display: none;
-    }
+ .as-sortable-placeholder{
+    display: inline-block !important;
+ }
+
+.as-sortable-dragging, .as-sortable-hidden, .as-sortable-drag{
+    display: none!important;
 }
 
 .btn {

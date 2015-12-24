@@ -1,4 +1,4 @@
-<div ng-controller="OrganizationCtrl"  ng-cloak>
+<div ng-controller="OrganizationController">
   <div class="jumbotron-surfy" style="background-color: {{o.color}}">
     <h2>{{o.name}}</h2>
   </div>
@@ -10,11 +10,11 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane fade" ng-class="{active : $first, in : $first}" id="b{{buildingId}}" ng-repeat="buildingId in buildings">
-      <ul class="nav nav-pills" role="tablist" style="border:1px solid {{bgColor[buildingId]}}">
+      <ul class="nav nav-pills" role="tablist" style="border:1px solid {{buildingsById[buildingId].color}}">
         <%= render '/common/tabs_information' %>
         <%= render '/common/tabs_common' %>
       </ul>
-      <div class="tab-content tab-content-main" style="border-color:{{bgColor[buildingId]}}">
+      <div class="tab-content tab-content-main" style="border-color:{{buildingsById[buildingId].color}}">
         <div id="tab-information-{{buildingId}}"  class="tab-pane active">
           <%= render '/organizations/information' %>
         </div>

@@ -1,9 +1,10 @@
-<form class="form-horizontal" ng-controller="DisplayTextCtrl">
-  <ul class="display-text" sortable="dragControlListeners" ng-model="properties">
-    <li class="check-all color-filter" ng-repeat="p in properties" sortable-item>
+<form class="form-horizontal">
+  <ul class="display-text" data-as-sortable="dragControlListeners[buildingId]" data-ng-model="displayNamesList[buildingId]">
+    <li class="check-all color-filter" ng-repeat="p in displayNamesList[buildingId]" data-as-sortable-item>
       <div class="checkbox" >
-        <i sortable-item-handle class="fa fa-exchange"></i>
-        <label><input type="checkbox" ng-change="updateDisplayText()" id="select-display-name-{{p.name}}" ng-model="p.value"><span>{{p.label}}</span></label>
+        <i data-as-sortable-item-handle class="fa fa-exchange"></i>
+        <!-- id="select-display-name-{{p.name}}" -->
+        <label><input type="checkbox" ng-change="updateDisplayText(buildingId)" ng-model="p.value"><span>{{p.label}}</span></label>
       </div>
     </li>
   </ul>

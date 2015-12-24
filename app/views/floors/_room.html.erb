@@ -18,7 +18,7 @@
         <th>Type</th><td>{{$root.room.json.room_type.name}}</td>
       </tr>
       <tr  ng-if="$root.room.json.area_unit">
-        <th>Surface</th><td>{{$root.room.json.area_unit}}</td>
+        <th>{{i18n.information.total_area}}</th><td>{{$root.room.json.area_unit}}</td>
       </tr>
       <tr  ng-if="$root.room.json.perimeter">
         <th>Périmètre</th><td>{{$root.room.json.perimeter}} m</td>
@@ -36,13 +36,13 @@
         <th>Organisation</th><td><a href="/organizations/{{$root.room.json.organization.id}}">{{$root.room.json.organization.name}}</a> <i ng-if="$root.room.json.organization.organization_type.name">[{{$root.room.json.organization.organization_type.name}}]</i></td>
       </tr>
       <tr ng-if="$root.room.json.network.length > 0">
-        <th>Ports Réseau</th><td ><ul class="network"><li ng-repeat="n in $root.room.json.network.split('\r\n')">{{n}}</li> </ul></td>
+        <th>{{i18n.room.network}}</th><td ><ul class="network"><li ng-repeat="n in $root.room.json.network.split('\r\n')">{{n}}</li> </ul></td>
       </tr>
       <tr ng-if="$root.room.json.affectations.length > 0">
         <th>Ratio Affectations</th><td>{{$root.room.json.ratio}} m&#178; / personnes</td>
       </tr>
       <tr ng-if="$root.room.json.affectations.length > 0">
-        <th>Nombre de personnes</th><td>{{$root.room.json.affectations.length}}</td>
+        <th>{{i18n.information.number_of_people}}</th><td>{{$root.room.json.affectations.length}}</td>
       </tr>
       <tr ng-if="$root.room.json.free_desk_number > 0">
         <th>{{i18n.room.free_desk_number}}</th><td>{{$root.room.json.free_desk_number}}</td>
