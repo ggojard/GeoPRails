@@ -254,10 +254,10 @@ class BuildingsExport
 
   def export_item wb
     wb.add_worksheet(:name => "Item") do |sheet|
-      sheet.add_row ["Identifiant",  "Nom", "Description", "Code", "Prix"]
+      sheet.add_row ["Identifiant",  "Nom", "Description", "Code", "Prix", I18n.t('formtastic.labels.item.purchase_date')]
       if @exportData
         Item.all().each do |o|
-          sheet.add_row [o.id, o.name, o.description, o.code, o.price]
+          sheet.add_row [o.id, o.name, o.description, o.code, o.price, o.purchase_date]
         end
       end
     end
