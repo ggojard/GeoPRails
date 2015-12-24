@@ -256,6 +256,7 @@ class BuildingsImport
       i.description = @s.cell(r, 3)
       i.code = @s.cell(r, 4)
       i.price = @s.cell(r, 5)
+      i.purchase_date = @s.cell(r, 6)
       i.save
       @map_item[id]  = i
     end
