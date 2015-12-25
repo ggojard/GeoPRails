@@ -7,12 +7,9 @@
       </ul>
     </div>
   </div>
-  <div ng-if="organizations.length > 0">
-    <h2>Directions</h2>
-    <ul>
-      <li ng-repeat="o in organizations" ng-include="templates.organizations"></li>
-    </ul>
-  </div>
+
+  <div ng-include="templates.organization_hierarchy"></div>
+
   <hr/>
   <a href="{{company.url}}/export" download>Exporter l'ensemble des bâtiments</a>
   <hr/>

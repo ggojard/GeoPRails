@@ -13,9 +13,17 @@ class CompaniesController < GeopController
   def organizations_hierarchy
     if current_admin_user != nil
       c = Company.includes(:organizations => [:organizations => :organizations]).find_by_id(current_admin_user.company_id)
-      render json: c.as_json(:include => {:organizations => {:include => {:organizations => {:include => :organizations}}}})
+      json = c.as_json(:include => {:organizations => {:include => {:organizations => {:include => :organizations}}}})
+      respond_to do |format|
+        format.html{
+          gon.company_organizations = json
+        }
+        format.json{
+          render json: json
+        }
+      end
     end
-  end  
+  end
 
   def show
     # gon.organizations = Organization.all.as_json()
