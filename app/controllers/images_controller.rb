@@ -19,7 +19,11 @@ class ImagesController < GeopController
     response.headers['Cache-Control'] = "public, max-age=#{12.hours.to_i}"
     response.headers['Content-Type'] = 'image/png'
     response.headers['Content-Disposition'] = 'inline'
-    render :text => @f[0].file_contents
+    if !@f[0].nil?
+      render :text => @f[0].file_contents
+    else
+      redirect_to "/assets/logo-surfy-h42.png"
+    end
   end
 
   def logo_small

@@ -73,8 +73,8 @@
     editor.removeLegend();
     filters = editor.mapFilter.bfilters[editor.json.building_id][editor.json.id];
     filtersStatus = editor.mapFilter.bfilters[editor.json.building_id].belongsToItems;
-    Object.keys(filters).map(function(fKey) {
-      Object.keys(filters[fKey]).map(function(fId) {
+    Object.keys(filters).forEach(function(fKey) {
+      Object.keys(filters[fKey]).forEach(function(fId) {
         var text, fstatus, fontStyle, texts, boxHeight, i, content, y;
         fstatus = filtersStatus[fKey][fId];
         if (fstatus.state === true) {
@@ -119,7 +119,6 @@
     var svgContainerId = this.svgId,
       editor = this,
       bg,
-      svgElements = [],
       imageName, savedCamera, saveScale, html, $svg, h, $c, canvasDom;
     imageName = this.getFloorFullName();
 

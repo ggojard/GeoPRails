@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 
   def current_ability
     @@the_user = current_admin_user
-    @current_ability ||= Ability.new(current_admin_user)
+    @current_ability ||= ::Ability.new(current_admin_user)
   end
 
   def authenticate_admin_user_with_cancan!
@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
       # puts 'get_global_company'
       # puts u_arm_buildings_id
       # $global_company = Company.includes(:buildings => :floors).find_by_id(current_admin_user.company_id)
-      arm.company ||= Company.includes(:buildings=> :floors ).where(buildings: {id: u_arm_buildings_id}).order("buildings.name, floors.level").find_by_id(current_admin_user.company_id)
+      arm.company ||= ::Company.includes(:buildings=> :floors ).where(buildings: {id: u_arm_buildings_id}).order("buildings.name, floors.level").find_by_id(current_admin_user.company_id)
       return arm.company
     end
   end

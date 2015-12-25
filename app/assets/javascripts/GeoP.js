@@ -13,6 +13,7 @@ var GeoP = {};
 
   geoP.extend = function(Parent, child) {
     var p, prop, value;
+
     function construct(constructor, args) {
       function F() {
         return constructor.apply(this, args);
@@ -69,8 +70,11 @@ var GeoP = {};
     name: 'room_type',
     label: 'Typologie des pièces'
   }, {
+    name: 'direction',
+    label: 'Directions'
+  }, {
     name: 'organization',
-    label: 'Organisations'
+    label: 'Services'
   }, {
     name: 'room_ground_type',
     label: 'Nature des sols'

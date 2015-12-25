@@ -402,21 +402,27 @@
     this.text.click(this.select.bind(this));
   };
 
+
+  Polyline.prototype.fillWithColorDependingOnState = function(color, state) {
+    if (state === true) {
+      this.element.attr({
+        fill: color
+      });
+    } else {
+      this.element.attr({
+        fill: 'transparent'
+      });
+    }
+
+  };
+
   Polyline.prototype.fillFromFilterColor = function(filterName) {
     var value, item;
     if (this.json[filterName] !== null) {
       value = this.json[filterName];
       if (value !== undefined) {
         item = this.svgEditor.mapFilter.bfilters[this.svgEditor.json.building_id].belongsToItems[filterName][value.id];
-        if (item.state === true) {
-          this.element.attr({
-            fill: item.color
-          });
-        } else {
-          this.element.attr({
-            fill: 'transparent'
-          });
-        }
+        this.fillWithColorDependingOnState(item.color, item.state);
       }
     }
   };

@@ -7,7 +7,7 @@ class ArmUser
     @floors_id = []
     @company = nil
 
-    db_user ||= AdminUser.includes([{:admin_user_role => [:admin_user_role_to_buildings => [:building => :floors]]}, :admin_user_type]).find_by_id(user_id)
+    db_user ||= ::AdminUser.includes([{:admin_user_role => [:admin_user_role_to_buildings => [:building => :floors]]}, :admin_user_type]).find_by_id(user_id)
     @user_type ||= get_user_type(db_user)
     puts "ARM: ?? User (%d) Type is (%s)" % [user_id, @user_type]
     setup_cancan(db_user, ability)

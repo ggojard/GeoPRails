@@ -5,15 +5,15 @@ class BuildingsManager
 
   def delete_recursive
     if !@building.nil?
-      @building.floors.each do |f|
-        f.rooms.each do |r|
-          r.affectations.each do |aff|
-            aff.destroy
-          end
-          r.destroy
-        end
-        f.destroy
-      end
+      # @building.floors.each do |f|
+      #   f.rooms.each do |r|
+      #     r.affectations.each do |aff|
+      #       aff.destroy
+      #     end
+      #     r.destroy
+      #   end
+      #   f.destroy
+      # end
       @building.destroy
     end
   end

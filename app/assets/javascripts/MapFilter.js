@@ -91,16 +91,27 @@
       that.updateFilterStateAndContext(filterName, filter);
     };
 
-    filterObj.CheckAll = function() {
+    function iterateAllFiltersAndUpateState(action) {
       var key, filter;
       for (key in filterObj.filters.names) {
         if (filterObj.filters.names.hasOwnProperty(key)) {
           filter = filterObj.filters.names[key];
           filter.state = filterObj.checkAll;
           that.updateFilterState(filterName, filter);
+          if (action !== undefined) {
+            action.call(that, filter);
+          }
         }
       }
-      that.updateContextAfterFilterStateChange(filterName);
+    }
+
+    filterObj.CheckAll = function() {
+      if (filterName === 'direction') {
+        iterateAllFiltersAndUpateState(that.updateColorsForDirection);
+      } else {
+        iterateAllFiltersAndUpateState();
+        that.updateContextAfterFilterStateChange(filterName);
+      }
     };
 
     if (this.$rootScope.f[buildingId] === undefined) {
@@ -108,7 +119,6 @@
     }
     this.$rootScope.f[buildingId][filterName] = filterObj;
   };
-
 
   MapFilter.prototype.registerFilters = function(buildingId) {
     var i, filter;
@@ -123,6 +133,7 @@
       bId, mergedFilters, fName;
     for (j = 0; j < that.floorJsons.length; j += 1) {
       this.loadFilter(that.floorJsons[j]);
+      this.createParentOrganizationFilter(that.floorJsons[j]);
     }
     this.createMergedFiltersByBuilding();
     bId = this.buildingId;
@@ -135,8 +146,32 @@
     }
   };
 
+
+  function addKpiToKpi(source, target) {
+    var allPeople;
+    source.count += target.count;
+    source.nbPeople += target.nbPeople;
+    source.areaSum += target.areaSum;
+    source.perimeterSum += target.perimeterSum;
+    // source.ratio += n.ratio;
+    source.freeDeskNumberSum += target.freeDeskNumberSum;
+    allPeople = source.nbPeople + source.freeDeskNumberSum;
+
+    source.count = parseFloat(source.count.toFixed(1), 10);
+    source.nbPeople = parseFloat(source.nbPeople.toFixed(1), 10);
+    source.areaSum = parseFloat(source.areaSum.toFixed(1), 10);
+    source.perimeterSum = parseFloat(source.perimeterSum.toFixed(1), 10);
+    if (allPeople === 0) {
+      source.ratio = 0;
+    } else {
+      source.ratio = parseFloat((source.areaSum / allPeople).toFixed(1), 10);
+    }
+    source.freeDeskNumberSum = parseFloat(source.freeDeskNumberSum.toFixed(1), 10);
+    return source;
+  }
+
   MapFilter.prototype.createMergedFiltersByBuilding = function() {
-    var bId, filtersForFloorObject, belongsToName, belongsToId, fId, o, n, allPeople;
+    var bId, filtersForFloorObject, belongsToName, belongsToId, fId, o, n;
     for (bId in this.bfilters) {
       if (this.bfilters.hasOwnProperty(bId)) {
         for (fId in this.bfilters[bId]) {
@@ -158,24 +193,7 @@
                     } else {
                       o = this.mergedFiltersForBuildings[bId][belongsToName][belongsToId];
                       n = filtersForFloorObject[belongsToName][belongsToId];
-                      o.count += n.count;
-                      o.nbPeople += n.nbPeople;
-                      o.areaSum += n.areaSum;
-                      o.perimeterSum += n.perimeterSum;
-                      // o.ratio += n.ratio;
-                      o.freeDeskNumberSum += n.freeDeskNumberSum;
-                      allPeople = o.nbPeople + o.freeDeskNumberSum;
-
-                      o.count = parseFloat(o.count.toFixed(1), 10);
-                      o.nbPeople = parseFloat(o.nbPeople.toFixed(1), 10);
-                      o.areaSum = parseFloat(o.areaSum.toFixed(1), 10);
-                      o.perimeterSum = parseFloat(o.perimeterSum.toFixed(1), 10);
-                      if (allPeople === 0) {
-                        o.ratio = 0;
-                      } else {
-                        o.ratio = parseFloat((o.areaSum / allPeople).toFixed(1), 10);
-                      }
-                      o.freeDeskNumberSum = parseFloat(o.freeDeskNumberSum.toFixed(1), 10);
+                      addKpiToKpi(o, n);
                       this.mergedFiltersForBuildings[bId][belongsToName][belongsToId] = o;
                     }
                   }
@@ -192,9 +210,33 @@
     this.bfilters[this.buildingId].belongsToItems[filterName][item.id] = item;
   };
 
+
+  MapFilter.prototype.updateColorsForDirection = function(item) {
+    var j, childrenIdList;
+    childrenIdList = item.organizations.map(function(o) {
+      return o.id;
+    });
+
+    function keepElementInChildrenList(i) {
+      return i.element !== undefined && childrenIdList.indexOf(i.json.organization_id) !== -1;
+    }
+
+    function fillWithColorOfItem(i) {
+      i.fillWithColorDependingOnState(item.color, item.state);
+    }
+    for (j = 0; j < this.editors.length; j += 1) {
+      this.editors[j].items.filter(keepElementInChildrenList).forEach(fillWithColorOfItem);
+      this.editors[j].setLegend();
+    }
+  };
+
   MapFilter.prototype.updateFilterStateAndContext = function(filterName, item) {
-    this.updateFilterState(filterName, item);
-    this.updateContextAfterFilterStateChange(filterName);
+    if (filterName === 'direction') {
+      this.updateColorsForDirection(item);
+    } else {
+      this.updateFilterState(filterName, item);
+      this.updateContextAfterFilterStateChange(filterName);
+    }
   };
 
 
@@ -244,9 +286,49 @@
     });
   };
 
+  function getInitKpi() {
+    return {
+      count: 0,
+      nbPeople: 0,
+      areaSum: 0,
+      perimeterSum: 0,
+      ratio: 0,
+      freeDeskNumberSum: 0
+    };
+  }
+
+  MapFilter.prototype.createParentOrganizationFilter = function(floorJson) {
+    // return;
+    var buildingId, floorId, belongsToKeyName = 'direction',
+      orgs, orgId, parentOrgs = {},
+      parentOrgsKpi = {};
+    buildingId = floorJson.building.id;
+    floorId = floorJson.id;
+    this.initBuildingFilter(buildingId, floorId, belongsToKeyName);
+
+    // for each leaf org, fetch the parent
+    orgs = this.bfilters[buildingId].belongsToItems.organization;
+    for (orgId in orgs) {
+      if (orgs.hasOwnProperty(orgId)) {
+        if (orgs[orgId].organization !== undefined) {
+          parentOrgs[orgs[orgId].organization.id] = orgs[orgId].organization;
+          parentOrgs[orgs[orgId].organization.id].state = false;
+          if (this.bfilters[buildingId][floorId].organization[orgId] !== undefined) {
+            if (parentOrgsKpi[orgs[orgId].organization.id] === undefined) {
+              parentOrgsKpi[orgs[orgId].organization.id] = getInitKpi();
+            }
+            addKpiToKpi(parentOrgsKpi[orgs[orgId].organization.id], this.bfilters[buildingId][floorId].organization[orgId]);
+          }
+        }
+      }
+    }
+
+    this.bfilters[buildingId].belongsToItems[belongsToKeyName] = parentOrgs;
+    this.bfilters[buildingId][floorId][belongsToKeyName] = parentOrgsKpi;
+  };
+
   MapFilter.prototype.loadBelongsToData = function(floorJson, belongsToKeyName) {
     var i, room, buildingId, floorId, belongsToKpi, ratio, belongsToItem, kpis;
-
     buildingId = floorJson.building.id;
     floorId = floorJson.id;
     this.initBuildingFilter(buildingId, floorId, belongsToKeyName);
@@ -261,14 +343,7 @@
         belongsToItem.state = false;
         this.bfilters[buildingId].belongsToItems[belongsToKeyName][belongsToItem.id] = belongsToItem;
         if (kpis[belongsToItem.id] === undefined) {
-          kpis[belongsToItem.id] = {
-            count: 0,
-            nbPeople: 0,
-            areaSum: 0,
-            perimeterSum: 0,
-            ratio: 0,
-            freeDeskNumberSum: 0
-          };
+          kpis[belongsToItem.id] = getInitKpi();
         }
         belongsToKpi = kpis[belongsToItem.id];
         belongsToKpi.count += 1;

@@ -4,7 +4,7 @@ class Person < ActiveRecord::Base
   belongs_to :organization
 
 
-  has_many :affectations
+  has_many :affectations, :dependent => :destroy
   has_many :rooms, :through => :affectations
   accepts_nested_attributes_for :rooms, :allow_destroy => true
   accepts_nested_attributes_for :affectations, :allow_destroy => true

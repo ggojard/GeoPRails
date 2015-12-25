@@ -94,6 +94,7 @@ fr:
         badge_number: "Numéro de Badge"
         photo: "Photo"
         title: "Intitulé de Poste"
+        fullname: "Nom complet"
       person_state:
         id: "Identifiant staut personne"
         name : "Nom"

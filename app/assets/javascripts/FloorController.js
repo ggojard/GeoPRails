@@ -19,6 +19,10 @@
     $scope.i18n = gon.i18n;
     geoP.registerEditorStopLoading($rootScope);
 
+    if (gon.floor === null) {
+      return console.error('impossible to load the floor');
+    }
+
     $http.get('/floors/' + gon.floor.id + '.json').success(function(floor) {
       $rootScope.$emit('SetBodyColor', floor.building);
       $rootScope.room = null;
@@ -37,7 +41,6 @@
         numberOfFreeDesk: countFreeSpacesFromRooms(floor.rooms),
         totalArea: geoP.getTotalArea(floor.rooms)
       };
-
       geoP.setFloorsMaps(floor.building_id, $scope.floorsByBuildingId[floor.building_id], $rootScope, $http);
     });
 
