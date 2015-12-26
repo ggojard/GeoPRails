@@ -1,4 +1,4 @@
-git filter-branch --tag-name-filter cat --index-filter 'git rm -r --cached --ignore-unmatch app/assets/images/image*' --prune-empty -f -- --all
+git filter-branch --tag-name-filter cat --index-filter 'git rm -r --cached --ignore-unmatch app/assets/images/uploads*' --prune-empty -f -- --all
 
 #rm -rf .git/refs/original/
 #git reflog expire --expire=now --all
