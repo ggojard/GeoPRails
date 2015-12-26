@@ -21,6 +21,7 @@
 .DS_Store
 
 public/uploads/tmp/*
-
+public/uploads/person/*
+public/uploads/
 
 
