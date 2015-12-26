@@ -44,7 +44,9 @@
       chartElement = document.getElementById('chart_div_' + bId);
       angular.element(chartElement).css('display', 'none');
       c = $rootScope.currentCharts[bId];
-      geoP.createColumnChart(bId, chartElement, c.data);
+      if (c !== undefined) {
+        geoP.createColumnChart(bId, chartElement, c.data);
+      }
     }
   };
 

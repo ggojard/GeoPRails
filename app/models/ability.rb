@@ -4,7 +4,7 @@ class Ability
   def set_arm user
     $arm ||= {}
     if !user.nil? 
-      $arm[user.id] = ArmUser.new(user.id, self)
+      $arm[user.id] = ::ArmUser.new(user.id, self)
       puts 'ARM: Setup for (%s), (%s)' % [user.email, $arm[user.id].user_type]
     end
   end
