@@ -36,7 +36,7 @@ class ImagesController < GeopController
 
   def logo
     company = Company.find_by_id(current_admin_user.company_id)
-    if !company.nil?
+    if !company.nil && !company.logo.nil?
       return redirect_to company.logo.url(:small)
     end
     return redirect_to "/assets/logo-surfy-h42.png"
