@@ -1,5 +1,4 @@
-#git filter-branch --tag-name-filter cat --index-filter 'git rm -r --cached --ignore-unmatch' --prune-empty -f -- --all
-
+git filter-branch --tag-name-filter cat --index-filter 'git rm -r --cached --ignore-unmatch public/system' --prune-empty -f -- --all
 
 rm -rf .git/refs/original/
 git reflog expire --expire=now --all
