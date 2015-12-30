@@ -112,12 +112,14 @@
         iterateAllFiltersAndUpateState();
         that.updateContextAfterFilterStateChange(filterName);
       }
+      that.updateCuby(filterName);
     };
 
     if (this.$rootScope.f[buildingId] === undefined) {
       this.$rootScope.f[buildingId] = {};
     }
     this.$rootScope.f[buildingId][filterName] = filterObj;
+
   };
 
   MapFilter.prototype.registerFilters = function(buildingId) {
