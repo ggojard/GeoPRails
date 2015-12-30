@@ -237,6 +237,7 @@
       this.updateFilterState(filterName, item);
       this.updateContextAfterFilterStateChange(filterName);
     }
+    this.updateCuby(filterName);
   };
 
 
@@ -246,6 +247,9 @@
       this.editors[j].mapOnItems('fillFromFilterColor', filterName);
       this.editors[j].setLegend();
     }
+  };
+
+  MapFilter.prototype.updateCuby = function(filterName) {
     if (this.cuby !== null) {
       this.cuby.applyFilters(filterName);
     }

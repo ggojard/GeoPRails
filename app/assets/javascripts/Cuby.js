@@ -16,20 +16,39 @@
     this.init();
   };
 
+  Cuby.prototype.upateRoom3dWithFilter = function(filterName, room3d, value) {
+    var item = this.mapFilter.bfilters[this.buildingJson.id].belongsToItems[filterName][value.id];
+    if (item.state === true) {
+      room3d.three.material = room3d.material.fill;
+      room3d.three.material.color.setHex(item.color.replace('#', '0x'));
+    }
+  };
+
+
+  Cuby.prototype.applyFilter = function(room3d, filterName) {
+    var value;
+    if (filterName === 'direction') {
+      value = room3d.json.organization;
+      // if the value got a parent
+      if (value !== undefined && value.organization !== undefined) {
+        value = value.organization;
+        this.upateRoom3dWithFilter(filterName, room3d, value);
+      }
+    } else {
+      value = room3d.json[filterName];
+      if (value !== undefined) {
+        this.upateRoom3dWithFilter(filterName, room3d, value);
+      }
+    }
+  };
+
   Cuby.prototype.applyFilters = function(filterName) {
-    var oId, room3d, item, value;
+    var oId, room3d;
     for (oId in this.rooms3dById) {
       if (this.rooms3dById.hasOwnProperty(oId)) {
         room3d = this.rooms3dById[oId];
         room3d.three.material = room3d.material.vectrices;
-        value = room3d.json[filterName];
-        if (value !== undefined) {
-          item = this.mapFilter.bfilters[this.buildingJson.id].belongsToItems[filterName][value.id];
-          if (item.state === true) {
-            room3d.three.material = room3d.material.fill;
-            room3d.three.material.color.setHex(item.color.replace('#', '0x'));
-          }
-        }
+        this.applyFilter(room3d, filterName);
       }
     }
   };
