@@ -22,7 +22,7 @@
     $rootScope.$emit('SetBodyColor', buildingsById[localBuildingId]);
     geoP.setFloorsMaps(localBuildingId, $scope.floorsByBuildingId[localBuildingId], $rootScope, $http);
     mapFilter = $rootScope.mapFilter[localBuildingId];
-    $scope.filter[localBuildingId] = mapFilter.mergedFiltersForBuildings[localBuildingId].organization[$scope.o.id];
+    $scope.filter[localBuildingId] = mapFilter.mergedFiltersForBuildings[localBuildingId][$scope.filterType][$scope.o.id];
     $scope.information[localBuildingId] = {
       number_of_rooms: $scope.filter[localBuildingId].count,
       area_sum: $scope.filter[localBuildingId].areaSum,
@@ -35,9 +35,9 @@
 
     $rootScope.$on('editor-loaded-' + localBuildingId, function(e, editor) {
       /*jslint unparam:true*/
-      filter = mapFilter.bfilters[localBuildingId].belongsToItems.organization[$scope.o.id];
+      filter = mapFilter.bfilters[localBuildingId].belongsToItems[$scope.filterType][$scope.o.id];
       filter.state = true;
-      mapFilter.updateFilterStateAndContext('organization', filter);
+      mapFilter.updateFilterStateAndContext($scope.filterType, filter);
     });
   }
 
@@ -53,16 +53,29 @@
     buildings = {};
     geoP.registerEditorStopLoading($rootScope);
 
-    for (i = 0; i < $scope.o.rooms.length; i += 1) {
-      r = $scope.o.rooms[i];
-      floors[r.floor.id] = r.floor;
-      f = r.floor;
-      buildingsById[r.floor.building.id] = r.floor.building;
-      if (buildings[f.building_id] === undefined) {
-        buildings[f.building_id] = [];
+
+    function loadRooms(rooms) {
+      for (i = 0; i < rooms.length; i += 1) {
+        r = rooms[i];
+        floors[r.floor.id] = r.floor;
+        f = r.floor;
+        buildingsById[r.floor.building.id] = r.floor.building;
+        if (buildings[f.building_id] === undefined) {
+          buildings[f.building_id] = [];
+        }
+        buildings[f.building_id].push(f.id);
       }
-      buildings[f.building_id].push(f.id);
     }
+
+    loadRooms($scope.o.rooms);
+    $scope.o.organizations.forEach(function(org) {
+      loadRooms(org.rooms);
+    });
+    $scope.filterType = 'organization';
+    if ($scope.o.organizations.length > 0) {
+      $scope.filterType = 'direction';
+    }
+
     $scope.buildingsById = buildingsById;
     $scope.buildings = Object.keys(buildings);
     $rootScope.buildings = $scope.buildings;
