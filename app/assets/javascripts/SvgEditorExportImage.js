@@ -70,6 +70,12 @@
       return;
     }
 
+    function setfilter(text, fKey, fstatus) {
+      text.node.onclick = function() {
+        editor.$rootScope.f[editor.json.building_id][fKey].clickOnFilter(fstatus);
+      };
+    }
+
     editor.removeLegend();
     filters = editor.mapFilter.bfilters[editor.json.building_id][editor.json.id];
     filtersStatus = editor.mapFilter.bfilters[editor.json.building_id].belongsToItems;
@@ -98,6 +104,8 @@
             text.attr({
               'fill': 'black'
             });
+            setfilter(text, fKey, fstatus);
+
             svgElements.push(text);
           }
           line += heightOfLine + texts.length * fontSize;
@@ -143,6 +151,7 @@
     bg.attr({
       fill: 'white'
     });
+
     editor.setLegend();
 
     html = $svg[0].outerHTML;
