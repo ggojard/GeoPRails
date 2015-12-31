@@ -2,7 +2,6 @@ class RoomsController < GeopController
   before_action :set_room, only: [:show, :update, :delete]
   # before_action :room_params, only: [:create]
 
-
   def self.selection
     [:room_type, :evacuation_zone, {:organization => [{:organization => :organizations}, :organizations]}, :room_ground_type, {:affectations => {:person => [:person_state, :organization]} , :inventories => :item}]
   end

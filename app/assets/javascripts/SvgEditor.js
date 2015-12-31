@@ -43,7 +43,6 @@
   SvgEditor = function(floorJson, mapFilter, $scope, dom) {
     var that = this;
 
-    this.abc = 'abc';
     this.mapFilter = mapFilter;
     this.json = floorJson;
     this.$scope = $scope;
@@ -57,10 +56,11 @@
     this.lastMovePosition = null;
     this.currentOptions = [];
     this.dragPointsOptions = [];
-
+    this.isFullScreen = false;
 
     this.svgId = 'map-' + floorJson.id;
-    // this.paper = snap('#' + this.svgId);
+    this.$scope.editor = this;
+
     this.paper = snap(dom);
     if (this.paper === null) {
       return;
@@ -89,13 +89,12 @@
     if (this.camera.scale === geoP.DefaultCamera.scale) {
       this.centerMap();
     }
-
   };
 
   SvgEditor.prototype.updateDisplayNames = function(displayNames) {
-      this.displayProperties = displayNames;
-      this.mapOnItems('removeDisplayTexts');
-      this.mapOnItems('setTexts');
+    this.displayProperties = displayNames;
+    this.mapOnItems('removeDisplayTexts');
+    this.mapOnItems('setTexts');
   };
 
   SvgEditor.prototype.setBackgroundImage = function() {
@@ -300,6 +299,36 @@
     this.itemsById[b.json.id] = b;
   };
 
+
+  SvgEditor.prototype.setOptionsForFullScreen = function() {
+    var goToFullScreenMode, stopFullScreenMode, that = this;
+    goToFullScreenMode = {
+      label: 'Aller en plein écran',
+      icon: 'fa-picture-o',
+      action: function() {
+        that.isFullscreen = true;
+        that.setOptions();
+      },
+      classes: 'btn-default'
+    };
+    stopFullScreenMode = {
+      label: 'Arrêter le plein écran',
+      icon: 'fa-lock',
+      action: function() {
+        that.isFullscreen = false;
+        that.setOptions();
+      },
+      classes: 'btn-default'
+    };
+    if (that.isFullscreen === true) {
+      this.mapOptions.push(stopFullScreenMode);
+    } else {
+      this.mapOptions.push(goToFullScreenMode);
+    }
+
+  };
+
+
   SvgEditor.prototype.setOptions = function() {
     var $scope = this.$scope,
       that = this,
@@ -396,6 +425,7 @@
         this.mapOptions = this.mapOptions.concat(options);
         break;
     }
+    this.setOptionsForFullScreen();
   };
 
   // a1..N ... are facultatif

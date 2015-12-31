@@ -17,6 +17,14 @@ class ApplicationController < ActionController::Base
     render file: "#{Rails.root}/public/404.html", layout: false, status: 404
   end
 
+
+# def current_ability
+#   @current_ability = Rails.cache.fetch("#{current_user.cache_key}::ability") do
+#     super
+#   end
+# end unless Rails.env.development?
+
+
   def current_ability
     @@the_user = current_admin_user
     @current_ability ||= ::Ability.new(current_admin_user)

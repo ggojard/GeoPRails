@@ -52,6 +52,9 @@
 
   geoP.createColumnChart = function(bId, element, data) {
     var a, options, chart;
+    if (typeof google === 'undefined') {
+      return;
+    }
     a = google.visualization.arrayToDataTable(data);
     options = {
       animation: {
@@ -109,7 +112,9 @@
       e = document.getElementById('chart_div_' + bId);
       chartsData[bId][filter.name](e);
       c = currentCharts[bId];
-      c.chart.draw(c.a, c.options);
+      if (c !== undefined) {
+        c.chart.draw(c.a, c.options);
+      }
     };
   });
 }(GeoP));

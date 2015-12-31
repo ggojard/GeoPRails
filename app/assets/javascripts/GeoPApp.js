@@ -38,7 +38,7 @@
 
 
 
-  var app = angular.module('GeoP', ['as.sortable']).run(function() { // instance-injector
+  var app = angular.module('GeoP', ['as.sortable', 'FBAngular']).run(function() { // instance-injector
     try {
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
@@ -50,7 +50,7 @@
   app.directive('setupEditor', function() {
     return {
       transclude: true,
-      scope: true,
+      // scope: true,
       link: function($scope, element, attrs) {
         setTimeout(function() {
           var editor, floor, floorId, mapFilter, buildingId;
@@ -62,10 +62,8 @@
           editor.updateRoomsRatio();
           editor.createRoomsPolylines();
           editor.setOptions();
-
           mapFilter.addEditor(editor);
           geoP.$apply($scope);
-
           $scope.$emit('editor-loaded', editor);
           $scope.$emit('editor-loaded-' + buildingId, editor);
           setTimeout(function() {

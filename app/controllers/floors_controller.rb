@@ -1,6 +1,6 @@
 class FloorsController < GeopController
   before_action :current_ability
-  before_action :set, only: [:show, :edit, :update, :show_json]
+  before_action :set, only: [:edit, :update]
 
   def self.selection
     [:building, :rooms => RoomsController.selection]
@@ -14,10 +14,12 @@ class FloorsController < GeopController
     respond_to do |format|
       format.html {
         if !authorize_read? @floor; return render_404 end
-        gon.floor = @floor.as_json(:include => FloorsController.json_selection, :methods =>[:fullname, :url])
+        @floor = Floor.find_by_id(params[:id])
+        gon.floor = @floor.as_json(:methods =>[:fullname, :url]);
         gon.mode = 'show'
       }
       format.json{
+        @floor = Floor.includes(FloorsController.selection).find_by_id(params[:id])
         if !authorize_read? @floor; return render_json_404 end
         if !@floor.nil?
           render json: @floor.as_json(:include => FloorsController.json_selection, :methods =>[:fullname, :url])

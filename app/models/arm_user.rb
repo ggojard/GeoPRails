@@ -60,7 +60,7 @@ class ArmUser
     end
 
     user_id = user.id
-    puts "Get User Type For User Id (%d)" % user_id
+    puts "Get User Type For User Id (%d)" % [user_id]
     if user_id == 0
       return 'READ'
     end
