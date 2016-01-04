@@ -304,7 +304,7 @@
     var goToFullScreenMode, stopFullScreenMode, that = this;
     goToFullScreenMode = {
       label: 'Aller en plein écran',
-      icon: 'fa-picture-o',
+      icon: 'fa-arrows-alt',
       action: function() {
         that.isFullscreen = true;
         that.setOptions();
@@ -313,7 +313,7 @@
     };
     stopFullScreenMode = {
       label: 'Arrêter le plein écran',
-      icon: 'fa-lock',
+      icon: 'fa-compress',
       action: function() {
         that.isFullscreen = false;
         that.setOptions();
@@ -325,7 +325,6 @@
     } else {
       this.mapOptions.push(goToFullScreenMode);
     }
-
   };
 
 
