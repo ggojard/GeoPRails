@@ -284,14 +284,6 @@
     this.$rootScope.mapFilterByBuildingId[this.buildingId] = this;
   };
 
-  MapFilter.prototype.updateEditorsRoomPositions = function() {
-    this.editors.forEach(function(editor) {
-      if (editor.paper !== null) {
-        editor.updateRoomOffset();
-      }
-    });
-  };
-
   function getInitKpi() {
     return {
       count: 0,

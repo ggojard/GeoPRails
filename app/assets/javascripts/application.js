@@ -12,7 +12,7 @@
 //
 //= require vendor/angular
 //= require vendor/angular-resource.min
-//= require vendor/jquery-2.1.1.min
+//= require vendor/jquery-2.1.4.min
 //= require vendor/jquery-svgpan
 //= require vendor/bootstrap
 //= require vendor/three

@@ -791,11 +791,16 @@
     var that = this,
       link;
     this.optionsOnMap = [];
+    that.svgEditor.$scope.room = that;
+    geoP.$apply(that.svgEditor.$scope);
     that.svgEditor.$scope.roomId = that.json.id;
     that.addEditPolylineOption();
     that.addZoomOnItemOption();
     that.doActionIfItemIsSelected();
     this.group.node.setAttribute('class', 'select');
+    $('.panel-room').animate({
+      'scrollTop': 0
+    }, 250);
     link = '#' + that.json.id;
     document.location.hash = link;
   };

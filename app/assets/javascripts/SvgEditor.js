@@ -56,7 +56,12 @@
     this.lastMovePosition = null;
     this.currentOptions = [];
     this.dragPointsOptions = [];
-    this.isFullScreen = false;
+    this.isFullscreen = false;
+    this.$rootScope.$on('FBFullscreen.change', function(e, isFullscreen) {
+      /*jslint unparam:true*/
+      that.isFullscreen = isFullscreen;
+      that.setOptions();
+    });
 
     this.svgId = 'map-' + floorJson.id;
     this.$scope.editor = this;
@@ -146,16 +151,7 @@
   };
 
   SvgEditor.prototype.setCurrentRoom = function(polyline) {
-    this.mapFilter.$rootScope.room = polyline;
-    this.updateRoomOffset();
-  };
-
-  SvgEditor.prototype.updateRoomOffset = function() {
-    var offsetTop = $(this.paper.node).offset().top;
-    if (offsetTop > 0) {
-      this.mapFilter.$rootScope.roomInfoTopOffset = offsetTop;
-      geoP.$apply(this.$scope);
-    }
+    this.$scope.room = polyline;
   };
 
   SvgEditor.prototype.updateCamera = function() {
@@ -448,7 +444,7 @@
 
   SvgEditor.prototype.unSelectItems = function() {
     this.mapFilter.editors.forEach(function(editor) {
-      editor.mapFilter.$rootScope.room = null;
+      editor.$scope.room = null;
       editor.mapOnItems('unSelect');
     });
   };

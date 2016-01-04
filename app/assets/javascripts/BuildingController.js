@@ -48,8 +48,7 @@
     $scope.floorsByBuildingId = {};
     geoP.handleKeyEventsForScope($scope);
 
-    $rootScope.room = null;
-    $rootScope.roomInfoTopOffset = 0;
+    $scope.room = null;
 
     geoP.registerEditorStopLoading($rootScope);
     geoP.editorDisplayNames($scope, $rootScope, gon.building.id);

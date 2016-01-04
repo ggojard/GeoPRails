@@ -169,7 +169,7 @@
         var $id;
         $id = $('#tab-oraganization-' + bId);
         $id.on('show.bs.tab', function() {
-          $rootScope.roomInfoTopOffset = 0;
+          return undefined;
         });
         $id.on('shown.bs.tab', function() {
           if ($rootScope.mapFilterByBuildingId !== undefined) {

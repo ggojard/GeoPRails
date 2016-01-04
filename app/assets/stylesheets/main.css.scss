@@ -161,6 +161,8 @@ div.panel-room {
     border-left:1px solid #eee;
     box-shadow: none;
     overflow-y: scroll;
+
+    // @include transition(250ms);
     .panel-heading {
         background: #1dc8fe;
         a, h3 {

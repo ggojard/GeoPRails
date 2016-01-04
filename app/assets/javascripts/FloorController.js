@@ -25,7 +25,7 @@
 
     $http.get('/floors/' + gon.floor.id + '.json').success(function(floor) {
       $rootScope.$emit('SetBodyColor', floor.building);
-      $rootScope.room = null;
+      $scope.room = null;
       $scope.roomId = geoP.getRoomIdFromHash();
       $scope.buildings = [floor.building_id];
       $rootScope.buildings = $scope.buildings;

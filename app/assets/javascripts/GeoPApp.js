@@ -85,7 +85,6 @@
           if (attr.type === 'charts') {
             geoP.refreshCurrentChart(attr.buildingId, $scope);
           }
-          $scope.mapFilter[attr.buildingId].updateEditorsRoomPositions();
         });
       }
     };
