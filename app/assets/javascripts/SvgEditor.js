@@ -265,7 +265,9 @@
   };
 
   SvgEditor.prototype.centerMap = function() {
-    this.centerOnBox(this.bgBox);
+    var box = JSON.parse(JSON.stringify(this.bgBox));
+    box.w += 300;
+    this.centerOnBox(box);
     this.camera.x = 0;
     this.camera.y = 0;
     this.applyTransform();
