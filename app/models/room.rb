@@ -31,11 +31,6 @@ class Room < ActiveRecord::Base
     end
     return room_fullname
   end
-
-  def area_unit
-    if !self.area.nil?
-      '%.2f m²' % self.area
-    end
-  end
+  
   default_scope {order(:name)}
 end

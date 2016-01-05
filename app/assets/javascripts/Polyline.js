@@ -265,9 +265,13 @@
       p.x += mx;
       p.y += my;
 
-      that.updateArea();
-      that.updatePerimeter();
-      that.updateTextPosition();
+      that.svgEditor.$scope.$apply(function() {
+        that.svgEditor.updateRoomRatio(that.json);
+        that.updateArea();
+        that.updatePerimeter();
+        that.updateTextPosition();
+      });
+
     });
 
     movePointCircle.hover(function() {

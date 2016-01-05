@@ -33,6 +33,13 @@ var GeoP = {};
     }
   };
 
+  geoP.displayArea = function(area) {
+    if (area !== undefined) {
+      return area.toFixed(2) + ' m²';
+    }
+    return '';
+  };
+
   geoP.registerEditorStopLoading = function($rootScope) {
     $rootScope.$on('editor-loaded', function() {
       $rootScope.floorsToLoad -= 1;

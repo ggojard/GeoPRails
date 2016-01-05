@@ -36,12 +36,12 @@
     });
   });
 
-
-
-  var app = angular.module('GeoP', ['as.sortable', 'FBAngular']).run(function() { // instance-injector
+  var app = angular.module('GeoP', ['as.sortable', 'FBAngular']);
+  app.run(function($rootScope) { // instance-injector
     try {
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
+      $rootScope.geoP = geoP;
     } catch (e) {
       return e;
     }

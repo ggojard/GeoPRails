@@ -8,7 +8,7 @@ class ItemsController < GeopController
       [{:inventories => 
         {:include => 
           {:room => 
-            {:methods=> [:fullname, :area_unit, :url], :include => [{:floor => {:include => :building}}, :room_type]  
+            {:methods=> [:fullname, :url], :include => [{:floor => {:include => :building}}, :room_type]  
             }
           }
         }

@@ -17,8 +17,8 @@
       <tr ng-if="room.json.room_type">
         <th>Type</th><td>{{room.json.room_type.name}}</td>
       </tr>
-      <tr  ng-if="room.json.area_unit">
-        <th>{{i18n.information.total_area}}</th><td>{{room.json.area_unit}}</td>
+      <tr  ng-if="room.json.area">
+        <th>{{i18n.information.total_area}}</th><td>{{$root.geoP.displayArea(room.json.area)}}</td>
       </tr>
       <tr  ng-if="room.json.perimeter">
         <th>Périmètre</th><td>{{room.json.perimeter}} m</td>
