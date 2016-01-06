@@ -19,6 +19,7 @@ fr:
         area: "Aire (m²)"
         network: "Informatique"
         affectations: "Affectations"
+        inventories: "Inventaire"
         perimeter: "Périmètre (m)"
         free_desk_number: "Places libres"
         evacuation_zone: "Zone d'évacuation"

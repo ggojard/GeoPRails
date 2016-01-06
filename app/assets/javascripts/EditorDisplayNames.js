@@ -76,6 +76,15 @@
           return m.person.fullname;
         });
       }, false));
+
+      p.push(getDisplayNameFilter('inventories', false, function(v) {
+        return v.filter(function(f) {
+          return f.item !== undefined;
+        }).map(function(m) {
+          return m.quantity + ' x ' + m.item.name;
+        });
+      }, false));
+
       p = p.sort(function(a, b) {
         return a.order > b.order;
       });
