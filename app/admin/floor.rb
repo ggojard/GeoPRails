@@ -31,7 +31,7 @@ ActiveAdmin.register Floor do
       row I18n.t('formtastic.labels.floor.name') do ad.name end
       row I18n.t('activerecord.models.building.one') do  ad.building end
       row I18n.t('formtastic.labels.floor.level') do ad.level end
-        row I18n.t('formtastic.labels.floor.background_opacity') do ad.background_opacity end
+      row I18n.t('formtastic.labels.floor.background_opacity') do ad.background_opacity end
       # "Image Plan",
       row "Plan" do
         image_tag(ad.image.url(:thumb))
@@ -46,6 +46,10 @@ ActiveAdmin.register Floor do
   end
 
   controller do
+    def scoped_collection
+        Floor.includes(:building)
+    end
+
     def permitted_params
       params.permit!
     end

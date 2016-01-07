@@ -63,7 +63,7 @@ ActiveAdmin.register Room do
   form do |f|
     f.inputs "Details" do
       # f.input :id, label: "Visualiser", input_html: { class: 'room-link' }
-      f.input :floor, :as => :select, :collection => Floor.all.map {|f| [f.fullname, f.id]}, :include_blank => false
+      f.input :floor, :as => :select, :collection => Floor.includes(:building).all.map {|f| [f.fullname, f.id]}, :include_blank => false
       f.input :name
       f.input :room_type
       f.input :organization
@@ -110,6 +110,9 @@ ActiveAdmin.register Room do
 
 
   controller do
+     def scoped_collection
+      Room.includes([:floor, :room_type, :room_ground_type, :organization, :affectations => :person, :inventories => :item])
+    end
     def permitted_params
       params.permit!
     end
