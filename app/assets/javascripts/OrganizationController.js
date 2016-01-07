@@ -3,11 +3,11 @@
   'use strict';
 
 
-  function countFreeDesksFromOrganization($scope, floorsByBuildingId, building_id) {
+  function countFreeDesksFromOrganization(organization_id, floorsByBuildingId, building_id) {
     var res = 0;
     floorsByBuildingId[building_id].map(function(a) {
       var rooms = a.rooms.filter(function(r) {
-        if (r.organization_id === $scope.o.id) {
+        if (r.organization_id === organization_id) {
           return true;
         }
       });
@@ -17,20 +17,30 @@
     return res;
   }
 
+  function getOrganizationInformation(orgMapFilter, organization_id, localBuildingId, $scope) {
+    return {
+      number_of_rooms: orgMapFilter.count,
+      area_sum: orgMapFilter.areaSum,
+      number_of_people: orgMapFilter.nbPeople,
+      ratio: orgMapFilter.ratio,
+      available_on_number_of_floor: $scope.floorsByBuildingId[localBuildingId].length,
+      count_free_desk: countFreeDesksFromOrganization(organization_id, $scope.floorsByBuildingId, localBuildingId)
+    };
+  }
+
   function loadBuilding(localBuildingId, buildingsById, $scope, $rootScope, $http) {
-    var mapFilter, filter;
+    var mapFilter, filter, orgMapFilter;
     $rootScope.$emit('SetBodyColor', buildingsById[localBuildingId]);
     geoP.setFloorsMaps(localBuildingId, $scope.floorsByBuildingId[localBuildingId], $rootScope, $http);
     mapFilter = $rootScope.mapFilter[localBuildingId];
-    $scope.filter[localBuildingId] = mapFilter.mergedFiltersForBuildings[localBuildingId][$scope.filterType][$scope.o.id];
-    $scope.information[localBuildingId] = {
-      number_of_rooms: $scope.filter[localBuildingId].count,
-      area_sum: $scope.filter[localBuildingId].areaSum,
-      number_of_people: $scope.filter[localBuildingId].nbPeople,
-      ratio: $scope.filter[localBuildingId].ratio,
-      available_on_number_of_floor: $scope.floorsByBuildingId[localBuildingId].length,
-      count_free_desk: countFreeDesksFromOrganization($scope, $scope.floorsByBuildingId, localBuildingId)
-    };
+
+    orgMapFilter = mapFilter.mergedFiltersForBuildings[localBuildingId][$scope.filterType][$scope.o.id];
+    if (orgMapFilter === undefined) {
+      // may be a parent organization
+
+    }
+    $scope.filter[localBuildingId] = orgMapFilter;
+    $scope.information[localBuildingId] = getOrganizationInformation(orgMapFilter, $scope.o.id, localBuildingId, $scope);
     geoP.editorDisplayNames($scope, $rootScope, localBuildingId);
 
     $rootScope.$on('editor-loaded-' + localBuildingId, function(e, editor) {
