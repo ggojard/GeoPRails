@@ -70,6 +70,7 @@ gem 'actionpack-page_caching'
 gem 'cloudinary'
 gem 'carrierwave'
 gem 'puma'
+gem 'rqrcode'
 
 group :test, :development do
   gem "byebug"

@@ -10,5 +10,4 @@ class Item < ActiveRecord::Base
     '/items/%d' % self.id
   end
 
-
 end

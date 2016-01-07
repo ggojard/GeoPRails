@@ -33,6 +33,8 @@ GeoP::Application.routes.draw do
   get '/images/logo.png' => 'images#logo'
   get "rooms/:id/delete" => 'rooms#delete'
 
+  get '/items/:id.qrcode.png' => 'items#qrcode'
+
   # root 'homes#home'
   root 'companies#index'
   get '/companies/:id/export' => 'companies#export'

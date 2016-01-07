@@ -4,7 +4,7 @@ class ItemsController < GeopController
   @items_include = [{:inventories => {:room => [{:floor => :building}, :room_type, :organization]}}]
 
   def as_json_item
-    {:include => 
+    {:methods=> [:url], :include => 
       [{:inventories => 
         {:include => 
           {:room => 
@@ -37,6 +37,30 @@ class ItemsController < GeopController
     items = Item.includes(@items_include)
     gon.items = items
   end
+
+  def qrcode
+    @item = Item.find_by_id(params[:id])
+    url = request.base_url + @item.url
+    qrcode = RQRCode::QRCode.new(url)
+    # With default options specified explicitly
+    # render image: @qr.as_png
+    png = qrcode.as_png(
+      resize_gte_to: false,
+      resize_exactly_to: false,
+      fill: 'white',
+      color: 'black',
+      size: 120,
+      border_modules: 0,
+      module_px_size: 0,
+      file: nil # path to write
+    )
+    response.headers['Cache-Control'] = "public, max-age=#{36.hours.to_i}"
+    response.headers['Content-Type'] = 'image/png'
+    response.headers['Content-Disposition'] = 'inline'
+    render :text => png
+  end
+
+
 
 
 end

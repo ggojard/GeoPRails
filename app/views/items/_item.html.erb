@@ -6,6 +6,11 @@
   <div class="box-content" >
     <h4 ng-bind-html="i.name | highlight:query">{{i.name}}</h4>
     <table class="box-details">
+      <tr>
+        <th>QrCode</th>
+        <td><img ng-src="{{i.url}}.qrcode.png"/></td>
+      </tr>
+
       <tr class="description center" ng-if="i.description">
         <th colspan="2">Description</th>
       </tr>
