@@ -197,6 +197,7 @@ div.panel-room {
 }
 div.panel-map {
     margin: 0;
+    margin-bottom: 10px;
     h3 {
         display: inline-block;
         margin-right: 10px;
@@ -318,6 +319,13 @@ div.panel-room {
     width: 100%;
     border-radius: 0;
 }
+
+
+
+div.map-fullscreen.panel-map{
+    margin: 0;
+}
+
 @media screen and (min-width: 768px) {}
 @media screen and (min-width: 640px) and (max-width: 1023px) {}
 @media screen and (min-width: 240px) and (max-width: 639px) {

@@ -39,7 +39,7 @@ ActiveAdmin.register Building do
     f.inputs  do
       f.input :name
       f.input :company
-      f.input :color, input_html: { class: 'colorpicker' }
+      f.input :color
     end
 
     f.has_many :floors do |b|

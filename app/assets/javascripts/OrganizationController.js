@@ -37,7 +37,7 @@
     orgMapFilter = mapFilter.mergedFiltersForBuildings[localBuildingId][$scope.filterType][$scope.o.id];
     if (orgMapFilter === undefined) {
       // may be a parent organization
-
+      orgMapFilter = geoP.MapFilterHelper.getInitKpi();
     }
     $scope.filter[localBuildingId] = orgMapFilter;
     $scope.information[localBuildingId] = getOrganizationInformation(orgMapFilter, $scope.o.id, localBuildingId, $scope);
@@ -46,8 +46,10 @@
     $rootScope.$on('editor-loaded-' + localBuildingId, function(e, editor) {
       /*jslint unparam:true*/
       filter = mapFilter.bfilters[localBuildingId].belongsToItems[$scope.filterType][$scope.o.id];
-      filter.state = true;
-      mapFilter.updateFilterStateAndContext($scope.filterType, filter);
+      if (filter !== undefined) {
+        filter.state = true;
+        mapFilter.updateFilterStateAndContext($scope.filterType, filter);
+      }
     });
   }
 

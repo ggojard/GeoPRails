@@ -1,18 +1,31 @@
 //= require active_admin/base
 //= require jquery
 //= require jquery.minicolors
-jQuery( function($) {
-    $(".colorpicker").minicolors()
-    $('.color-display').each(function(i, td){
-      var $td = $(td), bg;
+//= require jquery.minicolors.simple_form
+
+/*global jQuery*/
+(function() {
+  'use strict';
+
+  function updateDisplayColors($) {
+    $('.color-display').each(function(i, td) {
+      /*jslint unparam:true*/
+      var $td = $(td),
+        bg;
       bg = $td.text();
       $td.css('background-color', bg);
     });
-    var $rl = $('.room-link');
-    var $div = $('<div class="room-link-container"></div>');
+  }
+
+  jQuery(function($) {
+    // $('.colorpicker').minicolors theme: 'bootstrap';
+    updateDisplayColors($);
+    var $rl, $div, link;
+    $rl = $('.room-link');
+    $div = $('<div class="room-link-container"></div>');
     $rl.wrap($div);
 
-    var link = '/rooms/' + $rl.val();
+    link = '/rooms/' + $rl.val();
     $('.room-link-container').html('<a href="' + link + '">Ouvrir</a>');
-});
-
+  });
+}());

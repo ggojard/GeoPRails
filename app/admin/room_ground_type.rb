@@ -21,21 +21,21 @@ ActiveAdmin.register RoomGroundType do
       row "Couleur" do c.color end
     end
   end
-  #
+  
+
   index do
     selectable_column
     id_column
-    column "Nom", :name
-    column "Couleur", :color, class: 'color-display'
+    column :name
+    column :color
     actions
   end
 
-  # f.input :name, input_html: { class: 'colorpicker' }
 
   form do |f|
     f.inputs "Details" do
-      f.input :name , label: "Nom"
-      f.input :color, input_html: { class: 'colorpicker' }, label: "Couleur"
+      f.input :name
+      f.input :color
     end
     f.actions
   end

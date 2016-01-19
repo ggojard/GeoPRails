@@ -1,8 +1,10 @@
-/*global GeoP:true, jQuery:true*/
-(function(geoP, $) {
+/*global GeoP:true*/
+(function(geoP) {
   'use strict';
 
-  var MapFilter = function($rootScope, $http, buildingId) {
+  var MapFilter, MapFilterHelper;
+
+  MapFilter = function($rootScope, $http, buildingId) {
     this.filters = {};
     this.bfilters = {};
     this.editors = [];
@@ -284,7 +286,9 @@
     this.$rootScope.mapFilterByBuildingId[this.buildingId] = this;
   };
 
-  function getInitKpi() {
+  MapFilterHelper = {};
+
+  MapFilterHelper.getInitKpi = function() {
     return {
       count: 0,
       nbPeople: 0,
@@ -293,7 +297,9 @@
       ratio: 0,
       freeDeskNumberSum: 0
     };
-  }
+  };
+
+  geoP.MapFilterHelper = MapFilterHelper;
 
   MapFilter.prototype.createParentOrganizationFilter = function(floorJson) {
     // return;
@@ -313,7 +319,7 @@
           parentOrgs[orgs[orgId].organization.id].state = false;
           if (this.bfilters[buildingId][floorId].organization[orgId] !== undefined) {
             if (parentOrgsKpi[orgs[orgId].organization.id] === undefined) {
-              parentOrgsKpi[orgs[orgId].organization.id] = getInitKpi();
+              parentOrgsKpi[orgs[orgId].organization.id] = geoP.MapFilterHelper.getInitKpi();
             }
             addKpiToKpi(parentOrgsKpi[orgs[orgId].organization.id], this.bfilters[buildingId][floorId].organization[orgId]);
           }
@@ -341,7 +347,7 @@
         belongsToItem.state = false;
         this.bfilters[buildingId].belongsToItems[belongsToKeyName][belongsToItem.id] = belongsToItem;
         if (kpis[belongsToItem.id] === undefined) {
-          kpis[belongsToItem.id] = getInitKpi();
+          kpis[belongsToItem.id] = geoP.MapFilterHelper.getInitKpi();
         }
         belongsToKpi = kpis[belongsToItem.id];
         belongsToKpi.count += 1;
@@ -399,4 +405,4 @@
 
   geoP.MapFilter = MapFilter;
 
-}(GeoP, jQuery));
+}(GeoP));

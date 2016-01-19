@@ -50,7 +50,7 @@ ActiveAdmin.register Organization do
   form do |f|
     f.inputs  do
       f.input :name 
-      f.input :color, input_html: { class: 'colorpicker' }
+      f.input :color
       f.input :organization
       f.input :organization_type
       f.input :company
