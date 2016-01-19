@@ -18,7 +18,7 @@
   }
 
   jQuery(function($) {
-    // $('.colorpicker').minicolors theme: 'bootstrap';
+    // $('.colorpicker').minicolors();
     updateDisplayColors($);
     var $rl, $div, link;
     $rl = $('.room-link');

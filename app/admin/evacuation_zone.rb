@@ -31,12 +31,10 @@ ActiveAdmin.register EvacuationZone do
     actions
   end
 
-  # f.input :name, input_html: { class: 'colorpicker' }
-
   form do |f|
     f.inputs do
       f.input :name 
-      f.input :color, input_html: { class: 'colorpicker' }
+      f.input :color
     end
     f.actions
   end
