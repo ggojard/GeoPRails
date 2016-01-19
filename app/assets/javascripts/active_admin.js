@@ -1,7 +1,5 @@
 //= require active_admin/base
 //= require jquery
-//= require jquery.minicolors
-//= require jquery.minicolors.simple_form
 
 /*global jQuery*/
 (function() {
