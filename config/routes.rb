@@ -53,6 +53,8 @@ GeoP::Application.routes.draw do
   get '/buildings/:id/duplicate' => 'buildings#duplicate'
   get '/buildings/:id/delete_all' => 'buildings#delete_all'
 
+  get '/admin/clear_cache' => 'homes#clear_cache'
+
   # map.connect ':controller/:action/:id'
 
   resources :buildings

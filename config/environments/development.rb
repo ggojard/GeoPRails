@@ -30,7 +30,7 @@ GeoP::Application.configure do
   config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public/deploy"
 
   config.after_initialize do
-    Bullet.enable = true
+    Bullet.enable = false
     Bullet.alert = true
     Bullet.bullet_logger = true
     Bullet.console = true

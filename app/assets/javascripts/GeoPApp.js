@@ -128,6 +128,9 @@
 
   geoP.setFloorsMaps = function(buildingId, floors, $rootScope, $http) {
     var i, floor, mapFilter;
+    if (floors === undefined) {
+      return false;
+    }
     mapFilter = new geoP.MapFilter($rootScope, $http, buildingId);
     if ($rootScope.floorsToLoad === undefined) {
       $rootScope.floorsToLoad = 0;

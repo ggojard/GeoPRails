@@ -32,6 +32,7 @@ fr:
       admin_user_role:
         id: "Identifiant"
         name: "Nom"
+        reload_rights: "Recharger les droits"
       building:
         id: "Identifiant bâtiment"
         name: "Nom"

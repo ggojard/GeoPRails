@@ -71,6 +71,8 @@ gem 'cloudinary'
 gem 'carrierwave'
 gem 'puma'
 gem 'rqrcode'
+gem 'colorize'
+
 
 group :test, :development do
   gem "byebug"

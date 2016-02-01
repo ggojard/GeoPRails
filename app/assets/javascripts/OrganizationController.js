@@ -29,11 +29,15 @@
   }
 
   function loadBuilding(localBuildingId, buildingsById, $scope, $rootScope, $http) {
-    var mapFilter, filter, orgMapFilter;
+    var mapFilter, filter, orgMapFilter, indexOfBuilding;
     $rootScope.$emit('SetBodyColor', buildingsById[localBuildingId]);
     geoP.setFloorsMaps(localBuildingId, $scope.floorsByBuildingId[localBuildingId], $rootScope, $http);
     mapFilter = $rootScope.mapFilter[localBuildingId];
-
+    if (mapFilter === undefined) {
+      indexOfBuilding = $scope.buildings.indexOf(localBuildingId);
+      $scope.buildings.splice(indexOfBuilding, 1);
+      return false;
+    }
     orgMapFilter = mapFilter.mergedFiltersForBuildings[localBuildingId][$scope.filterType][$scope.o.id];
     if (orgMapFilter === undefined) {
       // may be a parent organization
@@ -108,8 +112,6 @@
       }, 250);
     });
 
-
-
     function loadFloors(floorsArrayLocal) {
       var floorsByBuildingId = {},
         bId;
@@ -118,7 +120,6 @@
         $scope.noRoomsForOrganization = true;
         return false;
       }
-
       floorsArrayLocal.forEach(function(f) {
         buildingsById[f.building_id] = f.building;
         if (floorsByBuildingId[f.building_id] === undefined) {
@@ -127,9 +128,10 @@
         floorsByBuildingId[f.building_id].push(f);
 
       });
-
-
       Object.keys(buildings).forEach(function(bId) {
+        if (floorsByBuildingId[bId] === undefined) {
+          return false;
+        }
         floorsByBuildingId[bId].sort(function(a, b) {
           return a.level > b.level;
         });
@@ -184,7 +186,7 @@
           return undefined;
         });
         $id.on('shown.bs.tab', function() {
-          if ($rootScope.mapFilterByBuildingId !== undefined) {
+          if ($rootScope.mapFilterByBuildingId !== undefined && $rootScope.mapFilterByBuildingId[bId] !== undefined) {
             var editors = $rootScope.mapFilterByBuildingId[bId].editors;
             editors.forEach(function(editor) {
               editor.mapOnItems('updateTextPosition');

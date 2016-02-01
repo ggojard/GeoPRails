@@ -3,11 +3,29 @@ class Ability
 
   def set_arm user
     $arm ||= {}
-    if !user.nil? 
+    if !user.nil?
       $arm[user.id] = ::ArmUser.new(user.id, self)
       puts 'ARM: Setup for (%s), (%s)' % [user.email, $arm[user.id].user_type]
     end
   end
+
+  def self.reset_arm
+    puts 'RESET ARM'.red
+    Rails.cache.clear(nil)
+  end
+
+
+  # def marshal_dump
+  #   #blocks cannot be cached
+  #   @rules.reject{|rule| rule.instance_variable_get :@block }.map{|rule| Marshal.dump(rule) }
+  # end
+  # def marshal_load array
+  #   #blocks cannot be cached, so blocks must be re-defined
+  #   can :read, Comment do |comment|
+  #     comment.length > 100
+  #   end
+  #   @rules += array.map{|rule| Marshal.load(rule) }
+  # end
 
 
   def initialize(user)

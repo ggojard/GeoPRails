@@ -19,4 +19,11 @@ class HomesController < ApplicationController
     }
     render json: @res
   end
+
+
+  def clear_cache
+    puts 'The cache has been clear'
+    Rails.cache.clear(nil)
+    render json: "ok"
+  end
 end

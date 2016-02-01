@@ -1,6 +1,6 @@
-class FloorsController < GeopController
+ class FloorsController < GeopController
   before_action :current_ability
-  before_action :set, only: [:edit, :update]
+  before_action :set, only: [:edit, :update, :show]
 
   def self.selection
     [:building, :rooms => RoomsController.selection]
@@ -12,6 +12,8 @@ class FloorsController < GeopController
 
   def show    
     respond_to do |format|
+      # @floor = Floor.includes(FloorsController.selection).find_by_id(params[:id])
+
       format.html {
         if !authorize_read? @floor; return render_404 end
         @floor = Floor.find_by_id(params[:id])
@@ -19,7 +21,6 @@ class FloorsController < GeopController
         gon.mode = 'show'
       }
       format.json{
-        @floor = Floor.includes(FloorsController.selection).find_by_id(params[:id])
         if !authorize_read? @floor; return render_json_404 end
         if !@floor.nil?
           render json: @floor.as_json(:include => FloorsController.json_selection, :methods =>[:fullname, :url])

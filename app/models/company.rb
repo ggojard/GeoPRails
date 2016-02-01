@@ -1,4 +1,6 @@
 class Company < ActiveRecord::Base
+  after_update Ability.reset_arm
+
   has_many :buildings
   accepts_nested_attributes_for :buildings, :allow_destroy => true
 
