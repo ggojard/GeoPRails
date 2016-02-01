@@ -160,6 +160,12 @@ GEM
       has_scope (~> 0.6.0.rc)
       railties (>= 3.2, < 5)
       responders
+    jasmine (2.4.0)
+      jasmine-core (~> 2.4)
+      phantomjs
+      rack (>= 1.2.1)
+      rake
+    jasmine-core (2.4.1)
     jbuilder (1.5.3)
       activesupport (>= 3.0.0)
       multi_json (>= 1.2.0)
@@ -197,6 +203,7 @@ GEM
     paperclip_database (2.3.1)
       paperclip (>= 2.3.0)
     pg (0.18.4)
+    phantomjs (2.1.1.0)
     polyamorous (1.3.0)
       activerecord (>= 3.0)
     polyglot (0.3.5)
@@ -344,6 +351,7 @@ DEPENDENCIES
   formtastic
   gon
   haml
+  jasmine
   jbuilder (~> 1.2)
   jquery-rails
   launchy

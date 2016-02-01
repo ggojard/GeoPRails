@@ -86,6 +86,7 @@ group :test, :development do
   gem "launchy"
   gem "rails-erd"
   gem "bullet"
+  gem 'jasmine'  
 end
 
 
