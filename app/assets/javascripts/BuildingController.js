@@ -1,4 +1,4 @@
-/*global GeoP:true, gon:true*/
+/*global GeoP, gon*/
 (function(geoP) {
   'use strict';
 
