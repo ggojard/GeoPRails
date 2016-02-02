@@ -1,0 +1,25 @@
+{
+  "name": "geop",
+  "version": "0.0.0",
+  "description": "GeoP =======",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pouyajoon/GeoPRails.git"
+  },
+  "author": "pouya mohtacham",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/pouyajoon/GeoPRails/issues"
+  },
+  "dependencies": {
+    "karma": ">= 0.12.16",
+    "karma-jasmine": ">= 0.2.2"
+  }
+}
