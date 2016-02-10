@@ -22,7 +22,8 @@ module.exports = function(config) {
             'app/assets/javascripts/vendor/*.js',
             'app/assets/javascripts/GeoP.js',
             'app/assets/javascripts/GeoPApp.js',
-            '**/*.js'
+            '**/*.js',
+            'lib/specs/*.js'
         ],
 
 

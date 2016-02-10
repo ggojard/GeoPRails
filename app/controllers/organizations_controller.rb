@@ -1,6 +1,31 @@
 class OrganizationsController < GeopController
   def show
-    o = Organization.includes([:organizations => {:rooms => {:floor => :building}}, :rooms => {:floor => :building}]).find_by_id(params[:id])    
-    gon.organization = o.as_json(:include => [{:organizations=> {:include => { :rooms => {:include => {:floor => {:include => :building}}}}}} ,{ :rooms => {:include => {:floor => {:include => :building}}}}])
+    org = {}
+    if !current_admin_user.nil?
+      arm = $arm[current_admin_user.id]
+      u_arm_floors_id = arm.floors_id;
+
+      # .where(:rooms => {floor: u_arm_floors_id}).where(:rooms_organizations => {floor_id:u_arm_floors_id})
+      
+      o = Organization.includes(:rooms => {:floor => :building}).where(:rooms => {floor: u_arm_floors_id}).find_by_id(params[:id])
+
+      o_rec = Organization.includes(:organizations => {:rooms => {:floor => :building}}).where(:rooms => {floor_id:u_arm_floors_id}).find_by_id(params[:id])
+
+      org = o.as_json(:include => [{ :rooms => {:include => {:floor => {:include => :building}}}}]) 
+      org_rec = o.as_json(:include => [{:organizations=> {:include => { :rooms => {:include => {:floor => {:include => :building}}}}}}])
+
+      org[:organizations] = org_rec['organizations']
+
+    end
+
+
+    respond_to do |format|
+      format.html{
+        gon.organization = org;
+      }
+      format.json{
+        render json: org
+      }
+    end
   end
 end

@@ -59,6 +59,7 @@ class ApplicationController < ActionController::Base
       # puts u_arm_buildings_id
       # $global_company = Company.includes(:buildings => :floors).find_by_id(current_admin_user.company_id)
       arm.company = Rails.cache.fetch('company_%d' % current_admin_user.id) do
+        puts 'GET GLOBAL COMPANY'.green
         Company.includes(:buildings=> :floors ).where(buildings: {id: u_arm_buildings_id}).order("buildings.name, floors.level").find_by_id(current_admin_user.company_id)
       end
       return arm.company

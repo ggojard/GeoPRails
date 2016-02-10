@@ -13,12 +13,19 @@
       <ul class="nav nav-pills" role="tablist" style="border:1px solid {{buildingsById[buildingId].color}}">
         <%= render '/common/tabs_information' %>
         <%= render '/common/tabs_common' %>
+        <li ng-if="o.organizations.length > 0"><a data-building-id="{{buildingId}}" href="#tab-orgchildren-{{buildingId}}" data-toggle="tab" tab-header>Enfants</a></li>
       </ul>
       <div class="tab-content tab-content-main" style="border-color:{{buildingsById[buildingId].color}}">
         <div id="tab-information-{{buildingId}}"  class="tab-pane active">
           <%= render '/organizations/information' %>
         </div>
         <%= render '/common/tabs_common.content' %>
+        <div id="tab-orgchildren-{{buildingId}}" class="tab-pane">
+          <ul>
+            <li ng-repeat="o2 in o.organizations"><a href="/organizations/{{o2.id}}">{{o2.name}}</a></li>
+          </ul>
+        </div>
+        
       </div>
       <%=  render '/floors/map_editor' %>
       <hr>
