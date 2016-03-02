@@ -1,29 +1,18 @@
 class PeopleController < GeopController
-
-
-
   @includes_people = [{:affectations => {:room => [{:floor => :building}, :room_type]}}, :person_state, :organization]
-  @includes_people_index = [:person_state, :organization]
-
   def as_json_people
     {:include => [{:affectations => {:include => {:room => {:methods=> [:fullname, :area_unit, :url], :include => [{:floor => {:include => :building}}, :room_type]  }}}}, :person_state, {:organization => {:methods => [:url, :photo_url]}}], :methods => PeopleController.json_methods}
   end
-
   def as_json_people_index
     {:include => [:person_state, :organization], :methods => PeopleController.json_methods}
   end
-
-
   def self.json_methods
     [:format_telephone, :format_cellphone, :name, :fullname]
   end
-
-	def show
+  def show
     u_arm_floors_id = $arm[current_admin_user.id].floors_id;
-
-		p = Person.includes(@includes_people).find_by_id(params[:id])    
+    p = Person.includes(@includes_people).find_by_id(params[:id])
     gon.person = p.as_json(as_json_people)
-
     affectations = []
     gon.person['affectations'].each { |a|
       room = a['room']
@@ -32,12 +21,15 @@ class PeopleController < GeopController
       end
     }
     gon.person['affectations'] = affectations
+  end
 
-
-	end
-
-	def index
-    p = Person.includes(@includes_people_index)
-    gon.people = p.as_json(as_json_people_index)
-	end
+  def index
+    respond_to do |format|
+      format.json{
+        p = Person.includes([:person_state, :organization])
+        pJson = p.as_json(as_json_people_index)
+        render json: pJson
+      }
+    end
+  end
 end

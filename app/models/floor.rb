@@ -13,7 +13,7 @@ class Floor < ActiveRecord::Base
   end
 
   def url 
-    "/floors/%d" % self.id
+    "/#/floors/%d" % self.id
   end
   def extract_dimensions
     tempfile = image.queued_for_write[:original]

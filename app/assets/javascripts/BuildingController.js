@@ -42,8 +42,8 @@
   }
 
 
-  geoP.app.controller('BuildingController', function($scope, $http, $rootScope) {
-
+  geoP.app.controller('BuildingController', function($scope, $http, $rootScope, $routeParams) {
+    var bId = $routeParams.buildingId;
     $scope.i18n = gon.i18n;
     $scope.floorsByBuildingId = {};
     geoP.handleKeyEventsForScope($scope);
@@ -51,12 +51,32 @@
     $scope.room = null;
 
     geoP.registerEditorStopLoading($rootScope);
-    geoP.editorDisplayNames($scope, $rootScope, gon.building.id);
+    geoP.editorDisplayNames($scope, $rootScope, bId);
 
-    $scope.buildings = [gon.building.id];
-    $rootScope.$emit('SetBodyColor', gon.building);
+    $scope.buildings = [bId];
 
-    $http.get(gon.building.url + '.json').success(function(b) {
+
+
+
+    $scope.clickOnMainTab = function(buildingId, menu) {
+      if (menu.id === 'charts') {
+        geoP.refreshCurrentChart(buildingId, $scope);
+      }
+    };
+
+    $scope.menu = [
+      geoP.getMenuItem('information', 'Information', 'floors'),
+      geoP.getMenuItem('display_floors', 'Accès direct aux étages', 'buildings'),
+      geoP.getMenuItem('filters', 'Filtres', 'floors'),
+      geoP.getMenuItem('charts', 'Rapports', 'floors'),
+      geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors')
+    ];
+
+
+    $http.get('/buildings/' + bId + '.json').success(function(b) {
+
+      $rootScope.$emit('SetBodyColor', b);
+
       $rootScope.buildings = $scope.buildings;
       $scope.mapMode = 'show';
       $scope.building = b;
@@ -70,7 +90,6 @@
         numberOfFreeDesk: getNumberOfFreeDesk(b),
         totalArea: getTotalArea(b)
       };
-
 
     });
 

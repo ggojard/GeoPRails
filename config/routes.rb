@@ -35,8 +35,8 @@ GeoP::Application.routes.draw do
 
   get '/items/:id.qrcode.png' => 'items#qrcode'
 
-  # root 'homes#home'
-  root 'companies#index'
+  root 'homes#show'
+  # root 'companies#index'
   get '/companies/:id/export' => 'companies#export'
   get '/companies/:id/export_template' => 'companies#export_template'
   get '/companies/:id/organizations' => 'companies#organizations_hierarchy'
@@ -45,6 +45,8 @@ GeoP::Application.routes.draw do
   get 'upload' => 'homes#upload'
 
   get '/search/:q' => 'homes#search'
+
+  get '/home' => 'homes#show'
 
   get '/organizations/:id' => 'organizations#show'
 

@@ -1,0 +1,14 @@
+<div >
+  <div ng-repeat="buildingId in buildings">
+    <div>
+      <div class="jumbotron-surfy animated fadeIn" style="background-color: {{bgColor[buildingId]}}" ng-if="building !== undefined"><h2>{{building.name}}</h2></div>
+
+      <div ng-include="'/templates/common/tabs_main.ng.html'"></div>
+
+
+      <br/>
+      <div ng-include="'/templates/floors/map_editor.ng.html'"></div>
+      <div ng-include="'/templates/buildings/options.ng.html'"></div>
+    </div>
+  </div>
+</div>

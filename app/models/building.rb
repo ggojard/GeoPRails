@@ -10,7 +10,7 @@ class Building < ActiveRecord::Base
   accepts_nested_attributes_for :admin_user_roles, :allow_destroy => true
 
   def url
-    "/buildings/%d" % self.id
+    "/#/buildings/%d" % self.id
   end
 
   default_scope {order(:name)}

@@ -11,9 +11,6 @@
     currentCharts = {},
     filterMethod;
 
-  geoP.chartsData = chartsData;
-
-
   function setupChartsLoadMethods($rootScope, element) {
     if ($rootScope.mapFilter !== undefined) {
       var buildingsId, i, bId, mapFilter, filters, filterName, f, filterNames;

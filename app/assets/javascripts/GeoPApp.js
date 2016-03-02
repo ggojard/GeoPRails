@@ -36,12 +36,13 @@
     });
   });
 
-  var app = angular.module('GeoP', ['as.sortable', 'FBAngular']);
+  var app = angular.module('GeoP', ['ngRoute', 'as.sortable', 'FBAngular', 'ui.bootstrap']);
   app.run(function($rootScope) { // instance-injector
     try {
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
       $rootScope.geoP = geoP;
+      $rootScope.userType = gon.userType;
     } catch (e) {
       return e;
     }
@@ -74,33 +75,62 @@
     };
   });
 
+  app.config(['$routeProvider',
+    function($routeProvider) {
+      $routeProvider.
+      when('/', {
+        templateUrl: '/templates/home.ng.html'
+      }).
+      when('/companies/:companyId', {
+        templateUrl: '/templates/companies/company.ng.html',
+        controller: 'CompanyController'
+      }).
+      when('/buildings/:buildingId', {
+        templateUrl: '/templates/buildings/building.ng.html',
+        controller: 'BuildingController'
+      }).
+      when('/floors/:floorId', {
+        templateUrl: '/templates/floors/show.ng.html',
+        controller: 'FloorController'
+      }).
+      when('/people', {
+        templateUrl: '/templates/people/index.ng.html',
+        controller: 'PeopleController'
+      }).
+
+      otherwise({
+        redirectTo: '/'
+      });
+    }
+  ]);
+
   geoP.app = app;
 
-  app.directive('tabHeader', function() {
-    return {
-      scope: true,
-      replace: true,
-      link: function($scope, element, attr) {
-        $(element).on('shown.bs.tab', function() {
-          if (attr.type === 'charts') {
-            geoP.refreshCurrentChart(attr.buildingId, $scope);
-          }
-        });
-      }
-    };
-  });
+  // app.directive('tabHeader', function() {
+  //   return {
+  //     scope: true,
+  //     replace: true,
+  //     link: function($scope, element, attr) {
+  //       $(element).on('shown.bs.tab', function() {
+  //         if (attr.type === 'charts') {
+  //           geoP.refreshCurrentChart(attr.buildingId, $scope);
+  //         }
+  //       });
+  //     }
+  //   };
+  // });
 
-  app.directive('keepscrolltop', function($window) {
-    var count = 0;
-    return function() {
-      angular.element($window).bind('scroll', function() {
-        if (count > 0) {
-          registerScroll(gon.floor.id, this.pageYOffset);
-        }
-        count += 1;
-      });
-    };
-  });
+  // app.directive('keepscrolltop', function($window) {
+  //   var count = 0;
+  //   return function() {
+  //     angular.element($window).bind('scroll', function() {
+  //       if (count > 0) {
+  //         registerScroll(gon.floor.id, this.pageYOffset);
+  //       }
+  //       count += 1;
+  //     });
+  //   };
+  // });
 
   app.config(['$httpProvider',
     function(provider) {

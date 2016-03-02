@@ -1,7 +1,8 @@
 <div class="filter-container" ng-controller="FiltersController">
   <ul id="myTabFilter" class="nav nav-pills nav-justified" role="tablist" >
     <li ng-repeat="filter in filterNames" ng-class="{active : $first}" ng-if="$root.f[buildingId][filter.name].filters.sortedNames.length > 0">
-      <a href="#{{filter.name}}_filter_{{buildingId}}" ng-click="filterPaneClick(filter, buildingId);" data-toggle="tab">{{filter.label}}</a>
+      <!-- href="#{{filter.name}}_filter_{{buildingId}}"  -->
+      <a ng-click="filterPaneClick(filter, buildingId);" data-toggle="tab">{{filter.label}}</a>
     </li>
   </ul>
   <div class="tab-content" >

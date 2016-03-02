@@ -1,0 +1,56 @@
+<!-- <div class="box"> -->
+
+<div class="person-options">
+  <a class="option open-person fa fa-arrow-circle-right" href="/people/{{a.person.id}}"></a>
+  <a ng-if="$root.userType !== 'READ'" class="option edit-person fa fa-edit" href="/admin/people/{{a.person.id}}/edit"></a>
+</div>
+
+<div class="box-content">
+  <div class='person-photo' ng-if="a.person.photo && a.person.photo.url">
+    <img ng-src="{{a.person.photo.thumbnail.url}}"/>
+  </div>
+  <h4 ng-bind-html="a.person.fullname | highlight:query">{{a.person.fullname}}</h4>
+  <table class="box-details">
+    <tr ng-if="a.person.person_state">
+      <th>Etat</th>
+      <td>{{a.person.person_state.name}}</td>
+    </tr>
+    <tr ng-if="a.person.email">
+      <th>{{i18n.person.email}}</th>
+      <td class="email"><a href="mailto:{{a.person.email}}">{{a.person.email}}</a></td>
+    </tr>
+    <tr ng-if="a.person.title">
+      <th>{{i18n.person.title}}</th>
+      <td>{{a.person.title}}</td>
+    </tr>
+    <tr ng-if="a.person.format_telephone">
+      <th>Téléphone</th>
+      <td>{{a.person.format_telephone}}</td>
+    </tr>
+    <tr ng-if="a.person.format_cellphone">
+      <th>Portable</th>
+      <td>{{a.person.format_cellphone}}</td>
+    </tr>
+    <tr ng-if="a.person.computerreference">
+      <th>Ordinateur</th>
+      <td>{{a.person.computerreference}}</td>
+    </tr>
+    <tr ng-if="a.person.monitorreference">
+      <th>Ecran</th>
+      <td>{{a.person.monitorreference}}</td>
+    </tr>
+    <tr ng-if="a.person.person_code">
+      <th>Matricule</th>
+      <td>{{a.person.person_code}}</td>
+    </tr>
+    <tr ng-if="a.person.badge_number">
+      <th>{{i18n.person.badge_number}}</th>
+      <td>{{a.person.badge_number}}</td>
+    </tr>
+    <tr ng-if="a.person.organization">
+      <th>Organisation</th>
+      <td><a href="{{a.person.organization.url}}">{{a.person.organization.name}}</a></td>
+    </tr>
+  </table>
+</div>
+<!-- </div> -->

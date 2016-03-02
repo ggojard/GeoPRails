@@ -18,6 +18,10 @@ ul.map-options {
 }
 
 
+.map-options-zone{
+    display: inline-block;    
+}
+
 ul.map-split-vertical{
 
     display: table;
@@ -120,9 +124,6 @@ ul.search-results {
     z-index: 100;
     margin: 0;
     padding: 0;
-    // right:10px;
-    // max-width: 300px;
-    // width: 300px;
     li {
 
         i.fa{
@@ -143,7 +144,6 @@ ul.search-results {
 
 
 ul.display_floors{
-    margin-top: 5px;
     margin-bottom: 0;
 }
 

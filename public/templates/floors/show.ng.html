@@ -1,0 +1,13 @@
+<div class="home" ng-controller="FloorController">
+  <div>
+    <div class="jumbotron-surfy animated fadeIn" style="background-color: {{bgColor[buildingId]}}" ng-if="floorJson !== undefined">
+      <h2><a href="{{floorJson.building.url}}">{{floorJson.building.name}}</a></h2>
+      <h2>> <a href="{{floorJson.url}}">{{floorJson.name}}</a></h2>
+    </div>
+    <div ng-repeat="buildingId in buildings">
+      <div ng-include="'/templates/common/tabs_main.ng.html'"></div>
+      <br/>
+      <div ng-include="'/templates/floors/map_editor.ng.html'"></div>
+    </div>    
+  </div>
+</div>

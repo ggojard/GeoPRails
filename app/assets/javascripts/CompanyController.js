@@ -5,6 +5,11 @@
     organizations: '/templates/organization.ng.html',
     organization_hierarchy: '/templates/organization_hierarchy.ng.html'
   };
+
+  geoP.app.controller('HomeController', function($scope) {
+    $scope.h = 'a';
+  });
+
   geoP.app.controller('CompanyController', function($scope, $rootScope, $http) {
     $scope.company = gon.company;
     $scope.templates = templates;

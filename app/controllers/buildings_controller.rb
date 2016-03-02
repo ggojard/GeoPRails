@@ -19,7 +19,7 @@ class BuildingsController < GeopController
   end
 
   def url
-    '/buildings/%d' % self.id
+    '/home#buildings/%d' % self.id
   end
 
   def duplicate

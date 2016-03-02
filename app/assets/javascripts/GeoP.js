@@ -33,6 +33,23 @@ var GeoP = {};
     }
   };
 
+
+  geoP.getMenuItem = function(id, name, templateFolder) {
+    return {
+      id: id,
+      name: name,
+      template: geoP.format('/templates/{0}/{1}.ng.html', templateFolder, id)
+    };
+  };
+
+
+  geoP.format = function(format) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    return format.replace(/\{(\d+)\}/g, function(match, number) {
+      return args[number] !== undefined ? args[number] : match;
+    });
+  };
+
   geoP.displayArea = function(area) {
     if (area !== undefined) {
       return area.toFixed(2) + ' m²';

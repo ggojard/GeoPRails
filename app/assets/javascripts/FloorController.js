@@ -13,17 +13,24 @@
     return geoP.countFreeDesksFromRooms(rooms);
   }
 
-  geoP.app.controller('FloorController', function($scope, $http, $rootScope) {
+  geoP.app.controller('FloorController', function($scope, $http, $rootScope, $routeParams) {
     $scope.floorsByBuildingId = {};
     $scope.mapMode = gon.mode;
     $scope.i18n = gon.i18n;
     geoP.registerEditorStopLoading($rootScope);
 
-    if (gon.floor === null) {
-      return console.error('impossible to load the floor');
-    }
 
-    $http.get('/floors/' + gon.floor.id + '.json').success(function(floor) {
+    $scope.menu = [
+      geoP.getMenuItem('information', 'Information', 'floors'),
+      // geoP.getMenuItem('display_floors', 'Accès direct aux étages', 'buildings'),
+      geoP.getMenuItem('filters', 'Filtres', 'floors'),
+      geoP.getMenuItem('charts', 'Rapports', 'floors'),
+      geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors')
+    ];
+
+
+
+    $http.get('/floors/' + $routeParams.floorId + '.json').success(function(floor) {
       $rootScope.$emit('SetBodyColor', floor.building);
       $scope.room = null;
       $scope.roomId = geoP.getRoomIdFromHash();

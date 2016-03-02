@@ -25,7 +25,7 @@ class Room < ActiveRecord::Base
       if !self.floor.name.nil?
         room_fullname += ' < ' + self.floor.name
       end
-      if !self.floor.building.name.nil?
+      if !self.floor.building.nil? && !self.floor.building.name.nil?
         room_fullname += ' < ' + self.floor.building.name
       end
     end
