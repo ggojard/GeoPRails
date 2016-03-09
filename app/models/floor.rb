@@ -9,7 +9,10 @@ class Floor < ActiveRecord::Base
   serialize :image_dimensions
 
   def fullname
-    self.name + " < " + self.building.name
+    name = self.name
+    if !self.building.nil?
+      name = "%s > %s" % [name, self.building.name]
+    end
   end
 
   def url 

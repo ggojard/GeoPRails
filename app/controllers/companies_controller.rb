@@ -6,7 +6,7 @@ class CompaniesController < GeopController
       c = Company.find_by_id(current_admin_user.company_id)
       redirect_to '/home#/companies/%d' % c.id
     else
-      render 'login/login'
+      redirect_to '/admin/login'
     end
   end
 

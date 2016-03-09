@@ -1,4 +1,4 @@
-class HomesController < ApplicationController
+class HomesController < GeopController
   def search
     @q = params[:q].downcase
     @search = "%#{@q}%"
