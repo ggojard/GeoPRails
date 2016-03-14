@@ -19,6 +19,8 @@
 //= require vendor/three
 //= require vendor/moment.min
 //= require_tree ./vendor
+//= require angularjs-file-upload
 //= require GeoP
 //= require GeoPApp
+
 //= require_tree .

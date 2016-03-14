@@ -60,6 +60,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    angularjs-file-upload-rails (2.2.0)
     arbre (1.0.3)
       activesupport (>= 3.0.0)
     arel (5.0.1.20140414130214)
@@ -336,6 +337,7 @@ DEPENDENCIES
   active_admin_import
   activeadmin!
   activeadmin-translate
+  angularjs-file-upload-rails
   axlsx
   bullet
   byebug

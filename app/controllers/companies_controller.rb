@@ -30,6 +30,7 @@ class CompaniesController < GeopController
   end
 
   def import
+    puts 'IMPORT'.red
     begin
       file = params[:file]
       FileUtils.copy(file.path, file.path + '.xlsx')

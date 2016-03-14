@@ -33,7 +33,6 @@ var GeoP = {};
     }
   };
 
-
   geoP.getMenuItem = function(id, name, templateFolder) {
     return {
       id: id,
@@ -41,7 +40,6 @@ var GeoP = {};
       template: geoP.format('/templates/{0}/{1}.ng.html', templateFolder, id)
     };
   };
-
 
   geoP.format = function(format) {
     var args = Array.prototype.slice.call(arguments, 1);

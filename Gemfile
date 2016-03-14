@@ -72,6 +72,7 @@ gem 'carrierwave'
 gem 'puma'
 gem 'rqrcode'
 gem 'colorize'
+gem 'angularjs-file-upload-rails'
 
 
 group :test, :development do

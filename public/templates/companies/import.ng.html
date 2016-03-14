@@ -1,0 +1,18 @@
+<div ng-if="$root.userType === 'ADMIN' && uploader">
+  <div>
+    <a href="{{company.url}}/export_template">Gabarit d'import</a>
+  </div>
+  <br/>
+  <div class="form-group">
+    <label>Fichier Excel</label>
+    <input type="file" nv-file-select uploader="uploader"/><br/>
+  </div>
+  <ol>
+    <li ng-repeat="item in uploader.queue">
+      <span ng-bind="item.file.name"></span>
+      <button class="btn btn-default" ng-click="item.upload()">Importer</button>
+      <span class="btn-danger" ng-bind="item.file.error"></span>
+      <span class="btn-success" ng-bind="item.file.ok"></span>
+    </li>
+  </ol>
+</div>

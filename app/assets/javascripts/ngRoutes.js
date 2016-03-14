@@ -25,7 +25,6 @@
         templateUrl: '/templates/people/index.ng.html',
         controller: 'PeopleController'
       }).
-
       otherwise({
         redirectTo: '/'
       });
