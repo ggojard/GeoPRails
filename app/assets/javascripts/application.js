@@ -10,13 +10,13 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require vendor/angular
-//= require vendor/angular-resource.min
-//= require vendor/angular-route.min
-//= require vendor/angular-animate
-//= require vendor/angular-aria
-//= require vendor/angular-material.min
-//= require vendor/jquery-2.1.4.min
+//= require angular
+//= require angular-resource
+//= require angular-route
+//= require angular-animate
+//= require angular-aria
+//= require angular-material
+//= require jquery
 //= require vendor/jquery-svgpan
 //= require vendor/bootstrap
 //= require vendor/three
