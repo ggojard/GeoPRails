@@ -46,8 +46,6 @@ GeoP::Application.routes.draw do
 
   get '/search/:q' => 'homes#search'
 
-  get '/home' => 'homes#show'
-
   get '/organizations/:id' => 'organizations#show'
 
   get '/buildings/import' => 'buildings#import'

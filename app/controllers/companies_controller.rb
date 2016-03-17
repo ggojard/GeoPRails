@@ -4,7 +4,7 @@ class CompaniesController < GeopController
   def index
     if current_admin_user != nil
       c = Company.find_by_id(current_admin_user.company_id)
-      redirect_to '/home#/companies/%d' % c.id
+      redirect_to '/#/companies/%d' % c.id
     else
       redirect_to '/admin/login'
     end

@@ -13,6 +13,9 @@
 //= require vendor/angular
 //= require vendor/angular-resource.min
 //= require vendor/angular-route.min
+//= require vendor/angular-animate
+//= require vendor/angular-aria
+//= require vendor/angular-material.min
 //= require vendor/jquery-2.1.4.min
 //= require vendor/jquery-svgpan
 //= require vendor/bootstrap

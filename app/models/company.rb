@@ -13,7 +13,7 @@ class Company < ActiveRecord::Base
   mount_uploader :logo, LogoUploader
 
   def url
-    '/companies/%d' % self.id
+    '/#/companies/%d' % self.id
   end
 
   def logo_url

@@ -1,7 +1,7 @@
 /*global GeoP:true, gon:true*/
 (function(geoP) {
   'use strict';
-  geoP.app.controller('MenuCtrl', function($scope, $http, $q, $rootScope) {
+  geoP.app.controller('MenuController', function($scope, $http, $q, $rootScope) {
     $scope.searchRequests = [];
 
     function stopSearchRequests() {

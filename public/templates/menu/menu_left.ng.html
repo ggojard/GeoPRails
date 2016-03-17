@@ -1,0 +1,23 @@
+<div id="leftMenu" ng-controller="MenuController">
+  <div><a class="logo" href="/#/"><img ng-src="{{company.logo.small.url}}"></a></div>
+  <div class="menu-row">search</div>
+  <!-- <div> -->
+  <!-- <li ng-repeat="b in company.buildings"> -->
+  <uib-accordion ng-repeat="b in company.buildings" close-others="true">
+  <uib-accordion-group heading="{{b.name}}" >
+  <ul>
+    <li ng-repeat="f in b.floors"><a href="/#/floors/{{f.id}}">{{f.name}}</a></li>
+    <li class="divider"></li>
+    <li><a href="{{b.url}}">{{b.name}}</a></li>
+    <li><a href="{{b.url}}/export">Exporter (xslx)</a></li>
+    <li><a href="/#/cuby/{{b.id}}">Cuby (Beta)</a></li>
+  </ul>
+  </uib-accordion-group>
+  </uib-accordion>
+  <!-- </li> -->
+  <ul>
+    <li class="menu-row">menu1</li>
+    <li class="menu-row">menu2</li>
+  </ul>
+  <!-- </div> -->
+</div>

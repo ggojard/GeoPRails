@@ -36,7 +36,7 @@
     });
   });
 
-  var app = angular.module('GeoP', ['ngRoute', 'as.sortable', 'FBAngular', 'ui.bootstrap', 'angularFileUpload']);
+  var app = angular.module('GeoP', ['ngRoute', 'as.sortable', 'FBAngular', 'ui.bootstrap', 'angularFileUpload', 'ngMaterial']);
   app.run(function($rootScope) { // instance-injector
     try {
       var scrollTop = loadScroll(gon.floor.id);

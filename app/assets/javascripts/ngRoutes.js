@@ -7,7 +7,8 @@
     function($routeProvider) {
       $routeProvider.
       when('/', {
-        templateUrl: '/templates/home.ng.html'
+        templateUrl: '/templates/home.ng.html',
+        controller: 'HomeController'
       }).
       when('/companies/:companyId', {
         templateUrl: '/templates/companies/company.ng.html',
@@ -24,10 +25,11 @@
       when('/people', {
         templateUrl: '/templates/people/index.ng.html',
         controller: 'PeopleController'
-      }).
-      otherwise({
-        redirectTo: '/'
       });
+      // .
+      // otherwise({
+      //   redirectTo: '/'
+      // });
     }
   ]);
 

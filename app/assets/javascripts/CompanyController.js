@@ -7,7 +7,7 @@
     import: '/templates/companies/import.ng.html'
   };
 
-  geoP.app.controller('CompanyController', function($scope, $rootScope, $http, FileUploader) {
+  function setUploader($scope, FileUploader) {
     var csrf_token, uploader;
     csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -28,10 +28,14 @@
       response.file.ok = 'ok';
       geoP.notifications.done(status.status);
     };
-
     $scope.uploader = uploader;
-
     $scope.token = csrf_token;
+  }
+
+
+
+  geoP.app.controller('CompanyController', function($scope, $rootScope, $http, FileUploader) {
+    setUploader($scope, FileUploader);
 
     $scope.company = gon.company;
     $scope.templates = templates;

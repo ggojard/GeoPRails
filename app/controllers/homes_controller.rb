@@ -23,10 +23,6 @@ class HomesController < GeopController
   def show
   end
 
-  def home
-  end
-
-
   def clear_cache
     puts 'The cache has been clear'
     Rails.cache.clear(nil)

@@ -5,7 +5,7 @@
 		<%= render '/layouts/ios' %>
 		<title><%
 		if !@global_company.nil?
-			%><%="%s / " % @global_company.name %><%
+		%><%="%s / " % @global_company.name %><%
 		end
 		%> Surfy.pro / v0.7.35b</title>
 		<%= include_gon %>
@@ -15,18 +15,29 @@
 		<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 		<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap.min.js"></script> -->
 		<%= csrf_meta_tags %>
-
 	</head>
 	<body id="body-container" ng-cloak>
 		<div id="spinner-zone"></div>
+		<!--
+		<ul class="mainZone">
+						<li class-"leftZone">
+									<div ng-include="'/templates/menu/menu_left.ng.html'"></div>
+						</li>
+						<li class-"rightZone">
+						</li>
+			</ul>
+		-->
+		
 		<div  ng-controller="BodyCtrl">
+			<%= render 'layouts/menu_top' %>
 			<%= render 'layouts/notifications' %>
 			<%= render 'layouts/right_popup' %>
-			<%= render 'layouts/menu_top' %>
+			
 			<div class="container-fluid main-container">
 				<%= yield %>
 			</div>
 		</div>
+		
 		<%= render 'layouts/analytics' %>
 		<%= render 'layouts/ios_links' %>
 	</body>
