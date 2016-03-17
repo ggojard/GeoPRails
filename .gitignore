@@ -27,3 +27,4 @@ public/uploads/
 
 node_modules
 
+/vendor/assets/components/
