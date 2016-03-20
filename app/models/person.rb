@@ -26,7 +26,7 @@ class Person < ActiveRecord::Base
   end
 
   def url
-    '/people/%d' % self.id
+    '/#/people/%d' % self.id
   end
 
   def name
