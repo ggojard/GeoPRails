@@ -1,4 +1,4 @@
-<div ng-controller="PersonCtrl" class="box-single">
+<div ng-controller="PersonController" class="box-single">
   <div class="box">
     <div ng-include="'/templates/floors/person.ng.html'"></div>
   </div>
@@ -9,7 +9,7 @@
     </div>
     <div class="panel-body">
       <ul>
-        <li ng-repeat="a in a.person.affectations"><a href="{{a.room.url}}">{{a.room.fullname}}</a> - {{a.room.room_type.name}} - {{$root.geoP.displayArea(a.room.area)}}</li>
+        <li ng-repeat="a in a.person.affectations"><a href="{{a.room.url_with_floor}}">{{a.room.fullname}}</a> - {{a.room.room_type.name}} - {{$root.geoP.displayArea(a.room.area)}}</li>
       </ul>
     </div>
   </div>

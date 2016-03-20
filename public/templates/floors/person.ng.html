@@ -1,7 +1,5 @@
-<!-- <div class="box"> -->
-
 <div class="person-options">
-  <a class="option open-person fa fa-arrow-circle-right" href="/people/{{a.person.id}}"></a>
+  <a class="option open-person fa fa-arrow-circle-right" href="/#/people/{{a.person.id}}"></a>
   <a ng-if="$root.userType !== 'READ'" class="option edit-person fa fa-edit" href="/admin/people/{{a.person.id}}/edit"></a>
 </div>
 
@@ -16,11 +14,11 @@
       <td>{{a.person.person_state.name}}</td>
     </tr>
     <tr ng-if="a.person.email">
-      <th>{{i18n.person.email}}</th>
+      <th>{{::i18n.person.email}}</th>
       <td class="email"><a href="mailto:{{a.person.email}}">{{a.person.email}}</a></td>
     </tr>
     <tr ng-if="a.person.title">
-      <th>{{i18n.person.title}}</th>
+      <th>{{::i18n.person.title}}</th>
       <td>{{a.person.title}}</td>
     </tr>
     <tr ng-if="a.person.format_telephone">
@@ -44,7 +42,7 @@
       <td>{{a.person.person_code}}</td>
     </tr>
     <tr ng-if="a.person.badge_number">
-      <th>{{i18n.person.badge_number}}</th>
+      <th>{{::i18n.person.badge_number}}</th>
       <td>{{a.person.badge_number}}</td>
     </tr>
     <tr ng-if="a.person.organization">
@@ -53,4 +51,3 @@
     </tr>
   </table>
 </div>
-<!-- </div> -->

@@ -15,10 +15,9 @@
 
   geoP.app.controller('FloorController', function($scope, $http, $rootScope, $routeParams) {
     $scope.floorsByBuildingId = {};
-    $scope.mapMode = gon.mode;
+    $scope.mapMode = 'show';
     $scope.i18n = gon.i18n;
     geoP.registerEditorStopLoading($rootScope);
-
 
     $scope.menu = [
       geoP.getMenuItem('information', 'Information', 'floors'),
@@ -33,7 +32,11 @@
     $http.get('/floors/' + $routeParams.floorId + '.json').success(function(floor) {
       $rootScope.$emit('SetBodyColor', floor.building);
       $scope.room = null;
-      $scope.roomId = geoP.getRoomIdFromHash();
+      if ($routeParams.rid) {
+        $scope.roomId = $routeParams.rid;
+      }
+      // $scope.roomId = geoP.getRoomIdFromHash();
+
       $scope.buildings = [floor.building_id];
       $rootScope.buildings = $scope.buildings;
       $scope.buildingId = floor.building_id;

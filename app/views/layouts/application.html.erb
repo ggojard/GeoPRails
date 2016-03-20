@@ -7,7 +7,7 @@
 		if !@global_company.nil?
 		%><%="%s / " % @global_company.name %><%
 		end
-		%> Surfy.pro / v0.7.35b</title>
+		%> Surfy.pro / v0.8.0b</title>
 		<%= include_gon %>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -28,7 +28,7 @@
 			</ul>
 		-->
 		
-		<div  ng-controller="BodyCtrl">
+		<div  ng-controller="BodyController">
 			<%= render 'layouts/menu_top' %>
 			<%= render 'layouts/notifications' %>
 			<%= render 'layouts/right_popup' %>

@@ -19,13 +19,17 @@
         controller: 'BuildingController'
       }).
       when('/floors/:floorId', {
-        templateUrl: '/templates/floors/show.ng.html',
-        controller: 'FloorController'
+        reloadOnSearch: false,
+        templateUrl: '/templates/floors/show.ng.html'
       }).
       when('/people', {
         templateUrl: '/templates/people/index.ng.html',
         controller: 'PeopleController'
+      }).
+      when('/people/:peopleId', {
+        templateUrl: '/templates/people/show.ng.html'
       });
+
       // .
       // otherwise({
       //   redirectTo: '/'

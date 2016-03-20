@@ -23,7 +23,7 @@
       <td class="email"><a href="mailto:{{a.person.email}}">{{a.person.email}}</a></td>
     </tr>
     <tr ng-if="a.person.title">
-      <th>{{i18n.person.title}}</th>
+      <th>{{::i18n.person.title}}</th>
       <td>{{a.person.title}}</td>
     </tr>
     <tr ng-if="a.person.format_telephone">
@@ -47,7 +47,7 @@
       <td>{{a.person.person_code}}</td>
     </tr>
     <tr ng-if="a.person.badge_number">
-      <th>{{i18n.person.badge_number}}</th>
+      <th>{{::i18n.person.badge_number}}</th>
       <td>{{a.person.badge_number}}</td>
     </tr>
     <tr ng-if="a.person.organization">

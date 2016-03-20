@@ -23,11 +23,11 @@
   };
 
 
-  geoP.app.controller('BodyCtrl', function($scope, $http, $rootScope) {
+  geoP.app.controller('BodyController', function($scope, $http, $rootScope) {
     /*jslint unparam:true*/
     var spinner, spinnerContainer;
     spinnerContainer = document.getElementById('spinner-zone');
-     spinner = new Spinner(opts).spin(spinnerContainer);
+    spinner = new Spinner(opts).spin(spinnerContainer);
     spinnerContainer.className = '';
     $rootScope.$on('stop-loading', function() {
       if (spinner !== undefined) {
@@ -37,6 +37,7 @@
       }
     });
 
+    $rootScope.geoP = geoP;
     $rootScope.userType = gon.userType;
 
     $rootScope.$on('SetBodyColor', function(e, building) {

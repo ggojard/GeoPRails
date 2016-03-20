@@ -1,26 +1,26 @@
 <table class="box-details">
   <tr>
-    <th>{{i18n.information.number_of_rooms}}</th>
+    <th>{{::i18n.information.number_of_rooms}}</th>
     <td><span class="animated fadeIn" ng-if="information[buildingId].number_of_rooms !== undefined">{{information[buildingId].number_of_rooms}}</span></td>
   </tr>
   <tr>
-    <th>{{i18n.information.total_area}}</th>
+    <th>{{::i18n.information.total_area}}</th>
     <td><span class="animated fadeIn"  ng-if="information[buildingId].area_sum !== undefined">{{information[buildingId].area_sum}} m&#178;</span></td>
   </tr>
   <tr >
-    <th>{{i18n.information.number_of_people}}</th>
+    <th>{{::i18n.information.number_of_people}}</th>
     <td><span class="animated fadeIn"  ng-if="information[buildingId].number_of_people !== undefined">{{information[buildingId].number_of_people}}</span></td>
   </tr>
   <tr >
-    <th>{{i18n.information.ratio_affectations}}</th>
+    <th>{{::i18n.information.ratio_affectations}}</th>
     <td><span  class="animated fadeIn" ng-if="information[buildingId].ratio !== undefined">{{information[buildingId].ratio}} m&#178; / personnes</span></td>
   </tr>
   <tr>
-    <th>{{i18n.information.presence_on_number_of_floors}}</th>
+    <th>{{::i18n.information.presence_on_number_of_floors}}</th>
     <td><span class="animated fadeIn"  ng-if="information[buildingId].available_on_number_of_floor !== undefined">{{information[buildingId].available_on_number_of_floor}}</span></td>
   </tr>
   <tr>
-    <th>{{i18n.information.number_of_freedesks}}</th>
+    <th>{{::i18n.information.number_of_freedesks}}</th>
     <td><span class="animated fadeIn"  ng-if="information[buildingId].count_free_desk !== undefined">{{information[buildingId].count_free_desk}}</span></td>
   </tr>  
 </table>

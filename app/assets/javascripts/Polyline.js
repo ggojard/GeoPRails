@@ -805,8 +805,10 @@
     $('.panel-room').animate({
       'scrollTop': 0
     }, 250);
-    link = '#' + that.json.id;
-    document.location.hash = link;
+    link = '/#/floors/' + that.json.floor_id + '?rid=' + that.json.id;
+    if (that.json.id !== 0) {
+      document.location.href = link;
+    }
   };
 
   Polyline.prototype.checkAndSetDragModeTextEventsAndClass = function() {

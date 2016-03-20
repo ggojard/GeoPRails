@@ -10,7 +10,7 @@ class RoomsController < GeopController
   end
 
   def self.json_single_selection
-    {:include => [{:inventories => {:include => :item}}, :room_type, :evacuation_zone, {:organization => {:include => [{:organization => {:include => :organizations}}, :organizations]}}, :room_ground_type, { :affectations => {:include =>{:person =>{:methods => PeopleController.json_methods, :include => [:person_state, {:organization => {:methods => [:url]}}]}} }}]}
+    {:include => [{:inventories => {:include => :item}}, :room_type, :evacuation_zone, {:organization => {:include => [{:organization => {:include => :organizations}}, :organizations], :methods => [:url]}}, :room_ground_type, { :affectations => {:include =>{:person =>{:methods => PeopleController.json_methods, :include => [:person_state, {:organization => {:methods => [:url]}}]}} }}]}
   end
 
   def index
@@ -20,7 +20,8 @@ class RoomsController < GeopController
   # GET /rooms/1.json
   def show
     if !@room.nil?
-      redirect_to '/floors/%d#%d' % [@room.floor_id, @room.id]
+      redirect_to @room.url_with_floor
+      # redirect_to '/floors/%d#%d' % [@room.floor_id, @room.id]
     else
       redirect_to '/'
     end

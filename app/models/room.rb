@@ -19,6 +19,11 @@ class Room < ActiveRecord::Base
     '/rooms/%d' % self.id
   end
 
+  def url_with_floor
+    '/#/floors/%d?rId=%d' % [self.floor_id, self.id]
+  end
+
+
   def fullname
     room_fullname = self.name
     if !self.floor.nil?

@@ -3,7 +3,7 @@
   <hr class="affectations"/>
   <ul class="people">
     <li ng-repeat="a in room.json.affectations" ng-show="a.person.fullname.length > 0">
-      <%=  render '/floors/person' %>
+      <div ng-include="'/templates/floors/person.ng.html'"></div>
       <hr class="affectations"/>
     </li>
   </ul>

@@ -13,7 +13,7 @@ class Organization < ActiveRecord::Base
   accepts_nested_attributes_for :rooms, :allow_destroy => true
 
   def url
-    '/organizations/%d' %  self.id
+    '/#/organizations/%d' %  self.id
   end
   default_scope {order(:name)}
 end

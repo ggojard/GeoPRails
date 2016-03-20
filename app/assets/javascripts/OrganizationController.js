@@ -48,7 +48,6 @@
     geoP.editorDisplayNames($scope, $rootScope, localBuildingId);
 
     $rootScope.$on('editor-loaded-' + localBuildingId, function(e, editor) {
-      console.log('filter loaded', $scope.o.id);
       /*jslint unparam:true*/
       filter = mapFilter.bfilters[localBuildingId].belongsToItems[$scope.filterType][$scope.o.id];
       if (filter !== undefined) {
@@ -86,7 +85,6 @@
 
     loadRooms($scope.o.rooms);
     $scope.o.organizations.forEach(function(org) {
-      console.log(org);
       loadRooms(org.rooms);
     });
     $scope.filterType = 'organization';

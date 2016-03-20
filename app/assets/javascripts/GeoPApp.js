@@ -36,13 +36,11 @@
     });
   });
 
-  var app = angular.module('GeoP', ['ngRoute', 'as.sortable', 'FBAngular', 'ui.bootstrap', 'angularFileUpload', 'ngMaterial']);
-  app.run(function($rootScope) { // instance-injector
+  var app = angular.module('GeoP', ['ngRoute', 'as.sortable', 'FBAngular', 'ui.bootstrap', 'angularFileUpload']);
+  app.run(function() { // instance-injector
     try {
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
-      $rootScope.geoP = geoP;
-      $rootScope.userType = gon.userType;
     } catch (e) {
       return e;
     }

@@ -11,19 +11,19 @@
         <div id="tab-information-{{buildingId}}" class="tab-pane active">
           <table class="box-details" display-information-table>
             <tr>
-              <th>{{i18n.information.number_of_rooms}}</th>
+              <th>{{::i18n.information.number_of_rooms}}</th>
               <td><span ng-if="information.numberOfRooms" class="animated fadeIn">{{information.numberOfRooms}}</span></td>
             </tr>          
             <tr>
-              <th>{{i18n.information.number_of_people}}</th>
+              <th>{{::i18n.information.number_of_people}}</th>
               <td><span ng-if="information.numberOfPeople" class="animated fadeIn">{{information.numberOfPeople}}</span></td>
             </tr>
             <tr>
-              <th>{{i18n.information.number_of_freedesks}}</th>
+              <th>{{::i18n.information.number_of_freedesks}}</th>
               <td><span ng-if="information.numberOfFreeDesk" class="animated fadeIn">{{information.numberOfFreeDesk}}</span></td>
             </tr>
             <tr>
-              <th>{{i18n.information.total_area}}</th>
+              <th>{{::i18n.information.total_area}}</th>
               <td><span ng-if="information.totalArea" class="animated fadeIn">{{information.totalArea}} m&#178;</span></td>
             </tr>
           </table>

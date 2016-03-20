@@ -13,14 +13,11 @@
 //= require angular
 //= require angular-resource
 //= require angular-route
-//= require angular-animate
-//= require angular-aria
-//= require angular-material
 //= require jquery
 //= require vendor/jquery-svgpan
 //= require vendor/bootstrap
 //= require vendor/three
-//= require vendor/moment.min
+//= require moment
 //= require_tree ./vendor
 //= require angularjs-file-upload
 //= require GeoP
