@@ -28,12 +28,18 @@
       }).
       when('/people/:peopleId', {
         templateUrl: '/templates/people/show.ng.html'
+      }).
+      when('/items/', {
+        templateUrl: '/templates/items/index.ng.html',
+        controller: 'ItemController'
+      }).
+      when('/items/:itemId', {
+        templateUrl: '/templates/items/show.ng.html',
+        controller: 'ItemSingleController'
+      }).
+      otherwise({
+        redirectTo: '/'
       });
-
-      // .
-      // otherwise({
-      //   redirectTo: '/'
-      // });
     }
   ]);
 

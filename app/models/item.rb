@@ -7,7 +7,11 @@ class Item < ActiveRecord::Base
   accepts_nested_attributes_for :rooms, :allow_destroy => true
 
   def url
-    '/items/%d' % self.id
+    '/#/items/%d' % self.id
+  end
+
+  def qrcode_url
+    '/items/%d.qrcode.png' % self.id
   end
 
 end

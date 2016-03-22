@@ -1,7 +1,6 @@
-<div ng-controller="ItemCtrl">
+<div>
   <h1>List des objets</h1>
   <input type="text" ng-model="query" class="search-query-items" placeholder="Rechercher dans l'inventaire">
-  <div class="boxes items">
-  <%= render '/items/item' %>
+  <div class="boxes items" ng-include="'/templates/items/item.ng.html'">
   </div>
 </div>

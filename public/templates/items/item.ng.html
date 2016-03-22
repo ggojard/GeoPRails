@@ -1,16 +1,13 @@
 <div class="item box" ng-repeat="i in items | filter:itemFilter">
-  <% if @global_user_type != 'READ' %>
-  <a class="option fa fa-edit" href="/admin/items/{{i.id}}/edit" title="Editer"></a>
-  <% end %>
-  <a class="option fa fa-arrow-circle-right" href="/items/{{i.id}}" title="Voir"></a>
+  <a ng-if="$root.userType !== 'READ'" class="option fa fa-edit" href="/admin/items/{{i.id}}/edit" title="Editer"></a>
+  <a class="option fa fa-arrow-circle-right" href="{{i.url}}" title="Voir"></a>
   <div class="box-content" >
     <h4 ng-bind-html="i.name | highlight:query">{{i.name}}</h4>
     <table class="box-details">
       <tr>
         <th>QrCode</th>
-        <td><img ng-src="{{i.url}}.qrcode.png"/></td>
+        <td><img class="qrcode" ng-src="{{i.qrcode_url}}"/></td>
       </tr>
-
       <tr class="description center" ng-if="i.description">
         <th colspan="2">Description</th>
       </tr>
@@ -29,17 +26,6 @@
         <th>{{::i18n.item.purchase_date}}</th>
         <td>{{formatDate(i.purchase_date)}}</td>
       </tr>
-
-
-      <!--       <tr ng-if="i.inventories.length > 0" class="center">
-        <th colspan="2">
-          Inventaire
-        </th>
-      </tr>
-      <tr ng-if="i.inventories.length > 0">
-        <td colspan="2">
-        </td>
-      </tr> -->
     </table>
     <hr class="inventory-separator"/>
     <div ng-repeat="(bId, building) in buildingsById" style="border: 1px solid {{building.color}}" class="inventory" ng-class="{noprice:!i.price}">
