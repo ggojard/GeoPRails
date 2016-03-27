@@ -22,7 +22,7 @@
     $scope.menu = [
       geoP.getMenuItem('information', 'Information', 'floors'),
       geoP.getMenuItem('filters', 'Filtres', 'floors'),
-      geoP.getMenuItem('charts', 'Rapports', 'floors'),
+      geoP.chartMenuItem,
       geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors')
     ];
 

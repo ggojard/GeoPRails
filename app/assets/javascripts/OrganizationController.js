@@ -61,10 +61,12 @@
     $scope.menu = [
       geoP.getMenuItem('information', 'Information', 'organizations'),
       geoP.getMenuItem('filters', 'Filtres', 'floors'),
-      geoP.getMenuItem('charts', 'Rapports', 'floors'),
+      geoP.chartMenuItem,
       geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors'),
-      geoP.getMenuItem('org_children', 'Enfants', 'organizations', function() {
-        return $scope.o !== undefined && $scope.o.organizations.length > 0;
+      geoP.getMenuItem('org_children', 'Enfants', 'organizations', {
+        shouldDisplay: function() {
+          return $scope.o !== undefined && $scope.o.organizations.length > 0;
+        }
       })
     ];
 

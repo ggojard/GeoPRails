@@ -18,26 +18,14 @@
 	</head>
 	<body id="body-container" ng-cloak>
 		<div id="spinner-zone"></div>
-		<!--
-		<ul class="mainZone">
-						<li class-"leftZone">
-									<div ng-include="'/templates/menu/menu_left.ng.html'"></div>
-						</li>
-						<li class-"rightZone">
-						</li>
-			</ul>
-		-->
-		
 		<div  ng-controller="BodyController">
 			<%= render 'layouts/menu_top' %>
 			<%= render 'layouts/notifications' %>
 			<%= render 'layouts/right_popup' %>
-			
 			<div class="container-fluid main-container">
 				<%= yield %>
 			</div>
 		</div>
-		
 		<%= render 'layouts/analytics' %>
 		<%= render 'layouts/ios_links' %>
 	</body>

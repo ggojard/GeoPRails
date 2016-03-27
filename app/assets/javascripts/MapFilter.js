@@ -108,6 +108,7 @@
     }
 
     filterObj.CheckAll = function() {
+      // debugger;
       if (filterName === 'direction') {
         iterateAllFiltersAndUpateState(that.updateColorsForDirection);
       } else {

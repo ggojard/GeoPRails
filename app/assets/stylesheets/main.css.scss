@@ -27,6 +27,10 @@ body, label, button, input, #upload-file, input[type="file"] {
         }
     }
 }
+
+div.nav{
+    border:1px solid transparent;
+}
 #spinner-zone{
     $spinnerSize : 80px;
     width: $spinnerSize;

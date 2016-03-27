@@ -33,20 +33,31 @@ var GeoP = {};
     }
   };
 
-  geoP.getMenuItem = function(id, name, templateFolder, shouldDisplay) {
+
+  geoP.getMenuItem = function(id, name, templateFolder, options) {
     var res = {
       id: id,
       name: name,
       template: geoP.format('/templates/{0}/{1}.ng.html', templateFolder, id),
       shouldDisplay: function() {
         return true;
+      },
+      onclick: function() {
+        return;
       }
     };
-    if (shouldDisplay !== undefined) {
-      res.shouldDisplay = shouldDisplay;
+    if (options !== undefined) {
+      if (options.shouldDisplay !== undefined) {
+        res.shouldDisplay = options.shouldDisplay;
+      }
+      if (options.onclick !== undefined) {
+        res.onclick = options.onclick;
+      }
     }
     return res;
   };
+
+
 
   geoP.updateHashWithRoomId = function(roomId) {
     var hash, idSection;
@@ -124,6 +135,13 @@ var GeoP = {};
     name: 'evacuation_zone',
     label: "Zones d'évacuations"
   }];
+
+  geoP.chartMenuItem = geoP.getMenuItem('charts', 'Rapports', 'floors', {
+    onclick: function($scope, buildingId) {
+      geoP.refreshCurrentChart(buildingId, $scope);
+    }
+  });
+
 
 
 }(GeoP));

@@ -55,18 +55,11 @@
 
     $scope.buildings = [bId];
 
-
-    $scope.clickOnMainTab = function(buildingId, menu) {
-      if (menu.id === 'charts') {
-        geoP.refreshCurrentChart(buildingId, $scope);
-      }
-    };
-
     $scope.menu = [
       geoP.getMenuItem('information', 'Information', 'floors'),
       geoP.getMenuItem('display_floors', 'Accès direct aux étages', 'buildings'),
       geoP.getMenuItem('filters', 'Filtres', 'floors'),
-      geoP.getMenuItem('charts', 'Rapports', 'floors'),
+      geoP.chartMenuItem,
       geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors')
     ];
 
