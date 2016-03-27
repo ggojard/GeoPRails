@@ -366,7 +366,7 @@
         $scope.mapMode = 'edit';
         that.setOptions();
         that.updateMapScaleVisibility();
-        var polyline = geoP.selectPolylineIfIsInHash($scope, that.json.building.id);
+        var polyline = geoP.selectPolylineIfIsInRouteParams($scope, that.json.building.id);
         if (polyline !== null) {
           polyline.select(e);
         }
@@ -393,7 +393,7 @@
         $scope.mapMode = 'show';
         that.setOptions();
         that.updateMapScaleVisibility();
-        var polyline = geoP.selectPolylineIfIsInHash($scope, that.json.building.id);
+        var polyline = geoP.selectPolylineIfIsInRouteParams($scope, that.json.building.id);
         if (polyline !== null) {
           polyline.select(e);
         }

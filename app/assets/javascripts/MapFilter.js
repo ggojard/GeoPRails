@@ -108,7 +108,6 @@
     }
 
     filterObj.CheckAll = function() {
-      // debugger;
       if (filterName === 'direction') {
         iterateAllFiltersAndUpateState(that.updateColorsForDirection);
       } else {
@@ -117,7 +116,6 @@
       }
       that.updateCuby(filterName);
     };
-
     if (this.$rootScope.f[buildingId] === undefined) {
       this.$rootScope.f[buildingId] = {};
     }

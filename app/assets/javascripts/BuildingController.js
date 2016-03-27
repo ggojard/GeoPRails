@@ -44,6 +44,8 @@
 
   geoP.app.controller('BuildingController', function($scope, $http, $rootScope, $routeParams) {
     var bId = $routeParams.buildingId;
+    $scope.$routeParams = $routeParams;
+
     $scope.i18n = gon.i18n;
     $scope.floorsByBuildingId = {};
     geoP.handleKeyEventsForScope($scope);

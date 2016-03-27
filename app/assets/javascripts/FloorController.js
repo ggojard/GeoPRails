@@ -14,6 +14,7 @@
   }
 
   geoP.app.controller('FloorController', function($scope, $http, $rootScope, $routeParams) {
+    $scope.$routeParams = $routeParams;
     $scope.floorsByBuildingId = {};
     $scope.mapMode = 'show';
     $scope.i18n = gon.i18n;

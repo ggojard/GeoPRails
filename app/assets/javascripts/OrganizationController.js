@@ -58,12 +58,13 @@
   }
 
   geoP.app.controller('OrganizationController', function($scope, $http, $rootScope, $routeParams) {
+    $scope.$routeParams = $routeParams;
     $scope.menu = [
       geoP.getMenuItem('information', 'Information', 'organizations'),
       geoP.getMenuItem('filters', 'Filtres', 'floors'),
       geoP.chartMenuItem,
       geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors'),
-      geoP.getMenuItem('org_children', 'Enfants', 'organizations', {
+      geoP.getMenuItem('org_children', 'Services', 'organizations', {
         shouldDisplay: function() {
           return $scope.o !== undefined && $scope.o.organizations.length > 0;
         }
@@ -120,7 +121,6 @@
           if (Object.keys(buildings).length > 0) {
             var bId = Object.keys(buildings)[0],
               j;
-
             if ($rootScope.mapFilterByBuildingId[bId].editors.length > 0) {
               for (j = 0; j < $rootScope.mapFilterByBuildingId[bId].editors.length; j += 1) {
                 $rootScope.mapFilterByBuildingId[bId].editors[j].mapOnItems('updateTextPosition');
@@ -195,23 +195,14 @@
         $scope.noRoomsForOrganization = true;
       }
 
-      $scope.init = function(bId) {
-        setTimeout(function() {
-          var $id;
-          $id = $('#tab-oraganization-' + bId);
-          $id.on('show.bs.tab', function() {
-            return undefined;
+      $scope.onBuildingClick = function(bId) {
+        if ($rootScope.mapFilterByBuildingId !== undefined && $rootScope.mapFilterByBuildingId[bId] !== undefined) {
+          var editors = $rootScope.mapFilterByBuildingId[bId].editors;
+          editors.forEach(function(editor) {
+            editor.mapOnItems('updateTextPosition');
           });
-          $id.on('shown.bs.tab', function() {
-            if ($rootScope.mapFilterByBuildingId !== undefined && $rootScope.mapFilterByBuildingId[bId] !== undefined) {
-              var editors = $rootScope.mapFilterByBuildingId[bId].editors;
-              editors.forEach(function(editor) {
-                editor.mapOnItems('updateTextPosition');
-              });
-              geoP.selectPolylineIfIsInHash($scope, bId);
-            }
-          });
-        }, 0);
+          geoP.selectPolylineIfIsInRouteParams($scope, bId);
+        }
       };
     });
 

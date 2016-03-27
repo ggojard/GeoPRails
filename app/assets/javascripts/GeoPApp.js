@@ -66,7 +66,7 @@
           $scope.$emit('editor-loaded', editor);
           $scope.$emit('editor-loaded-' + buildingId, editor);
           setTimeout(function() {
-            geoP.selectPolylineIfIsInHash($scope, buildingId);
+            geoP.selectPolylineIfIsInRouteParams($scope, buildingId);
           }, 1000);
         }, 0);
       }
@@ -74,20 +74,6 @@
   });
 
   geoP.app = app;
-
-  // app.directive('tabHeader', function() {
-  //   return {
-  //     scope: true,
-  //     replace: true,
-  //     link: function($scope, element, attr) {
-  //       $(element).on('shown.bs.tab', function() {
-  //         if (attr.type === 'charts') {
-  //           geoP.refreshCurrentChart(attr.buildingId, $scope);
-  //         }
-  //       });
-  //     }
-  //   };
-  // });
 
   // app.directive('keepscrolltop', function($window) {
   //   var count = 0;
@@ -108,17 +94,18 @@
   ]);
 
 
-  geoP.selectPolylineIfIsInHash = function($scope, buildingId) {
+  geoP.selectPolylineIfIsInRouteParams = function($scope, buildingId) {
     var roomId, floorId, floorEditor;
-    roomId = geoP.getRoomIdFromHash();
+    roomId = $scope.$routeParams.rId;
 
+    // find current room in the available editors
     for (floorId in $scope.mapFilter[buildingId].editorsByFloorId) {
       if ($scope.mapFilter[buildingId].editorsByFloorId.hasOwnProperty(floorId)) {
         floorEditor = $scope.mapFilter[buildingId].editorsByFloorId[floorId];
         if (floorEditor.itemsById[roomId]) {
           $scope.roomId = roomId;
-          floorEditor.itemsById[$scope.roomId].selectPolyline();
-          return floorEditor.itemsById[$scope.roomId];
+          floorEditor.itemsById[roomId].selectPolyline();
+          return floorEditor.itemsById[roomId];
         }
       }
     }

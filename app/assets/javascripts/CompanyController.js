@@ -50,6 +50,7 @@
 
   geoP.app.controller('CompanyOrganizationsController', function($scope, $rootScope, $routeParams, $http) {
     $http.get('/companies/' + $routeParams.companyId + '/organizations.json').success(function(company) {
+      console.log(company);
       $scope.company = company;
       $scope.organizations = $scope.company.organizations;
       $scope.templates = templates;

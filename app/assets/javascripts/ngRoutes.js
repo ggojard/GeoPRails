@@ -22,6 +22,7 @@
         templateUrl: '/templates/companies/organizations_hierarchy.ng.html'
       }).
       when('/buildings/:buildingId', {
+        reloadOnSearch: false,
         templateUrl: '/templates/buildings/building.ng.html',
         controller: 'BuildingController'
       }).

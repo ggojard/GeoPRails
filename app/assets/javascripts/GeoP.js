@@ -102,15 +102,6 @@ var GeoP = {};
     }, 0);
   };
 
-  geoP.getRoomIdFromHash = function() {
-    var hash, res;
-    hash = window.location.hash;
-    if (hash.length > 0) {
-      res = hash.replace('#', '');
-      return parseInt(res, 10);
-    }
-  };
-
   geoP.hashCode = function(s) {
     /*jslint bitwise: true*/
     return s.split('').reduce(function(a, b) {

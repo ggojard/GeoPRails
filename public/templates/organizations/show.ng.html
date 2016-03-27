@@ -1,37 +1,13 @@
-<div ng-controller="OrganizationController">
+<div ng-controller="OrganizationController" style="border:1px solid {{o.color}}">
   <div class="jumbotron-surfy" style="background-color: {{o.color}}">
     <h2>{{o.name}}</h2>
   </div>
   <h3 ng-if="noRoomsForOrganization === true">Il n'y a pas de pièce disponible pour cette organisation.</h3>
   <uib-tabset justified="true" type="pills" class="nav" role="tablist">
-  <uib-tab ng-repeat="buildingId in buildings" active="tab.active" heading="{{buildingsById[buildingId].name}}">
+  <uib-tab ng-repeat="buildingId in buildings" active="tab.active" heading="{{buildingsById[buildingId].name}}" ng-click="onBuildingClick(buildingId)">
   <div ng-include="'/templates/common/tabs_main.ng.html'"></div>
   <br/>
   <div ng-include="'/templates/floors/map_editor.ng.html'"></div>
   </uib-tab>
   </uib-tabset>
-  <!--  -->
-  <!--   <ul id="myTab-0" class="nav nav-pills nav-justified" role="tablist" >
-    <li ng-repeat="buildingId in buildings" ng-class="{active : $first}" style="background-color: {{buildingsById[buildingId].color}}" ng-init="init(buildingId)" id="tab-oraganization-{{buildingId}}">
-      <a data-toggle="tab" href="#b{{buildingId}}">{{buildingsById[buildingId].name}}</a>
-    </li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane fade" ng-class="{active : $first, in : $first}" id="b{{buildingId}}" ng-repeat="buildingId in buildings">
-      <ul class="nav nav-pills" role="tablist" style="border:1px solid {{buildingsById[buildingId].color}}">
-        <div ng-include="'/templates/common/tabs_information.ng.html'"></div>
-        <div ng-include="'/templates/common/tabs_common.ng.html'"></div>
-        <li ng-if="o.organizations.length > 0"><a data-building-id="{{buildingId}}" href="#tab-orgchildren-{{buildingId}}" data-toggle="tab" tab-header>Enfants</a></li>
-      </ul>
-      <div class="tab-content tab-content-main" style="border-color:{{buildingsById[buildingId].color}}">
-        <div id="tab-information-{{buildingId}}"  class="tab-pane active">
-          <%= render '/organizations/information' %>
-        </div>
-        <%= render '/common/tabs_common.content' %>
-      </div>
-      <div ng-include="'/templates/floors/map_editor.ng.html'"></div>
-      <hr>
-    </div>
-  </div>
-  <%=  render '/floors/room' %> -->
 </div>
