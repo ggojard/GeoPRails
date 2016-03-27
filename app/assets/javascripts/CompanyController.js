@@ -2,8 +2,8 @@
 (function(geoP) {
   'use strict';
   var templates = {
-    organizations: '/templates/organization.ng.html',
-    organization_hierarchy: '/templates/organization_hierarchy.ng.html',
+    organizations: '/templates/organizations/organization.ng.html',
+    organization_hierarchy: '/templates/organizations/organization_hierarchy.ng.html',
     import: '/templates/companies/import.ng.html'
   };
 
@@ -48,11 +48,13 @@
     }
   });
 
-  geoP.app.controller('CompanyOrganizationsController', function($scope, $rootScope) {
-    $scope.company = gon.company_organizations;
-    $scope.organizations = $scope.company.organizations;
-    $scope.templates = templates;
-    $rootScope.$emit('stop-loading');
+  geoP.app.controller('CompanyOrganizationsController', function($scope, $rootScope, $routeParams, $http) {
+    $http.get('/companies/' + $routeParams.companyId + '/organizations.json').success(function(company) {
+      $scope.company = company;
+      $scope.organizations = $scope.company.organizations;
+      $scope.templates = templates;
+      $rootScope.$emit('stop-loading');
+    });
   });
 
 }(GeoP));

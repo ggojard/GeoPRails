@@ -33,13 +33,33 @@ var GeoP = {};
     }
   };
 
-  geoP.getMenuItem = function(id, name, templateFolder) {
-    return {
+  geoP.getMenuItem = function(id, name, templateFolder, shouldDisplay) {
+    var res = {
       id: id,
       name: name,
-      template: geoP.format('/templates/{0}/{1}.ng.html', templateFolder, id)
+      template: geoP.format('/templates/{0}/{1}.ng.html', templateFolder, id),
+      shouldDisplay: function() {
+        return true;
+      }
     };
+    if (shouldDisplay !== undefined) {
+      res.shouldDisplay = shouldDisplay;
+    }
+    return res;
   };
+
+  geoP.updateHashWithRoomId = function(roomId) {
+    var hash, idSection;
+    hash = document.location.hash;
+    idSection = 'rId=' + roomId;
+    if (hash.indexOf('rId') !== -1) {
+      hash = hash.replace(/rId=[0-9]*/, idSection);
+    } else {
+      hash += '?rId=' + roomId;
+    }
+    document.location.hash = hash;
+  };
+
 
   geoP.format = function(format) {
     var args = Array.prototype.slice.call(arguments, 1);

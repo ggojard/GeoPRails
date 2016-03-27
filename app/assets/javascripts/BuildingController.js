@@ -56,8 +56,6 @@
     $scope.buildings = [bId];
 
 
-
-
     $scope.clickOnMainTab = function(buildingId, menu) {
       if (menu.id === 'charts') {
         geoP.refreshCurrentChart(buildingId, $scope);
@@ -83,8 +81,8 @@
       $scope.floorsByBuildingId[b.id] = b.floors;
       geoP.setFloorsMaps(b.id, b.floors, $rootScope, $http);
 
-
-      $scope.information = {
+      $scope.information = {};
+      $scope.information[b.id] = {
         numberOfRooms: getNumberOfRooms(b),
         numberOfPeople: getNumberOfPeople(b),
         numberOfFreeDesk: getNumberOfFreeDesk(b),

@@ -31,7 +31,8 @@
     var that = this;
     if (geoP.currentEvent === null && this.$scope.mapMode !== 'create') {
       this.$scope.$apply(function() {
-        document.location.href = that.json.url;
+        // remove rId if exists
+        document.location.hash = document.location.hash.replace(/\?rId=[0-9]*/, '');
         that.unSelectItems();
         that.cleanCurrentOptions();
         that.cleanDragPointOptions();

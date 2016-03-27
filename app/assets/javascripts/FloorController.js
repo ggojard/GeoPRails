@@ -21,7 +21,6 @@
 
     $scope.menu = [
       geoP.getMenuItem('information', 'Information', 'floors'),
-      // geoP.getMenuItem('display_floors', 'Accès direct aux étages', 'buildings'),
       geoP.getMenuItem('filters', 'Filtres', 'floors'),
       geoP.getMenuItem('charts', 'Rapports', 'floors'),
       geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors')
@@ -35,7 +34,6 @@
       if ($routeParams.rid) {
         $scope.roomId = $routeParams.rid;
       }
-      // $scope.roomId = geoP.getRoomIdFromHash();
 
       $scope.buildings = [floor.building_id];
       $rootScope.buildings = $scope.buildings;
@@ -45,7 +43,8 @@
       geoP.handleKeyEventsForScope($scope);
       $scope.floorJson = floor;
 
-      $scope.information = {
+      $scope.information = {};
+      $scope.information[floor.building_id] = {
         numberOfRooms: floor.rooms.length,
         numberOfPeople: countPeopleFromRooms(floor.rooms),
         numberOfFreeDesk: countFreeSpacesFromRooms(floor.rooms),

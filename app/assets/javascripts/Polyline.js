@@ -792,8 +792,7 @@
   };
 
   Polyline.prototype.selectPolyline = function() {
-    var that = this,
-      link;
+    var that = this;
     this.optionsOnMap = [];
     that.svgEditor.$scope.room = that;
     geoP.$apply(that.svgEditor.$scope);
@@ -805,9 +804,8 @@
     $('.panel-room').animate({
       'scrollTop': 0
     }, 250);
-    link = '/#/floors/' + that.json.floor_id + '?rid=' + that.json.id;
     if (that.json.id !== 0) {
-      document.location.href = link;
+      geoP.updateHashWithRoomId(that.json.id);
     }
   };
 

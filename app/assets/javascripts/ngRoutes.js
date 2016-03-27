@@ -14,6 +14,13 @@
         templateUrl: '/templates/companies/company.ng.html',
         controller: 'CompanyController'
       }).
+      when('/organizations/:organizationId', {
+        reloadOnSearch: false,
+        templateUrl: '/templates/organizations/show.ng.html'
+      }).
+      when('/companies/:companyId/organizations', {
+        templateUrl: '/templates/companies/organizations_hierarchy.ng.html'
+      }).
       when('/buildings/:buildingId', {
         templateUrl: '/templates/buildings/building.ng.html',
         controller: 'BuildingController'
@@ -29,7 +36,7 @@
       when('/people/:peopleId', {
         templateUrl: '/templates/people/show.ng.html'
       }).
-      when('/items/', {
+      when('/items', {
         templateUrl: '/templates/items/index.ng.html',
         controller: 'ItemController'
       }).

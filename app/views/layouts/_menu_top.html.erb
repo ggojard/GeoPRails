@@ -41,7 +41,7 @@ Close Sidenav Left
           <ul  uib-dropdown-menu class="dropdown-menu">
             <li ng-repeat="f in b.floors"><a href="/#/floors/{{f.id}}">{{f.name}}</a></li>
             <li class="divider"></li>
-            <li><a href="#{{b.url}}">{{b.name}}</a></li>
+            <li><a href="{{b.url}}">{{b.name}}</a></li>
             <li><a href="/buildings/{{b.id}}/export">Exporter (xslx)</a></li>
             <li><a href="/#/cuby/{{b.id}}">Cuby (Beta)</a></li>
           </ul>
