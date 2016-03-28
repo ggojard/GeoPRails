@@ -4,7 +4,7 @@
   <div class="box-content" >
     <h4 ng-bind-html="i.name | highlight:query">{{i.name}}</h4>
     <table class="box-details">
-      <tr>
+      <tr ng-if="isSingleView === true">
         <th>QrCode</th>
         <td><img class="qrcode" ng-src="{{i.qrcode_url}}"/></td>
       </tr>

@@ -27,14 +27,14 @@ ActiveAdmin.register Floor do
 
   show do |ad|
     attributes_table do
-      row "Visualiser" do link_to("Ouvrir",'/floors/' + ad.id.to_s, {}) end
+      row "Visualiser" do link_to("Ouvrir",'/#/floors/' + ad.id.to_s, {}) end
       row I18n.t('formtastic.labels.floor.name') do ad.name end
       row I18n.t('activerecord.models.building.one') do  ad.building end
       row I18n.t('formtastic.labels.floor.level') do ad.level end
       row I18n.t('formtastic.labels.floor.background_opacity') do ad.background_opacity end
       # "Image Plan",
       row "Plan" do
-        image_tag(ad.image.url(:thumb))
+        image_tag('/floors/images/%d?style=thumb' % ad.id)
       end
     end
     panel I18n.t('activerecord.models.room.other') do

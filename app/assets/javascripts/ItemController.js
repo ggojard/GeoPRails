@@ -3,6 +3,7 @@
   'use strict';
 
   geoP.app.controller('ItemController', function($scope, $rootScope, $http) {
+    $rootScope.$emit('start-loading');
     $http.get('/items.json').success(function(items) {
       $scope.items = items;
       $rootScope.$emit('stop-loading');
@@ -11,7 +12,8 @@
 
 
   geoP.app.controller('ItemSingleController', function($scope, $rootScope, $routeParams, $http) {
-
+    $scope.isSingleView = true;
+    $rootScope.$emit('start-loading');
     $scope.i18n = gon.i18n;
     $scope.items = gon.items;
     $scope.inventoryByBuilding = {};

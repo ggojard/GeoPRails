@@ -2,6 +2,7 @@
 (function(geoP) {
   'use strict';
   geoP.app.controller('PersonController', function($scope, $rootScope, $http, $routeParams) {
+    $rootScope.$emit('start-loading');
     $scope.i18n = gon.i18n;
     $http.get('/people/' + $routeParams.peopleId + '.json').success(function(p) {
       $scope.a = {
@@ -19,6 +20,7 @@
   });
 
   geoP.app.controller('PeopleController', function($scope, $rootScope, $http) {
+    $rootScope.$emit('start-loading');
     $scope.i18n = gon.i18n;
     $scope.personFilter = function(a) {
       return a.person.fullname.search(new RegExp($scope.query, 'i')) !== -1;

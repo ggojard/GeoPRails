@@ -26,9 +26,13 @@
   geoP.app.controller('BodyController', function($scope, $http, $rootScope) {
     /*jslint unparam:true*/
     var spinner, spinnerContainer;
-    spinnerContainer = document.getElementById('spinner-zone');
-    spinner = new Spinner(opts).spin(spinnerContainer);
-    spinnerContainer.className = '';
+
+    $rootScope.$on('start-loading', function() {
+      spinnerContainer = document.getElementById('spinner-zone');
+      spinner = new Spinner(opts).spin(spinnerContainer);
+      spinnerContainer.className = '';
+    });
+
     $rootScope.$on('stop-loading', function() {
       if (spinner !== undefined) {
         spinner.stop();

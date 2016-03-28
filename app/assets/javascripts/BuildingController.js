@@ -43,6 +43,9 @@
 
 
   geoP.app.controller('BuildingController', function($scope, $http, $rootScope, $routeParams) {
+
+    $rootScope.$emit('start-loading');
+
     var bId = $routeParams.buildingId;
     $scope.$routeParams = $routeParams;
 

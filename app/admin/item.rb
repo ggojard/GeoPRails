@@ -2,7 +2,7 @@ ActiveAdmin.register Item do
 
   show do |c|
     attributes_table do
-      row "Visualiser" do link_to("Ouvrir", item_path(c.id), {}) end
+      row "Visualiser" do link_to("Ouvrir", c.url, {}) end
       row I18n.t('formtastic.labels.item.name') do c.name end
       row I18n.t('formtastic.labels.item.code') do c.code end
       row I18n.t('formtastic.labels.item.description') do c.description end

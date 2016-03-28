@@ -23,7 +23,7 @@
     $div = $('<div class="room-link-container"></div>');
     $rl.wrap($div);
 
-    link = '/rooms/' + $rl.val();
+    link = '/#/rooms/' + $rl.val();
     $('.room-link-container').html('<a href="' + link + '">Ouvrir</a>');
   });
 }());

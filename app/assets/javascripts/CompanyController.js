@@ -31,11 +31,9 @@
     $scope.token = csrf_token;
   }
 
-
-
   geoP.app.controller('CompanyController', function($scope, $rootScope, $http, FileUploader) {
+    $rootScope.$emit('start-loading');
     setUploader($scope, FileUploader);
-
     $scope.company = gon.company;
     $scope.templates = templates;
     if ($scope.company === null) {
@@ -49,8 +47,8 @@
   });
 
   geoP.app.controller('CompanyOrganizationsController', function($scope, $rootScope, $routeParams, $http) {
+    $rootScope.$emit('start-loading');
     $http.get('/companies/' + $routeParams.companyId + '/organizations.json').success(function(company) {
-      console.log(company);
       $scope.company = company;
       $scope.organizations = $scope.company.organizations;
       $scope.templates = templates;
