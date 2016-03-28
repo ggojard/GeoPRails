@@ -10,7 +10,7 @@ ActiveAdmin.register Person do
 
     panel "Informations" do
       attributes_table_for person do
-        row "Visualiser" do link_to  "Ouvrir" , person_path(c.id) end
+        row "Visualiser" do link_to  "Ouvrir" , c.url end
         row "Identifiant" do c.id end
         row "Prénom" do c.firstname end
         row "Nom" do c.lastname end

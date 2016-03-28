@@ -4,7 +4,7 @@ class PeopleController < GeopController
     {:include => [{:affectations => {:include => {:room => {:methods=> [:fullname, :area_unit, :url, :url_with_floor], :include => [{:floor => {:include => :building}}, :room_type]  }}}}, :person_state, {:organization => {:methods => [:url, :photo_url]}}], :methods => PeopleController.json_methods}
   end
   def as_json_people_index
-    {:include => [:person_state, :organization], :methods => PeopleController.json_methods}
+    {:include => [:person_state, {:organization => {:methods => [:url]}}], :methods => PeopleController.json_methods}
   end
   def self.json_methods
     [:format_telephone, :format_cellphone, :name, :fullname]

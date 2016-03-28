@@ -10,8 +10,7 @@ ActiveAdmin.register Item do
       row I18n.t('formtastic.labels.item.purchase_date') do c.purchase_date end        
     end
   end
-
-
+  
   controller do
     def permitted_params
       params.permit!

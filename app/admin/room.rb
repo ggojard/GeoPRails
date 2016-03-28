@@ -2,7 +2,7 @@ ActiveAdmin.register Room do
 
   show do |c|
     attributes_table do
-      row "Visualiser" do link_to("Ouvrir", room_path(c.id), {}) end
+      row "Visualiser" do link_to("Ouvrir", c.url) end
       row I18n.t('formtastic.labels.room.floor') do link_to c.floor.fullname, admin_floor_path(c.floor.id), {} end
       row I18n.t('formtastic.labels.room.name') do c.name end
       row I18n.t('formtastic.labels.room.room_type') do c.room_type end
