@@ -1,17 +1,16 @@
-class Item < ActiveRecord::Base
+class ItemType < ActiveRecord::Base
   default_scope {order(:name)}
 
-  has_many :inventories, :dependent => :destroy
-  has_many :rooms, :through => :inventories
-  accepts_nested_attributes_for :inventories, :allow_destroy => true
-  accepts_nested_attributes_for :rooms, :allow_destroy => true
+  belongs_to :room
+  belongs_to :item_type
+
 
   def url
-    '/#/items/%d' % self.id
+    '/#/item/%d' % self.id
   end
 
   def qrcode_url
-    '/items/%d.qrcode.png' % self.id
+    '/item/%d.qrcode.png' % self.id
   end
 
 end

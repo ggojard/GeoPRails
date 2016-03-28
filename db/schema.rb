@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151018210810) do
+ActiveRecord::Schema.define(version: 20160328101809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,7 +147,20 @@ ActiveRecord::Schema.define(version: 20151018210810) do
     t.datetime "updated_at"
   end
 
-  create_table "items", force: true do |t|
+  create_table "item_qualities", force: true do |t|
+    t.string   "name"
+    t.integer  "rank"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "item_type_brands", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "item_types", force: true do |t|
     t.string   "name"
     t.string   "code"
     t.text     "description"
@@ -155,7 +168,22 @@ ActiveRecord::Schema.define(version: 20151018210810) do
     t.datetime "updated_at"
     t.float    "price"
     t.date     "purchase_date"
+    t.integer  "item_type_brand_id"
   end
+
+  create_table "items", force: true do |t|
+    t.integer  "x"
+    t.integer  "y"
+    t.integer  "room_id"
+    t.integer  "item_quality_id"
+    t.datetime "purchase_date"
+    t.string   "immo_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "items", ["item_quality_id"], name: "index_items_on_item_quality_id", using: :btree
+  add_index "items", ["room_id"], name: "index_items_on_room_id", using: :btree
 
   create_table "organization_types", force: true do |t|
     t.string   "name"

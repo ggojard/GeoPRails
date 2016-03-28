@@ -37,13 +37,13 @@
       when('/people/:peopleId', {
         templateUrl: '/templates/people/show.ng.html'
       }).
-      when('/items', {
-        templateUrl: '/templates/items/index.ng.html',
-        controller: 'ItemController'
+      when('/item_types', {
+        templateUrl: '/templates/item_types/index.ng.html',
+        controller: 'ItemTypeController'
       }).
-      when('/items/:itemId', {
-        templateUrl: '/templates/items/show.ng.html',
-        controller: 'ItemSingleController'
+      when('/item_types/:itemTypeId', {
+        templateUrl: '/templates/item_types/show.ng.html',
+        controller: 'ItemTypeSingleController'
       }).
       otherwise({
         redirectTo: '/'

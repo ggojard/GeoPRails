@@ -10,10 +10,14 @@ class Room < ActiveRecord::Base
   accepts_nested_attributes_for :people, :allow_destroy => true
   accepts_nested_attributes_for :affectations, :allow_destroy => true
 
-  has_many :inventories, :dependent => :destroy
-  has_many :items, :through => :inventories
-  accepts_nested_attributes_for :inventories, :allow_destroy => true
-  accepts_nested_attributes_for :items, :allow_destroy => true
+  # has_many :items, :through => :inventories
+  # accepts_nested_attributes_for :items, :allow_destroy => true
+
+  # has_many :items
+  # accepts_nested_attributes_for :items
+  
+  # has_many :inventories, :dependent => :destroy
+  # accepts_nested_attributes_for :inventories, :allow_destroy => true
 
   def url
     '/rooms/%d' % self.id

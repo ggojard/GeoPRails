@@ -4,7 +4,6 @@ class CreateItems < ActiveRecord::Migration
       t.string :name
       t.string :code
       t.text :description
-
       t.timestamps
     end
   end

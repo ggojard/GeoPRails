@@ -2,16 +2,16 @@
 (function(geoP) {
   'use strict';
 
-  geoP.app.controller('ItemController', function($scope, $rootScope, $http) {
+  geoP.app.controller('ItemTypeController', function($scope, $rootScope, $http) {
     $rootScope.$emit('start-loading');
-    $http.get('/items.json').success(function(items) {
+    $http.get('/item_types.json').success(function(items) {
       $scope.items = items;
       $rootScope.$emit('stop-loading');
     });
   });
 
 
-  geoP.app.controller('ItemSingleController', function($scope, $rootScope, $routeParams, $http) {
+  geoP.app.controller('ItemTypeSingleController', function($scope, $rootScope, $routeParams, $http) {
     $scope.isSingleView = true;
     $rootScope.$emit('start-loading');
     $scope.i18n = gon.i18n;
@@ -24,7 +24,7 @@
       return !isNaN(parseFloat(n)) && isFinite(n);
     }
 
-    $http.get('/items/' + $routeParams.itemId + '.json').success(function(item) {
+    $http.get('/item_types/' + $routeParams.itemTypeId + '.json').success(function(item) {
       var i, j, items, inventory, building;
       items = [item];
       $scope.items = items;

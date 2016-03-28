@@ -1,18 +1,18 @@
-class ItemsController < GeopController
+class ItemTypesController < GeopController
 
-
-  @items_include = [{:inventories => {:room => [{:floor => :building}, :room_type, :organization]}}]
+  @items_include = []
+  # [{:inventories => {:room => [{:floor => :building}, :room_type, :organization]}}]
 
   def as_json_item
-    {:methods=> [:url, :qrcode_url], :include =>
-     [{:inventories =>
-       {:include =>
-        {:room =>
-         {:methods=> [:fullname, :url], :include => [{:floor => {:include => :building}}, :room_type]
-          }
-         }
-        }
-       }]
+    {:methods=> [:url, :qrcode_url], :include => []
+     # [{:inventories =>
+     #   {:include =>
+     #    {:room =>
+     #     {:methods=> [:fullname, :url], :include => [{:floor => {:include => :building}}, :room_type]
+     #      }
+     #     }
+     #    }
+     #   }]
      }
   end
 
@@ -22,23 +22,25 @@ class ItemsController < GeopController
       format.json{
         u_arm_floors_id = $arm[current_admin_user.id].floors_id;
 
-        item = Item.includes(@items_include).find_by_id(params[:id])
+        item = ItemType.includes(@items_include).find_by_id(params[:id])
         i = item.as_json(as_json_item)
         inventories = []
-        i['inventories'].each { |a|
-          room = a['room']
-          if !room.nil? and u_arm_floors_id.include? room['floor_id'].to_i
-            inventories << a
-          end
-        }
-        i['inventories'] = inventories
+        if !i['inventories'].nil?
+          i['inventories'].each { |a|
+            room = a['room']
+            if !room.nil? and u_arm_floors_id.include? room['floor_id'].to_i
+              inventories << a
+            end
+          }
+          i['inventories'] = inventories
+        end
         render json: i
       }
     end
   end
 
   def index
-    items = Item.includes(@items_include)
+    items = ItemType.includes(@items_include)
     respond_to do |format|
       format.json{
         render json: items.as_json(as_json_item)
@@ -46,7 +48,7 @@ class ItemsController < GeopController
     end
   end
   def qrcode
-    @item = Item.find_by_id(params[:id])
+    @item = ItemType.find_by_id(params[:id])
     url = request.base_url + @item.url
     qrcode = RQRCode::QRCode.new(url)
     # With default options specified explicitly

@@ -1,10 +1,9 @@
 source 'https://rubygems.org'
 
-ruby '2.1.4'
-
+ruby '2.3.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.5'
+gem 'rails', '4.2.6'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -28,7 +27,7 @@ gem 'jquery-rails'
 # gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
+gem 'jbuilder'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -57,7 +56,6 @@ gem 'paperclip'
 gem "paperclip_database"
 gem "rdoc"
 gem "haml"
-# gem 'jquery-minicolors-rails'
 gem "gon"
 gem 'axlsx'
 gem 'roo'

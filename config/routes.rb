@@ -17,7 +17,7 @@ GeoP::Application.routes.draw do
   resources :organizations
   resources :people
   resources :floors
-  resources :items
+  resources :item_types
   resources :cuby
 
 
@@ -33,7 +33,7 @@ GeoP::Application.routes.draw do
   get '/images/logo.png' => 'images#logo'
   get "rooms/:id/delete" => 'rooms#delete'
 
-  get '/items/:id.qrcode.png' => 'items#qrcode'
+  get '/item_types/:id.qrcode.png' => 'item_types#qrcode'
 
   root 'homes#show'
   # root 'companies#index'

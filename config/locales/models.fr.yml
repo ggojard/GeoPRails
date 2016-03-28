@@ -63,7 +63,7 @@ fr:
         level : "Niveau"
         image : "Plan"
         background_opacity: "Transparence Image"
-      item:
+      item_type:
         id: "Identifiant item"
         name : "Nom"
         code : "Code"
