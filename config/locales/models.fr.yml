@@ -69,6 +69,10 @@ fr:
         code : "Code"
         description : "Description"
         price: "Prix (€)"
+      item_quality:
+        name: "Nom"
+        rank: "Rang"
+      item:
         purchase_date: "Date d'achat"
       organization:
         id: "Identifiant organisation"
@@ -144,8 +148,17 @@ fr:
         one :  "Inventaire"
         other : "Inventaires"
       item: 
-        one :  "Item"
-        other : "Items"
+        one :  "Objet"
+        other : "Objets"
+      item_type: 
+        one :  "Type d'objet"
+        other : "Type d'objets"
+      item_type_brand: 
+        one :  "Marque"
+        other : "Marques"
+      item_quality: 
+        one :  "Type de qualité d'objet"
+        other : "Type de qualité d'objets"
       organization: 
         one :  "Organisation"
         other : "Organisations"

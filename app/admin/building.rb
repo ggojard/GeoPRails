@@ -5,6 +5,7 @@ ActiveAdmin.register Building do
     attributes_table do
       row I18n.t('formtastic.labels.building.name') do building.name end
       row I18n.t('formtastic.labels.building.company') do building.company end
+      # row :company, label:"a"
     end
 
     panel I18n.t('activerecord.models.floor.other') do
@@ -16,7 +17,7 @@ ActiveAdmin.register Building do
 
     panel "Roles Associations" do
       table_for building.admin_user_role_to_buildings do
-        column "User Roles" do |user_role|
+        column "Roles Utilisateurs" do |user_role|
           if !user_role.admin_user_role.nil?
             link_to user_role.admin_user_role.name, admin_admin_user_role_url(user_role.admin_user_role.id)
           end
@@ -42,15 +43,23 @@ ActiveAdmin.register Building do
       f.input :color
     end
 
-    f.has_many :floors do |b|
-      b.inputs I18n.t('activerecord.models.floor.other') do
-        if !b.object.nil?
-          b.input :name
-          b.input :level
-        end
-        b.actions 
+    f.inputs do 
+      # , heading: I18n.t('activerecord.models.floor.other')
+      f.has_many :floors do |b|
+        b.input :name
+        b.input :level
       end
     end
+
+    # f.has_many :floors do |b|
+    #   b.inputs I18n.t('activerecord.models.floor.other') do
+    #     # if !b.object.nil?
+    #       b.input :name
+    #       b.input :level
+    #     # end
+    #     b.actions 
+    #   end
+    # end
     f.actions
   end
 

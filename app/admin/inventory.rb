@@ -1,5 +1,5 @@
 ActiveAdmin.register Inventory do
-
+  menu :parent => "Inventaire"
 
   index do
     selectable_column

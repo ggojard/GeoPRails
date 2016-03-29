@@ -1,5 +1,6 @@
 ActiveAdmin.register ItemType do
-
+  menu :parent => "Inventaire"
+  
   show do |c|
     attributes_table do
       row "Visualiser" do link_to("Ouvrir", c.url, {}) end

@@ -11,18 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328101809) do
+ActiveRecord::Schema.define(version: 20160329203538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "active_admin_comments", force: true do |t|
-    t.string   "namespace"
+  create_table "active_admin_comments", force: :cascade do |t|
+    t.string   "namespace",     limit: 255
     t.text     "body"
-    t.string   "resource_id",   null: false
-    t.string   "resource_type", null: false
+    t.string   "resource_id",   limit: 255, null: false
+    t.string   "resource_type", limit: 255, null: false
     t.integer  "author_id"
-    t.string   "author_type"
+    t.string   "author_type",   limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -31,41 +31,41 @@ ActiveRecord::Schema.define(version: 20160328101809) do
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
-  create_table "admin_user_role_to_buildings", force: true do |t|
+  create_table "admin_user_role_to_buildings", force: :cascade do |t|
     t.integer  "admin_user_role_id"
     t.integer  "building_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "admin_user_roles", force: true do |t|
+  create_table "admin_user_roles", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name"
+    t.string   "name",       limit: 255
   end
 
-  create_table "admin_user_types", force: true do |t|
-    t.string   "name"
+  create_table "admin_user_types", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "code"
+    t.string   "code",       limit: 255
   end
 
-  create_table "admin_users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
+  create_table "admin_users", force: :cascade do |t|
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",                      default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
-    t.string   "username"
+    t.string   "username",               limit: 255
     t.integer  "admin_user_type_id"
     t.integer  "admin_user_role_id"
   end
@@ -73,45 +73,45 @@ ActiveRecord::Schema.define(version: 20160328101809) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "affectations", force: true do |t|
+  create_table "affectations", force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "room_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "buildings", force: true do |t|
-    t.string   "name"
+  create_table "buildings", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.integer  "company_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "color"
+    t.string   "color",      limit: 255
   end
 
   add_index "buildings", ["company_id"], name: "index_buildings_on_company_id", using: :btree
 
-  create_table "companies", force: true do |t|
-    t.string   "name"
+  create_table "companies", force: :cascade do |t|
+    t.string   "name",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "analytics_code"
-    t.string   "logo"
+    t.string   "analytics_code", limit: 255
+    t.string   "logo",           limit: 255
   end
 
-  create_table "evacuation_zones", force: true do |t|
-    t.string   "color"
-    t.string   "name"
+  create_table "evacuation_zones", force: :cascade do |t|
+    t.string   "color",      limit: 255
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "floors", force: true do |t|
-    t.string   "name"
+  create_table "floors", force: :cascade do |t|
+    t.string   "name",               limit: 255
     t.integer  "building_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "image_file_name"
-    t.string   "image_content_type"
+    t.string   "image_file_name",    limit: 255
+    t.string   "image_content_type", limit: 255
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.integer  "map_scale_x1"
@@ -119,27 +119,27 @@ ActiveRecord::Schema.define(version: 20160328101809) do
     t.integer  "map_scale_x2"
     t.integer  "map_scale_y2"
     t.float    "map_scale_length"
-    t.string   "image_dimensions"
+    t.string   "image_dimensions",   limit: 255
     t.integer  "level"
-    t.float    "background_opacity", default: 0.25
+    t.float    "background_opacity",             default: 0.25
   end
 
   add_index "floors", ["building_id"], name: "index_floors_on_building_id", using: :btree
 
-  create_table "floors_images", force: true do |t|
-    t.string   "style"
+  create_table "floors_images", force: :cascade do |t|
+    t.string   "style",         limit: 255
     t.integer  "floor_id"
     t.binary   "file_contents"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "homes", force: true do |t|
+  create_table "homes", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "inventories", force: true do |t|
+  create_table "inventories", force: :cascade do |t|
     t.integer  "room_id"
     t.integer  "item_id"
     t.integer  "quantity"
@@ -147,22 +147,22 @@ ActiveRecord::Schema.define(version: 20160328101809) do
     t.datetime "updated_at"
   end
 
-  create_table "item_qualities", force: true do |t|
-    t.string   "name"
+  create_table "item_qualities", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.integer  "rank"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "item_type_brands", force: true do |t|
-    t.string   "name"
+  create_table "item_type_brands", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "item_types", force: true do |t|
-    t.string   "name"
-    t.string   "code"
+  create_table "item_types", force: :cascade do |t|
+    t.string   "name",               limit: 255
+    t.string   "code",               limit: 255
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -171,79 +171,80 @@ ActiveRecord::Schema.define(version: 20160328101809) do
     t.integer  "item_type_brand_id"
   end
 
-  create_table "items", force: true do |t|
+  create_table "items", force: :cascade do |t|
     t.integer  "x"
     t.integer  "y"
     t.integer  "room_id"
     t.integer  "item_quality_id"
     t.datetime "purchase_date"
-    t.string   "immo_code"
+    t.string   "immo_code",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name"
   end
 
   add_index "items", ["item_quality_id"], name: "index_items_on_item_quality_id", using: :btree
   add_index "items", ["room_id"], name: "index_items_on_room_id", using: :btree
 
-  create_table "organization_types", force: true do |t|
-    t.string   "name"
+  create_table "organization_types", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "organizations", force: true do |t|
-    t.string   "name"
+  create_table "organizations", force: :cascade do |t|
+    t.string   "name",                 limit: 255
     t.integer  "organization_type_id"
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
-    t.string   "color"
+    t.string   "color",                limit: 255
   end
 
   add_index "organizations", ["organization_id"], name: "index_organizations_on_organization_id", using: :btree
   add_index "organizations", ["organization_type_id"], name: "index_organizations_on_organization_type_id", using: :btree
 
-  create_table "people", force: true do |t|
-    t.string   "firstname"
-    t.string   "lastname"
-    t.string   "monitorreference"
-    t.string   "computerreference"
-    t.string   "telephone"
-    t.string   "cellphone"
+  create_table "people", force: :cascade do |t|
+    t.string   "firstname",         limit: 255
+    t.string   "lastname",          limit: 255
+    t.string   "monitorreference",  limit: 255
+    t.string   "computerreference", limit: 255
+    t.string   "telephone",         limit: 255
+    t.string   "cellphone",         limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "person_state_id"
     t.integer  "organization_id"
-    t.string   "email"
-    t.string   "person_code"
-    t.string   "badge_number"
-    t.string   "photo"
-    t.string   "title"
+    t.string   "email",             limit: 255
+    t.string   "person_code",       limit: 255
+    t.string   "badge_number",      limit: 255
+    t.string   "photo",             limit: 255
+    t.string   "title",             limit: 255
   end
 
-  create_table "person_states", force: true do |t|
-    t.string   "name"
+  create_table "person_states", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "room_ground_types", force: true do |t|
-    t.string   "name"
+  create_table "room_ground_types", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "color"
+    t.string   "color",      limit: 255
   end
 
-  create_table "room_types", force: true do |t|
-    t.string   "name"
+  create_table "room_types", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "color"
+    t.string   "color",      limit: 255
   end
 
-  create_table "rooms", force: true do |t|
-    t.string   "name"
+  create_table "rooms", force: :cascade do |t|
+    t.string   "name",                limit: 255
     t.integer  "room_type_id"
     t.integer  "floor_id"
     t.datetime "created_at"
@@ -255,7 +256,7 @@ ActiveRecord::Schema.define(version: 20160328101809) do
     t.integer  "evacuation_zone_id"
     t.text     "network"
     t.float    "perimeter"
-    t.string   "anchor_text_point"
+    t.string   "anchor_text_point",   limit: 255
     t.integer  "free_desk_number"
     t.integer  "capacity"
   end

@@ -1,0 +1,3 @@
+class ItemQualititesController < ApplicationController
+  
+end

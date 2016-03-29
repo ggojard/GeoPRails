@@ -72,7 +72,6 @@ gem 'rqrcode'
 gem 'colorize'
 gem 'angularjs-file-upload-rails'
 
-
 group :test, :development do
   gem "byebug"
   gem "rspec"
@@ -86,6 +85,7 @@ group :test, :development do
   gem "rails-erd"
   gem "bullet"
   gem 'jasmine'  
+  gem 'quiet_assets'
 end
 
 
