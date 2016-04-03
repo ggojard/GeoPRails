@@ -1,4 +1,4 @@
-/*global GeoP*/
+/*global GeoP, gon*/
 
 (function(geoP) {
   'use strict';
@@ -6,9 +6,46 @@
   function ItemSvg(room, json) {
     this.room = room;
     this.svgEditor = this.room.svgEditor;
+    this.svgEditor.$scope.item_qualities = gon.item_qualities;
     this.json = json;
     this.options = [];
+    this.editMode = false;
 
+    var that = this;
+    this.editModeSave = {
+      'action': function() {
+        that.save(function() {
+          that.options = [that.editModeEnable];
+          that.editMode = false;
+        });
+      },
+      'label': 'Sauvegarder',
+      classes: 'btn-success',
+      'icon': 'fa-floppy-o '
+    };
+
+    this.editModeEnable = {
+      'action': function() {
+        that.options = [that.editModeSave, that.editModeCancel];
+        that.editMode = true;
+      },
+      'label': 'Modifier',
+      classes: 'btn-default',
+      'icon': 'fa-edit'
+    };
+
+    this.editModeCancel = {
+      'action': function() {
+        that.options = [that.editModeEnable];
+        that.editMode = false;
+      },
+      'label': 'Annuler',
+      classes: 'btn-warning',
+      'icon': 'fa-ban'
+    };
+
+
+    that.options = [that.editModeEnable];
   }
 
   ItemSvg.prototype.create = function($http, itemType, callback) {
@@ -23,7 +60,7 @@
   ItemSvg.prototype.getHash = function() {
     /*jslint nomen: true*/
     var h = [];
-    h.push(this.json.x, this.json.y);
+    h.push(this.json.x, this.json.y, this.json.item_quality_id);
     return geoP.hashCode(h.join(''));
   };
 
@@ -42,9 +79,10 @@
     var data = this.json,
       that = this;
     if (this.json !== null) {
-      this.svgEditor.$http.put('/items/' + this.json.id + '.json', data).success(function() {
+      this.svgEditor.$http.put('/items/' + this.json.id + '.json', data).success(function(res) {
         geoP.notifications.done('L\'objet de type ' + that.json.item_type.name + ' a été sauvegardée.');
         that.updateHashCode();
+        that.json = res;
         return callback && callback();
       }).error(function() {
         console.error('impossible to update the item');
@@ -53,9 +91,14 @@
   };
 
   ItemSvg.prototype.select = function(e) {
+    var that = this;
     geoP.currentEvent = e;
     this.room.unSelectItems();
     this.circleSvg.node.setAttribute('class', 'item-selected');
+
+    this.svgEditor.$scope.$apply(function() {
+      that.svgEditor.$scope.item = that;
+    });
   };
 
   ItemSvg.prototype.addToEditor = function() {
@@ -70,7 +113,6 @@
 
     this.circleSvg.drag(function(cx, cy, x, y, e) {
       /*jslint unparam: true*/
-
       var scale, mousePos, mx, my, ctm;
       scale = that.svgEditor.camera.scale;
       mousePos = that.svgEditor.getMousePos(e);
@@ -86,13 +128,7 @@
 
       that.json.x = that.circleSvg.node.cx.baseVal.value;
       that.json.y = that.circleSvg.node.cy.baseVal.value;
-      // p = that.circleSvg.node.points.getItem(that.circleSvg.pointIndex);
-      // p.x += mx;
-      // p.y += my;
-
     });
-
-    // this.circleSvg.drag();
   };
 
   ItemSvg.prototype.addToDatabase = function($http, itemType, callback) {

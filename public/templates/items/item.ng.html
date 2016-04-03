@@ -1,0 +1,49 @@
+<div class="panel panel-default panel-item animated fadeInRight" ng-if='item != null'>
+  <div class="box-content" >
+    <div class="panel-heading">
+      <h3 class="panel-title">{{item.json.item_type.name}}</h3>
+    </div>
+    <div class="panel-body box">
+      <ul class="map-options">
+        <li ng-repeat="b in item.options" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+      </ul>
+      <table class="box-details">
+        <tr ng-if="item.json.immo_code.length > 0 || item.editMode === true">
+          <th>{{::i18n.item.immo_code}}</th>
+          <td ng-if="!item.editMode">{{item.json.immo_code}}</td>
+          <td ng-if="item.editMode">
+            <input type="text" ng-model="item.json.immo_code"/>
+          </td>
+        </tr>
+        <tr ng-if="!item.editMode">
+          <th>QrCode</th>
+          <td><img class="qrcode" ng-src="{{item.json.qrcode_url}}"/></td>
+        </tr>        
+        <tr ng-if="!item.editMode">
+          <th>{{::i18n.item.item_type}}</th>
+          <td>{{item.json.item_type.name}}</td>
+        </tr>
+        <tr ng-if="!item.editMode">
+          <th>{{::i18n.item.room}}</th>
+          <td><a href="{{::item.json.room.url_with_floor}}">{{item.json.room.name}}</a></td>
+        </tr>
+        <tr ng-if="item.json.item_quality || item.editMode === true">
+          <th>{{::i18n.item.item_quality}}</th>
+          <td ng-if="!item.editMode">{{item.json.item_quality.name}}</td>
+          <td ng-if="item.editMode">
+            <ul class="item_qualities">
+              <li>
+                <input type="radio" ng-model="item.json.item_quality_id" name="item_quality" value="0"/>
+                <label>Non définie</label>
+              </li>
+              <li ng-repeat="iq in item_qualities">
+                <input type="radio" ng-model="item.json.item_quality_id"  name="item_quality" value="{{iq.id}}"/>
+                <label> {{iq.name}}</label>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

@@ -14,7 +14,8 @@
         </div>
       </li>
       <li>
-        <div ng-include="'/templates/floors/room.ng.html'"></div>
+        <div ng-include="'/templates/floors/room.ng.html'" ng-if="item === undefined"></div>
+        <div ng-include="'/templates/items/item.ng.html'" ng-if="item !== undefined"></div>
       </li>
     </ul>
   </li>

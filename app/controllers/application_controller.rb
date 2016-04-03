@@ -76,6 +76,7 @@ class ApplicationController < ActionController::Base
     set_user_type_for_current_user
     gon.userType = @global_user_type
     gon.company = get_global_company_json
+    gon.item_qualities = ItemQuality.all
     gon.i18n ||= I18n.t('formtastic.labels');
   end
 

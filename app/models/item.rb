@@ -10,7 +10,7 @@ class Item < ActiveRecord::Base
   end
 
   def qrcode_url
-    '/item/%d.qrcode.png' % self.id
+    '/items/%d.qrcode.png' % self.id
   end
 
   def name

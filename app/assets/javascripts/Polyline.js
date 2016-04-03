@@ -828,6 +828,8 @@
     var that = this;
     this.optionsOnMap = [];
     that.svgEditor.$scope.room = that;
+    delete that.svgEditor.$scope.item;
+
     geoP.$apply(that.svgEditor.$scope);
     that.svgEditor.$scope.roomId = that.json.id;
     that.addEditPolylineOption();
@@ -859,7 +861,6 @@
     var that = this,
       $scope = this.svgEditor.$scope;
     geoP.currentEvent = e;
-
 
     that.svgEditor.cleanDragPointOptions();
     that.svgEditor.unSelectItems();

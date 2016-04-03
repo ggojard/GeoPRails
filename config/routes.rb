@@ -35,6 +35,8 @@ GeoP::Application.routes.draw do
   get "rooms/:id/delete" => 'rooms#delete'
 
   get '/item_types/:id.qrcode.png' => 'item_types#qrcode'
+  get '/items/:id.qrcode.png' => 'items#qrcode'
+
 
   root 'homes#show'
   # root 'companies#index'

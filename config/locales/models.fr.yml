@@ -76,7 +76,7 @@ fr:
       item:
         purchase_date: "Date d'achat"
         item_type: "Type d'objet"
-        immo_code: "Code Immobilisation"
+        immo_code: "Code"
         item_quality: "Qualité"
         room: "Pièce"
       organization:
