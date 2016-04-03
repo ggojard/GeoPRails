@@ -1,4 +1,5 @@
 ActiveAdmin.register Person do
+  menu :parent => "Annuaire"
 
   active_admin_import :validate => false,
     :csv_options => {:col_sep => ";" }
@@ -8,14 +9,25 @@ ActiveAdmin.register Person do
 
   show :title => :fullname do |c|
 
+
+
     panel "Informations" do
       attributes_table_for person do
         row "Visualiser" do link_to  "Ouvrir" , c.url end
         row "Identifiant" do c.id end
         row "Prénom" do c.firstname end
         row "Nom" do c.lastname end
-        row "Etat" do c.person_state end
-        row "Organisation" do c.organization end
+        # row "Etat" do c.person_state end
+        # row "Organisation" do c.organization end
+        if !person.person_state.nil?
+          row I18n.t('formtastic.labels.person.person_state') do link_to person.person_state.name, [:admin, c.person_state] end
+        end
+
+        if !person.organization.nil?
+          row I18n.t('formtastic.labels.person.organization') do link_to person.organization.name, [:admin, c.organization] end
+        end
+
+
         row "Email" do c.email end
         row "Matricule" do c.person_code end
         row "Badge" do c.badge_number end
@@ -40,8 +52,6 @@ ActiveAdmin.register Person do
         column "Visualiser" do |b| link_to  "Visualiser" , room_path(b.room.id) end
       end
     end
-
-
   end
 
 

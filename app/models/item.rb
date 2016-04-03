@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  default_scope {order(:name)}
+  default_scope {order(:immo_code)}
 
   belongs_to :room
   belongs_to :item_type
@@ -14,7 +14,7 @@ class Item < ActiveRecord::Base
   end
 
   def name
-    return self.code_immo
+    return self.immo_code
   end 
 
 end

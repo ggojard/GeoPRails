@@ -1,23 +1,23 @@
 <div class="filter-container" ng-controller="FiltersController">
   <uib-tabset justified="true" type="pills" class="nav" role="tablist">
   <uib-tab ng-repeat="filter in filterNames" heading="{{filter.label}}" ng-if="$root.f[buildingId][filter.name].filters.sortedNames.length > 0" >
-  <div class="tab-pane" ng-class="{active : $first, in : $first}" id="{{filter.name}}_filter_{{buildingId}}" ng-init="filterObj=$root.f[buildingId][filter.name]" ng-if="$root.f[buildingId][filter.name].filters.sortedNames.length > 0">
+  <div class="tab-pane" ng-class="{active : $first, in : $first}" id="{{filter.name}}_filter_{{buildingId}}" ng-if="$root.f[buildingId][filter.name].filters.sortedNames.length > 0">
     <form class="form-horizontal">
       <ul class="filters">
-        <li class="animated flipInX" ng-click="filterObj.checkAll = !filterObj.checkAll;filterObj.CheckAll();">
+        <li class="animated flipInX" ng-click="$root.f[buildingId][filter.name].checkAll = !$root.f[buildingId][filter.name].checkAll;$root.f[buildingId][filter.name].CheckAll();">
           <div class="checkbox check-all color-filter ">
             <ul class="filter-zone">
-              <li class="selection-checkbox">  <input type="checkbox" ng-model="filterObj.checkAll" disabled></li>
+              <li class="selection-checkbox">  <input type="checkbox" ng-model="$root.f[buildingId][filter.name].checkAll" disabled></li>
               <li class="selection-name">
                 <label>
-                  <span ng-if="filterObj.checkAll == true">Tout décocher</span>
-                  <span ng-if="filterObj.checkAll == false">Tout cocher</span>
+                  <span ng-if="$root.f[buildingId][filter.name].checkAll == true">Tout décocher</span>
+                  <span ng-if="$root.f[buildingId][filter.name].checkAll == false">Tout cocher</span>
                 </label>
               </li>
             </ul>
           </div>
         </li>
-        <li ng-repeat="rt in $root.f[buildingId][filter.name].filters.sortedNames" class='color-filter animated flipInX' ng-click="filterObj.clickOnFilter(rt)" ng-init="filter_name=$root.f[buildingId][filter.name].filters.names[rt.id];filter_value=$root.f[buildingId][filter.name].filters.values[rt.id];">
+        <li ng-repeat="rt in $root.f[buildingId][filter.name].filters.sortedNames" class='color-filter animated flipInX' ng-click="$root.f[buildingId][filter.name].clickOnFilter(rt)" ng-init="filter_name=$root.f[buildingId][filter.name].filters.names[rt.id];filter_value=$root.f[buildingId][filter.name].filters.values[rt.id];">
           <div class="checkbox" style="background-color: {{rt.colorOpacity}}">
             <ul class="filter-zone">
               <li class="selection-checkbox" ><input type="checkbox" ng-model="rt.state" disabled/></li>

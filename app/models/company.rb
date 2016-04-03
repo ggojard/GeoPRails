@@ -1,5 +1,5 @@
 class Company < ActiveRecord::Base
-  after_update Ability.reset_arm
+  after_update :reset_arm
 
   has_many :buildings
   accepts_nested_attributes_for :buildings, :allow_destroy => true
@@ -11,6 +11,11 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :admin_users, :allow_destroy => true
 
   mount_uploader :logo, LogoUploader
+
+
+  def reset_arm
+    Ability.reset_arm
+  end
 
   def url
     '/#/companies/%d' % self.id

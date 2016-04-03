@@ -5,12 +5,23 @@ ActiveAdmin.register Room do
       row "Visualiser" do link_to("Ouvrir", c.url) end
       row I18n.t('formtastic.labels.room.floor') do link_to c.floor.fullname, admin_floor_path(c.floor.id), {} end
       row I18n.t('formtastic.labels.room.name') do c.name end
-      row I18n.t('formtastic.labels.room.room_type') do c.room_type end
-      row I18n.t('formtastic.labels.room.organization') do c.organization end
+      if !c.room_type.nil?
+        row I18n.t('formtastic.labels.room.room_type') do link_to c.room_type.name, [:admin, c.room_type] end
+      end
+      if !c.organization.nil?
+        row I18n.t('formtastic.labels.room.organization') do link_to c.organization.name, [:admin, c.organization] end
+      end
+      # row I18n.t('formtastic.labels.room.organization') do c.organization end
       row I18n.t('formtastic.labels.room.area') do "%d m²" % c.area end
       row I18n.t('formtastic.labels.room.perimeter') do c.perimeter end
-      row I18n.t('formtastic.labels.room.room_ground_type') do c.room_ground_type end
-      row I18n.t('formtastic.labels.room.evacuation_zone') do c.evacuation_zone end
+      if !c.room_ground_type.nil?
+        row I18n.t('formtastic.labels.room.room_ground_type') do link_to c.room_ground_type.name, [:admin, c.room_ground_type] end
+      end
+      if !c.evacuation_zone.nil?
+        row I18n.t('formtastic.labels.room.evacuation_zone') do link_to c.evacuation_zone.name, [:admin, c.evacuation_zone] end
+      end
+      # row I18n.t('formtastic.labels.room.room_ground_type') do c.room_ground_type end
+      # row I18n.t('formtastic.labels.room.evacuation_zone') do c.evacuation_zone end
       row I18n.t('formtastic.labels.room.network') do c.network end
       row I18n.t('formtastic.labels.room.free_desk_number') do c.free_desk_number end
       row I18n.t('formtastic.labels.room.capacity') do c.capacity end
@@ -27,23 +38,34 @@ ActiveAdmin.register Room do
       end
     end
 
-    panel "Inventaire" do
-      table_for room.inventories do
-        column "Item" do |b|
-          if !b.item.nil?
-            link_to b.item.name, admin_item_url(b.item.id)
+    inventories = room.inventories
+    if inventories.count > 0
+      panel "Inventaire (Type)" do
+        table_for inventories do
+          column "Item" do |b|
+            if !b.item.nil?
+              link_to b.item.name, admin_item_url(b.item.id)
+            end
           end
-        end
-        column "Code" do |b|
-          if !b.item.nil?
-            b.item.code
+          column "Code" do |b|
+            if !b.item.nil?
+              b.item.code
+            end
           end
+          column "Quantité" do |b| b.quantity end
         end
-        column "Quantité" do |b| b.quantity end
       end
     end
 
-
+    items = room.items
+    if items.count > 0
+      panel I18n.t('activerecord.models.item.other') do
+        table_for items do
+          column I18n.t('formtastic.labels.item.immo_code') do |i| link_to i.name, [:admin, i] end
+          column I18n.t('formtastic.labels.item.item_type') do |i| i.item_type end
+        end
+      end
+    end
   end
 
 
@@ -85,8 +107,17 @@ ActiveAdmin.register Room do
       if !app_f.object.nil?
         app_f.input :_destroy, :as => :boolean, :label => "Retirer l'item"
       end
-      app_f.input :item, label: I18n.t('formtastic.labels.item.name'), as: :select, :collection => Item.all.map{|u| ["#{u.name}", u.id]}
+      app_f.input :item_type, label: I18n.t('formtastic.labels.item.name'), as: :select, :collection => ItemType.all.map{|u| ["#{u.name}", u.id]}
       app_f.input :quantity, label: I18n.t('formtastic.labels.inventory.quantity')
+    end
+
+
+    f.inputs do
+      # , heading: I18n.t('activerecord.models.floor.other')
+      f.has_many :items do |b|
+        b.input :immo_code
+        # b.input :item_type, as: :select, :collection => ItemType.all
+      end
     end
 
 
@@ -110,8 +141,8 @@ ActiveAdmin.register Room do
 
 
   controller do
-     def scoped_collection
-      Room.includes([:floor, :room_type, :room_ground_type, :organization, :affectations => :person, :inventories => :item])
+    def scoped_collection
+      Room.includes([:floor, :room_type, :room_ground_type, :organization, :affectations => :person, :inventories => :item_type])
     end
     def permitted_params
       params.permit!

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160329203538) do
+ActiveRecord::Schema.define(version: 20160402132325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(version: 20160329203538) do
 
   create_table "inventories", force: :cascade do |t|
     t.integer  "room_id"
-    t.integer  "item_id"
+    t.integer  "item_type_id"
     t.integer  "quantity"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -167,7 +167,6 @@ ActiveRecord::Schema.define(version: 20160329203538) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "price"
-    t.date     "purchase_date"
     t.integer  "item_type_brand_id"
   end
 
@@ -180,10 +179,11 @@ ActiveRecord::Schema.define(version: 20160329203538) do
     t.string   "immo_code",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name"
+    t.integer  "item_type_id"
   end
 
   add_index "items", ["item_quality_id"], name: "index_items_on_item_quality_id", using: :btree
+  add_index "items", ["item_type_id"], name: "index_items_on_item_type_id", using: :btree
   add_index "items", ["room_id"], name: "index_items_on_room_id", using: :btree
 
   create_table "organization_types", force: :cascade do |t|
@@ -264,4 +264,5 @@ ActiveRecord::Schema.define(version: 20160329203538) do
   add_index "rooms", ["floor_id"], name: "index_rooms_on_floor_id", using: :btree
   add_index "rooms", ["room_type_id"], name: "index_rooms_on_room_type_id", using: :btree
 
+  add_foreign_key "items", "item_types"
 end

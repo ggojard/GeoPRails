@@ -11,8 +11,8 @@ GeoP::Application.routes.draw do
   ActiveAdmin.routes(self)
   resources :homes
   resources :rooms
-  resources :companies do 
-        post 'import', on: :collection
+  resources :companies do
+    post 'import', on: :collection
   end
   resources :organizations
   resources :people

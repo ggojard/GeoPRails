@@ -4,8 +4,9 @@ ActiveAdmin.register Building do
   show do |building|
     attributes_table do
       row I18n.t('formtastic.labels.building.name') do building.name end
-      row I18n.t('formtastic.labels.building.company') do building.company end
-      # row :company, label:"a"
+      if !building.company.nil?
+        row I18n.t('formtastic.labels.building.company') do link_to building.company.name, [:admin, building.company] end
+      end
     end
 
     panel I18n.t('activerecord.models.floor.other') do
@@ -15,11 +16,13 @@ ActiveAdmin.register Building do
       end
     end
 
-    panel "Roles Associations" do
-      table_for building.admin_user_role_to_buildings do
-        column "Roles Utilisateurs" do |user_role|
-          if !user_role.admin_user_role.nil?
-            link_to user_role.admin_user_role.name, admin_admin_user_role_url(user_role.admin_user_role.id)
+    if building.admin_user_role_to_buildings.length > 0
+      panel "Roles Associations" do
+        table_for building.admin_user_role_to_buildings do
+          column "Roles Utilisateurs" do |user_role|
+            if !user_role.admin_user_role.nil?
+              link_to user_role.admin_user_role.name, admin_admin_user_role_url(user_role.admin_user_role.id)
+            end
           end
         end
       end
@@ -31,7 +34,7 @@ ActiveAdmin.register Building do
     id_column
     column I18n.t('formtastic.labels.building.name'), :name
     column I18n.t('formtastic.labels.building.company'),:company
-    column I18n.t('formtastic.labels.building.color'), :color, class: 'color-display'    
+    column I18n.t('formtastic.labels.building.color'), :color, class: 'color-display'
     actions
   end
 
@@ -43,7 +46,7 @@ ActiveAdmin.register Building do
       f.input :color
     end
 
-    f.inputs do 
+    f.inputs do
       # , heading: I18n.t('activerecord.models.floor.other')
       f.has_many :floors do |b|
         b.input :name
@@ -57,7 +60,7 @@ ActiveAdmin.register Building do
     #       b.input :name
     #       b.input :level
     #     # end
-    #     b.actions 
+    #     b.actions
     #   end
     # end
     f.actions

@@ -2,9 +2,11 @@
 (function(geoP) {
   'use strict';
 
-  var MapFilter, MapFilterHelper;
+  var MapFilter, MapFilterHelper, localId = 0;
 
   MapFilter = function($rootScope, $http, buildingId) {
+    this.localId = localId;
+    localId += 1;
     this.filters = {};
     this.bfilters = {};
     this.editors = [];

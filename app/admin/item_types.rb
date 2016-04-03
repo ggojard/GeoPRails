@@ -8,7 +8,6 @@ ActiveAdmin.register ItemType do
       row I18n.t('formtastic.labels.item_type.code') do c.code end
       row I18n.t('formtastic.labels.item_type.description') do c.description end
       row I18n.t('formtastic.labels.item_type.price') do c.price end
-      row I18n.t('formtastic.labels.item_type.purchase_date') do c.purchase_date end        
     end
   end
 

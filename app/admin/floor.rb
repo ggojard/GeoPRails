@@ -29,7 +29,10 @@ ActiveAdmin.register Floor do
     attributes_table do
       row "Visualiser" do link_to("Ouvrir",'/#/floors/' + ad.id.to_s, {}) end
       row I18n.t('formtastic.labels.floor.name') do ad.name end
-      row I18n.t('activerecord.models.building.one') do  ad.building end
+      if !ad.building.nil?
+        row I18n.t('activerecord.models.building.one') do link_to ad.building.name, [:admin, ad.building] end
+      end
+      # row :building
       row I18n.t('formtastic.labels.floor.level') do ad.level end
       row I18n.t('formtastic.labels.floor.background_opacity') do ad.background_opacity end
       # "Image Plan",
@@ -47,7 +50,7 @@ ActiveAdmin.register Floor do
 
   controller do
     def scoped_collection
-        Floor.includes(:building)
+      Floor.includes(:building)
     end
 
     def permitted_params

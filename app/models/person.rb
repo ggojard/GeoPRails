@@ -17,6 +17,11 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def to_s
+    self.fullname
+  end
+
+
   def photo_url
     if !self.photo?
       image_tag(self.photo.url(:thumbnail))

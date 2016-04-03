@@ -1,6 +1,5 @@
 ActiveAdmin.register Affectation do
-
-  
+  menu :parent => "Annuaire"
 
   index do
     selectable_column
@@ -9,7 +8,6 @@ ActiveAdmin.register Affectation do
     column I18n.t('formtastic.labels.affectation.room'), :room
     actions
   end
-
 
   controller do
     def permitted_params

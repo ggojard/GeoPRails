@@ -59,7 +59,7 @@ fr:
       floor:
         id: "Identifiant étage"
         name : "Nom"
-        building: "Bâtiment"
+        building: "BâtimentBB"
         level : "Niveau"
         image : "Plan"
         background_opacity: "Transparence Image"
@@ -74,6 +74,10 @@ fr:
         rank: "Rang"
       item:
         purchase_date: "Date d'achat"
+        item_type: "Type d'objet"
+        immo_code: "Code Immobilisation"
+        item_quality: "Qualité"
+        room: "Pièce"
       organization:
         id: "Identifiant organisation"
         name : "Nom"

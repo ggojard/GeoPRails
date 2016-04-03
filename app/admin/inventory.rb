@@ -4,7 +4,7 @@ ActiveAdmin.register Inventory do
   index do
     selectable_column
     id_column
-    column I18n.t('formtastic.labels.inventory.item'), :item
+    column I18n.t('formtastic.labels.inventory.item'), :item_type
     column I18n.t('formtastic.labels.inventory.room'), :room
     actions
   end

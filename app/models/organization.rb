@@ -15,5 +15,6 @@ class Organization < ActiveRecord::Base
   def url
     '/#/organizations/%d' %  self.id
   end
+
   default_scope {order(:name)}
 end

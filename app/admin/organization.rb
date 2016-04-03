@@ -6,9 +6,15 @@ ActiveAdmin.register Organization do
     attributes_table do
       row "Nom" do c.name end
       row "Couleur" do c.color end
-      row "Organisation Père" do c.organization end
-      row "Type" do c.organization_type end
-      row "Entreprise" do c.company end
+      if !c.organization.nil?
+        row "Organisation Père" do link_to c.organization.name, [:admin, c.organization] end
+      end
+      if !c.organization_type.nil?
+        row I18n.t('formtastic.labels.organization.organization_type')do link_to c.organization_type.name, [:admin, c.organization_type] end
+      end
+      if !c.company.nil?
+        row I18n.t('formtastic.labels.organization.company') do link_to c.company.name, [:admin, c.company] end
+      end
 
       if c.organizations.length > 0 
         panel I18n.t('activerecord.models.organization.other') do      
@@ -39,11 +45,11 @@ ActiveAdmin.register Organization do
   index do
     selectable_column
     id_column
-    column "Nom", :name
-    column "Couleur", :color, class: 'color-display'
-    column "Organisation Père", :organization
-    column "Type", :organization_type
-    column "Entreprise", :company
+    column I18n.t('formtastic.labels.organization.name'), :name
+    column I18n.t('formtastic.labels.organization.color'), :color, class: 'color-display'
+    column I18n.t('formtastic.labels.organization.organization'), :organization
+    column I18n.t('formtastic.labels.organization.organization_type'), :organization_type
+    column I18n.t('formtastic.labels.organization.company'), :company
     actions
   end
 

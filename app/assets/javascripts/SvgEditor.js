@@ -6,7 +6,7 @@
   'use strict';
 
   var snap = Snap,
-    SvgEditor;
+    SvgEditor, localId = 0;
 
   function mouseMove(ev) {
     /*jshint validthis:true */
@@ -63,6 +63,9 @@
       that.isFullscreen = isFullscreen;
       that.setOptions();
     });
+
+    this.localId = localId;
+    localId += 1;
 
     this.svgId = 'map-' + floorJson.id;
     this.$scope.editor = this;
