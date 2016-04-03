@@ -185,6 +185,10 @@ div.panel-room {
     box-shadow: none;
     overflow-y: scroll;
 
+    input[type='search']{
+        width: 100%;
+    }
+
     // @include transition(250ms);
     .panel-heading {
         background: #1dc8fe;

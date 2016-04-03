@@ -1,4 +1,5 @@
 <div ng-if="itemHandler !== undefined">
+  <h3 class="title">Objets</h3>
   <input placeholder="Rechercher Objet" type='search' ng-model="itemHandler.searchItem" ng-change="itemHandler.fetch()"></input>
   <div ng-if="itemHandler.searchItem.length > 0">
     <div ng-if="itemHandler.items.length > 0">

@@ -10,8 +10,8 @@ heroku domains:add ${name}.surfy.pro --app $s
 git remote add $s https://git.heroku.com/$s.git
 heroku addons:create heroku-postgresql:hobby-dev --app $s
 
-# heroku addons:create cloudinary --app $s
-# heroku config:set CLOUDINARY_URL=$2 --app $s
+heroku addons:create cloudinary --app $s
+heroku config:set CLOUDINARY_URL=$2 --app $s
 
 # CLOUDINARY_URL=cloudinary://946599992989832:t0cdEWRP_TtWswFkBxlKYKGAKiA@site-blablacar
 # CLOUDINARY_URL=cloudinary://252349323969378:NlDQ-pUSgloHXWIJtj7g0Ejo9gw@surfy-isagri
@@ -19,9 +19,12 @@ heroku addons:create heroku-postgresql:hobby-dev --app $s
 # CLOUDINARY_URL=cloudinary://417584825955111:3kvrESi5v7lyFW3r0HLt4tjqVtc@surfy-volkswagen
 # https://portal.office.com/admin/default.aspx#ActiveUsersPage
 
+
+# CLOUDINARY_URL=cloudinary://376526364735813:xmbolDN7jkqcPDSSkvi-xr5VuS0@surfy-test
+
 # ./deploy/deploy.sh $name
 
 # echo "transfer database from surfyroot"
-# heroku pg:copy surfyroot::DATABASE DATABASE -a $s --confirm $s
+heroku pg:copy surfyroot::DATABASE DATABASE -a $s --confirm $s
 
 
