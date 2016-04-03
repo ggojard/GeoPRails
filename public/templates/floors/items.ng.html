@@ -1,0 +1,19 @@
+<div ng-if="itemHandler !== undefined">
+  <input placeholder="Rechercher Objet" type='search' ng-model="itemHandler.searchItem" ng-change="itemHandler.fetch()"></input>
+  <div ng-if="itemHandler.searchItem.length > 0">
+    <div ng-if="itemHandler.items.length > 0">
+      <b>Déplacer</b>
+      <ul>
+        <li ng-repeat="i in itemHandler.items">{{::i.immo_code}} <span ng-if="i.room !== undefined"></span></li>
+      </ul>
+    </div>
+    <div ng-if="itemHandler.itemTypes.length > 0 && (itemHandler.itemTypes|filter:itemHandler.searchItem).length > 0">
+      <b>Ajouter</b>
+      <ul>
+        <li ng-repeat="i in itemHandler.itemTypes | filter:itemHandler.searchItem">
+          <a ng-bind-html="i.name | highlight:itemHandler.searchItem" ng-click="itemHandler.addItemTypeToRoom(room, i)">{{::i.name}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

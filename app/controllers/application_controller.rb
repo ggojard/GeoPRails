@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
 
   def self.value
     ids = []
-    if !@@the_user.nil?
+    if !@@the_user.nil? && !$arm.nil?
       puts 'self.value the user is (%s)' % @@the_user.email
       c = "id IN (%s)" % $arm[@@the_user.id].buildings_id.join(",")
       puts "condition is then (%s)" % c
@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   private
 
   def get_global_company
-    if !current_admin_user.nil?
+    if !current_admin_user.nil? && !$arm.nil?
       arm = $arm[current_admin_user.id]
       u_arm_buildings_id = arm.buildings_id;
       # puts 'get_global_company'
@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_user_type_for_current_user
-    if !current_admin_user.nil?
+    if !current_admin_user.nil? && !$arm.nil?
       user_id = current_admin_user.id
       @global_user_type = $arm[user_id].user_type
     else

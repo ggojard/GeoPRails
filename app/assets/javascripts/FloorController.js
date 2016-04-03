@@ -13,6 +13,7 @@
     return geoP.countFreeDesksFromRooms(rooms);
   }
 
+
   geoP.app.controller('FloorController', function($scope, $http, $rootScope, $routeParams) {
     $rootScope.$emit('start-loading');
     $scope.$routeParams = $routeParams;
@@ -28,7 +29,7 @@
       geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors')
     ];
 
-
+    $scope.itemHandler = new geoP.ItemHandler($http);
 
     $http.get('/floors/' + $routeParams.floorId + '.json').success(function(floor) {
       $rootScope.$emit('SetBodyColor', floor.building);

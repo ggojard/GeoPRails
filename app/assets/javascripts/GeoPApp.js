@@ -46,6 +46,12 @@
     }
   });
 
+  // app.filter('geoPFilter', function() {
+  //   return function(classInstance, searchMethod, i) {
+  //     return classInstance[searchMethod](i);
+  //   };
+  // });
+
   app.directive('setupEditor', function() {
     return {
       transclude: true,

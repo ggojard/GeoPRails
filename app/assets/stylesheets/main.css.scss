@@ -28,6 +28,12 @@ body, label, button, input, #upload-file, input[type="file"] {
     }
 }
 
+[ng-click],
+[data-ng-click],
+[x-ng-click] {
+    cursor: pointer;
+}
+
 div.nav{
     border:1px solid transparent;
 }
@@ -75,6 +81,9 @@ svg {
         g.select{
             z-index:1000;
         }
+    }
+    circle.item-selected{
+        stroke:black;
     }
     g.select {
         polygon {

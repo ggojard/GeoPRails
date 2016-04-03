@@ -69,6 +69,7 @@ fr:
         code : "Code"
         description : "Description"
         price: "Prix (€)"
+        color: "Couleur"
       item_quality:
         name: "Nom"
         rank: "Rang"

@@ -77,7 +77,6 @@
 
     this.displayProperties = geoP.displayNames.getDisplayNames(floorJson.building_id);
     this.loadCamera();
-    // $rootScope.itemsById = this.itemsById;
     this.canvas = this.paper.g();
     this.canvas.node.id = 'viewport-' + floorJson.id;
     $((function() {
@@ -296,7 +295,6 @@
     }
   };
 
-
   SvgEditor.prototype.createRoomFromJson = function(json) {
     var b = new geoP.Polyline(this);
     b.json = json;
@@ -304,7 +302,6 @@
     this.items.push(b);
     this.itemsById[b.json.id] = b;
   };
-
 
   SvgEditor.prototype.setOptionsForFullScreen = function() {
     var goToFullScreenMode, stopFullScreenMode, that = this;

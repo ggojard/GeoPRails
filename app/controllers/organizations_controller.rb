@@ -2,7 +2,7 @@ class OrganizationsController < GeopController
   def show
     org = {}
     o_rec = nil
-    if !current_admin_user.nil?
+    if !current_admin_user.nil? && !$arm.nil?
       arm = $arm[current_admin_user.id]
       u_arm_floors_id = arm.floors_id;
 

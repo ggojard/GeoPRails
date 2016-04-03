@@ -1,20 +1,22 @@
 class ItemTypesController < GeopController
 
-  @items_include = []
-  # [{:inventories => {:room => [{:floor => :building}, :room_type, :organization]}}]
+  @items_include = [{:inventories => {:room => [{:floor => :building}, :room_type, :organization]}}]
 
-  def as_json_item
-    {:methods=> [:url, :qrcode_url], :include => []
-     # [{:inventories =>
-     #   {:include =>
-     #    {:room =>
-     #     {:methods=> [:fullname, :url], :include => [{:floor => {:include => :building}}, :room_type]
-     #      }
-     #     }
-     #    }
-     #   }]
-     }
+
+
+ def as_json_item
+    {:methods=> [:url, :qrcode_url], :include => 
+      [{:inventories => 
+        {:include => 
+          {:room => 
+            {:methods=> [:fullname, :url], :include => [{:floor => {:include => :building}}, :room_type]  
+            }
+          }
+        }
+      }]
+    }
   end
+
 
 
   def show

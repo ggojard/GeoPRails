@@ -17,6 +17,8 @@
     this.dragMode = false;
     this.dragTextMode = false;
     this.optionsOnMap = [];
+    this.itemsSvg = [];
+    this.itemsSvgById = {};
   };
 
   Polyline.prototype.createSvgPoint = function(x, y) {
@@ -143,12 +145,20 @@
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 
+  Polyline.prototype.getMiddle = function() {
+    var bbox = this.getBBox(this.element.node);
+    return {
+      x: bbox.x + bbox.width / 2,
+      y: bbox.y + bbox.height / 2
+    };
+  };
+
   Polyline.prototype.updateTextPosition = function() {
-    var bbox = this.getBBox(this.element.node),
+    var middle = this.getMiddle(),
       textBbox, lines, x, y;
     lines = this.text.selectAll('tspan');
 
-    x = bbox.x + bbox.width / 2;
+    x = middle.x;
     lines.forEach(function(l) {
       var options = {
         x: x,
@@ -158,7 +168,7 @@
       l.attr(options);
     });
     textBbox = this.text.getBBox();
-    y = bbox.y + bbox.height / 2 - textBbox.height / 2;
+    y = middle.y - textBbox.height / 2;
     this.text.attr({
       x: x,
       y: y
@@ -438,6 +448,27 @@
     }
   };
 
+  Polyline.prototype.addItemSvg = function(itemSvg) {
+    this.itemsSvg.push(itemSvg);
+    this.itemsSvgById[itemSvg.json.id] = itemSvg;
+  };
+
+  Polyline.prototype.createItems = function() {
+    var that = this;
+    this.json.items.forEach(function(i) {
+      var itemSvg = new geoP.ItemSvg(that, i);
+      itemSvg.addToEditor();
+      that.addItemSvg(itemSvg);
+    });
+  };
+
+  Polyline.prototype.unSelectItems = function() {
+    var i;
+    for (i = 0; i < this.itemsSvg.length; i += 1) {
+      this.itemsSvg[i].unSelect();
+    }
+  };
+
   Polyline.prototype.createInPaper = function() {
     var points, i, p;
     if (this.svgEditor.paper !== null) {
@@ -458,6 +489,7 @@
       this.close();
       this.setTexts();
       this.updateHashCode();
+      this.createItems();
     }
   };
 
@@ -600,6 +632,7 @@
     if (this.group !== undefined) {
       this.group.node.setAttribute('class', 'unselected');
     }
+    this.unSelectItems();
   };
 
   Polyline.prototype.zoomOnItem = function() {
@@ -826,6 +859,7 @@
     var that = this,
       $scope = this.svgEditor.$scope;
     geoP.currentEvent = e;
+
 
     that.svgEditor.cleanDragPointOptions();
     that.svgEditor.unSelectItems();

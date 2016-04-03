@@ -3,14 +3,14 @@ class RoomsController < GeopController
   # before_action :room_params, only: [:create]
 
   def self.selection
-    [:room_type, :evacuation_zone, {:organization => [{:organization => :organizations}, :organizations]}, :room_ground_type, {:affectations => {:person => [:person_state, :organization]} , :inventories => :item_type}]
+    [{:items => [:item_type, :item_quality]}, :room_type, :evacuation_zone, {:organization => [{:organization => :organizations}, :organizations]}, :room_ground_type, {:affectations => {:person => [:person_state, :organization]} , :inventories => :item_type}]
   end
   def self.json_selection
     {:rooms => RoomsController.json_single_selection}
   end
 
   def self.json_single_selection
-    {:include => [{:inventories => {:include => :item_type}}, :room_type, :evacuation_zone, {:organization => {:include => [{:organization => {:include => :organizations}}, :organizations], :methods => [:url]}}, :room_ground_type, { :affectations => {:include =>{:person =>{:methods => PeopleController.json_methods, :include => [:person_state, {:organization => {:methods => [:url]}}]}} }}]}
+    {:include => [ {:items => {:include => [:item_type, :item_quality]}},  {:inventories => {:include => :item_type}}, :room_type, :evacuation_zone, {:organization => {:include => [{:organization => {:include => :organizations}}, :organizations], :methods => [:url]}}, :room_ground_type, { :affectations => {:include =>{:person =>{:methods => PeopleController.json_methods, :include => [:person_state, {:organization => {:methods => [:url]}}]}} }}]}
   end
 
   def index

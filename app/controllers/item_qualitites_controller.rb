@@ -1,3 +1,3 @@
-class ItemQualititesController < ApplicationController
+class ItemQualititesController < GeopController
   
 end

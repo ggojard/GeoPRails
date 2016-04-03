@@ -10,6 +10,7 @@ GeoP::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   resources :homes
+  resources :items
   resources :rooms
   resources :companies do
     post 'import', on: :collection
@@ -55,6 +56,7 @@ GeoP::Application.routes.draw do
 
   get '/admin/clear_cache' => 'homes#clear_cache'
 
+  get '/items/search_to_add/:q' => 'items#search_to_add'
   # map.connect ':controller/:action/:id'
 
   resources :buildings
