@@ -96,6 +96,7 @@
     this.room.unSelectItems();
     this.circleSvg.node.setAttribute('class', 'item-selected');
 
+    geoP.updateHashWithItemId(that.json.id);
     this.svgEditor.$scope.$apply(function() {
       that.svgEditor.$scope.item = that;
     });
@@ -109,7 +110,6 @@
     });
     this.circleSvg.click(this.select.bind(this));
     this.updateHashCode();
-
 
     this.circleSvg.drag(function(cx, cy, x, y, e) {
       /*jslint unparam: true*/
@@ -129,6 +129,13 @@
       that.json.x = that.circleSvg.node.cx.baseVal.value;
       that.json.y = that.circleSvg.node.cy.baseVal.value;
     });
+
+    // select the item if coming from the url param
+
+    if (this.svgEditor.$scope.itemId === this.json.id) {
+      this.select();
+    }
+
   };
 
   ItemSvg.prototype.addToDatabase = function($http, itemType, callback) {

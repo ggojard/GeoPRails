@@ -58,11 +58,30 @@ var GeoP = {};
   };
 
 
+  geoP.updateHashWithItemId = function(roomId) {
+    var hash, idSection;
+    hash = document.location.hash;
+    hash = hash.replace(/\?rId=[0-9]*/, '');
+
+    idSection = 'itemId=' + roomId;
+
+    if (hash.indexOf('itemId') !== -1) {
+      hash = hash.replace(/itemId=[0-9]*/, idSection);
+    } else {
+      hash += '?itemId=' + roomId;
+    }
+    document.location.hash = hash;
+  };
+
 
   geoP.updateHashWithRoomId = function(roomId) {
     var hash, idSection;
     hash = document.location.hash;
+    hash = hash.replace(/\?itemId=[0-9]*/, '');
+
     idSection = 'rId=' + roomId;
+
+
     if (hash.indexOf('rId') !== -1) {
       hash = hash.replace(/rId=[0-9]*/, idSection);
     } else {

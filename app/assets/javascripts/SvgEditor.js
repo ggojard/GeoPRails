@@ -28,11 +28,16 @@
 
   function mouseClick() {
     /*jshint validthis:true */
-    var that = this;
+    var that = this,
+      hash;
     if (geoP.currentEvent === null && this.$scope.mapMode !== 'create') {
       this.$scope.$apply(function() {
-        // remove rId if exists
-        document.location.hash = document.location.hash.replace(/\?rId=[0-9]*/, '');
+        // remove rId & itemId if exists
+        hash = document.location.hash;
+        hash = hash.replace(/\?rId=[0-9]*/, '');
+        hash = hash.replace(/\?itemId=[0-9]*/, '');
+        document.location.hash = hash;
+
         that.unSelectItems();
         that.cleanCurrentOptions();
         that.cleanDragPointOptions();

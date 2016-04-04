@@ -36,6 +36,8 @@
       $scope.room = null;
       if ($routeParams.rid) {
         $scope.roomId = $routeParams.rid;
+      } else if ($routeParams.itemId) {
+        $scope.itemId = parseInt($routeParams.itemId, 10);
       }
 
       $scope.buildings = [floor.building_id];

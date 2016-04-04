@@ -6,7 +6,11 @@ class Item < ActiveRecord::Base
   belongs_to :item_quality
 
   def url
-    '/#/item/%d' % self.id
+    if !self.room.nil?
+      '/#/floors/%d?itemId=%d' % [self.room.floor_id, self.id]
+    else
+      '/#/items/%d' % self.id
+    end
   end
 
   def qrcode_url
@@ -15,6 +19,6 @@ class Item < ActiveRecord::Base
 
   def name
     return self.immo_code
-  end 
+  end
 
 end

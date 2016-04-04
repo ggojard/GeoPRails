@@ -36,7 +36,7 @@
         <th>Organisation</th><td><a href="{{room.json.organization.url}}">{{room.json.organization.name}}</a> <i ng-if="room.json.organization.organization_type.name">[{{room.json.organization.organization_type.name}}]</i></td>
       </tr>
       <tr ng-if="room.json.network.length > 0">
-        <th>{{::i18n.room.network}}</th><td ><ul class="network"><li ng-repeat="n in room.json.network.split('\r\n')">{{n}}</li> </ul></td>
+        <th>{{::i18n.room.network}}</th><td ><ul class="network"><li ng-repeat="n in room.json.network.split('\r\n') track by $index">{{n}}</li> </ul></td>
       </tr>
       <tr ng-if="room.json.affectations.length > 0">
         <th>Ratio Affectations</th><td>{{room.json.ratio}} m&#178; / personnes</td>
