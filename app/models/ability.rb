@@ -10,10 +10,10 @@ class Ability
   end
 
   def self.reset_arm
-    folders = Dir.glob("/tmp/**/cache")
+    folders = Dir.find("/tmp/**/cache/")
     puts ('TRY RESET ARM (%d)' % folders.count).red
 
-    if Dir.glob("/tmp/**/tmp/cache").count > 0
+    if Dir.glob("/tmp/**/cache/").count > 0
       puts 'CACHE CLEAR'.green
       Rails.cache.clear(nil)
     end
