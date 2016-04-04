@@ -33,14 +33,22 @@ ActiveAdmin.register Company do
       company.input :logo
     end
 
-    company.has_many :buildings do |b|
-      b.inputs I18n.t('activerecord.models.building.other') do
-        if !b.object.nil?
-          b.input :name
-        end
-        b.actions :only => [:create, :edit, :destroy, :remove]
+
+    company.inputs do
+      company.has_many :buildings do |b|
+        b.input :name
       end
     end
+
+
+    # company.has_many :buildings do |b|
+    #   b.inputs I18n.t('activerecord.models.building.other') do
+    #     if !b.object.nil?
+    #       b.input :name
+    #     end
+    #     b.actions :only => [:create, :edit, :destroy, :remove]
+    #   end
+    # end
     company.actions
   end
 
