@@ -25,8 +25,8 @@ class BuildingsController < GeopController
   def duplicate
     id = params[:id]
     a = BuildingsManager.new(id)
-    a.duplicate
-    redirect_to building_path a.id
+    b = a.duplicate
+    redirect_to b.url
   end
 
   def delete_all
