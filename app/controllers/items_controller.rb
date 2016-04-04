@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
   end
 
   def self.item_as_json
-    {:include => ItemsController.item_selection, :methods => [:qrcode_url, :url] }
+    {:include =>  [:item_type, {:room => {:methods => [:url_with_floor]}}, :item_quality], :methods => [:qrcode_url, :url] }
   end
 
   # POST /rooms

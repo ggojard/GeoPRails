@@ -4,17 +4,18 @@ class HomesController < GeopController
     @search = "%#{@q}%"
     @resArray = []
 
-
     people = Person.where(["lower(firstname) like ? OR lower(lastname) like ?", @search, @search]).map { |b| b.as_json(:methods => [:fullname, :url]) }
     rooms = Room.includes(:floor => :building).where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url, :url_with_floor])}
     floors = Floor.includes(:building).where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
     organizations = Organization.where(["lower(name) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
+    items = Item.where(["lower(immo_code) like ?", @search]).map { |b| b.as_json(:methods => [:fullname, :url])}
 
     @res = {
       "rooms" => rooms,
       "people" => people,
       "floors" => floors,
       "organizations" => organizations,
+      "items" => items,
       "length" => rooms.count + people.count + floors.count + organizations.count
     }
     render json: @res

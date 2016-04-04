@@ -13,6 +13,14 @@ class Item < ActiveRecord::Base
     end
   end
 
+  def fullname
+    if !self.item_type.nil?
+      '%s (%s)' % [self.item_type.name, self.immo_code]
+    else
+      self.immo_code
+    end
+  end
+
   def qrcode_url
     '/items/%d.qrcode.png' % self.id
   end

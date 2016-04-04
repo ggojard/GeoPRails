@@ -21,11 +21,9 @@ class RoomsController < GeopController
   def show
     if !@room.nil?
       redirect_to @room.url_with_floor
-      # redirect_to '/floors/%d#%d' % [@room.floor_id, @room.id]
     else
       redirect_to '/'
     end
-
   end
 
   def delete

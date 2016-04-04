@@ -42,14 +42,14 @@ ActiveAdmin.register Room do
     if inventories.count > 0
       panel "Inventaire (Type)" do
         table_for inventories do
-          column "Item" do |b|
-            if !b.item.nil?
-              link_to b.item.name, admin_item_url(b.item.id)
+          column "Item Type" do |b|
+            if !b.item_type.nil?
+              link_to b.item_type.name, admin_item_url(b.item_type.id)
             end
           end
           column "Code" do |b|
-            if !b.item.nil?
-              b.item.code
+            if !b.item_type.nil?
+              b.item_type.code
             end
           end
           column "Quantité" do |b| b.quantity end

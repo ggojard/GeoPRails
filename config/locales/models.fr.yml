@@ -79,6 +79,8 @@ fr:
         immo_code: "Code"
         item_quality: "Qualité"
         room: "Pièce"
+        x: "x"
+        y: "y"
       organization:
         id: "Identifiant organisation"
         name : "Nom"

@@ -12,10 +12,20 @@
     this.editMode = false;
 
     var that = this;
+
+    this.optionZoom = {
+      label: 'Zoomer',
+      classes: 'btn-info',
+      icon: 'fa-search',
+      action: function() {
+        that.zoomOnItem();
+      }
+    };
+
     this.editModeSave = {
       'action': function() {
         that.save(function() {
-          that.options = [that.editModeEnable];
+          that.options = [that.editModeEnable, that.optionZoom];
           that.editMode = false;
         });
       },
@@ -36,7 +46,7 @@
 
     this.editModeCancel = {
       'action': function() {
-        that.options = [that.editModeEnable];
+        that.options = [that.editModeEnable, that.optionZoom];
         that.editMode = false;
       },
       'label': 'Annuler',
@@ -45,8 +55,23 @@
     };
 
 
-    that.options = [that.editModeEnable];
+    that.options = [this.editModeEnable, this.optionZoom];
   }
+
+
+  ItemSvg.prototype.zoomOnItem = function() {
+    var box, spaceAround = 300;
+    box = {
+      x: this.json.x,
+      y: this.json.y
+    };
+    box.w = spaceAround;
+    box.h = spaceAround;
+    box.x -= spaceAround / 2;
+    box.y -= spaceAround / 2;
+    this.svgEditor.centerOnBox(box);
+  };
+
 
   ItemSvg.prototype.create = function($http, itemType, callback) {
     var that = this;

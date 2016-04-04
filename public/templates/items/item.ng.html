@@ -5,7 +5,7 @@
     </div>
     <div class="panel-body box">
       <ul class="map-options">
-        <li ng-repeat="b in item.options" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
+        <li ng-repeat="b in item.options track by $index" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
       </ul>
       <table class="box-details">
         <tr ng-if="item.json.immo_code.length > 0 || item.editMode === true">
@@ -25,7 +25,7 @@
         </tr>
         <tr ng-if="!item.editMode">
           <th>{{::i18n.item.room}}</th>
-          <td><a href="{{::item.json.room.url_with_floor}}">{{item.json.room.name}}</a></td>
+          <td><a href="{{item.json.room.url_with_floor}}">{{item.json.room.name}}</a></td>
         </tr>
         <tr ng-if="item.json.item_quality || item.editMode === true">
           <th>{{::i18n.item.item_quality}}</th>

@@ -8,6 +8,9 @@ ActiveAdmin.register Item do
       if !c.item_type.nil?
         row I18n.t('formtastic.labels.item.item_type') do link_to c.item_type.name, [:admin, c.item_type] end
       end
+      if !c.room.nil?
+        row I18n.t('formtastic.labels.item.room') do link_to c.room.fullname, [:admin, c.room] end
+      end
       if !c.item_quality.nil?
         row I18n.t('formtastic.labels.item.item_quality') do link_to c.item_quality.name, [:admin, c.item_quality] end
       end
@@ -34,6 +37,8 @@ ActiveAdmin.register Item do
       f.input :immo_code
       f.input :item_type
       f.input :item_quality
+      f.input :x
+      f.input :y
       f.input :purchase_date, :as => :datepicker
     end
     f.actions
