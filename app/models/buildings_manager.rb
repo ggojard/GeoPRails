@@ -51,6 +51,12 @@ class BuildingsManager
           new_aff.room_id = new_r.id
           new_aff.save
         end
+
+        r.items.each do |i|
+          new_item = i.dup
+          new_item.room_id = new_r.id
+          new_item.save
+        end        
       end
     end
     new_b.save
