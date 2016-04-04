@@ -17,7 +17,7 @@ class BuildingsImport
     import_buildings
     import_floors
     import_room
-    import_item
+    import_item_type
     import_affectation
     import_inventory
   end
@@ -229,7 +229,7 @@ class BuildingsImport
     @map_inventory = {}
     2.upto(@s.last_row) do |r|
       id = @s.cell(r, 1)
-      i = Inventory.where({room: @map_room[@s.cell(r, 6)], item: @map_item[@s.cell(r, 10)]}).first_or_create
+      i = Inventory.where({room: @map_room[@s.cell(r, 6)], item_type: @map_item_type[@s.cell(r, 10)]}).first_or_create
       i.quantity = @s.cell(r, 2)
       i.save
       @map_inventory[id] = i
@@ -246,19 +246,18 @@ class BuildingsImport
     end
   end
 
-  def import_item
+  def import_item_type
     set_sheet(13)
-    @map_item = {}
+    @map_item_type = {}
     2.upto(@s.last_row) do |r|
       id = @s.cell(r, 1)
       name = @s.cell(r, 2)
-      i =  Item.find_or_create_by(name: name)
+      i =  ItemType.find_or_create_by(name: name)
       i.description = @s.cell(r, 3)
       i.code = @s.cell(r, 4)
       i.price = @s.cell(r, 5)
-      i.purchase_date = @s.cell(r, 6)
       i.save
-      @map_item[id]  = i
+      @map_item_type[id]  = i
     end
   end
 

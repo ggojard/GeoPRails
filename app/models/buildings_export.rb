@@ -26,7 +26,7 @@ class BuildingsExport
     export_affectation(wb, personHeaders)
     export_inventory(wb)
     export_company(wb)
-    export_item(wb)
+    export_item_type(wb)
 
     time = DateTime.now.strftime('%Y-%m-%d-%Hh%M')
     @filename = sanitize_filename("export-#{@title}-#{time}.xlsx")
@@ -229,12 +229,12 @@ class BuildingsExport
       sheet.add_row ["Identifiant",  "Quantité", "Code", "Nom item", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment", "Item", "Identifiant Item", "Prix"]
       if @exportData
         Inventory.all().each do |o|
-          if !o.item.nil? and !o.room.nil? and !o.item.nil?
+          if !o.item_type.nil? and !o.room.nil? and !o.item_type.nil?
             price = 0
-            if !o.quantity.nil? and !o.item.price.nil?
-              price = o.quantity * o.item.price
+            if !o.quantity.nil? and !o.item_type.price.nil?
+              price = o.quantity * o.item_type.price
             end
-            sheet.add_row [o.id, o.quantity, o.item.code, o.item.name, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name, o.item.name, o.item.id, price]
+            sheet.add_row [o.id, o.quantity, o.item_type.code, o.item_type.name, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name, o.item_type.name, o.item_type.id, price]
           end
         end
       end
@@ -252,12 +252,12 @@ class BuildingsExport
     end
   end
 
-  def export_item wb
+  def export_item_type wb
     wb.add_worksheet(:name => "Item") do |sheet|
-      sheet.add_row ["Identifiant",  "Nom", "Description", "Code", "Prix", I18n.t('formtastic.labels.item.purchase_date')]
+      sheet.add_row ["Identifiant",  "Nom", "Description", "Code", "Prix"]
       if @exportData
-        Item.all().each do |o|
-          sheet.add_row [o.id, o.name, o.description, o.code, o.price, o.purchase_date]
+        ItemType.all().each do |o|
+          sheet.add_row [o.id, o.name, o.description, o.code, o.price]
         end
       end
     end

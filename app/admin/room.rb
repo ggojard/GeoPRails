@@ -107,7 +107,7 @@ ActiveAdmin.register Room do
       if !app_f.object.nil?
         app_f.input :_destroy, :as => :boolean, :label => "Retirer l'item"
       end
-      app_f.input :item_type, label: I18n.t('formtastic.labels.item.name'), as: :select, :collection => ItemType.all.map{|u| ["#{u.name}", u.id]}
+      app_f.input :item_type, label: I18n.t('formtastic.labels.item_type.name'), as: :select, :collection => ItemType.all.map{|u| ["#{u.name}", u.id]}
       app_f.input :quantity, label: I18n.t('formtastic.labels.inventory.quantity')
     end
 
