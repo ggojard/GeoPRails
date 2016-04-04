@@ -11,7 +11,7 @@ class Ability
 
   def self.reset_arm
     puts 'RESET ARM'.red
-    # Rails.cache.clear(nil)
+    Rails.cache.clear(nil)
   end
 
 

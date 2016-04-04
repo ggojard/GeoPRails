@@ -4,6 +4,7 @@ ActiveAdmin.register Organization do
 
   show do |c|
     attributes_table do
+      row "Visualiser" do link_to("Ouvrir", c.url) end
       row "Nom" do c.name end
       row "Couleur" do c.color end
       if !c.organization.nil?
