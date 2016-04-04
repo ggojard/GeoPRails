@@ -16,6 +16,10 @@
       $scope.searchQueries = [];
     }
 
+    $scope.closeSearch = function() {
+      $scope.results = {};
+    };
+
     $scope.search = function() {
       var canceller;
       $rootScope.globalSearch = $scope.globalSearch;

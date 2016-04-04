@@ -58,6 +58,8 @@
   }
 
   geoP.app.controller('OrganizationController', function($scope, $http, $rootScope, $routeParams) {
+    $rootScope.$emit('start-loading');
+
     $scope.$routeParams = $routeParams;
     $scope.menu = [
       geoP.getMenuItem('information', 'Information', 'organizations'),
