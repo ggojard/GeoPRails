@@ -12,6 +12,19 @@ ActiveAdmin.register ItemType do
     end
   end
 
+
+
+  index do
+    selectable_column
+    id_column
+      column I18n.t('formtastic.labels.item_type.name'), :name 
+      column I18n.t('formtastic.labels.item_type.code'), :code 
+      column I18n.t('formtastic.labels.item_type.color'), :color, class: 'color-display' 
+      column I18n.t('formtastic.labels.item_type.price'), :price 
+    actions
+  end
+
+
   form do |f|
     f.inputs "Details" do
       f.input :name
