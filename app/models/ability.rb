@@ -10,7 +10,7 @@ class Ability
   end
 
   def self.reset_arm
-    folders = Dir.glob("/tmp/**/tmp/cache")
+    folders = Dir.glob("/tmp/**/cache")
     puts ('TRY RESET ARM (%d)' % folders.count).red
 
     if Dir.glob("/tmp/**/tmp/cache").count > 0
