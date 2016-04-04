@@ -3,7 +3,7 @@
   <hr>
   <ul class="inventory">
     <li ng-repeat="i in room.json.inventories">
-      {{i.quantity}} x <a href="/items/{{i.item.id}}">{{i.item.name}} ({{i.item.code}})</a>
+      {{i.quantity}} x <a href="{{i.item_type.url}}">{{i.item_type.name}} ({{i.item_type.code}})</a>
     </li>
   </ul>
 </div>
