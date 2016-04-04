@@ -20,9 +20,9 @@
     "angular": ">=1.2.16",
     "angular-resource": ">0.0.0",
     "angular-route": ">0.0.0",
-    "angular-animate": ">0.0.0",
-    "angular-aria": ">0.0.0",
-    "angular-material": ">0.0.0",
+    // "angular-animate": ">0.0.0",
+    // "angular-aria": ">0.0.0",
+    // "angular-material": ">0.0.0",
     "jquery": "<3.0.0",
     "moment": ">0.0.0"
   }

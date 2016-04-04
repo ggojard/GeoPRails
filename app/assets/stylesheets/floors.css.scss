@@ -11,6 +11,10 @@ ul.map-options {
         margin: 5px;
         margin-right: 0;
     }
+
+    &>li:first-child{
+        margin-left:0;
+    }
 }
 
 .navbar-form{
