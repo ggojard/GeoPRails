@@ -68,7 +68,6 @@
       geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors')
     ];
 
-
     $http.get('/buildings/' + bId + '.json').success(function(b) {
 
       $rootScope.$emit('SetBodyColor', b);

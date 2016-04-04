@@ -8,8 +8,6 @@
     geoP.handleKeyEventsForScope($scope);
     $rootScope.$emit('start-loading');
 
-
-
     $http.get('/buildings/' + $routeParams.buildingId + '.json').success(function(b) {
       $scope.buildings = [b.id];
       $rootScope.buildings = $scope.buildings;

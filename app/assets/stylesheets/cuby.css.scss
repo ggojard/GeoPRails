@@ -11,12 +11,7 @@ canvas.cuby{
 }
 
 #CubyContainer{
-  // position: absolute;
-  // left: 0;
-  // top:80;
   border:1px solid #eee;
-  // width: 330px;
-  // height: 800px;
   background: white;
   margin: 0;
   padding: 0;
@@ -37,14 +32,14 @@ canvas.cuby{
       width: 100%;
     }
     ul.filters, #myTabFilter, ul.nav-justified{
+      width: 100%;
+      display: block;
+      & > li{
         width: 100%;
         display: block;
-        & > li{
-            width: 100%;
-            display: block;
-        }
+      }
     }
-}
+  }
 
 }
 

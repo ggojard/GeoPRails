@@ -5,13 +5,13 @@ s="surfy${name}"
 
 echo "create site app ${s}"
 # heroku apps:destroy $s
-heroku apps:create --region eu $s
-heroku domains:add ${name}.surfy.pro --app $s
-git remote add $s https://git.heroku.com/$s.git
-heroku addons:create heroku-postgresql:hobby-dev --app $s
+# heroku apps:create --region eu $s
+# heroku domains:add ${name}.surfy.pro --app $s
+# git remote add $s https://git.heroku.com/$s.git
+# heroku addons:create heroku-postgresql:hobby-dev --app $s
 
-heroku addons:create cloudinary --app $s
-heroku config:set CLOUDINARY_URL=$2 --app $s
+# heroku addons:create cloudinary --app $s
+# heroku config:set CLOUDINARY_URL=$2 --app $s
 
 # CLOUDINARY_URL=cloudinary://946599992989832:t0cdEWRP_TtWswFkBxlKYKGAKiA@site-blablacar
 # CLOUDINARY_URL=cloudinary://252349323969378:NlDQ-pUSgloHXWIJtj7g0Ejo9gw@surfy-isagri
@@ -26,5 +26,7 @@ heroku config:set CLOUDINARY_URL=$2 --app $s
 
 # echo "transfer database from surfyroot"
 # heroku pg:copy surfyroot::DATABASE DATABASE -a $s --confirm $s
+heroku pg:copy surfymdm::DATABASE DATABASE -a $s 
+# --confirm $s
 
 
