@@ -49,6 +49,7 @@ class ItemTypesController < GeopController
       }
     end
   end
+  
   def qrcode
     @item = ItemType.find_by_id(params[:id])
     url = request.base_url + @item.url

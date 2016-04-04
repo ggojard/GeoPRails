@@ -2,11 +2,15 @@
 (function(geoP) {
   'use strict';
 
-  geoP.app.controller('CubyController', function($scope, $http, $rootScope) {
+  geoP.app.controller('CubyController', function($scope, $http, $rootScope, $routeParams) {
     $scope.i18n = gon.i18n;
     $scope.floorsByBuildingId = {};
     geoP.handleKeyEventsForScope($scope);
-    $http.get(gon.building.url + '.json').success(function(b) {
+    $rootScope.$emit('start-loading');
+
+
+
+    $http.get('/buildings/' + $routeParams.buildingId + '.json').success(function(b) {
       $scope.buildings = [b.id];
       $rootScope.buildings = $scope.buildings;
       $rootScope.$emit('SetBodyColor', b);

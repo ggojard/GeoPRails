@@ -45,6 +45,9 @@
         templateUrl: '/templates/item_types/show.ng.html',
         controller: 'ItemTypeSingleController'
       }).
+      when('/cuby/:buildingId', {
+        templateUrl: '/templates/cuby/show.ng.html'
+      }).
       otherwise({
         redirectTo: '/'
       });

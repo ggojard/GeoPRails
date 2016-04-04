@@ -25,6 +25,6 @@ heroku config:set CLOUDINARY_URL=$2 --app $s
 # ./deploy/deploy.sh $name
 
 # echo "transfer database from surfyroot"
-heroku pg:copy surfyroot::DATABASE DATABASE -a $s --confirm $s
+# heroku pg:copy surfyroot::DATABASE DATABASE -a $s --confirm $s
 
 

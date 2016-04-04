@@ -2,7 +2,7 @@
   <ul id="CubyContainer">
     <li class="CubyMenu">
       <div ng-repeat="buildingId in buildings">
-        <%= render '/floors/filters' %>
+        <div ng-include="'/templates/floors/filters.ng.html'"></div>
       </div>
     </li>
     <li id="CubyWebGL">&nbsp;</li>
