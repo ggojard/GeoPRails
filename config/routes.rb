@@ -48,6 +48,7 @@ GeoP::Application.routes.draw do
   get 'upload' => 'homes#upload'
 
   get '/search/:q' => 'homes#search'
+  get '/clean_repo' => 'homes#clean_repo'
 
   get '/organizations/:id' => 'organizations#show'
 

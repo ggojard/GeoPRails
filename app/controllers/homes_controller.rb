@@ -29,4 +29,22 @@ class HomesController < GeopController
     Rails.cache.clear(nil)
     render json: "ok"
   end
+
+  def clean_repo
+    affectation_no_room = Affectation.where('room_id is ?', nil)
+    affectation_no_person = Affectation.where('person_id is ?', nil)
+
+    affectation_no_room_count = affectation_no_room.count
+    affectation_no_person_count = affectation_no_person.count
+    puts 'affectation_no_room %d' % affectation_no_room.count
+    puts 'affectation_no_person %d' % affectation_no_person.count
+
+    affectation_no_room.select {|s| s.delete}
+    affectation_no_person.select {|s| s.delete}
+
+    render json: {
+      'affectation_no_person' => affectation_no_person_count,
+      'affectation_no_room' => affectation_no_room_count
+    }
+  end
 end
