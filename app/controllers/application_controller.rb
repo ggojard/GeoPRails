@@ -52,6 +52,8 @@ class ApplicationController < ActionController::Base
   private
 
   def get_global_company
+      surfy_main = Rails.cache.fetch('surfy_main') do true end
+
     if !current_admin_user.nil? && !$arm.nil?
       arm = $arm[current_admin_user.id]
       u_arm_buildings_id = arm.buildings_id;
