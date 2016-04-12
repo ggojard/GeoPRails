@@ -3,6 +3,8 @@ class Building < ActiveRecord::Base
   has_many :floors, -> {order(:level)}, :dependent => :destroy
   accepts_nested_attributes_for :floors, :allow_destroy => true
   after_update :reset_arm
+  after_destroy :reset_arm
+  after_create :reset_arm
 
   has_many :admin_user_role_to_buildings
   has_many :admin_user_roles, :through => :admin_user_role_to_buildings

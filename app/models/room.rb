@@ -16,8 +16,8 @@ class Room < ActiveRecord::Base
   accepts_nested_attributes_for :inventories, :allow_destroy => true
   accepts_nested_attributes_for :item_types, :allow_destroy => true
 
-  has_many :items
-  accepts_nested_attributes_for :items
+  has_many :items, :dependent => :destroy
+  accepts_nested_attributes_for :items, :allow_destroy => true
 
   def url
     '/rooms/%d' % self.id

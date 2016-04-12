@@ -1,6 +1,8 @@
 class AdminUserRole < ActiveRecord::Base
   default_scope {order(:name)}
   after_update :reset_arm
+  after_destroy :reset_arm
+  after_create :reset_arm
 
   has_many :admin_user_role_to_buildings
   has_many :buildings, :through => :admin_user_role_to_buildings

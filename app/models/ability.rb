@@ -17,20 +17,6 @@ class Ability
     end
   end
 
-
-  # def marshal_dump
-  #   #blocks cannot be cached
-  #   @rules.reject{|rule| rule.instance_variable_get :@block }.map{|rule| Marshal.dump(rule) }
-  # end
-  # def marshal_load array
-  #   #blocks cannot be cached, so blocks must be re-defined
-  #   can :read, Comment do |comment|
-  #     comment.length > 100
-  #   end
-  #   @rules += array.map{|rule| Marshal.load(rule) }
-  # end
-
-
   def initialize(user)
     u_type = 'READ'
     puts 'ARM: Initialize'

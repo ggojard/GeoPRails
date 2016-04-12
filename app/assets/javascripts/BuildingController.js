@@ -69,9 +69,7 @@
     ];
 
     $http.get('/buildings/' + bId + '.json').success(function(b) {
-
       $rootScope.$emit('SetBodyColor', b);
-
       $rootScope.buildings = $scope.buildings;
       $scope.mapMode = 'show';
       $scope.building = b;
@@ -85,7 +83,6 @@
         numberOfFreeDesk: getNumberOfFreeDesk(b),
         totalArea: getTotalArea(b)
       };
-
     });
 
     $scope.deleteBuilding = function() {
@@ -94,10 +91,13 @@
         classes: 'btn-success',
         icon: 'fa-trash-o',
         action: function(callback) {
-          $http.get(gon.building.url + '/delete_all').success(function(res) {
+          $rootScope.$emit('start-loading');
+          var url = '/buildings/' + $scope.building.id + '/delete_all';
+          $http.get(url).success(function(res) {
             if (res.status === 'OK') {
               geoP.notifications.done('La bâtiment a été supprimé.');
-              window.location.href = '/';
+              $rootScope.$emit('stop-loading');
+              window.location.href = '/#/';
               return callback(res);
             }
           });
