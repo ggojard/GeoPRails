@@ -16,7 +16,7 @@
 //= require jquery
 //= require vendor/jquery-svgpan
 //= require vendor/bootstrap
-//= require vendor/three
+//= require three
 //= require moment
 //= require_tree ./vendor
 //= require angularjs-file-upload
