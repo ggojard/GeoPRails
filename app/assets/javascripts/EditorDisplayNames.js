@@ -79,9 +79,9 @@
 
       p.push(getDisplayNameFilter('inventories', false, function(v) {
         return v.filter(function(f) {
-          return f.item !== undefined;
+          return f.item_type !== undefined;
         }).map(function(m) {
-          return m.quantity + ' x ' + m.item.name;
+          return m.quantity + ' x ' + m.item_type.name;
         });
       }, false));
 
