@@ -14,10 +14,14 @@
 //= require angular-resource
 //= require angular-route
 //= require jquery
+//= require snap.svg
+//= require spin.js
 //= require vendor/jquery-svgpan
-//= require vendor/bootstrap
-//= require three
+//= require bootstrap
+//= require threejs
+//= require threejs-trackball
 //= require moment
+//= require moment-locale-fr
 //= require_tree ./vendor
 //= require angularjs-file-upload
 //= require GeoP

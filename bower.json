@@ -1,5 +1,5 @@
 {
-  "name": "GeoP",
+  "name": "geop",
   "description": "geop play",
   "main": "index.js",
   "authors": [
@@ -22,7 +22,15 @@
     "angular-route": ">0.0.0",
     "jquery": "<3.0.0",
     "moment": ">0.0.0",
-    "threejs-stats": ">0.0.0",
-    "threejs": ">0.0.0"
+    "bootstrap": ">0.0.0",
+    "angular-bootstrap": ">0.0.0"
+    "snap.svg": ">0.0.0",
+    "spin.js": ">0.0.0",
+    "moment-locale-fr": "https://raw.githubusercontent.com/moment/moment/develop/locale/fr.js",
+    "threejs": "https://raw.githubusercontent.com/mrdoob/three.js/master/build/three.min.js",
+    "threejs-trackball": "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/js/controls/TrackballControls.js"
+  },
+  "resolutions": {
+    "angular": "1.5.3"
   }
 }
