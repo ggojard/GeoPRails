@@ -23,7 +23,6 @@
     "jquery": "<3.0.0",
     "moment": ">0.0.0",
     "bootstrap": ">0.0.0",
-    "angular-bootstrap": ">0.0.0"
     "snap.svg": ">0.0.0",
     "spin.js": ">0.0.0",
     "moment-locale-fr": "https://raw.githubusercontent.com/moment/moment/develop/locale/fr.js",
