@@ -14,8 +14,8 @@
 //= require angular-resource
 //= require angular-route
 //= require jquery
-//= require snap.svg
-//= require spin.js
+//= require snap.svg/dist/snap.svg-min.js
+//= require spin.js/spin.min.js
 //= require vendor/jquery-svgpan
 //= require bootstrap
 //= require threejs
