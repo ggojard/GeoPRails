@@ -46,11 +46,23 @@
     }
   });
 
-  // app.filter('geoPFilter', function() {
-  //   return function(classInstance, searchMethod, i) {
-  //     return classInstance[searchMethod](i);
-  //   };
-  // });
+  app.filter('offset', function() {
+    return function(input, start) {
+      if (input !== undefined) {
+        start = parseInt(start, 10);
+        return input.slice(start);
+      }
+    };
+  });
+
+  app.filter('highlight', function($sce) {
+    return function(text, phrase) {
+      if (phrase) {
+        text = text.replace(new RegExp('(' + phrase + ')', 'gi'), '<span class="highlighted">$1</span>');
+      }
+      return $sce.trustAsHtml(text);
+    };
+  });
 
   app.directive('setupEditor', function() {
     return {

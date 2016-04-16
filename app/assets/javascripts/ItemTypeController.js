@@ -4,6 +4,12 @@
 
   geoP.app.controller('ItemTypeController', function($scope, $rootScope, $http) {
     $rootScope.$emit('start-loading');
+    $scope.itemFilter = function(item) {
+      var res = item.name.search(new RegExp($scope.query, 'i')) !== -1 || item.code.search(new RegExp($scope.query, 'i')) !== -1 || item.description.search(new RegExp($scope.query, 'i')) !== -1;
+      return res;
+    };
+    $scope.itemsPerPage = 10;
+    $scope.currentPage = 1;
     $http.get('/item_types.json').success(function(items) {
       $scope.items = items;
       $rootScope.$emit('stop-loading');
@@ -57,20 +63,8 @@
       }
       return '';
     };
-    $scope.itemFilter = function(item) {
-      return item.name.search(new RegExp($scope.query, 'i')) !== -1 || item.code.search(new RegExp($scope.query, 'i')) !== -1 || item.description.search(new RegExp($scope.query, 'i')) !== -1;
-    };
     $scope.a = function(items) {
       return items;
-    };
-
-
-  }).filter('highlight', function($sce) {
-    return function(text, phrase) {
-      if (phrase) {
-        text = text.replace(new RegExp('(' + phrase + ')', 'gi'), '<span class="highlighted">$1</span>');
-      }
-      return $sce.trustAsHtml(text);
     };
   });
 

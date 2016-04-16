@@ -1,4 +1,4 @@
-<div class="item box" ng-repeat="i in items | filter:itemFilter">
+<div class="item box" ng-repeat="i in items | filter:itemFilter | offset: (currentPage - 1) * itemsPerPage | limitTo: itemsPerPage">
   <a ng-if="$root.userType !== 'READ'" class="option fa fa-edit" href="/admin/items/{{i.id}}/edit" title="Editer"></a>
   <a class="option fa fa-arrow-circle-right" href="{{i.url}}" title="Voir"></a>
   <div class="box-content" >

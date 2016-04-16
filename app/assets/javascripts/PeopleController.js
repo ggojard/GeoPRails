@@ -22,6 +22,9 @@
   geoP.app.controller('PeopleController', function($scope, $rootScope, $http) {
     $rootScope.$emit('start-loading');
     $scope.i18n = gon.i18n;
+    $scope.itemsPerPage = 10;
+    $scope.currentPage = 1;
+
     $scope.personFilter = function(a) {
       return a.person.fullname.search(new RegExp($scope.query, 'i')) !== -1;
     };
@@ -33,8 +36,6 @@
       });
       $rootScope.$emit('stop-loading');
     });
-
-
 
   });
 }(GeoP));

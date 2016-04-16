@@ -38,8 +38,7 @@
         templateUrl: '/templates/people/show.ng.html'
       }).
       when('/item_types', {
-        templateUrl: '/templates/item_types/index.ng.html',
-        controller: 'ItemTypeController'
+        templateUrl: '/templates/item_types/index.ng.html'
       }).
       when('/item_types/:itemTypeId', {
         templateUrl: '/templates/item_types/show.ng.html',
