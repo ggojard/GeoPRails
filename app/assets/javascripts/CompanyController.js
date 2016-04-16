@@ -36,14 +36,7 @@
     setUploader($scope, FileUploader);
     $scope.company = gon.company;
     $scope.templates = templates;
-    if ($scope.company === null) {
-      $rootScope.$emit('stop-loading');
-    } else {
-      $http.get('/companies/' + gon.company.id + '/organizations.json').success(function(company) {
-        $scope.organizations = company.organizations;
-        $rootScope.$emit('stop-loading');
-      });
-    }
+    $rootScope.$emit('stop-loading');
   });
 
   geoP.app.controller('CompanyOrganizationsController', function($scope, $rootScope, $routeParams, $http) {
