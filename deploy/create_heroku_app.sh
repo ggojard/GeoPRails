@@ -19,7 +19,7 @@ echo "create site app ${s}"
 # CLOUDINARY_URL=cloudinary://417584825955111:3kvrESi5v7lyFW3r0HLt4tjqVtc@surfy-volkswagen
 # https://portal.office.com/admin/default.aspx#ActiveUsersPage
 
-# heroku config:set BUILDPACK_URL='git://github.com/qnyp/heroku-buildpack-ruby-bower.git#run-bower' --app $s
+# heroku buildpacks:add 'git://github.com/qnyp/heroku-buildpack-ruby-bower.git#run-bower' --app $s
 
 # CLOUDINARY_URL=cloudinary://376526364735813:xmbolDN7jkqcPDSSkvi-xr5VuS0@surfy-test
 
