@@ -2,13 +2,7 @@ class ApplicationController < ActionController::Base
   before_action :current_ability, :set_user_globals, :except => [:logo]
   @@the_user = nil
   # protect_from_forgery
-
-  force_ssl if: :ssl_configured?
-
-  def ssl_configured?
-    !Rails.env.development?
-  end
-
+  
   before_filter do
     resource = controller_name.singularize.to_sym
     method = "#{resource}_params"
