@@ -1,7 +1,7 @@
 <div>
-  <h1>Annuaire des personnes</h1>
-  <input type="text" ng-model="query" class="search-query-items" placeholder="Rechercher dans l'annuaire des personnes">
-  <div ng-show="people !== undefined"><uib-pagination total-items="(people | filter:personFilter).length" ng-model="currentPage" items-per-page="itemsPerPage" boundary-link-numbers="true" rotate="false" max-size="6"></uib-pagination></div>
+  <h1>{{::i18n.ui.people.title}}</h1>
+  <input type="text" ng-model="query" class="search-query-items" placeholder="{{::i18n.ui.people.search_placeholder}}">
+  <div ng-show="people !== undefined"><uib-pagination total-items="(people | filter:personFilter).length" ng-model="currentPage" items-per-page="itemsPerPage" boundary-link-numbers="true" rotate="false" max-size="6" previous-text="{{::i18n.ui.pagination.prev}}" next-text="{{::i18n.ui.pagination.next}}"></uib-pagination></div>
   <div class="boxes people">
     <!-- ng-include="'/templates/floors/person.ng.html'" -->
     <div class="box" ng-repeat="a in people | filter:personFilter | offset: (currentPage - 1) * itemsPerPage | limitTo: itemsPerPage" single-person>

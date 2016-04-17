@@ -80,6 +80,7 @@ class ApplicationController < ActionController::Base
     gon.company = get_global_company_json
     gon.item_qualities = ItemQuality.all
     gon.i18n ||= I18n.t('formtastic.labels');
+    gon.i18n[:ui] ||= I18n.t('surfy.ui');
   end
 
   def set_user_type_for_current_user

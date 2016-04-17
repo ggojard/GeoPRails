@@ -180,7 +180,7 @@
     var that = this;
     this.circleSvg = this.svgEditor.canvas.circle(this.json.x, this.json.y, 5);
     this.circleSvg.attr({
-      fill: this.json.item_type.color
+      fill: this.json.color
     });
     this.circleSvg.click(this.select.bind(this));
     this.updateHashCode();

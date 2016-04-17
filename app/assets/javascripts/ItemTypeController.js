@@ -3,6 +3,7 @@
   'use strict';
 
   geoP.app.controller('ItemTypeController', function($scope, $rootScope, $http) {
+    $scope.i18n = gon.i18n;
     $rootScope.$emit('start-loading');
     $scope.itemFilter = function(item) {
       var res = item.name.search(new RegExp($scope.query, 'i')) !== -1 || item.code.search(new RegExp($scope.query, 'i')) !== -1 || item.description.search(new RegExp($scope.query, 'i')) !== -1;

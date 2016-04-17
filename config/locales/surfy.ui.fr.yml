@@ -1,0 +1,12 @@
+fr:
+  surfy:
+    ui:
+      people:
+        title: "Annuaire des personnes"
+        search_placeholder: "Rechercher dans l'annuaire des personnes"
+      item_types:
+        title: "List des types d'objets"
+        search_placeholder: "Rechercher dans l'inventaire"        
+      pagination:
+        next: "Suivant"
+        prev: "Précédent"

@@ -13,6 +13,13 @@ class Item < ActiveRecord::Base
     end
   end
 
+  def color
+    if !self.item_type.nil?
+      return self.item_type.color
+    end
+    return '#000000'
+  end
+
   def fullname
     if !self.room.nil? && !self.item_type.nil?
       '%s (%s) < %s' % [self.item_type.name, self.immo_code, self.room.fullname]
