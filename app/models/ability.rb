@@ -13,7 +13,7 @@ class Ability
     puts 'TRY RESET ARM'.red
     if Rails.cache.exist? 'surfy_main'
       puts 'CACHE CLEAR'.green
-      # Rails.cache.clear
+      Rails.cache.clear
     end
   end
 

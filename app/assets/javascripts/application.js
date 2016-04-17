@@ -10,5 +10,21 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require angular
+//= require angular-resource
+//= require angular-route
+//= require jquery
+//= require snap.svg/dist/snap.svg-min.js
+//= require spin.js/spin.min.js
+//= require vendor/jquery-svgpan
+//= require bootstrap
+//= require threejs
+//= require threejs-trackball
+//= require moment
+//= require moment-locale-fr
+//= require_tree ./vendor
+//= require angularjs-file-upload
+//= require GeoP
+//= require GeoPApp
 
 //= require_tree .
