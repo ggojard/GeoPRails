@@ -104,6 +104,15 @@
     }
   };
 
+  SvgEditor.prototype.selectPolyline = function(roomId) {
+    if (this.itemsById[roomId]) {
+      this.$scope.roomId = roomId;
+      this.itemsById[roomId].selectPolyline();
+      return this.itemsById[roomId];
+    }
+    return null;
+  };
+
   SvgEditor.prototype.updateDisplayNames = function(displayNames) {
     this.displayProperties = displayNames;
     this.mapOnItems('removeDisplayTexts');
@@ -129,7 +138,7 @@
 
     this.bgBox = bgBox;
 
-    imagePath = 'http://' + window.location.host + '/floors/images/' + this.json.id + '?style=original';
+    imagePath = '//' + window.location.host + '/floors/images/' + this.json.id + '?style=original';
     image = new Image();
     image.src = imagePath;
 

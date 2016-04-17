@@ -10,10 +10,16 @@
     this.json = json;
     this.options = [];
     this.editMode = false;
+    this.setOptions();
+  }
 
+
+  ItemSvg.prototype.setOptions = function() {
     var that = this;
 
-    this.optionZoom = {
+    this.buttons = {};
+
+    this.buttons.zoom = {
       label: 'Zoomer',
       classes: 'btn-info',
       icon: 'fa-search',
@@ -22,10 +28,10 @@
       }
     };
 
-    this.editModeSave = {
+    this.buttons.save = {
       'action': function() {
         that.save(function() {
-          that.options = [that.editModeEnable, that.optionZoom];
+          that.options = that.optionsSet.default;
           that.editMode = false;
         });
       },
@@ -34,9 +40,9 @@
       'icon': 'fa-floppy-o '
     };
 
-    this.editModeEnable = {
+    this.buttons.edit = {
       'action': function() {
-        that.options = [that.editModeSave, that.editModeCancel];
+        that.options = that.optionsSet.editMode;
         that.editMode = true;
       },
       'label': 'Modifier',
@@ -44,9 +50,37 @@
       'icon': 'fa-edit'
     };
 
-    this.editModeCancel = {
+    this.buttons.delete = {
       'action': function() {
-        that.options = [that.editModeEnable, that.optionZoom];
+
+        that.svgEditor.$rootScope.$emit('RightPopupShow', 'Supprimer', '', [{
+          'label': 'Confirmer',
+          classes: 'btn-success',
+          icon: 'fa-trash-o',
+          action: function(callback) {
+            that.removeFromDatabase(function(res) {
+              if (res.status === 'OK') {
+                that.remove();
+                geoP.notifications.done('L\'objet a été supprimé.');
+                that.options = that.optionsSet.default;
+                that.editMode = false;
+                return callback(res);
+              }
+              geoP.notifications.error('Impossible de supprimer l\'objet ' + that.json.fullname);
+            });
+          }
+        }]);
+
+      },
+      'label': 'Supprimer',
+      classes: 'btn-danger',
+      'icon': 'fa-trash-o'
+    };
+
+
+    this.buttons.cancel = {
+      'action': function() {
+        that.options = [that.buttons.edit, that.buttons.zoom];
         that.editMode = false;
       },
       'label': 'Annuler',
@@ -54,10 +88,25 @@
       'icon': 'fa-ban'
     };
 
+    that.optionsSet = {
+      default: [that.buttons.edit, that.buttons.zoom],
+      editMode: [that.buttons.save, that.buttons.cancel, that.buttons.delete]
+    };
 
-    that.options = [this.editModeEnable, this.optionZoom];
-  }
+    that.options = that.optionsSet.default;
+  };
 
+  ItemSvg.prototype.remove = function() {
+    this.circleSvg.remove();
+  };
+
+  ItemSvg.prototype.removeFromDatabase = function(callback) {
+    this.svgEditor.$http.delete('/items/' + this.json.id).success(callback).error(function() {
+      return callback({
+        'status': 'KO'
+      });
+    });
+  };
 
   ItemSvg.prototype.zoomOnItem = function() {
     var box, spaceAround = 300;

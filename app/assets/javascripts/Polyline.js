@@ -336,8 +336,6 @@
     }
     this.removeDisplayTexts();
     this.element.remove();
-
-
   };
 
   Polyline.prototype.appendPoint = function(x, y) {

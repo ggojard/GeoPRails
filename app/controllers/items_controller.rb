@@ -1,11 +1,11 @@
 class ItemsController < ApplicationController
-  
+
   def self.item_selection
-    [:item_type, :room, :item_quality]
+    [:item_type, {:room => {:floor => :building}}, :item_quality]
   end
 
   def self.item_as_json
-    {:include =>  [:item_type, {:room => {:methods => [:url_with_floor]}}, :item_quality], :methods => [:qrcode_url, :url] }
+    {:include =>  [:item_type, {:room => {:methods => [:url_with_floor, :fullname]}}, :item_quality], :methods => [:qrcode_url, :url, :fullname] }
   end
 
   # POST /rooms
@@ -21,6 +21,7 @@ class ItemsController < ApplicationController
   end
 
   def qrcode
+    puts 'get qrcode %d' % params[:id]
     @item = Item.find_by_id(params[:id])
     url = request.base_url + @item.url
     qrcode = RQRCode::QRCode.new(url)
@@ -42,6 +43,12 @@ class ItemsController < ApplicationController
     render :text => png
   end
 
+  # DELETE /items/1
+  def destroy
+    item = Item.find_by_id(params[:id])
+    item.delete
+    render json: {'status' => 'OK'}
+  end
 
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
@@ -65,7 +72,7 @@ class ItemsController < ApplicationController
     render json: items.as_json(ItemsController.item_as_json)
   end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+  # Never trust parameters from the scary internet, only allow the white list through.
   def item_params
     params.require(:item).permit(:x, :y, :room_id, :item_type_id, :item_quality_id, :immo_code)
   end

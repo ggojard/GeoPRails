@@ -62,9 +62,7 @@ var GeoP = {};
     var hash, idSection;
     hash = document.location.hash;
     hash = hash.replace(/\?rId=[0-9]*/, '');
-
     idSection = 'itemId=' + roomId;
-
     if (hash.indexOf('itemId') !== -1) {
       hash = hash.replace(/itemId=[0-9]*/, idSection);
     } else {
@@ -78,10 +76,7 @@ var GeoP = {};
     var hash, idSection;
     hash = document.location.hash;
     hash = hash.replace(/\?itemId=[0-9]*/, '');
-
     idSection = 'rId=' + roomId;
-
-
     if (hash.indexOf('rId') !== -1) {
       hash = hash.replace(/rId=[0-9]*/, idSection);
     } else {

@@ -113,17 +113,16 @@
 
 
   geoP.selectPolylineIfIsInRouteParams = function($scope, buildingId) {
-    var roomId, floorId, floorEditor;
+    var roomId, floorId, floorEditor, room;
     roomId = $scope.$routeParams.rId;
 
-    // find current room in the available editors
+    // find current room in the available editors and stop browsing editors when found
     for (floorId in $scope.mapFilter[buildingId].editorsByFloorId) {
       if ($scope.mapFilter[buildingId].editorsByFloorId.hasOwnProperty(floorId)) {
         floorEditor = $scope.mapFilter[buildingId].editorsByFloorId[floorId];
-        if (floorEditor.itemsById[roomId]) {
-          $scope.roomId = roomId;
-          floorEditor.itemsById[roomId].selectPolyline();
-          return floorEditor.itemsById[roomId];
+        room = floorEditor.selectPolyline(roomId);
+        if (room !== null) {
+          return room;
         }
       }
     }

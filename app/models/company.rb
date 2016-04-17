@@ -1,5 +1,5 @@
 class Company < ActiveRecord::Base
-  after_update :reset_arm
+  after_save :reset_arm
   after_destroy :reset_arm
   after_create :reset_arm
 

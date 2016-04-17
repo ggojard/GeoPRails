@@ -14,9 +14,11 @@ class Item < ActiveRecord::Base
   end
 
   def fullname
-    if !self.item_type.nil?
+    if !self.room.nil? && !self.item_type.nil?
+      '%s (%s) < %s' % [self.item_type.name, self.immo_code, self.room.fullname]
+    elsif !self.item_type.nil?
       '%s (%s)' % [self.item_type.name, self.immo_code]
-    else
+    else      
       self.immo_code
     end
   end
