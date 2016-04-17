@@ -10,7 +10,7 @@
 
     $http.get('/buildings/' + $routeParams.buildingId + '.json').success(function(b) {
       $scope.buildings = [b.id];
-      $rootScope.buildings = $scope.buildings;
+      // $rootScope.buildings = $scope.buildings;
       $rootScope.$emit('SetBodyColor', b);
       $scope.building = b;
       $scope.floorsByBuildingId[b.id] = b.floors;

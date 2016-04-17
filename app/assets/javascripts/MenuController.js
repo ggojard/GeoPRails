@@ -5,24 +5,22 @@
     $scope.searchRequests = [];
 
     function stopSearchRequests() {
-
       var i, canceller;
       for (i = 0; i < $scope.searchRequests.length; i += 1) {
         canceller = $scope.searchRequests[i];
         // canceller.stop();
         canceller.resolve('user cancelled');
-
       }
       $scope.searchQueries = [];
     }
 
     $scope.closeSearch = function() {
       $scope.results = {};
+      $scope.globalSearch = '';
     };
 
     $scope.search = function() {
       var canceller;
-      $rootScope.globalSearch = $scope.globalSearch;
       if ($scope.globalSearch.length > 0) {
         stopSearchRequests();
         canceller = $q.defer();

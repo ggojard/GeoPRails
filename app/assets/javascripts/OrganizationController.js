@@ -115,22 +115,7 @@
 
       $scope.buildingsById = buildingsById;
       $scope.buildings = Object.keys(buildings);
-      $rootScope.buildings = $scope.buildings;
-
-      $rootScope.$on('all-editors-loaded', function() {
-        // update the text positions
-        setTimeout(function() {
-          if (Object.keys(buildings).length > 0) {
-            var bId = Object.keys(buildings)[0],
-              j;
-            if ($rootScope.mapFilterByBuildingId[bId].editors.length > 0) {
-              for (j = 0; j < $rootScope.mapFilterByBuildingId[bId].editors.length; j += 1) {
-                $rootScope.mapFilterByBuildingId[bId].editors[j].mapOnItems('updateTextPosition');
-              }
-            }
-          }
-        }, 250);
-      });
+      // $rootScope.buildings = $scope.buildings;
 
       function loadFloors(floorsArrayLocal) {
         var floorsByBuildingId = {},

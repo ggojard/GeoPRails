@@ -1,5 +1,5 @@
 <form class="navbar-form">
-  <input name="globalSearch" id="globalSearch" type="text" class="form-control" ng-change="search()" ng-model="$root.globalSearch" placeholder="Rechercher..." ng-class="{invalid:results.length == 0}">
+  <input name="globalSearch" id="globalSearch" type="text" class="form-control" ng-change="search()" ng-model="globalSearch" placeholder="Rechercher..." ng-class="{invalid:results.length == 0}" autocomplete="off">
   <ul class="search-results">
     <li ng-repeat="p in results.people" ng-click="closeSearch()"><i class="fa fa-user"></i><a data-value="{{p.fullname}}" global-search-replace href="{{p.url}}">{{p.fullname}}</a></li>
     <li ng-repeat="r in results.rooms" ng-click="closeSearch()"><i class="fa fa-codepen"></i><a data-value="{{r.fullname}}" global-search-replace href="{{r.url_with_floor}}">{{r.fullname}}</a></li>

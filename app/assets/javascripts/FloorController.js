@@ -15,6 +15,9 @@
 
 
   geoP.app.controller('FloorController', function($scope, $http, $rootScope, $routeParams) {
+    $scope.buildings = [];
+
+
     $rootScope.$emit('start-loading');
     $scope.$routeParams = $routeParams;
     $scope.floorsByBuildingId = {};
@@ -41,7 +44,7 @@
       }
 
       $scope.buildings = [floor.building_id];
-      $rootScope.buildings = $scope.buildings;
+      // $rootScope.buildings = $scope.buildings;
       $scope.buildingId = floor.building_id;
       $scope.floorsByBuildingId[floor.building_id] = [floor];
       geoP.editorDisplayNames($scope, $rootScope, floor.building_id);
