@@ -44,7 +44,6 @@
       }
 
       $scope.buildings = [floor.building_id];
-      // $rootScope.buildings = $scope.buildings;
       $scope.buildingId = floor.building_id;
       $scope.floorsByBuildingId[floor.building_id] = [floor];
       geoP.editorDisplayNames($scope, $rootScope, floor.building_id);

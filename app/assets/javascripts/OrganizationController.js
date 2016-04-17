@@ -115,7 +115,6 @@
 
       $scope.buildingsById = buildingsById;
       $scope.buildings = Object.keys(buildings);
-      // $rootScope.buildings = $scope.buildings;
 
       function loadFloors(floorsArrayLocal) {
         var floorsByBuildingId = {},
