@@ -32,9 +32,10 @@ ActiveAdmin.register Room do
       table_for room.affectations do
         column "Personnes" do |b|
           if !b.person.nil?
-            link_to b.person.fullname, admin_person_url(b.person.id)
+            link_to b.person.fullname, admin_person_url(b.person.id)            
           end
         end
+        column I18n.t('formtastic.labels.affectation.workplace_name') do |i| i.workplace_name end
       end
     end
 
@@ -101,6 +102,7 @@ ActiveAdmin.register Room do
         app_f.input :_destroy, :as => :boolean, :label => "Retirer l'affectation"
       end
       app_f.input :person, label: I18n.t('formtastic.labels.person.name'), as: :select, :collection => Person.all.map{|u| [u.fullname, u.id]}
+      app_f.input :workplace_name, label: I18n.t('formtastic.labels.affectation.workplace_name')
     end
 
     f.has_many :inventories do |app_f|

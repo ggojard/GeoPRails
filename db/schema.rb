@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160403124602) do
+ActiveRecord::Schema.define(version: 20160417211053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 20160403124602) do
     t.integer  "room_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "workplace_name"
   end
 
   create_table "buildings", force: :cascade do |t|
@@ -265,5 +266,24 @@ ActiveRecord::Schema.define(version: 20160403124602) do
   add_index "rooms", ["floor_id"], name: "index_rooms_on_floor_id", using: :btree
   add_index "rooms", ["room_type_id"], name: "index_rooms_on_room_type_id", using: :btree
 
+  create_table "workplace_affectations", force: :cascade do |t|
+    t.integer  "person_id"
+    t.integer  "workplace_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "workplace_affectations", ["person_id"], name: "index_workplace_affectations_on_person_id", using: :btree
+  add_index "workplace_affectations", ["workplace_id"], name: "index_workplace_affectations_on_workplace_id", using: :btree
+
+  create_table "workplaces", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "room_id"
+  end
+
   add_foreign_key "items", "item_types"
+  add_foreign_key "workplace_affectations", "people"
+  add_foreign_key "workplace_affectations", "workplaces"
 end

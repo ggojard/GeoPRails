@@ -7,14 +7,13 @@ class Room < ActiveRecord::Base
 
   has_many :affectations, :dependent => :destroy
   accepts_nested_attributes_for :affectations, :allow_destroy => true
-
   has_many :people, :through => :affectations
   accepts_nested_attributes_for :people, :allow_destroy => true
 
   has_many :item_types, :through => :inventories
+  accepts_nested_attributes_for :item_types, :allow_destroy => true
   has_many :inventories, :dependent => :destroy
   accepts_nested_attributes_for :inventories, :allow_destroy => true
-  accepts_nested_attributes_for :item_types, :allow_destroy => true
 
   has_many :items, :dependent => :destroy
   accepts_nested_attributes_for :items, :allow_destroy => true
@@ -59,4 +58,6 @@ class Room < ActiveRecord::Base
   end
 
   default_scope {order(:name)}
+  scope :rooms_name, -> { includes({:floor => :building}) }
+
 end

@@ -73,6 +73,9 @@
         return v.filter(function(f) {
           return f.person !== undefined;
         }).map(function(m) {
+          if (m.workplace_name !== null && m.workplace_name.length > 0) {
+            return geoP.format('{0} ({1})', m.person.fullname, m.workplace_name);
+          }
           return m.person.fullname;
         });
       }, false));

@@ -33,7 +33,7 @@ ActiveAdmin.register Item do
 
   form do |f|
     f.inputs "Details" do
-      f.input :room, :as => :select, :collection => Room.includes({:floor => :building}).all.map {|r| [r.reverse_fullname, r.id]}, :include_blank => false
+      f.input :room, :as => :select, :collection => Room.rooms_name.all.sort_by{|r| r.reverse_fullname}.map {|r| [r.reverse_fullname, r.id]}, :include_blank => false
       f.input :immo_code
       f.input :item_type
       f.input :item_quality

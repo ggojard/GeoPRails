@@ -91,6 +91,9 @@ fr:
       organization_type:
         id: "Identifiant type d'organisation"
         name : "Nom"
+      workplace :
+        name : "Nom"
+        room: "Pièce"
       person:
         id: "Identifiant personne"
         name: "Nom"
@@ -122,6 +125,7 @@ fr:
       affectation:
         person: "Personne"
         room : "Pièce"
+        workplace_name: "Nom du poste de travail"
   activerecord:
     models:
       admin_user_role_to_building:
@@ -187,4 +191,7 @@ fr:
       room_type: 
         one :  "Type de pièce"
         other : "Types des pièces"
+      workplace:
+        one : "Poste de travail"
+        other : "Postes de travail"
 

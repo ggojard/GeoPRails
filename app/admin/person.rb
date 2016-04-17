@@ -9,8 +9,6 @@ ActiveAdmin.register Person do
 
   show :title => :fullname do |c|
 
-
-
     panel "Informations" do
       attributes_table_for person do
         row "Visualiser" do link_to  "Ouvrir" , c.url end
@@ -26,7 +24,6 @@ ActiveAdmin.register Person do
         if !person.organization.nil?
           row I18n.t('formtastic.labels.person.organization') do link_to person.organization.name, [:admin, c.organization] end
         end
-
 
         row "Email" do c.email end
         row "Matricule" do c.person_code end
