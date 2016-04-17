@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
   @@the_user = nil
   # protect_from_forgery
 
+  force_ssl if: :ssl_configured?
+
+  def ssl_configured?
+    !Rails.env.development?
+  end
+
   before_filter do
     resource = controller_name.singularize.to_sym
     method = "#{resource}_params"
@@ -52,7 +58,7 @@ class ApplicationController < ActionController::Base
   private
 
   def get_global_company
-      surfy_main = Rails.cache.fetch('surfy_main') do true end
+    surfy_main = Rails.cache.fetch('surfy_main') do true end
 
     if !current_admin_user.nil? && !$arm.nil?
       arm = $arm[current_admin_user.id]
