@@ -10,3 +10,6 @@ fr:
       pagination:
         next: "Suivant"
         prev: "Précédent"
+      home:
+        import_template : "Gabarit d'import"
+

@@ -31,7 +31,8 @@
     $scope.token = csrf_token;
   }
 
-  geoP.app.controller('CompanyController', function($scope, $rootScope, $http, FileUploader) {
+  geoP.app.controller('CompanyController', function($scope, $rootScope, FileUploader) {
+    $scope.i18n = gon.i18n;
     $rootScope.$emit('start-loading');
     setUploader($scope, FileUploader);
     $scope.company = gon.company;

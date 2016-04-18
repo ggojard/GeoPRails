@@ -1,6 +1,6 @@
 <div ng-if="$root.userType === 'ADMIN' && uploader">
   <div>
-    <a href="{{company.url}}/export_template">Gabarit d'import</a>
+    <a href="/companies/{{::company.id}}/export_template">{{::i18n.ui.home.import_template}}</a>
   </div>
   <br/>
   <div class="form-group">
