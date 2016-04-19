@@ -18,11 +18,8 @@ class BuildingsManager
     # add the building to the user role
     @building.admin_user_role_to_buildings.each do |rtb|
       new_rtb = rtb.dup
-      puts (rtb).blue
-      if !new_rtb.nil?
-        new_rtb.building_id = new_b.id
-        new_rtb.save
-      end
+      new_rtb.building_id = new_b.id
+      new_rtb.save
     end
 
     @building.floors.each do |f|
