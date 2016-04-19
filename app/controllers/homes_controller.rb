@@ -32,6 +32,7 @@ class HomesController < GeopController
 
   def clean_repo
     counter = 0
+    counter_role_to_building = 0
     affectations = Affectation.includes([:room, :person])
     affectations.each { |a|  
      if a.room.nil? || a.person.nil? 
@@ -39,8 +40,17 @@ class HomesController < GeopController
       counter += 1
      end
     }
+    admin_user_role_to_buildings = AdminUserRoleToBuilding.includes([:admin_user_role, :building])
+    admin_user_role_to_buildings.each { |a|
+      if a.building.nil? || a.admin_user_role.nil?
+        a.delete
+        counter_role_to_building += 1
+      end
+    }
+
     render json: {
-      'delete_affectations' => counter
+      'delete_affectations' => counter,
+      'counter_role_to_building' => counter_role_to_building
     }
   end
 end
