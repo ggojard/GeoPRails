@@ -23,7 +23,7 @@
 //= require moment
 //= require moment-locale-fr
 //= require_tree ./vendor
-//= require angularjs-file-upload
+//= require angular-file-upload
 //= require GeoP
 //= require GeoPApp
 

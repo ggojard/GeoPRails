@@ -25,7 +25,7 @@ GeoP::Application.configure do
   # Compress JavaScripts and CSS.
   # config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
-  # 
+  #
   # config.assets.js_compressor = Uglifier.new(mangle: false)
   # config.assets.js_compressor = Sprockets::LazyCompressor.new { Uglifier.new(:mangle => false) }
 
@@ -36,7 +36,7 @@ GeoP::Application.configure do
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = true
-  # config.assets.precompile =  ['*.js', '*.css', '*.css.erb'] 
+  # config.assets.precompile =  ['*.js', '*.css', '*.css.erb']
 
   # Generate digests for assets URLs.
   config.assets.digest = true
@@ -86,4 +86,7 @@ GeoP::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  config.active_record.raise_in_transactional_callbacks = true
+
 end

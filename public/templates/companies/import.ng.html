@@ -11,8 +11,8 @@
     <li ng-repeat="item in uploader.queue">
       <span ng-bind="item.file.name"></span>
       <button class="btn btn-default" ng-click="item.upload()">Importer</button>
-      <span class="btn-danger" ng-bind="item.file.error"></span>
-      <span class="btn-success" ng-bind="item.file.ok"></span>
+      <span ng-show="item.file.error" class="btn-danger notification-message" ng-bind="item.file.error"></span>
+      <span ng-show="item.file.ok" class="btn-success notification-message" ng-bind="item.file.ok"></span>
     </li>
   </ol>
 </div>

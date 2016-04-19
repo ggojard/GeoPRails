@@ -1,20 +1,14 @@
 ActiveAdmin.register Person do
   menu :parent => "Annuaire"
 
-  active_admin_import :validate => false,
-    :csv_options => {:col_sep => ";" }
-  # :before_import => proc{ Post.delete_all},
-  # :batch_size => 1000
-
-
   show :title => :fullname do |c|
 
     panel "Informations" do
       attributes_table_for person do
         row "Visualiser" do link_to  "Ouvrir" , c.url end
         row "Identifiant" do c.id end
-        row "Prénom" do c.firstname end
-        row "Nom" do c.lastname end
+        row I18n.t('formtastic.labels.person.firstname') do c.firstname end
+        row I18n.t('formtastic.labels.person.lastname') do c.lastname end
         # row "Etat" do c.person_state end
         # row "Organisation" do c.organization end
         if !person.person_state.nil?
@@ -55,9 +49,11 @@ ActiveAdmin.register Person do
   index do
     selectable_column
     id_column
-    column "Prénom", :firstname
-    column "Nom", :lastname
-    column "Etat", :person_state
+    column I18n.t('formtastic.labels.person.firstname'), :firstname
+    column I18n.t('formtastic.labels.person.lastname'), :lastname
+    column I18n.t('formtastic.labels.person.person_state'), :person_state
+    column I18n.t('formtastic.labels.person.organization'), :organization
+
     actions
   end
 

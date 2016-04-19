@@ -1,6 +1,6 @@
 class AdminUserRole < ActiveRecord::Base
   default_scope {order(:name)}
-  after_save :reset_arm
+  after_commit :reset_arm
   after_destroy :reset_arm
   after_create :reset_arm
 

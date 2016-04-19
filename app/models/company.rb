@@ -1,5 +1,5 @@
 class Company < ActiveRecord::Base
-  after_save :reset_arm
+  after_commit :reset_arm
   after_destroy :reset_arm
   after_create :reset_arm
 
@@ -13,7 +13,6 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :admin_users, :allow_destroy => true
 
   mount_uploader :logo, LogoUploader
-
 
   def reset_arm
     Ability.reset_arm

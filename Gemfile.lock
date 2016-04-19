@@ -17,6 +17,16 @@ GIT
       sass-rails
       sprockets (< 4)
 
+GIT
+  remote: https://github.com/randym/axlsx.git
+  revision: d136835f3a3a54831ad2c7c793a51d3a57273892
+  specs:
+    axlsx (2.1.0.pre)
+      htmlentities (~> 4.3.4)
+      mimemagic (~> 0.3)
+      nokogiri (>= 1.6.6)
+      rubyzip (~> 1.1.7)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -33,8 +43,6 @@ GEM
       rack-test (~> 0.6.2)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actionpack-action_caching (1.1.1)
-      actionpack (>= 4.0.0, < 5.0)
     actionpack-page_caching (1.0.2)
       actionpack (>= 4.0.0, < 5)
     actionview (4.2.6)
@@ -43,10 +51,6 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    active_admin_import (2.1.2)
-      activeadmin (>= 0.6.0)
-      activerecord-import (~> 0.4, >= 0.4.1)
-      rubyzip (~> 1.0, >= 1.0.0)
     activeadmin-translate (0.2.2)
       activeadmin
       globalize3
@@ -61,8 +65,6 @@ GEM
       activemodel (= 4.2.6)
       activesupport (= 4.2.6)
       arel (~> 6.0)
-    activerecord-import (0.13.0)
-      activerecord (>= 3.0)
     activesupport (4.2.6)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
@@ -70,15 +72,10 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.4.0)
-    angularjs-file-upload-rails (2.2.0)
     arbre (1.0.3)
       activesupport (>= 3.0.0)
     arel (6.0.3)
     aws_cf_signer (0.1.3)
-    axlsx (2.0.1)
-      htmlentities (~> 4.3.1)
-      nokogiri (>= 1.4.1)
-      rubyzip (~> 1.0.0)
     bcrypt (3.1.11)
     bourbon (4.2.7)
       sass (~> 3.4)
@@ -136,13 +133,12 @@ GEM
       nokogiri (~> 1.5)
       railties (>= 3, < 5)
     cucumber-wire (0.0.1)
-    database_cleaner (1.5.1)
-    devise (3.5.6)
+    database_cleaner (1.5.2)
+    devise (4.0.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 3.2.6, < 5)
+      railties (>= 4.1.0, < 5.1)
       responders
-      thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
     domain_name (0.5.20160310)
@@ -163,8 +159,6 @@ GEM
       json
       multi_json
       request_store (>= 1.0)
-    haml (4.0.7)
-      tilt
     has_scope (0.6.0)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
@@ -211,7 +205,6 @@ GEM
     netrc (0.11.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
-    oj (2.15.0)
     orm_adapter (0.5.0)
     paperclip (4.3.6)
       activemodel (>= 3.2.0)
@@ -283,10 +276,9 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    roo (1.13.2)
-      nokogiri
-      rubyzip
-      spreadsheet (> 0.6.4)
+    roo (2.3.2)
+      nokogiri (~> 1)
+      rubyzip (~> 1.1, < 2.0.0)
     rqrcode (0.10.1)
       chunky_png (~> 1.0)
     rspec (3.4.0)
@@ -311,8 +303,7 @@ GEM
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
     ruby-graphviz (1.2.2)
-    ruby-ole (1.2.12)
-    rubyzip (1.0.0)
+    rubyzip (1.1.7)
     sass (3.4.22)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -323,8 +314,6 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    spreadsheet (1.1.2)
-      ruby-ole (>= 1.0)
     sprockets (3.6.0)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -356,13 +345,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionpack-action_caching
   actionpack-page_caching
-  active_admin_import
   activeadmin!
   activeadmin-translate
-  angularjs-file-upload-rails
-  axlsx
+  axlsx!
   bullet
   byebug
   cancancan
@@ -376,12 +362,10 @@ DEPENDENCIES
   devise
   formtastic
   gon
-  haml
   jasmine
   jbuilder
   jquery-rails
   launchy
-  oj
   paperclip
   paperclip_database
   pg
@@ -392,7 +376,7 @@ DEPENDENCIES
   rails-patch-json-encode
   rails_12factor
   rdoc
-  roo
+  roo (~> 2.3, >= 2.3.2)
   rqrcode
   rspec
   rspec-rails

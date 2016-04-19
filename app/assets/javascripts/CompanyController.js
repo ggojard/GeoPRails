@@ -20,6 +20,8 @@
 
     uploader.onSuccessItem = function(response, status) {
       /*jslint unparam:true*/
+      response.file.error = null;
+      response.file.ok = null;
       if (status.error) {
         response.file.error = status.error;
         return geoP.notifications.error(status.error);

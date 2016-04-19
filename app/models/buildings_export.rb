@@ -209,13 +209,13 @@ class BuildingsExport
 
   def export_affectation wb, personHeaders
     wb.add_worksheet(:name => "Affectations") do |sheet|
-      headers = ["Identifiant", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment"]
+      headers = ["Identifiant", "Pièce", "Identifiant Pièce", "Nom Etage", "Nom Batiment", "Nom Poste de Travail"]
       headers += personHeaders
       sheet.add_row  headers
       if @exportData
         Affectation.all().each do |o|
           if !o.person.nil? and !o.room.nil? and !o.room.floor.nil? and !o.room.floor.building.nil? and @buildings.include?(o.room.floor.building)
-            row = [o.id, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name]
+            row = [o.id, o.room.name, o.room.id, o.room.floor.name, o.room.floor.building.name, o.workplace_name]
             row += personData(o.person)
             sheet.add_row row
           end

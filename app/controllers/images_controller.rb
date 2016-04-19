@@ -1,13 +1,4 @@
 class ImagesController < GeopController
-  # caches_page :logo, :logo_small, :company_image, :floor_image
-
-  #   caches_action :company_image, :cache_path => proc { |c|
-  #     expires_in 10.minutes, :public => false
-  #     category = c.params[:id]
-  #     {:id => category}
-  # }
-
-  # caches_action :company_image, :if => Proc.new { |c| result = c.headers["Content-Type"] = 'image/png; charset=UTF-8' if result; result }
 
   def floor_image
     @s = params[:style]

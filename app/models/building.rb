@@ -2,7 +2,7 @@ class Building < ActiveRecord::Base
   belongs_to :company
   has_many :floors, -> {order(:level)}, :dependent => :destroy
   accepts_nested_attributes_for :floors, :allow_destroy => true
-  after_save :reset_arm
+  after_commit :reset_arm
   after_destroy :reset_arm
   after_create :reset_arm
 

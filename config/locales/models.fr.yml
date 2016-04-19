@@ -97,7 +97,7 @@ fr:
       person:
         id: "Identifiant personne"
         name: "Nom"
-        fistname : "Prénom"
+        firstname : "Prénom"
         lastname : "Nom"
         person_code: "Matricule"
         email: "E-Mail"

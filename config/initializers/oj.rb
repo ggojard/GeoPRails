@@ -1,1 +1,1 @@
-Oj.default_options = {:mode => :compat }
+# Oj.default_options = {:mode => :compat }

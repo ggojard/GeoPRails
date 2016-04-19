@@ -29,11 +29,11 @@ gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder'
 
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
-
 
 
 # Use ActiveModel has_secure_password
@@ -55,16 +55,18 @@ gem 'devise'
 gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'activeadmin-translate'
 gem 'paperclip'
-gem "paperclip_database"
-gem "rdoc"
-gem "haml"
+gem 'paperclip_database'
+
+# gem 'active_admin_import'
+
+gem 'rdoc'
+# gem "haml"
 gem "gon"
-gem 'axlsx'
-gem 'roo'
+gem 'axlsx', git: 'https://github.com/randym/axlsx.git'
+gem 'roo', '~> 2.3', '>= 2.3.2'
 gem 'rails-patch-json-encode'
-gem "oj"
-gem "active_admin_import"
-gem 'actionpack-action_caching'
+# gem "oj"
+# gem 'actionpack-action_caching'
 gem 'cancancan'
 gem 'actionpack-page_caching'
 gem 'cloudinary'
@@ -72,7 +74,7 @@ gem 'carrierwave'
 gem 'puma'
 gem 'rqrcode'
 gem 'colorize'
-gem 'angularjs-file-upload-rails'
+# gem 'angularjs-file-upload-rails'
 
 group :test, :development do
   gem "byebug"
