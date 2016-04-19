@@ -19,8 +19,10 @@ class BuildingsManager
     @building.admin_user_role_to_buildings.each do |rtb|
       new_rtb = rtb.dup
       puts rtb
-      new_rtb.building_id = new_b.id
-      new_rtb.save
+      if !new_rtb.nil?
+        new_rtb.building_id = new_b.id
+        new_rtb.save
+      end
     end
 
     @building.floors.each do |f|
@@ -47,7 +49,7 @@ class BuildingsManager
           new_item = i.dup
           new_item.room_id = new_r.id
           new_item.save
-        end        
+        end
       end
     end
     new_b.save
