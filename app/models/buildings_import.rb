@@ -339,6 +339,18 @@ class BuildingsImport
   end
 
 
+  def get_room_from_name building_name, floor_name, room_name
+    building = Building.find_by_name(building_name)
+    if !building.nil?
+      floor = Floor.where({building_id: building.id, name: floor_name}).first
+      if !floor.nil?
+        room = Room.where({floor_id: floor.id, name: room_name}).first
+        return room
+      end
+    end
+    return nil
+  end
+
   def import_affectation
     set_sheet(10)
     @map_affectation = {}
@@ -347,7 +359,7 @@ class BuildingsImport
 
       room_name = @s.cell(r, 2)
       room_id = @s.excelx_value(r, 3)
-      
+
       floor_name = @s.cell(r, 4)
       building_name = @s.cell(r, 5)
 
@@ -356,27 +368,31 @@ class BuildingsImport
       person_firstname = @s.cell(r, 8)
       person_lastname = @s.cell(r, 9)
 
+
       if !room_id.nil?
         room = @map_room[room_id]
         if room.nil?
-
-          building = Building.find_by_name(building_name)
-          if !building.nil?
-            floor = Floor.where({building_id: building.id, name: floor_name}).first
-            if !floor.nil?
-              room = Room.where({floor_id: floor.id, name: roon_name}).first
-            end
-          end
+          room = get_room_from_name(building_name, floor_name, room_name)
         end
+      else
+        room = get_room_from_name(building_name, floor_name, room_name)
       end
 
       if !person_id.nil?
-        person =   @map_person[person_id]
+        person =  @map_person[person_id]
       else
         person = Person.where({firstname: person_firstname, lastname: person_lastname}).first
       end
 
-      @map_affectation[id] = Affectation.where({room: room, person: person}).first_or_create
+      # puts ('room : %s' % [room]).green
+      # puts ('person : %s, %s, %s, %s' % [person, person_firstname, person_lastname, person_id]).green
+
+      if (!room.nil? && !person.nil?)
+        # puts ('room : %s, person : %s' % [room, person]).green
+        @map_affectation[id] = Affectation.where({room: room, person: person}).first_or_create
+        @map_affectation[id].workplace_name = workplace_name
+        @map_affectation[id].save
+      end
     end
   end
 

@@ -5,7 +5,10 @@ class Room < ActiveRecord::Base
   belongs_to :room_ground_type
   belongs_to :evacuation_zone
 
-  has_many :affectations, :dependent => :destroy
+
+
+
+  has_many :affectations, -> {order(:workplace_name)}, :dependent => :destroy
   accepts_nested_attributes_for :affectations, :allow_destroy => true
   has_many :people, :through => :affectations
   accepts_nested_attributes_for :people, :allow_destroy => true
