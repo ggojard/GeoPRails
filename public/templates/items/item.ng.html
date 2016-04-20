@@ -15,7 +15,7 @@
             <input type="text" ng-model="item.json.immo_code"/>
           </td>
         </tr>
-        <tr ng-if="!item.editMode">
+        <tr ng-if="!item.editMode" class="qrcode-zone">
           <th>QrCode</th>
           <td><a href="{{item.json.url}}"><img class="qrcode" ng-src="{{item.json.qrcode_url}}"/></a></td>
         </tr>        

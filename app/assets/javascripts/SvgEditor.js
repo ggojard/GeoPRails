@@ -466,6 +466,7 @@
   SvgEditor.prototype.unSelectItems = function() {
     this.mapFilter.editors.forEach(function(editor) {
       editor.$scope.room = null;
+      editor.$scope.item = null;
       editor.mapOnItems('unSelect');
     });
   };
