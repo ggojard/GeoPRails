@@ -1,10 +1,14 @@
 <form class="navbar-form">
   <input name="globalSearch" id="globalSearch" type="text" class="form-control" ng-change="search()" ng-model="globalSearch" placeholder="Rechercher..." ng-class="{invalid:results.length == 0}" autocomplete="off">
   <ul class="search-results">
-    <li ng-repeat="p in results.people" ng-click="closeSearch()"><i class="fa fa-user"></i><a data-value="{{p.fullname}}" global-search-replace href="{{p.url}}">{{p.fullname}}</a></li>
-    <li ng-repeat="r in results.rooms" ng-click="closeSearch()"><i class="fa fa-codepen"></i><a data-value="{{r.fullname}}" global-search-replace href="{{r.url_with_floor}}">{{r.fullname}}</a></li>
-    <li ng-repeat="r in results.floors" ng-click="closeSearch()"><i class="fa fa-delicious"></i> <a data-value="{{r.fullname}}" global-search-replace href="{{r.url}}">{{r.fullname}}</a></li>
-    <li ng-repeat="r in results.organizations" ng-click="closeSearch()"><i class="fa fa-sitemap"></i><a data-value="{{r.name}}" global-search-replace href="{{r.url}}">{{r.name}}</a></li>
-    <li ng-repeat="r in results.items" ng-click="closeSearch()"><i class="fa fa-suitcase"></i><a data-value="{{r.fullname}}" global-search-replace href="{{r.url}}">{{r.fullname}}</a></li>    
+    <li ng-repeat="p in results.people" ng-click="closeSearch()">
+      <i ng-if="p.photo.mini.url === null" class="fa fa-user"></i>
+      <img ng-if="p.photo.mini.url !== null" ng-src="{{::p.photo.mini.url}}">
+      <a data-value="{{::p.fullname}}" global-search-replace href="{{::p.url}}">{{::p.fullname}}</a>
+    </li>
+    <li ng-repeat="r in results.rooms" ng-click="closeSearch()"><i class="fa fa-codepen"></i><a data-value="{{::r.fullname}}" global-search-replace href="{{::r.url_with_floor}}">{{r.fullname}}</a></li>
+    <li ng-repeat="r in results.floors" ng-click="closeSearch()"><i class="fa fa-delicious"></i> <a data-value="{{::r.fullname}}" global-search-replace href="{{::r.url}}">{{::r.fullname}}</a></li>
+    <li ng-repeat="r in results.organizations" ng-click="closeSearch()"><i class="fa fa-sitemap"></i><a data-value="{{::r.name}}" global-search-replace href="{{::r.url}}">{{::r.name}}</a></li>
+    <li ng-repeat="r in results.items" ng-click="closeSearch()"><i class="fa fa-suitcase"></i><a data-value="{{::r.fullname}}" global-search-replace href="{{::r.url}}">{{::r.fullname}}</a></li>    
   </ul>
 </form>

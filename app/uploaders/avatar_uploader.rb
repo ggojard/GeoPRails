@@ -21,6 +21,20 @@ class AvatarUploader < CarrierWave::Uploader::Base
     ]
   end
 
+  version :mini do
+    cloudinary_transformation :transformation => [
+      {:width => 32, :height => 32, :crop => :thumb, :gravity => :face, :radius => :max},
+    ]
+  end
+
+
+  def public_id
+    if ENV['SURFY_DEDICATED_CLOUDINARY'].nil?
+      hash = Digest::MD5.hexdigest("#{model.class.to_s.underscore}_#{model.id}")
+      return "#{GeopController.PlatformName}/#{model.class.to_s.underscore}/#{hash}"
+    end
+  end
+
   # Choose what kind of storage to use for this uploader:
   # storage :file
   # storage :fog

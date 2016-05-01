@@ -13,4 +13,12 @@ class GeopController < ApplicationController
     return render :json => {"error"=> "not_found", "code" => 404}, :status => :not_found
   end
 
+  def self.PlatformName
+    if ENV['SURFY_NAME'].nil?
+      ENV['SURFY_NAME'] = 'surfy'
+    end
+    ENV['SURFY_NAME']
+  end
+
+
 end

@@ -127,8 +127,9 @@ ul.search-results {
     padding: 0;
     li {
 
-        i.fa{
-            margin-right: 4px;
+        i.fa, img{
+            width: 32px;
+            text-align: center;
         }
 
         list-style: none;

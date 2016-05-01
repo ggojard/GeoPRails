@@ -14,9 +14,18 @@ class LogoUploader < CarrierWave::Uploader::Base
   # end
 
   version :small do
-     cloudinary_transformation :height => 42, :crop => :thumb, :secure => true
+    cloudinary_transformation :height => 42, :crop => :thumb, :secure => true
   end
 
+
+  # def public_id
+  #   return "f1"
+  # end
+
+
+  # def public_id
+  #    return "%s/%s" % [ENV['SURFY_NAME'], model.short_name]
+  #  end
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -26,10 +35,22 @@ class LogoUploader < CarrierWave::Uploader::Base
   # storage :file
   # storage :fog
 
+  def public_id
+    if ENV['SURFY_DEDICATED_CLOUDINARY'].nil?
+      hash = Digest::MD5.hexdigest("#{model.class.to_s.underscore}_#{model.id}")
+      return "#{GeopController.PlatformName}/#{model.class.to_s.underscore}/#{hash}"
+    end
+  end
+
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   # def store_dir
-  #   "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  # "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  # ENV['SURFY_NAME']
+  # if (!current_admin_user.nil? && !current_admin_user.company.nil?)
+  #   return
+  # end
+  # "mynew_folder"
   # end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

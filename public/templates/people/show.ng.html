@@ -3,7 +3,7 @@
     <div ng-include="'/templates/floors/person.ng.html'"></div>
   </div>
 
-  <div class="panel panel-default">
+  <div class="panel panel-default" ng-if="a.person.affectations && a.person.affectations.length > 0">
     <div class="panel-heading">
       <h3 class="panel-title">Pièces</h3>
     </div>

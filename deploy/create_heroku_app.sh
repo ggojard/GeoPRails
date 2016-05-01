@@ -14,7 +14,6 @@ heroku addons:create cloudinary --app $s
 # heroku config:set CLOUDINARY_URL=$2 --app $s
 heroku config:set CLOUDINARY_URL=cloudinary://994285314949724:igUQI-fJVuRk0CwipE07siNMgqc@surfydemo --app $s
 
-
 # cloudinary://994285314949724:igUQI-fJVuRk0CwipE07siNMgqc@surfydemo
 # CLOUDINARY_URL=cloudinary://946599992989832:t0cdEWRP_TtWswFkBxlKYKGAKiA@site-blablacar
 # CLOUDINARY_URL=cloudinary://252349323969378:NlDQ-pUSgloHXWIJtj7g0Ejo9gw@surfy-isagri
@@ -32,6 +31,9 @@ echo "transfer database from surfyroot"
 heroku pg:copy surfyroot::DATABASE DATABASE -a $s --confirm $s
 # heroku pg:copy surfymdm::DATABASE DATABASE -a $s 
 # --confirm $s
+
+
+heroku pg:copy surfyroot::DATABASE DATABASE -a surfyhello2 --confirm surfyhello2
 
 
 # build_9c938d881951fe6da344851073cf5ae8

@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
 
+
   # def current_ability
   #   @current_ability = Rails.cache.fetch("#{current_user.cache_key}::ability") do
   #     super

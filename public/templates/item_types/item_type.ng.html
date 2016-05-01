@@ -4,7 +4,7 @@
   <div class="box-content" >
     <h4 ng-bind-html="i.name | highlight:query">{{i.name}}</h4>
     <table class="box-details">
-      <tr ng-if="isSingleView === true">
+      <tr ng-if="isSingleView === true" class="qrcode-zone">
         <th>QrCode</th>
         <td><img class="qrcode" ng-src="{{i.qrcode_url}}"/></td>
       </tr>
@@ -21,10 +21,6 @@
       <tr ng-if="i.price > 0">
         <th>Prix</th>
         <td>{{i.price}} &euro;</td>
-      </tr>
-      <tr ng-if="i.purchase_date !== null">
-        <th>{{::i18n.item.purchase_date}}</th>
-        <td>{{formatDate(i.purchase_date)}}</td>
       </tr>
     </table>
     <hr class="inventory-separator"/>
