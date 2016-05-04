@@ -52,7 +52,6 @@ ActiveAdmin.register Floor do
     def scoped_collection
       Floor.includes(:building)
     end
-
     def permitted_params
       params.permit!
     end

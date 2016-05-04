@@ -57,6 +57,9 @@ class ApplicationController < ActionController::Base
 
     if !current_admin_user.nil? && !$arm.nil?
       arm = $arm[current_admin_user.id]
+      if arm.nil?
+        arm = {:buildings_id => []}
+      end
       u_arm_buildings_id = arm.buildings_id;
       # puts 'get_global_company'
       # puts u_arm_buildings_id

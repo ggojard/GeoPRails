@@ -12,8 +12,8 @@ ActiveAdmin.register Room do
         row I18n.t('formtastic.labels.room.organization') do link_to c.organization.name, [:admin, c.organization] end
       end
       # row I18n.t('formtastic.labels.room.organization') do c.organization end
-      row I18n.t('formtastic.labels.room.area') do "%d m²" % c.area end
-      row I18n.t('formtastic.labels.room.perimeter') do c.perimeter end
+      row I18n.t('formtastic.labels.room.area') do "#{c.area} m²" end
+      row I18n.t('formtastic.labels.room.perimeter') do "#{c.perimeter} m" end
       if !c.room_ground_type.nil?
         row I18n.t('formtastic.labels.room.room_ground_type') do link_to c.room_ground_type.name, [:admin, c.room_ground_type] end
       end

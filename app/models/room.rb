@@ -6,9 +6,11 @@ class Room < ActiveRecord::Base
   belongs_to :evacuation_zone
 
 
-
-
-  has_many :affectations, -> {order(:workplace_name)}, :dependent => :destroy
+  has_many :affectations, -> {order(:workplace_name)}, :dependent => :destroy do
+    def number_of_people
+      return 500
+    end
+  end
   accepts_nested_attributes_for :affectations, :allow_destroy => true
   has_many :people, :through => :affectations
   accepts_nested_attributes_for :people, :allow_destroy => true
@@ -29,10 +31,9 @@ class Room < ActiveRecord::Base
     '/#/floors/%d?rId=%d' % [self.floor_id, self.id]
   end
 
-  # def to_s
-  #   self.fullname
-  # end
-
+  def affectations_count
+    self.affectations.length
+  end
 
   def reverse_fullname
     room_fullname = self.name
@@ -58,6 +59,10 @@ class Room < ActiveRecord::Base
       end
     end
     return room_fullname
+  end
+
+  def ratio
+    (self.area / (self.affectations.count + self.free_desk_number)).round(2)
   end
 
   default_scope {order(:name)}

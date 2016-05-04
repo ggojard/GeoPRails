@@ -276,7 +276,6 @@
       p.y += my;
 
       that.svgEditor.$scope.$apply(function() {
-        that.svgEditor.updateRoomRatio(that.json);
         that.updateArea();
         that.updatePerimeter();
         that.updateTextPosition();

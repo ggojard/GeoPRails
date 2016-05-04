@@ -1,10 +1,10 @@
 /*global GeoP:true*/
-(function(geoP) {
+(function (geoP) {
   'use strict';
 
   var MapFilter, MapFilterHelper, localId = 0;
 
-  MapFilter = function($rootScope, $http, buildingId) {
+  MapFilter = function ($rootScope, $http, buildingId) {
     this.localId = localId;
     localId += 1;
     this.filters = {};
@@ -29,24 +29,24 @@
   };
 
 
-  MapFilter.prototype.addFloorJson = function(floorJson) {
+  MapFilter.prototype.addFloorJson = function (floorJson) {
     this.floorJsons.push(floorJson);
     this.floorJsonById[floorJson.id] = floorJson;
   };
 
-  MapFilter.prototype.addEditor = function(editor) {
+  MapFilter.prototype.addEditor = function (editor) {
     if (editor !== null && editor !== undefined) {
       this.editors.push(editor);
       this.editorsByFloorId[editor.json.id] = editor;
     }
   };
 
-  MapFilter.prototype.ready = function() {
+  MapFilter.prototype.ready = function () {
     this.$rootScope.$emit('MapFilter.Ready', this);
   };
 
 
-  MapFilter.prototype.loadFilter = function(floorJson) {
+  MapFilter.prototype.loadFilter = function (floorJson) {
     var filtersNames = GeoP.filtersNames,
       i, that = this;
 
@@ -61,7 +61,7 @@
   function hexToRgba(hex) {
     var result, resVar;
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-    hex = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
+    hex = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function (m, r, g, b) {
       /*jslint unparam:true*/
       return r + r + g + g + b + b;
     });
@@ -85,12 +85,12 @@
     }
   }
 
-  MapFilter.prototype.registerFilterCtrl = function(buildingId, filterName) {
+  MapFilter.prototype.registerFilterCtrl = function (buildingId, filterName) {
     var filterObj = {},
       that = this;
     filterObj.checkAll = false;
 
-    filterObj.clickOnFilter = function(filter) {
+    filterObj.clickOnFilter = function (filter) {
       filter.state = !filter.state;
       that.updateFilterStateAndContext(filterName, filter);
     };
@@ -109,7 +109,7 @@
       }
     }
 
-    filterObj.CheckAll = function() {
+    filterObj.CheckAll = function () {
       if (filterName === 'direction') {
         iterateAllFiltersAndUpateState(that.updateColorsForDirection);
       } else {
@@ -125,7 +125,7 @@
 
   };
 
-  MapFilter.prototype.registerFilters = function(buildingId) {
+  MapFilter.prototype.registerFilters = function (buildingId) {
     var i, filter;
     for (i = 0; i < geoP.filtersNames.length; i += 1) {
       filter = geoP.filtersNames[i];
@@ -133,7 +133,7 @@
     }
   };
 
-  MapFilter.prototype.loadFilters = function() {
+  MapFilter.prototype.loadFilters = function () {
     var j, that = this,
       bId, mergedFilters, fName;
     for (j = 0; j < that.floorJsons.length; j += 1) {
@@ -175,7 +175,7 @@
     return source;
   }
 
-  MapFilter.prototype.createMergedFiltersByBuilding = function() {
+  MapFilter.prototype.createMergedFiltersByBuilding = function () {
     var bId, filtersForFloorObject, belongsToName, belongsToId, fId, o, n;
     for (bId in this.bfilters) {
       if (this.bfilters.hasOwnProperty(bId)) {
@@ -211,14 +211,14 @@
     }
   };
 
-  MapFilter.prototype.updateFilterState = function(filterName, item) {
+  MapFilter.prototype.updateFilterState = function (filterName, item) {
     this.bfilters[this.buildingId].belongsToItems[filterName][item.id] = item;
   };
 
 
-  MapFilter.prototype.updateColorsForDirection = function(item) {
+  MapFilter.prototype.updateColorsForDirection = function (item) {
     var j, childrenIdList;
-    childrenIdList = item.organizations.map(function(o) {
+    childrenIdList = item.organizations.map(function (o) {
       return o.id;
     });
 
@@ -235,7 +235,7 @@
     }
   };
 
-  MapFilter.prototype.updateFilterStateAndContext = function(filterName, item) {
+  MapFilter.prototype.updateFilterStateAndContext = function (filterName, item) {
     if (filterName === 'direction') {
       this.updateColorsForDirection(item);
     } else {
@@ -246,7 +246,7 @@
   };
 
 
-  MapFilter.prototype.updateContextAfterFilterStateChange = function(filterName) {
+  MapFilter.prototype.updateContextAfterFilterStateChange = function (filterName) {
     var j;
     for (j = 0; j < this.editors.length; j += 1) {
       this.editors[j].mapOnItems('fillFromFilterColor', filterName);
@@ -254,13 +254,13 @@
     }
   };
 
-  MapFilter.prototype.updateCuby = function(filterName) {
+  MapFilter.prototype.updateCuby = function (filterName) {
     if (this.cuby !== null) {
       this.cuby.applyFilters(filterName);
     }
   };
 
-  MapFilter.prototype.initBuildingFilter = function(buildingId, floorId, belongsToKeyName) {
+  MapFilter.prototype.initBuildingFilter = function (buildingId, floorId, belongsToKeyName) {
     if (this.bfilters[buildingId] === undefined) {
       this.bfilters[buildingId] = {};
     }
@@ -278,7 +278,7 @@
     }
   };
 
-  MapFilter.prototype.setup = function() {
+  MapFilter.prototype.setup = function () {
     this.loadFilters();
     this.ready();
     if (this.$rootScope.mapFilterByBuildingId === undefined) {
@@ -289,7 +289,7 @@
 
   MapFilterHelper = {};
 
-  MapFilterHelper.getInitKpi = function() {
+  MapFilterHelper.getInitKpi = function () {
     return {
       count: 0,
       nbPeople: 0,
@@ -302,7 +302,7 @@
 
   geoP.MapFilterHelper = MapFilterHelper;
 
-  MapFilter.prototype.createParentOrganizationFilter = function(floorJson) {
+  MapFilter.prototype.createParentOrganizationFilter = function (floorJson) {
     // return;
     var buildingId, floorId, belongsToKeyName = 'direction',
       orgs, orgId, parentOrgs = {},
@@ -332,7 +332,7 @@
     this.bfilters[buildingId][floorId][belongsToKeyName] = parentOrgsKpi;
   };
 
-  MapFilter.prototype.loadBelongsToData = function(floorJson, belongsToKeyName) {
+  MapFilter.prototype.loadBelongsToData = function (floorJson, belongsToKeyName) {
     var i, room, buildingId, floorId, belongsToKpi, ratio, belongsToItem, kpis;
     buildingId = floorJson.building.id;
     floorId = floorJson.id;
@@ -359,7 +359,7 @@
       }
     }
     // clean the results output format and update ratio
-    Object.keys(kpis).forEach(function(eId) {
+    Object.keys(kpis).forEach(function (eId) {
       var peopleCount, kpiObject = kpis[eId];
       kpiObject.areaSum = parseFloat(kpiObject.areaSum.toFixed(1), 10);
       kpiObject.perimeterSum = parseFloat(kpiObject.perimeterSum.toFixed(1), 10);
@@ -375,7 +375,17 @@
     this.bfilters[buildingId][floorId][belongsToKeyName] = kpis;
   };
 
-  MapFilter.prototype.getFilterForBelongsToKeyName = function(buildingId, belongsToKeyName) {
+  function azSort(a, b) {
+    if (a.name > b.name) {
+      return 1;
+    }
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 0;
+  }
+
+  MapFilter.prototype.getFilterForBelongsToKeyName = function (buildingId, belongsToKeyName) {
     var filter, names, i;
     filter = {
       names: this.bfilters[buildingId].belongsToItems[belongsToKeyName],
@@ -387,20 +397,12 @@
       for (i = 0; i < names.length; i += 1) {
         filter.sortedNames.push(filter.names[names[i]]);
       }
-      filter.sortedNames.sort(function(a, b) {
-        if (a.name > b.name) {
-          return 1;
-        }
-        if (a.name < b.name) {
-          return -1;
-        }
-        return 0;
-      });
+      filter.sortedNames.sort(azSort);
     }
     return filter;
   };
 
-  MapFilter.prototype.loadBelongsToFilter = function(floorJson, belongsToKeyName) {
+  MapFilter.prototype.loadBelongsToFilter = function (floorJson, belongsToKeyName) {
     this.loadBelongsToData(floorJson, belongsToKeyName);
   };
 

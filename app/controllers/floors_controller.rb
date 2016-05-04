@@ -1,42 +1,19 @@
- class FloorsController < GeopController
+class FloorsController < GeopController
   before_action :current_ability
-  before_action :set, only: [:edit, :update, :show]
+  before_action :set, only: [:update]
 
   def self.selection
     [:building, :rooms => RoomsController.selection]
   end
 
   def self.json_selection
-    [{:building => {:methods => [:url, :fullname]}}, RoomsController.json_selection]
+    {:include => [{:building => {:methods => [:url, :fullname]}}, RoomsController.json_selection], :methods => [:filters, :information]}
   end
 
-  def show    
-    respond_to do |format|
-      # @floor = Floor.includes(FloorsController.selection).find_by_id(params[:id])
-
-      format.html {
-        if !authorize_read? @floor; return render_404 end
-        @floor = Floor.find_by_id(params[:id])
-        gon.floor = @floor.as_json(:methods =>[:fullname, :url]);
-        gon.mode = 'show'
-      }
-      format.json{
-        if !authorize_read? @floor; return render_json_404 end
-        if !@floor.nil?
-          render json: @floor.as_json(:include => FloorsController.json_selection, :methods =>[:fullname, :url])
-        else
-          render json: {"error"=>"floor is nil"}
-        end
-      }
-    end
-  end
-
-  def edit
-    if !@floor.nil?
-      gon.floor = @floor.as_json(:include => FloorsController.json_selection)
-    end
-    gon.mode = 'edit'
-    render 'show'
+  def show
+    @floor = Floor.includes(FloorsController.selection).find_by_id(params[:id])
+    if !authorize_read? @floor; return render_json_404 end
+    render json: @floor.as_json(FloorsController.json_selection)
   end
 
   def update

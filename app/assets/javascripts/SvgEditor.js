@@ -290,25 +290,6 @@
     this.applyTransform();
   };
 
-  SvgEditor.prototype.updateRoomRatio = function(r) {
-    var num_person;
-    if (r.affectations.length > 0 || r.free_desk_number > 0) {
-      num_person = r.affectations.length;
-      if (this.json.free_desk_number > 0) {
-        num_person += r.free_desk_number;
-      }
-      r.ratio = parseFloat(r.area / num_person, 10).toFixed(2);
-    }
-  };
-
-  SvgEditor.prototype.updateRoomsRatio = function() {
-    var i, r;
-    for (i = 0; i < this.json.rooms.length; i += 1) {
-      r = this.json.rooms[i];
-      this.updateRoomRatio(r);
-    }
-  };
-
   SvgEditor.prototype.createRoomFromJson = function(json) {
     var b = new geoP.Polyline(this);
     b.json = json;

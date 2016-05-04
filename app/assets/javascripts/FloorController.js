@@ -3,20 +3,8 @@
 (function(geoP) {
   'use strict';
 
-  function countPeopleFromRooms(rooms) {
-    return rooms && rooms.reduce(function(a, b) {
-      return a + b.affectations.length;
-    }, 0);
-  }
-
-  function countFreeSpacesFromRooms(rooms) {
-    return geoP.countFreeDesksFromRooms(rooms);
-  }
-
-
   geoP.app.controller('FloorController', function($scope, $http, $rootScope, $routeParams) {
     $scope.buildings = [];
-
 
     $rootScope.$emit('start-loading');
     $scope.$routeParams = $routeParams;
@@ -51,12 +39,8 @@
       $scope.floorJson = floor;
 
       $scope.information = {};
-      $scope.information[floor.building_id] = {
-        numberOfRooms: floor.rooms.length,
-        numberOfPeople: countPeopleFromRooms(floor.rooms),
-        numberOfFreeDesk: countFreeSpacesFromRooms(floor.rooms),
-        totalArea: geoP.getTotalArea(floor.rooms)
-      };
+      $scope.information[floor.building_id] = floor.information;
+      
       geoP.setFloorsMaps(floor.building_id, $scope.floorsByBuildingId[floor.building_id], $rootScope, $http);
     });
 

@@ -1,13 +1,8 @@
 /*global gon, jQuery, GeoP, angular*/
+/*jslint browser:true*/
 
 (function(geoP, gon, $, angular) {
   'use strict';
-
-  function registerScroll(floorId, scrollTop) {
-    if (localStorage) {
-      localStorage['floor-' + floorId + '-scroll-top'] = scrollTop;
-    }
-  }
 
   function loadScroll(floorId) {
     if (localStorage) {
@@ -76,7 +71,6 @@
           mapFilter = $scope.mapFilter[buildingId];
           floor = mapFilter.floorJsonById[floorId];
           editor = new geoP.SvgEditor(floor, mapFilter, $scope, element[0]);
-          editor.updateRoomsRatio();
           editor.createRoomsPolylines();
           editor.setOptions();
           mapFilter.addEditor(editor);
@@ -92,18 +86,6 @@
   });
 
   geoP.app = app;
-
-  // app.directive('keepscrolltop', function($window) {
-  //   var count = 0;
-  //   return function() {
-  //     angular.element($window).bind('scroll', function() {
-  //       if (count > 0) {
-  //         registerScroll(gon.floor.id, this.pageYOffset);
-  //       }
-  //       count += 1;
-  //     });
-  //   };
-  // });
 
   app.config(['$httpProvider',
     function(provider) {

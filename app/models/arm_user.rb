@@ -7,12 +7,14 @@ class ArmUser
     @floors_id = []
     @company = nil
 
+
     db_user = Rails.cache.fetch('user/%d' % user_id) do
-      AdminUser.includes([{:admin_user_role => [:admin_user_role_to_buildings => [:building => :floors]]}, :admin_user_type]).find_by_id(user_id)
+      puts "no cache for user/#{user_id}".red
+      AdminUser.eager_load([{:admin_user_role => [:admin_user_role_to_buildings => [:building => :floors]]}, :admin_user_type]).find_by_id(user_id)
     end
 
     @user_type ||= get_user_type(db_user)
-    puts "ARM: ?? User (%d) Type is (%s)" % [user_id, @user_type]
+    puts ("ARM: User (%d) Type is (%s)" % [user_id, @user_type]).green
     setup_cancan(db_user, ability)
   end
 
@@ -46,7 +48,10 @@ class ArmUser
       end
     else
       # get all buildings and floors
-      buildings = Building.includes([:floors])
+      buildings = Rails.cache.fetch('buildings_all') do
+        puts "no cache for buildings_all".red
+        Building.eager_load([:floors])
+      end
       buildings.each do |b|
         buildings_id << b.id
         b.floors.each do |f|

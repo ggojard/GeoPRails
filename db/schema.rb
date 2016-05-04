@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160417211053) do
+ActiveRecord::Schema.define(version: 20160502150628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,10 +115,10 @@ ActiveRecord::Schema.define(version: 20160417211053) do
     t.string   "image_content_type", limit: 255
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.integer  "map_scale_x1"
-    t.integer  "map_scale_y1"
-    t.integer  "map_scale_x2"
-    t.integer  "map_scale_y2"
+    t.integer  "map_scale_x1",                   default: 0
+    t.integer  "map_scale_y1",                   default: 0
+    t.integer  "map_scale_x2",                   default: 50
+    t.integer  "map_scale_y2",                   default: 50
     t.float    "map_scale_length"
     t.string   "image_dimensions",   limit: 255
     t.integer  "level"
@@ -149,14 +149,14 @@ ActiveRecord::Schema.define(version: 20160417211053) do
   end
 
   create_table "item_qualities", force: :cascade do |t|
-    t.string   "name",       limit: 255
+    t.string   "name"
     t.integer  "rank"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "item_type_brands", force: :cascade do |t|
-    t.string   "name",       limit: 255
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(version: 20160417211053) do
     t.integer  "room_id"
     t.integer  "item_quality_id"
     t.datetime "purchase_date"
-    t.string   "immo_code",       limit: 255
+    t.string   "immo_code"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "item_type_id"
@@ -254,13 +254,13 @@ ActiveRecord::Schema.define(version: 20160417211053) do
     t.text     "points"
     t.integer  "organization_id"
     t.integer  "room_ground_type_id"
-    t.float    "area"
+    t.float    "area",                            default: 0.0
     t.integer  "evacuation_zone_id"
     t.text     "network"
-    t.float    "perimeter"
+    t.float    "perimeter",                       default: 0.0
     t.string   "anchor_text_point",   limit: 255
-    t.integer  "free_desk_number"
-    t.integer  "capacity"
+    t.integer  "free_desk_number",                default: 0
+    t.integer  "capacity",                        default: 0
   end
 
   add_index "rooms", ["floor_id"], name: "index_rooms_on_floor_id", using: :btree

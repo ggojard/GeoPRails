@@ -3,6 +3,14 @@ require_dependency 'buildings_manager'
 class BuildingsController < GeopController
   before_action :set, only: [:export]
 
+  def self.includes_selection
+    return [:company, :floors => FloorsController.selection]
+  end
+
+  def self.json_selection
+    {:methods => [:url, :information, :filters], :include => [:company, {:floors => FloorsController.json_selection}]}
+  end
+
   def show
     respond_to do |format|
       format.html{
@@ -11,9 +19,9 @@ class BuildingsController < GeopController
         gon.building = b.as_json(:methods => [:url])
       }
       format.json{
-        b = Building.includes([:company, :floors => FloorsController.selection]).find_by_id(params[:id])
+        b = Building.includes(BuildingsController.includes_selection).find_by_id(params[:id])
         if !authorize_read? b; return render_json_404 end
-        render json: b.as_json(:methods => [:url], :include => [:company, {:floors => {:include => FloorsController.json_selection, :methods => [:url, :fullname]}}])
+        render json: b.as_json(BuildingsController.json_selection)
       }
     end
   end
@@ -72,7 +80,7 @@ class BuildingsController < GeopController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set
-    @building = Building.includes([:company, :floors => FloorsController.selection]).find_by_id(params[:id])
+    @building = Building.includes(BuildingsController.includes_selection).find_by_id(params[:id])
   end
 
 end
