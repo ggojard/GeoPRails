@@ -17,13 +17,13 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   version :thumbnail do
     cloudinary_transformation :transformation => [
-      {:width => 100, :height => 100, :crop => :thumb, :gravity => :face, :radius => :max},
+      {:width => 100, :height => 100, :crop => :thumb, :gravity => :face, :radius => :max, :secure => true},
     ]
   end
 
   version :mini do
     cloudinary_transformation :transformation => [
-      {:width => 32, :height => 32, :crop => :thumb, :gravity => :face, :radius => :max},
+      {:width => 32, :height => 32, :crop => :thumb, :gravity => :face, :radius => :max, :secure => true},
     ]
   end
 
