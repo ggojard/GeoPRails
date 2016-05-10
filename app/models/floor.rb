@@ -29,11 +29,13 @@ class Floor < ActiveRecord::Base
     end
   end
 
-  def update_room_for_filter f, filter_name, r
+  def update_room_for_filter f, filter_name, r, value = nil
     filter_name_id = "#{filter_name}_id"
-    if !r[filter_name_id].nil?
-
-      filter = f[filter_name][r[filter_name_id]]
+    if value.nil?
+      value = r[filter_name_id]
+    end
+    if !value.nil?
+      filter = f[filter_name][value]
 
       if filter.nil?
         filter = Floor.initial_filter_value
@@ -48,14 +50,14 @@ class Floor < ActiveRecord::Base
       if !r.perimeter.nil?
         filter['perimeterSum'] += r.perimeter
       end
-      filter['count'] += 1
+      filter['countRooms'] += 1
       filter['freeDeskNumberSum'] += r.free_desk_number
       if !r.capacity.nil?
         filter['capacitySum'] += r.capacity
       end
-      filter['ratio'] += (filter['areaSum'] / (filter['nbPeople'] + filter['freeDeskNumberSum'])).round(2)
+      filter['ratio'] = (filter['areaSum'] / (filter['nbPeople'] + filter['freeDeskNumberSum'])).round(2)
 
-      f[filter_name][r[filter_name_id]] = filter
+      f[filter_name][value] = filter
     end
 
   end
@@ -66,7 +68,7 @@ class Floor < ActiveRecord::Base
 
     source['nbPeople'] += target['nbPeople']
     source['perimeterSum'] += target['perimeterSum']
-    source['count'] += target['count']
+    source['countRooms'] += target['countRooms']
     source['freeDeskNumberSum'] += target['freeDeskNumberSum']
     source['capacitySum'] += target['capacitySum']
     source['ratio'] += (source['areaSum'] / (source['nbPeople'] + source['freeDeskNumberSum'])).round(2)
@@ -76,7 +78,7 @@ class Floor < ActiveRecord::Base
     {
       "areaSum" => 0,
       "nbPeople" => 0,
-      "count" => 0,
+      "countRooms" => 0,
       "perimeterSum" => 0,
       "freeDeskNumberSum" => 0,
       "capacitySum" => 0,
@@ -105,13 +107,15 @@ class Floor < ActiveRecord::Base
       'room_type' => {},
       'organization' => {},
       'evacuation_zone' => {},
-      'room_ground_type' => {}
+      'room_ground_type' => {},
+      'direction' => {}
     }
     self.rooms.each do |r|
       update_room_for_filter(f, 'room_type', r)
       update_room_for_filter(f, 'organization', r)
       update_room_for_filter(f, 'evacuation_zone', r)
       update_room_for_filter(f, 'room_ground_type', r)
+      update_room_for_filter(f, 'direction', r,  r.direction_id)
     end
     return f
   end

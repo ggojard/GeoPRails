@@ -1,7 +1,7 @@
 <ul class="map-options">
   <li ng-repeat="b in mapFilter[buildingId].editorsByFloorId[f.id].mapOptions" class="option"><button ng-click="b.action()" class="btn {{b.classes}}">{{b.label}}<i class="fa {{b.icon}}"></i></button></li>
   <li ng-if="mapFilter[buildingId].editorsByFloorId[f.id].$scope.mapMode === 'edit'">
-    <label for="mapScale">Echelle (mètre): </label> <input name="mapScale" type="number" step="any" ng-model="mapFilter[buildingId].editorsByFloorId[f.id].mapScale.length" ng-change="mapFilter[buildingId].editorsByFloorId[f.id].mapScale.updateMapScale()"/>
+    <label for="mapScale">{{::i18n.ui.map_options.map_scale_name}}: </label> <input name="mapScale" type="number" step="any" ng-model="mapFilter[buildingId].editorsByFloorId[f.id].mapScale.length" ng-change="mapFilter[buildingId].editorsByFloorId[f.id].mapScale.updateMapScale()"/>
   </li>
 </ul>
 <ul class="map-options">

@@ -1,12 +1,12 @@
 /*global GeoP, jQuery, gon */
 
-(function(geoP, $) {
+(function (geoP, $) {
   'use strict';
 
   var charHeight = 14,
     Polyline;
 
-  Polyline = function(svgEditor) {
+  Polyline = function (svgEditor) {
     geoP.extend(geoP.Shape, this, svgEditor);
     this.moveCircles = [];
     this.pointIndex = 0;
@@ -21,7 +21,7 @@
     this.itemsSvgById = {};
   };
 
-  Polyline.prototype.createSvgPoint = function(x, y) {
+  Polyline.prototype.createSvgPoint = function (x, y) {
     var point = this.svgEditor.paper.node.createSVGPoint();
     point.x = x;
     point.y = y;
@@ -53,12 +53,12 @@
   }
 
 
-  Polyline.prototype.updateArea = function() {
+  Polyline.prototype.updateArea = function () {
     var area = this.getArea();
     this.json.area = area;
   };
 
-  Polyline.prototype.updatePerimeter = function() {
+  Polyline.prototype.updatePerimeter = function () {
     var perimeter = this.getPerimeter();
     this.json.perimeter = perimeter;
   };
@@ -77,7 +77,7 @@
     return Math.sqrt(xs + ys);
   }
 
-  Polyline.prototype.getPerimeter = function() {
+  Polyline.prototype.getPerimeter = function () {
     var i, p1, p2, sumDistance = 0,
       d, scaleLen, scaleDim;
     scaleLen = this.svgEditor.mapScale.length;
@@ -99,7 +99,7 @@
   };
 
 
-  Polyline.prototype.getArea = function() {
+  Polyline.prototype.getArea = function () {
     var points = [],
       i = 0,
       scaleLen, scaleDim, p, a, l;
@@ -129,7 +129,7 @@
     return l;
   };
 
-  Polyline.prototype.create = function(x, y) {
+  Polyline.prototype.create = function (x, y) {
     var point = this.createSvgPoint(x, y);
     this.element = this.svgEditor.canvas.polygon(point.x, point.y);
     this.element.attr({
@@ -145,7 +145,7 @@
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 
-  Polyline.prototype.getMiddle = function() {
+  Polyline.prototype.getMiddle = function () {
     var bbox = this.getBBox(this.element.node);
     return {
       x: bbox.x + bbox.width / 2,
@@ -153,13 +153,13 @@
     };
   };
 
-  Polyline.prototype.updateTextPosition = function() {
+  Polyline.prototype.updateTextPosition = function () {
     var middle = this.getMiddle(),
       textBbox, lines, x, y;
     lines = this.text.selectAll('tspan');
 
     x = middle.x;
-    lines.forEach(function(l) {
+    lines.forEach(function (l) {
       var options = {
         x: x,
         style: 'text-anchor: middle'
@@ -184,7 +184,7 @@
 
 
 
-  Polyline.prototype.releaseDragPoints = function() {
+  Polyline.prototype.releaseDragPoints = function () {
     this.svgEditor.cleanDragPointOptions();
     this.setMovePointsToVisibility('visible');
   };
@@ -197,7 +197,7 @@
   }
 
 
-  Polyline.prototype.removeDragPoint = function(dragPoint) {
+  Polyline.prototype.removeDragPoint = function (dragPoint) {
     var that = this,
       dragPointIndex;
     dragPointIndex = this.moveCircles.indexOf(dragPoint);
@@ -209,7 +209,7 @@
     this.save();
   };
 
-  Polyline.prototype.addAndGetMovePoint = function(x, y, pointIndex) {
+  Polyline.prototype.addAndGetMovePoint = function (x, y, pointIndex) {
     var that = this,
       movePointCircle, pointName, deleteLabel;
     movePointCircle = this.svgEditor.canvas.circle(x, y, 5);
@@ -225,7 +225,7 @@
     this.group.add(movePointCircle);
     this.moveCircles.splice(pointIndex, 0, movePointCircle);
 
-    movePointCircle.click(function(e) {
+    movePointCircle.click(function (e) {
       geoP.currentEvent = e;
       that.releaseDragPoints();
       movePointCircle.attr({
@@ -237,12 +237,12 @@
         label: deleteLabel,
         classes: 'btn-danger',
         icon: 'fa-trash-o',
-        action: function() {
+        action: function () {
           that.svgEditor.$rootScope.$emit('RightPopupShow', deleteLabel, '', [{
             'label': 'Confirmer',
             classes: 'btn-success',
             icon: 'fa-trash-o',
-            action: function(callback) {
+            action: function (callback) {
               that.removeDragPoint(movePointCircle);
               that.releaseDragPoints();
               return callback({
@@ -256,7 +256,7 @@
       that.svgEditor.$scope.$apply();
     });
 
-    movePointCircle.drag(function(cx, cy, x, y, e) {
+    movePointCircle.drag(function (cx, cy, x, y, e) {
       /*jslint unparam: true*/
 
       var scale, mousePos, mx, my, ctm, p;
@@ -275,7 +275,7 @@
       p.x += mx;
       p.y += my;
 
-      that.svgEditor.$scope.$apply(function() {
+      that.svgEditor.$scope.$apply(function () {
         that.updateArea();
         that.updatePerimeter();
         that.updateTextPosition();
@@ -283,11 +283,11 @@
 
     });
 
-    movePointCircle.hover(function() {
+    movePointCircle.hover(function () {
       if (that.dragMode === true) {
         that.group.undrag();
       }
-    }, function() {
+    }, function () {
       if (that.dragMode === true) {
         that.group.drag();
       }
@@ -297,7 +297,7 @@
     return movePointCircle;
   };
 
-  Polyline.prototype.getLastPoint = function() {
+  Polyline.prototype.getLastPoint = function () {
     var l = this.element.node.points.numberOfItems;
     if (l > 0) {
       return this.element.node.points.getItem(l - 1);
@@ -305,15 +305,15 @@
     return null;
   };
 
-  Polyline.prototype.removeFromDatabase = function(callback) {
-    this.svgEditor.$http.get('/rooms/' + this.json.id + '/delete').success(callback).error(function() {
+  Polyline.prototype.removeFromDatabase = function (callback) {
+    this.svgEditor.$http.get('/rooms/' + this.json.id + '/delete').success(callback).error(function () {
       return callback({
         'status': 'KO'
       });
     });
   };
 
-  Polyline.prototype.removeDisplayTexts = function() {
+  Polyline.prototype.removeDisplayTexts = function () {
     var i;
     if (this.texts !== undefined) {
       for (i = 0; i < this.texts.length; i += 1) {
@@ -324,7 +324,7 @@
     }
   };
 
-  Polyline.prototype.remove = function() {
+  Polyline.prototype.remove = function () {
     var i = 0,
       c;
 
@@ -337,13 +337,13 @@
     this.element.remove();
   };
 
-  Polyline.prototype.appendPoint = function(x, y) {
+  Polyline.prototype.appendPoint = function (x, y) {
     var point = this.createSvgPoint(x, y);
     this.element.node.points.appendItem(point);
     this.addAndGetMovePoint(x, y, this.pointIndex);
   };
 
-  Polyline.prototype.putInTextArray = function(tokens, maxLineLength, merge) {
+  Polyline.prototype.putInTextArray = function (tokens, maxLineLength, merge) {
     var texts = [],
       i, token, line = [],
       separator = ', ',
@@ -376,7 +376,7 @@
   };
 
 
-  Polyline.prototype.setTexts = function() {
+  Polyline.prototype.setTexts = function () {
     var displayNames, id, displayText, text, i, texts, bbox, value;
     if (this.element === undefined) {
       console.error('this shape don\'t get any elements (maybe missing points)', this.json);
@@ -414,7 +414,7 @@
   };
 
 
-  Polyline.prototype.fillWithColorDependingOnState = function(color, state) {
+  Polyline.prototype.fillWithColorDependingOnState = function (color, state) {
     if (state === true) {
       this.element.attr({
         fill: color
@@ -427,48 +427,47 @@
 
   };
 
-  Polyline.prototype.fillFromFilterColor = function(filterName) {
+  Polyline.prototype.fillFromFilterColor = function (filterName) {
     var value, state, item;
     if (this.json[filterName] !== null) {
       value = this.json[filterName];
       if (value !== undefined) {
-         state = this.svgEditor.mapFilter.isSelected(filterName, value.id);
-         item = gon.references[filterName][value.id];
-        // item = this.svgEditor.mapFilter.bfilters[this.svgEditor.json.building_id].belongsToItems[filterName][value.id];
+        state = this.svgEditor.mapFilter.isSelected(filterName, value.id);
+        item = gon.references[filterName][value.id];
         this.fillWithColorDependingOnState(item.color, state);
       }
     }
   };
 
-  Polyline.prototype.doActionIfItemIsSelected = function() {
+  Polyline.prototype.doActionIfItemIsSelected = function () {
     if (this.svgEditor.$scope.roomId && this.svgEditor.$scope.roomId === this.json.id) {
       this.group.node.setAttribute('class', 'select');
       this.svgEditor.setCurrentRoom(this);
     }
   };
 
-  Polyline.prototype.addItemSvg = function(itemSvg) {
+  Polyline.prototype.addItemSvg = function (itemSvg) {
     this.itemsSvg.push(itemSvg);
     this.itemsSvgById[itemSvg.json.id] = itemSvg;
   };
 
-  Polyline.prototype.createItems = function() {
+  Polyline.prototype.createItems = function () {
     var that = this;
-    this.json.items.forEach(function(i) {
+    this.json.items.forEach(function (i) {
       var itemSvg = new geoP.ItemSvg(that, i);
       itemSvg.addToEditor();
       that.addItemSvg(itemSvg);
     });
   };
 
-  Polyline.prototype.unSelectItems = function() {
+  Polyline.prototype.unSelectItems = function () {
     var i;
     for (i = 0; i < this.itemsSvg.length; i += 1) {
       this.itemsSvg[i].unSelect();
     }
   };
 
-  Polyline.prototype.createInPaper = function() {
+  Polyline.prototype.createInPaper = function () {
     var points, i, p;
     if (this.svgEditor.paper !== null) {
       if (this.json.points !== null) {
@@ -492,7 +491,7 @@
     }
   };
 
-  Polyline.prototype.setMovePointsToVisibility = function(visibility) {
+  Polyline.prototype.setMovePointsToVisibility = function (visibility) {
     var that = this,
       i, movePointCircle;
     for (i = 0; i < that.moveCircles.length; i += 1) {
@@ -505,7 +504,7 @@
   };
 
 
-  Polyline.prototype.getBBox = function(node) {
+  Polyline.prototype.getBBox = function (node) {
     var b;
     try {
       b = node.getBBox();
@@ -515,15 +514,15 @@
     return b;
   };
 
-  Polyline.prototype.updateHashCode = function() {
+  Polyline.prototype.updateHashCode = function () {
     this.hashCode = this.getHash();
   };
 
-  Polyline.prototype.getHash = function() {
+  Polyline.prototype.getHash = function () {
     /*jslint nomen: true*/
     var bbox, h, that = this;
     if (this.group !== undefined) {
-      bbox = this.moveCircles.map(function(m) {
+      bbox = this.moveCircles.map(function (m) {
         return that.getBBox(m.node);
       });
       h = [bbox];
@@ -538,7 +537,7 @@
     return 0;
   };
 
-  Polyline.prototype.getPointsData = function() {
+  Polyline.prototype.getPointsData = function () {
     var points = [],
       camera, ctm, scale, x, y, i, p;
     if (this.group === undefined) {
@@ -561,7 +560,7 @@
   };
 
 
-  Polyline.prototype.getTextTransform = function() {
+  Polyline.prototype.getTextTransform = function () {
     var textTransform = null;
     if (this.text !== undefined) {
       textTransform = this.text.node.getAttribute('transform');
@@ -569,7 +568,7 @@
     return textTransform;
   };
 
-  Polyline.prototype.save = function(callback) {
+  Polyline.prototype.save = function (callback) {
     var data, that = this;
 
     if (this.json === null) {
@@ -581,13 +580,13 @@
         'name': 'B?',
         'anchor_text_point': this.getTextTransform()
       };
-      this.svgEditor.$http.post('/rooms.json', data).success(function(d) {
+      this.svgEditor.$http.post('/rooms.json', data).success(function (d) {
         geoP.notifications.done('La nouvelle pièce a été crée.');
         that.json = d;
         that.setTexts();
         that.updateHashCode();
         return callback && callback();
-      }).error(function() {
+      }).error(function () {
         console.error('impossible to create new');
       });
       return null;
@@ -601,16 +600,16 @@
         'anchor_text_point': this.getTextTransform()
       }
     };
-    this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function() {
+    this.svgEditor.$http.put('/rooms/' + this.json.id + '.json', data).success(function () {
       geoP.notifications.done('La pièce ' + that.json.name + ' a été sauvegardée.');
       that.updateHashCode();
       return callback && callback();
-    }).error(function() {
+    }).error(function () {
       console.error('impossible to update');
     });
   };
 
-  Polyline.prototype.resetActions = function() {
+  Polyline.prototype.resetActions = function () {
     this.dragMode = false;
     this.dragTextMode = false;
     this.text.node.setAttribute('class', null);
@@ -622,7 +621,7 @@
     }
   };
 
-  Polyline.prototype.unSelect = function() {
+  Polyline.prototype.unSelect = function () {
     this.setMovePointsToVisibility('hidden');
     var currentHash = this.getHash();
     if (this.hashCode !== currentHash) {
@@ -634,7 +633,7 @@
     this.unSelectItems();
   };
 
-  Polyline.prototype.zoomOnItem = function() {
+  Polyline.prototype.zoomOnItem = function () {
     var box, spaceAround = 50;
     box = this.group.getBBox();
     box.width += spaceAround;
@@ -646,13 +645,13 @@
     this.svgEditor.centerOnBox(box);
   };
 
-  Polyline.prototype.addZoomOnItemOption = function() {
+  Polyline.prototype.addZoomOnItemOption = function () {
     var that = this;
     this.optionsOnMap.push({
       label: 'Zoomer',
       classes: 'btn-info',
       icon: 'fa-search',
-      action: function() {
+      action: function () {
         that.zoomOnItem();
       }
     });
@@ -660,7 +659,7 @@
 
 
 
-  Polyline.prototype.addMoveTextOption = function(e) {
+  Polyline.prototype.addMoveTextOption = function (e) {
     var that = this,
       mode, enableMode, disableMode, centerBackText;
 
@@ -669,7 +668,7 @@
       label: 'Activer le déplacement du texte',
       classes: 'btn-default',
       icon: ' fa-arrows',
-      action: function() {
+      action: function () {
         that.dragTextMode = true;
         var i = that.optionsOnMap.indexOf(enableMode);
         that.optionsOnMap[i] = disableMode;
@@ -682,7 +681,7 @@
       label: 'Désactiver le déplacement du texte',
       classes: 'btn-danger',
       icon: ' fa-stop',
-      action: function() {
+      action: function () {
         that.dragTextMode = false;
         var i = that.optionsOnMap.indexOf(disableMode);
         that.optionsOnMap[i] = enableMode;
@@ -706,7 +705,7 @@
           label: 'Recentrer le texte',
           classes: 'btn-danger',
           icon: ' fa-crosshairs',
-          action: function() {
+          action: function () {
             that.text.node.setAttribute('transform', '');
             that.select(e);
             // that.updateTextPosition();
@@ -721,7 +720,7 @@
 
   };
 
-  Polyline.prototype.addMovePolylineOption = function() {
+  Polyline.prototype.addMovePolylineOption = function () {
     var that = this,
       mode, enableMode, disableMode;
 
@@ -730,7 +729,7 @@
       label: 'Activer le déplacement du polygone',
       classes: 'btn-default',
       icon: ' fa-arrows',
-      action: function() {
+      action: function () {
         that.dragMode = true;
         var i = that.optionsOnMap.indexOf(enableMode);
         that.optionsOnMap[i] = disableMode;
@@ -742,7 +741,7 @@
       label: 'Désactiver le déplacement du polygone',
       classes: 'btn-danger',
       icon: ' fa-stop',
-      action: function() {
+      action: function () {
         that.dragMode = false;
         var i = that.optionsOnMap.indexOf(disableMode);
         that.optionsOnMap[i] = enableMode;
@@ -760,37 +759,37 @@
 
   };
 
-  Polyline.prototype.addCreateDragPointModeOnItemOption = function() {
+  Polyline.prototype.addCreateDragPointModeOnItemOption = function () {
     var that = this;
     this.optionsOnMap.push({
       label: 'Créer un sommet',
       classes: 'btn-success',
       icon: 'fa-pencil',
-      action: function() {
+      action: function () {
         that.createHoverLines();
       }
     });
   };
 
 
-  Polyline.prototype.clearOptionsOnMap = function() {
+  Polyline.prototype.clearOptionsOnMap = function () {
     this.optionsOnMap = [];
   };
 
-  Polyline.prototype.addDeleteOption = function() {
+  Polyline.prototype.addDeleteOption = function () {
     var deleteLabel, option, that = this;
     deleteLabel = 'Supprimer ' + that.json.name;
     option = {
       label: deleteLabel,
       classes: 'btn-danger',
       icon: 'fa-trash-o',
-      action: function() {
+      action: function () {
         that.svgEditor.$rootScope.$emit('RightPopupShow', deleteLabel, '', [{
           'label': 'Confirmer',
           classes: 'btn-success',
           icon: 'fa-trash-o',
-          action: function(callback) {
-            that.removeFromDatabase(function(res) {
+          action: function (callback) {
+            that.removeFromDatabase(function (res) {
               if (res.status === 'OK') {
                 that.remove();
                 that.clearOptionsOnMap();
@@ -808,7 +807,7 @@
   };
 
 
-  Polyline.prototype.addEditPolylineOption = function() {
+  Polyline.prototype.addEditPolylineOption = function () {
     var that = this;
     if (this.svgEditor.$rootScope.userType === 'READ') {
       return null;
@@ -817,13 +816,13 @@
       label: 'Modifier',
       classes: 'btn-default',
       icon: 'fa-edit',
-      action: function() {
+      action: function () {
         document.location.href = '/admin/rooms/' + that.json.id + '/edit';
       }
     });
   };
 
-  Polyline.prototype.selectPolyline = function() {
+  Polyline.prototype.selectPolyline = function () {
     var that = this;
     this.optionsOnMap = [];
     that.svgEditor.$scope.room = that;
@@ -843,7 +842,7 @@
     }
   };
 
-  Polyline.prototype.checkAndSetDragModeTextEventsAndClass = function() {
+  Polyline.prototype.checkAndSetDragModeTextEventsAndClass = function () {
     if (this.dragTextMode === true) {
       this.text.drag();
       this.group.node.setAttribute('class', this.group.node.className.baseVal + ' moveText');
@@ -856,7 +855,7 @@
     }
   };
 
-  Polyline.prototype.select = function(e) {
+  Polyline.prototype.select = function (e) {
     var that = this,
       $scope = this.svgEditor.$scope;
     geoP.currentEvent = e;
@@ -887,7 +886,7 @@
     }
   };
 
-  Polyline.prototype.close = function() {
+  Polyline.prototype.close = function () {
     this.updateHashCode();
     this.unSelect();
     if (this.element !== undefined) {
@@ -916,13 +915,13 @@
     });
 
     $b = $('body');
-    line.hover(function() {
+    line.hover(function () {
       $b.css('cursor', 'crosshair');
-    }, function() {
+    }, function () {
       $b.css('cursor', 'default');
     });
 
-    line.click(function(e) {
+    line.click(function (e) {
       var mousePos, camera, scale, pos, point;
       geoP.currentEvent = e;
       mousePos = polyline.svgEditor.getMousePos(e);
@@ -958,7 +957,7 @@
     polyline.hoverLines.push(line);
   }
 
-  Polyline.prototype.createHoverLines = function() {
+  Polyline.prototype.createHoverLines = function () {
     var i = 0;
     removeHoverLines(this);
     for (i = 0; i < this.moveCircles.length - 1; i += 1) {

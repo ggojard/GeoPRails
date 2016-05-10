@@ -1,10 +1,10 @@
 /*global GeoP, gon, jQuery*/
-(function(geoP) {
+(function (geoP) {
   'use strict';
 
   var editorDisplayNames;
 
-  geoP.displayNames = (function() {
+  geoP.displayNames = (function () {
 
     function getDisplayNames(buildingId) {
       var displayNamesByName, storedDisplayNames, p;
@@ -12,7 +12,7 @@
       storedDisplayNames = geoP.ls.getB('displayName', buildingId);
       if (storedDisplayNames !== undefined) {
         displayNamesByName = {};
-        storedDisplayNames.map(function(displayName) {
+        storedDisplayNames.map(function (displayName) {
           displayNamesByName[displayName.name] = displayName;
         });
       }
@@ -27,7 +27,7 @@
           value: value,
           merge: true,
           order: 0,
-          format: function(v) {
+          format: function (v) {
             return [v];
           }
         };
@@ -45,34 +45,34 @@
       }
       p = [];
       p.push(getDisplayNameFilter('name', true));
-      p.push(getDisplayNameFilter('area', true, function(v) {
-        return [v.toFixed(2) + ' m²'];
+      p.push(getDisplayNameFilter('area', true, function (v) {
+        return [geoP.format('{0} {1}', v.toFixed(2), geoP.i18n.ui.units.meter_square)];
       }));
-      p.push(getDisplayNameFilter('ratio', true, function(v) {
-        return [v === undefined ? '' : parseFloat(v, 10).toFixed(1) + ' m² / p.'];
+      p.push(getDisplayNameFilter('ratio', true, function (v) {
+        return [v === undefined ? '' : geoP.format('{0} {1}', parseFloat(v, 10).toFixed(1), geoP.i18n.ui.units.ratio_meter_by_people_short)];
       }));
-      p.push(getDisplayNameFilter('perimeter', false, function(v) {
-        return [v + ' m'];
+      p.push(getDisplayNameFilter('perimeter', false, function (v) {
+        return [geoP.format('{0} {1}', v, geoP.i18n.ui.units.meter)];
       }));
-      p.push(getDisplayNameFilter('network', false, function(v) {
+      p.push(getDisplayNameFilter('network', false, function (v) {
         return v.split('\r\n');
       }));
-      p.push(getDisplayNameFilter('free_desk_number', false, function(v) {
+      p.push(getDisplayNameFilter('free_desk_number', false, function (v) {
         if (v === 1) {
-          return [v + ' place libre'];
+          return [geoP.format('{0} {1}', v, geoP.i18n.ui.units.freedesks.one)];
         }
-        return [v + ' places libres'];
+        return [geoP.format('{0} {1}', v, geoP.i18n.ui.units.freedesks.multiple)];
       }));
-      p.push(getDisplayNameFilter('capacity', false, function(v) {
+      p.push(getDisplayNameFilter('capacity', false, function (v) {
         if (v === 1) {
-          return [v + ' place'];
+          return [geoP.format('{0} {1}', v, geoP.i18n.ui.units.capacity.one)];
         }
-        return [v + ' places'];
+        return [geoP.format('{0} {1}', v, geoP.i18n.ui.units.capacity.multiple)];
       }));
-      p.push(getDisplayNameFilter('affectations', false, function(v) {
-        return v.filter(function(f) {
+      p.push(getDisplayNameFilter('affectations', false, function (v) {
+        return v.filter(function (f) {
           return f.person !== undefined;
-        }).map(function(m) {
+        }).map(function (m) {
           if (m.workplace_name !== null && m.workplace_name.length > 0) {
             return geoP.format('{0} ({1})', m.person.fullname, m.workplace_name);
           }
@@ -80,15 +80,15 @@
         });
       }, false));
 
-      p.push(getDisplayNameFilter('inventories', false, function(v) {
-        return v.filter(function(f) {
+      p.push(getDisplayNameFilter('inventories', false, function (v) {
+        return v.filter(function (f) {
           return f.item_type !== undefined;
-        }).map(function(m) {
+        }).map(function (m) {
           return m.quantity + ' x ' + m.item_type.name;
         });
       }, false));
 
-      p = p.sort(function(a, b) {
+      p = p.sort(function (a, b) {
         return a.order > b.order;
       });
       return p;
@@ -100,13 +100,15 @@
 
   }());
 
-  editorDisplayNames = function($scope, $rootScope, buildingId) {
-    $scope.updateDisplayText = function(buildingId) {
+  editorDisplayNames = function ($scope, $rootScope, buildingId) {
+    console.log($scope);
+
+    $scope.updateDisplayText = function (buildingId) {
       var mapFilter;
 
       mapFilter = $rootScope.mapFilterByBuildingId[buildingId];
       if (mapFilter !== undefined) {
-        mapFilter.editors.forEach(function(editor) {
+        mapFilter.editors.forEach(function (editor) {
           editor.updateDisplayNames($scope.displayNamesList[buildingId]);
         });
       }
@@ -123,10 +125,10 @@
 
     $scope.dragControlListeners[buildingId] = {
       containment: 'ul.display-text',
-      accept: function() {
+      accept: function () {
         return true;
       },
-      orderChanged: function() {
+      orderChanged: function () {
         var i;
         for (i = 0; i < $scope.displayNamesList[buildingId].length; i += 1) {
           $scope.displayNamesList[buildingId][i].order = i;

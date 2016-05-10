@@ -1,7 +1,7 @@
 var GeoP = {};
 
-/*global GeoP, moment*/
-(function(geoP) {
+/*global GeoP, moment, gon*/
+(function (geoP) {
   'use strict';
 
   moment.locale('fr');
@@ -11,7 +11,7 @@ var GeoP = {};
   geoP.Colors.NotSelected = '#0b6aff';
   geoP.Colors.Drawing = '#00e567';
 
-  geoP.extend = function(Parent, child) {
+  geoP.extend = function (Parent, child) {
     var p, prop, value;
 
     function construct(constructor, args) {
@@ -33,16 +33,17 @@ var GeoP = {};
     }
   };
 
+  geoP.i18n = gon.i18n;
 
-  geoP.getMenuItem = function(id, name, templateFolder, options) {
+  geoP.getMenuItem = function (id, templateFolder, options) {
     var res = {
       id: id,
-      name: name,
+      name: geoP.i18n.ui.menu[id],
       template: geoP.format('/templates/{0}/{1}.ng.html', templateFolder, id),
-      shouldDisplay: function() {
+      shouldDisplay: function () {
         return true;
       },
-      onclick: function() {
+      onclick: function () {
         return;
       }
     };
@@ -58,7 +59,7 @@ var GeoP = {};
   };
 
 
-  geoP.updateHashWithItemId = function(roomId) {
+  geoP.updateHashWithItemId = function (roomId) {
     var hash, idSection;
     hash = document.location.hash;
     hash = hash.replace(/\?rId=[0-9]*/, '');
@@ -72,7 +73,7 @@ var GeoP = {};
   };
 
 
-  geoP.updateHashWithRoomId = function(roomId) {
+  geoP.updateHashWithRoomId = function (roomId) {
     var hash, idSection;
     hash = document.location.hash;
     hash = hash.replace(/\?itemId=[0-9]*/, '');
@@ -86,22 +87,22 @@ var GeoP = {};
   };
 
 
-  geoP.format = function(format) {
+  geoP.format = function (format) {
     var args = Array.prototype.slice.call(arguments, 1);
-    return format.replace(/\{(\d+)\}/g, function(match, number) {
+    return format.replace(/\{(\d+)\}/g, function (match, number) {
       return args[number] !== undefined ? args[number] : match;
     });
   };
 
-  geoP.displayArea = function(area) {
+  geoP.displayArea = function (area) {
     if (area !== undefined) {
       return area.toFixed(2) + ' m²';
     }
     return '';
   };
 
-  geoP.registerEditorStopLoading = function($rootScope) {
-    $rootScope.$on('editor-loaded', function() {
+  geoP.registerEditorStopLoading = function ($rootScope) {
+    $rootScope.$on('editor-loaded', function () {
       $rootScope.floorsToLoad -= 1;
       if ($rootScope.floorsToLoad <= 0) {
         $rootScope.$emit('stop-loading');
@@ -110,15 +111,15 @@ var GeoP = {};
     });
   };
 
-  geoP.$apply = function($scope) {
-    setTimeout(function() {
+  geoP.$apply = function ($scope) {
+    setTimeout(function () {
       $scope.$apply();
     }, 0);
   };
 
-  geoP.hashCode = function(s) {
+  geoP.hashCode = function (s) {
     /*jslint bitwise: true*/
-    return s.split('').reduce(function(a, b) {
+    return s.split('').reduce(function (a, b) {
       a = ((a << 5) - a) + b.charCodeAt(0);
       return a & a;
     }, 0);
@@ -141,8 +142,8 @@ var GeoP = {};
     label: "Zones d'évacuations"
   }];
 
-  geoP.chartMenuItem = geoP.getMenuItem('charts', 'Rapports', 'floors', {
-    onclick: function($scope, buildingId) {
+  geoP.chartMenuItem = geoP.getMenuItem('charts', 'floors', {
+    onclick: function ($scope, buildingId) {
       geoP.refreshCurrentChart(buildingId, $scope);
     }
   });

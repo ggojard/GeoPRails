@@ -20,11 +20,11 @@
     $scope.buildings = [bId];
 
     $scope.menu = [
-      geoP.getMenuItem('information', 'Information', 'floors'),
-      geoP.getMenuItem('display_floors', 'Accès direct aux étages', 'buildings'),
-      geoP.getMenuItem('filters', 'Filtres', 'floors'),
+      geoP.getMenuItem('information', 'floors'),
+      geoP.getMenuItem('display_floors', 'buildings'),
+      geoP.getMenuItem('filters', 'floors'),
       geoP.chartMenuItem,
-      geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors')
+      geoP.getMenuItem('display_text', 'floors')
     ];
 
     $http.get('/buildings/' + bId + '.json').success(function (b) {
@@ -40,6 +40,14 @@
 
       $scope.information = {};
       $scope.information[b.id] = b.information;
+
+      // set the filters
+      $scope.filters = {};
+      $scope.filters[b.id] = b.filters;
+      $rootScope.mapFilter[b.id].filters = b.filters;
+      $rootScope.mapFilter[b.id].mergedFiltersForBuildings[b.id] = b.filters;
+      $rootScope.mapFilter[b.id].ready();
+
     });
 
     $scope.deleteBuilding = function () {

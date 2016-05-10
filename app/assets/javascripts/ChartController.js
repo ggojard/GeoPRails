@@ -1,5 +1,5 @@
 /*global GeoP, google, $, angular, gon*/
-(function(geoP) {
+(function (geoP) {
   'use strict';
   if (typeof google !== 'undefined') {
     google.load('visualization', '1.0', {
@@ -13,7 +13,7 @@
 
   function setupChartsLoadMethods($rootScope, element) {
     if ($rootScope.mapFilter !== undefined) {
-      var buildingsId, i, bId, mapFilter, filters, filterName, f, filterNames;
+      var buildingsId, i, bId, mapFilter, filters, filterName, f;
       buildingsId = Object.keys($rootScope.mapFilter);
       for (i = 0; i < buildingsId.length; i += 1) {
         bId = buildingsId[i];
@@ -21,11 +21,10 @@
         if (mapFilter !== undefined) {
           bId = mapFilter.buildingId;
           filters = mapFilter.mergedFiltersForBuildings[bId];
-          filterNames = mapFilter.bfilters[bId].belongsToItems;
           for (filterName in filters) {
             if (filters.hasOwnProperty(filterName)) {
               f = filters[filterName];
-              (filterMethod(filterName, f, filterNames, bId, element));
+              (filterMethod(filterName, f, bId, element));
             }
           }
           chartsData[bId][geoP.filtersNames[0].name](element);
@@ -34,7 +33,8 @@
     }
   }
 
-  geoP.refreshCurrentChart = function(bId, $rootScope) {
+  geoP.refreshCurrentChart = function (bId, $rootScope) {
+    /*jslint browser:true*/
     setupChartsLoadMethods($rootScope, document.getElementById('chart_div_' + bId));
     if ($rootScope.currentCharts !== undefined) {
       var chartElement, c;
@@ -47,7 +47,7 @@
     }
   };
 
-  geoP.createColumnChart = function(bId, element, data) {
+  geoP.createColumnChart = function (bId, element, data) {
     var a, options, chart;
     if (typeof google === 'undefined') {
       return;
@@ -74,25 +74,27 @@
     };
   };
 
-  filterMethod = function(fName, filter, filterNames, bId) {
+  filterMethod = function (fName, filter, bId) {
     if (chartsData[bId] === undefined) {
       chartsData[bId] = {};
     }
     if (chartsData[bId[fName]] !== undefined) {
       return false;
     }
-    chartsData[bId][fName] = function(element) {
+    chartsData[bId][fName] = function (element) {
       var data, itemId, item, itemName;
       data = [
-        [fName, gon.i18n.information.total_area + ' (m²)', {
+        [fName, gon.i18n.ui.information.total_area + ' (m²)', {
           role: 'style'
         }]
       ];
       for (itemId in filter) {
         if (filter.hasOwnProperty(itemId)) {
           item = filter[itemId];
-          itemName = filterNames[fName][itemId];
-          data.push([itemName.name, item.areaSum, itemName.color]);
+          itemName = gon.references[fName][itemId];
+          if (itemName !== undefined) {
+            data.push([itemName.name, item.areaSum, itemName.color]);
+          }
         }
       }
       if (data.length > 1) {
@@ -101,10 +103,10 @@
     };
   };
 
-  geoP.app.controller('ChartController', function($scope, $rootScope) {
+  geoP.app.controller('ChartController', function ($scope, $rootScope) {
     $rootScope.currentCharts = currentCharts;
     $scope.filterNames = geoP.filtersNames;
-    $scope.chartPaneClick = function(filter, bId) {
+    $scope.chartPaneClick = function (filter, bId) {
       var e, c;
       e = document.getElementById('chart_div_' + bId);
       chartsData[bId][filter.name](e);

@@ -1,12 +1,12 @@
-/*global GeoP:true, canvg:true, jQuery:true*/
-(function(geoP, canvg, $) {
+/*global GeoP, canvg, jQuery, gon*/
+(function (geoP, canvg, $) {
   'use strict';
 
   var SvgEditor = geoP.SvgEditor,
     legendWidth = 300;
 
   function getBlobUrl(canvasdata) {
-    /*global atob:true,ArrayBuffer:true,Uint8Array:true, Blob:true, self:true, DataView:true */
+    /*global atob,ArrayBuffer,Uint8Array, Blob, self, DataView */
     var byteString, ab, ia, dataView, blob, DOMURL, newurl, i;
     byteString = atob(canvasdata.replace(/^data:image\/(png|jpg);base64,/, ''));
     //wtf is atob?? https://developer.mozilla.org/en-US/docs/Web/API/Window.atob
@@ -58,8 +58,8 @@
     return texts;
   }
 
-  SvgEditor.prototype.setLegend = function() {
-    var filters, filtersStatus,
+  SvgEditor.prototype.setLegend = function () {
+    var filters,
       editor = this,
       line = 0,
       bg, svgElements = [],
@@ -70,27 +70,25 @@
       return;
     }
 
-    function setfilter(text, fKey, fstatus) {
-      text.node.onclick = function() {
-        editor.$rootScope.f[editor.json.building_id][fKey].clickOnFilter(fstatus);
+    function setfilter(text, fKey, referenceItem) {
+      text.node.onclick = function () {
+        editor.mapFilter.clickOnFilter(fKey, referenceItem.id);
       };
     }
-
     editor.removeLegend();
-    filters = editor.mapFilter.bfilters[editor.json.building_id][editor.json.id];
-    filtersStatus = editor.mapFilter.bfilters[editor.json.building_id].belongsToItems;
-    Object.keys(filters).forEach(function(fKey) {
-      Object.keys(filters[fKey]).forEach(function(fId) {
-        var text, fstatus, fontStyle, texts, boxHeight, i, content, y;
-        fstatus = filtersStatus[fKey][fId];
-        if (fstatus.state === true) {
+    filters = editor.mapFilter.selectedFilters;
+    Object.keys(filters).forEach(function (fKey) {
+      editor.mapFilter.getSelectedItemsForFilter(fKey).forEach(function (fId) {
+        var text, referenceItem, fontStyle, texts, boxHeight, i, content, y;
+        referenceItem = gon.references[fKey][fId];
+        if (referenceItem !== undefined) {
           fontStyle = 'font-size:' + fontSize + 'px;font-family:arial;fill:black;dominant-baseline:text-before-edge;text-anchor:middle';
-          texts = textWrap(editor.canvas, fontStyle, legendWidth, fstatus.name);
+          texts = textWrap(editor.canvas, fontStyle, legendWidth, referenceItem.name);
           boxHeight = heightOfLine + texts.length * fontSize;
           bg = editor.canvas.rect(editor.bgBox.w, line, legendWidth, boxHeight);
           svgElements.push(bg);
           bg.attr({
-            'fill': fstatus.colorOpacity,
+            'fill': referenceItem.color_rgba_with_opacity,
             'stroke': 'white'
           });
           bg.addClass('map-legend');
@@ -104,8 +102,7 @@
             text.attr({
               'fill': 'black'
             });
-            setfilter(text, fKey, fstatus);
-
+            setfilter(text, fKey, referenceItem);
             svgElements.push(text);
           }
           line += heightOfLine + texts.length * fontSize;
@@ -115,15 +112,15 @@
     this.svgElements = svgElements;
   };
 
-  SvgEditor.prototype.removeLegend = function() {
+  SvgEditor.prototype.removeLegend = function () {
     if (this.svgElements !== undefined) {
-      this.svgElements.forEach(function(e) {
+      this.svgElements.forEach(function (e) {
         e.remove();
       });
     }
   };
 
-  SvgEditor.prototype.exportToImage = function() {
+  SvgEditor.prototype.exportToImage = function () {
     var svgContainerId = this.svgId,
       editor = this,
       bg,
@@ -165,7 +162,7 @@
     canvasDom = $c[0];
     canvg(canvasDom, h);
 
-    setTimeout(function() {
+    setTimeout(function () {
       var imgsrc, a;
       imgsrc = canvasDom.toDataURL('image/png');
       a = document.createElement('a');

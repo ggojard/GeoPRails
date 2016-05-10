@@ -18,7 +18,7 @@
         <th>Type</th><td>{{room.json.room_type.name}}</td>
       </tr>
       <tr ng-if="room.json.area">
-        <th>{{::i18n.information.total_area}}</th><td>{{$root.geoP.displayArea(room.json.area)}}</td>
+        <th>{{::i18n.ui.information.total_area}}</th><td>{{$root.geoP.displayArea(room.json.area)}}</td>
       </tr>
       <tr  ng-if="room.json.perimeter">
         <th>Périmètre</th><td>{{room.json.perimeter}} m</td>
@@ -42,7 +42,7 @@
         <th>Ratio Affectations</th><td>{{room.json.ratio}} m&#178; / personnes</td>
       </tr>
       <tr ng-if="room.json.affectations.length > 0">
-        <th>{{::i18n.information.number_of_people}}</th><td>{{room.json.affectations.length}}</td>
+        <th>{{::i18n.ui.information.number_of_people}}</th><td>{{room.json.affectations.length}}</td>
       </tr>
       <tr ng-if="room.json.free_desk_number > 0">
         <th>{{::i18n.room.free_desk_number}}</th><td>{{room.json.free_desk_number}}</td>

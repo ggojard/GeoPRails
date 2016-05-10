@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_global_company_json
-    @geop_version = '0.8.24'
+    @geop_version = '0.8.26'
     @global_company.as_json({:methods => [:url, :logo_small], :include => {:buildings => {:include => :floors, :methods => [:url]}}})
   end
 

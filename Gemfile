@@ -1,12 +1,14 @@
 source 'https://rubygems.org'
 
-ruby '2.3.0'
+ruby '2.2.4'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
+# gem 'sqlite3'
+
 
 # Use SCSS for stylesheets
 gem 'sass-rails'
@@ -59,6 +61,7 @@ gem 'paperclip'
 gem 'paperclip_database'
 
 # gem 'active_admin_import'
+gem 'nokogiri', '~> 1.6.8.rc2'
 
 gem 'rdoc'
 # gem "haml"
@@ -66,31 +69,35 @@ gem "gon"
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git'
 gem 'roo', '~> 2.3', '>= 2.3.2'
 gem 'rails-patch-json-encode'
-# gem "oj"
+
 # gem 'actionpack-action_caching'
 gem 'cancancan'
 gem 'actionpack-page_caching'
 gem 'cloudinary'
 gem 'carrierwave'
-gem 'puma'
+# gem 'puma'
 gem 'rqrcode'
 gem 'colorize'
+gem 'awesome_print'
+gem 'color'
 # gem 'angularjs-file-upload-rails'
 
 group :test, :development do
-  gem "byebug"
-  gem "rspec"
-  gem "rspec-rails"
-  gem "webrat"
-  gem "cucumber"
-  gem "cucumber-rails",:require => false
-  gem 'database_cleaner'
-  gem "capybara"
-  gem "launchy"
-  gem "rails-erd"
+  # gem "byebug"
+  # gem "rspec"
+  # gem "rspec-rails"
+  # gem "webrat"
+  # gem "cucumber"
+  # gem "cucumber-rails",:require => false
+  # gem 'database_cleaner'
+  # gem "capybara"
+  # gem "launchy"
+  # gem "rails-erd"
   gem "bullet"
-  gem 'jasmine'  
+  # gem 'jasmine'  
   gem 'quiet_assets'
 end
 
 
+gem 'tzinfo'
+gem 'tzinfo-data'

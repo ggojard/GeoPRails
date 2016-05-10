@@ -16,7 +16,7 @@ class HomesController < GeopController
       "floors" => floors,
       "organizations" => organizations,
       "items" => items,
-      "length" => rooms.count + people.count + floors.count + organizations.count
+      "length" => rooms.size + people.size + floors.size + organizations.size
     }
     render json: @res
   end

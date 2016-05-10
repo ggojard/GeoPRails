@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/gregbell/active_admin.git
-  revision: d84f8190edac8c28f942cd4b6c3e16086da9d7a2
+  revision: 70cfbf3d7d330b901ec82dc003ab79011c37fbe5
   specs:
     activeadmin (1.0.0.pre2)
       arbre (~> 1.0, >= 1.0.2)
@@ -71,12 +71,12 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    addressable (2.4.0)
     arbre (1.0.3)
       activesupport (>= 3.0.0)
     arel (6.0.3)
+    awesome_print (1.6.1)
     aws_cf_signer (0.1.3)
-    bcrypt (3.1.11)
+    bcrypt (3.1.11-x64-mingw32)
     bourbon (4.2.7)
       sass (~> 3.4)
       thor (~> 0.19)
@@ -84,25 +84,16 @@ GEM
     bullet (5.0.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.9.0)
-    byebug (8.2.4)
     cancancan (1.13.1)
-    capybara (2.7.0)
-      addressable
-      mime-types (>= 1.16)
-      nokogiri (>= 1.3.3)
-      rack (>= 1.0.0)
-      rack-test (>= 0.5.4)
-      xpath (~> 2.0)
     carrierwave (0.11.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
       json (>= 1.7)
       mime-types (>= 1.16)
-    choice (0.2.0)
     chunky_png (1.3.5)
     climate_control (0.0.3)
       activesupport (>= 3.0)
-    cloudinary (1.1.5)
+    cloudinary (1.1.6)
       aws_cf_signer
       rest-client
     cocaine (0.5.8)
@@ -114,43 +105,25 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    color (1.8)
     colorize (0.7.7)
     concurrent-ruby (1.0.1)
-    cucumber (2.3.3)
-      builder (>= 2.1.2)
-      cucumber-core (~> 1.4.0)
-      cucumber-wire (~> 0.0.1)
-      diff-lcs (>= 1.1.3)
-      gherkin (~> 3.2.0)
-      multi_json (>= 1.7.5, < 2.0)
-      multi_test (>= 0.1.2)
-    cucumber-core (1.4.0)
-      gherkin (~> 3.2.0)
-    cucumber-rails (1.4.3)
-      capybara (>= 1.1.2, < 3)
-      cucumber (>= 1.3.8, < 3)
-      mime-types (>= 1.16, < 4)
-      nokogiri (~> 1.5)
-      railties (>= 3, < 5)
-    cucumber-wire (0.0.1)
-    database_cleaner (1.5.2)
-    devise (4.0.0)
+    devise (4.0.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
-    diff-lcs (1.2.5)
     domain_name (0.5.20160310)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     execjs (2.6.0)
+    ffi (1.9.10-x64-mingw32)
     figaro (1.1.1)
       thor (~> 0.14)
     formtastic (3.1.4)
       actionpack (>= 3.2.13)
     formtastic_i18n (0.6.0)
-    gherkin (3.2.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     globalize3 (0.1.0)
@@ -173,12 +146,6 @@ GEM
       has_scope (~> 0.6.0.rc)
       railties (>= 3.2, < 5)
       responders
-    jasmine (2.4.0)
-      jasmine-core (~> 2.4)
-      phantomjs
-      rack (>= 1.2.1)
-      rake
-    jasmine-core (2.4.1)
     jbuilder (2.4.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -192,21 +159,19 @@ GEM
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    launchy (2.4.3)
-      addressable (~> 2.3)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     mime-types (2.99.1)
     mimemagic (0.3.0)
-    mini_portile2 (2.0.0)
+    mini_portile2 (2.1.0)
     minitest (5.8.4)
-    multi_json (1.11.2)
-    multi_test (0.1.2)
+    multi_json (1.11.3)
     netrc (0.11.0)
-    nokogiri (1.6.7.2)
-      mini_portile2 (~> 2.0.0.rc2)
+    nokogiri (1.6.8.rc3-x64-mingw32)
+      mini_portile2 (~> 2.1.0)
+      pkg-config (~> 1.1.7)
     orm_adapter (0.5.0)
     paperclip (4.3.6)
       activemodel (>= 3.2.0)
@@ -216,11 +181,10 @@ GEM
       mimemagic (= 0.3.0)
     paperclip_database (2.3.1)
       paperclip (>= 2.3.0)
-    pg (0.18.4)
-    phantomjs (2.1.1.0)
+    pg (0.18.4-x64-mingw32)
+    pkg-config (1.1.7)
     polyamorous (1.3.0)
       activerecord (>= 3.0)
-    puma (3.4.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
@@ -243,11 +207,6 @@ GEM
       activesupport (>= 4.2.0.beta, < 5.0)
       nokogiri (~> 1.6.0)
       rails-deprecated_sanitizer (>= 1.0.1)
-    rails-erd (1.4.6)
-      activerecord (>= 3.2)
-      activesupport (>= 3.2)
-      choice (~> 0.2.0)
-      ruby-graphviz (~> 1.2)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
     rails-patch-json-encode (0.1.1)
@@ -272,9 +231,10 @@ GEM
     rdoc (4.2.2)
       json (~> 1.4)
     request_store (1.3.1)
-    responders (2.1.2)
+    responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
-    rest-client (1.8.0)
+    rest-client (1.8.0-x64-mingw32)
+      ffi (~> 1.9)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
@@ -283,28 +243,6 @@ GEM
       rubyzip (~> 1.1, < 2.0.0)
     rqrcode (0.10.1)
       chunky_png (~> 1.0)
-    rspec (3.4.0)
-      rspec-core (~> 3.4.0)
-      rspec-expectations (~> 3.4.0)
-      rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.4)
-      rspec-support (~> 3.4.0)
-    rspec-expectations (3.4.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.4.0)
-    rspec-mocks (3.4.1)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.4.0)
-    rspec-rails (3.4.2)
-      actionpack (>= 3.0, < 4.3)
-      activesupport (>= 3.0, < 4.3)
-      railties (>= 3.0, < 4.3)
-      rspec-core (~> 3.4.0)
-      rspec-expectations (~> 3.4.0)
-      rspec-mocks (~> 3.4.0)
-      rspec-support (~> 3.4.0)
-    rspec-support (3.4.1)
-    ruby-graphviz (1.2.2)
     rubyzip (1.1.7)
     sass (3.4.22)
     sass-rails (5.0.4)
@@ -328,65 +266,57 @@ GEM
     tilt (2.0.2)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2016.4)
+      tzinfo (>= 1.0.0)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.2)
+    unf_ext (0.0.7.2-x64-mingw32)
     uniform_notifier (1.9.0)
     warden (1.2.6)
       rack (>= 1.0)
-    webrat (0.7.3)
-      nokogiri (>= 1.2.0)
-      rack (>= 1.0)
-      rack-test (>= 0.5.3)
-    xpath (2.0.0)
-      nokogiri (~> 1.3)
 
 PLATFORMS
-  ruby
+  x64-mingw32
 
 DEPENDENCIES
   actionpack-page_caching
   activeadmin!
   activeadmin-translate
+  awesome_print
   axlsx!
   bullet
-  byebug
   cancancan
-  capybara
   carrierwave
   cloudinary
+  color
   colorize
-  cucumber
-  cucumber-rails
-  database_cleaner
   devise
   figaro
   formtastic
   gon
-  jasmine
   jbuilder
   jquery-rails
-  launchy
+  nokogiri (~> 1.6.8.rc2)
   paperclip
   paperclip_database
   pg
-  puma
   quiet_assets
   rails (= 4.2.6)
-  rails-erd
   rails-patch-json-encode
   rails_12factor
   rdoc
   roo (~> 2.3, >= 2.3.2)
   rqrcode
-  rspec
-  rspec-rails
   sass-rails
   sdoc
+  tzinfo
+  tzinfo-data
   uglifier
-  webrat
+
+RUBY VERSION
+   ruby 2.2.4p230
 
 BUNDLED WITH
-   1.11.2
+   1.12.1

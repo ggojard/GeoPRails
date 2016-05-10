@@ -1,18 +1,18 @@
 <table class="box-details">
   <tr>
-    <th>{{::i18n.information.number_of_rooms}}</th>
+    <th>{{::i18n.ui.information.number_of_rooms}}</th>
     <td><span class="animated fadeIn" ng-if="information[buildingId].numberOfRooms !== undefined">{{information[buildingId].numberOfRooms}}</span></td>
   </tr>
   <tr>
-    <th>{{::i18n.information.number_of_people}}</th>
+    <th>{{::i18n.ui.information.number_of_people}}</th>
     <td><span class="animated fadeIn" ng-if="information[buildingId].numberOfPeople !== undefined">{{information[buildingId].numberOfPeople}}</span></td>
   </tr>
   <tr>
-    <th>{{::i18n.information.number_of_freedesks}}</th>
+    <th>{{::i18n.ui.information.number_of_freedesks}}</th>
     <td><span class="animated fadeIn" ng-if="information[buildingId].numberOfFreeDesk !== undefined">{{information[buildingId].numberOfFreeDesk}}</span></td>
   </tr>
   <tr>
-    <th>{{::i18n.information.total_area}}</th>
-    <td><span class="animated fadeIn" ng-if="information[buildingId].totalArea !== undefined">{{information[buildingId].totalArea}} m&#178;</span></td>
+    <th>{{::i18n.ui.information.total_area}}</th>
+    <td><span class="animated fadeIn" ng-if="information[buildingId].totalArea !== undefined">{{information[buildingId].totalArea}} {{::i18n.ui.units.meter_square}}</span></td>
   </tr>  
 </table>

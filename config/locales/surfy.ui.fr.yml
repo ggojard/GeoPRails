@@ -1,6 +1,46 @@
 fr:
   surfy:
     ui:
+      menu:
+        information: "Information"
+        filters: "Filtres"
+        display_floors: "Accès direct aux étages"
+        display_text: "Afficher dans les pièces"
+        charts: "Rapports"
+        org_children: "Services"
+      map_options:
+        create_room: "Créer une pièce"
+        center_map: "Centrer le plan"
+        edit_map: "Modifier le plan"
+        edit_floor: "Modifier l'étage"
+        stop_edit_map: "Arrêter la modification"
+        save_map_as_image: "Sauvegarder l'étage en image"
+        go_fullscreen_mode: "Aller en plein écran"
+        stop_fullscreen_mode: "Arrêter le plein écran"
+        close_room: "Fermer la pièce"
+        cancel_room_creation: "Annuler la création de la pièce"
+        map_scale_name: "Echelle (mètre)"
+      units:
+        ratio_meter_by_people: "m\xB2 / personnes"
+        ratio_meter_by_people_short: "m\xB2 / p."
+        meter_square: "m\xB2"
+        meter: "m"
+        freedesks:
+          one: "place libre"
+          multiple: "place libres"
+        capacity:
+          one: "place"
+          multiple: "places"          
+      information:
+        number_of_rooms: "Nombre de pièces"
+        number_of_freedesks : "Nombre de places libres"
+        number_of_people: "Nombre de personnes"
+        total_area: "Surface"
+        presence_on_number_of_floors: "Présence sur nombre d'étages"
+        ratio_affectations: "Ratio d'affectations m\xB2 / personnes"      
+      filters:
+        select_all: "Tout sélectionner"
+        unselect_all: "Tout désélectionner"
       people:
         title: "Annuaire des personnes"
         search_placeholder: "Rechercher dans l'annuaire des personnes"

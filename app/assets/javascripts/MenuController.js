@@ -32,6 +32,7 @@
         $scope.searchRequests.push(canceller);
       } else {
         $scope.results = {};
+        stopSearchRequests();
       }
     };
     $scope.company = gon.company;

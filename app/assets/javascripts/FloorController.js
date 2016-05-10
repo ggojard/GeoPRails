@@ -1,9 +1,9 @@
 /*global GeoP, gon*/
 
-(function(geoP) {
+(function (geoP) {
   'use strict';
 
-  geoP.app.controller('FloorController', function($scope, $http, $rootScope, $routeParams) {
+  geoP.app.controller('FloorController', function ($scope, $http, $rootScope, $routeParams) {
     $scope.buildings = [];
 
     $rootScope.$emit('start-loading');
@@ -14,19 +14,18 @@
     geoP.registerEditorStopLoading($rootScope);
 
     $scope.menu = [
-      geoP.getMenuItem('information', 'Information', 'floors'),
-      geoP.getMenuItem('filters', 'Filtres', 'floors'),
+      geoP.getMenuItem('information', 'floors'),
+      geoP.getMenuItem('filters', 'floors'),
       geoP.chartMenuItem,
-      geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors')
+      geoP.getMenuItem('display_text', 'floors')
     ];
 
     $scope.itemHandler = new geoP.ItemHandler($http);
 
-    $http.get('/floors/' + $routeParams.floorId + '.json').success(function(floor) {
+    $http.get('/floors/' + $routeParams.floorId + '.json').success(function (floor) {
       $rootScope.$emit('SetBodyColor', floor.building);
-      
 
-
+      console.log(floor);
       $scope.room = null;
       if ($routeParams.rid) {
         $scope.roomId = $routeParams.rid;
@@ -43,15 +42,15 @@
 
       $scope.information = {};
       $scope.information[floor.building_id] = floor.information;
-      
-      geoP.setFloorsMaps(floor.building_id, $scope.floorsByBuildingId[floor.building_id], $rootScope, $http);
 
+      geoP.setFloorsMaps(floor.building_id, $scope.floorsByBuildingId[floor.building_id], $rootScope, $http);
 
       // set the filters
       $scope.filters = {};
       $scope.filters[floor.building_id] = floor.filters;
       $rootScope.mapFilter[floor.building_id].filters = floor.filters;
-
+      $rootScope.mapFilter[floor.building_id].mergedFiltersForBuildings[floor.building_id] = floor.filters;
+      $rootScope.mapFilter[floor.building_id].ready();
 
     });
 

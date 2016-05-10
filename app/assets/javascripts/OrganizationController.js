@@ -1,12 +1,12 @@
 /*global GeoP, gon, jQuery*/
-(function(geoP, $) {
+(function (geoP, $) {
   'use strict';
 
 
   function countFreeDesksFromOrganization(organization_id, floorsByBuildingId, building_id) {
     var res = 0;
-    floorsByBuildingId[building_id].map(function(a) {
-      var rooms = a.rooms.filter(function(r) {
+    floorsByBuildingId[building_id].map(function (a) {
+      var rooms = a.rooms.filter(function (r) {
         if (r.organization_id === organization_id) {
           return true;
         }
@@ -47,36 +47,30 @@
     $scope.information[localBuildingId] = getOrganizationInformation(orgMapFilter, $scope.o.id, localBuildingId, $scope);
     geoP.editorDisplayNames($scope, $rootScope, localBuildingId);
 
-    $rootScope.$on('editor-loaded-' + localBuildingId, function(e, editor) {
+    $rootScope.$on('editor-loaded-' + localBuildingId, function (e, editor) {
       /*jslint unparam:true*/
-      filter = mapFilter.bfilters[localBuildingId].belongsToItems[$scope.filterType][$scope.o.id];
-      if (filter !== undefined) {
-        filter.state = true;
-        mapFilter.updateFilterStateAndContext($scope.filterType, filter);
-      }
+      mapFilter.clickOnFilter($scope.filterType, $scope.o.id);
     });
   }
 
-  geoP.app.controller('OrganizationController', function($scope, $http, $rootScope, $routeParams) {
+  geoP.app.controller('OrganizationController', function ($scope, $http, $rootScope, $routeParams) {
     $rootScope.$emit('start-loading');
-
+    $scope.i18n = gon.i18n;
     $scope.$routeParams = $routeParams;
+
     $scope.menu = [
-      geoP.getMenuItem('information', 'Information', 'organizations'),
-      geoP.getMenuItem('filters', 'Filtres', 'floors'),
+      geoP.getMenuItem('information', 'organizations'),
+      geoP.getMenuItem('filters', 'floors'),
       geoP.chartMenuItem,
-      geoP.getMenuItem('display_text', 'Afficher dans les pièces', 'floors'),
-      geoP.getMenuItem('org_children', 'Services', 'organizations', {
-        shouldDisplay: function() {
+      geoP.getMenuItem('display_text', 'floors'),
+      geoP.getMenuItem('org_children', 'organizations', {
+        shouldDisplay: function () {
           return $scope.o !== undefined && $scope.o.organizations.length > 0;
         }
       })
     ];
 
-    $scope.i18n = gon.i18n;
-
-
-    $http.get('/organizations/' + $routeParams.organizationId + '.json').success(function(o) {
+    $http.get('/organizations/' + $routeParams.organizationId + '.json').success(function (o) {
 
       var i, floors, r, floorsArray, floorsMax, fId, buildings, buildingsById = {},
         f;
@@ -87,7 +81,6 @@
       floors = {};
       buildings = {};
       geoP.registerEditorStopLoading($rootScope);
-
 
       function loadRooms(rooms) {
         for (i = 0; i < rooms.length; i += 1) {
@@ -104,7 +97,7 @@
 
       loadRooms($scope.o.rooms);
 
-      $scope.o.organizations.forEach(function(org) {
+      $scope.o.organizations.forEach(function (org) {
         loadRooms(org.rooms);
       });
 
@@ -124,7 +117,7 @@
           $scope.noRoomsForOrganization = true;
           return false;
         }
-        floorsArrayLocal.forEach(function(f) {
+        floorsArrayLocal.forEach(function (f) {
           buildingsById[f.building_id] = f.building;
           if (floorsByBuildingId[f.building_id] === undefined) {
             floorsByBuildingId[f.building_id] = [];
@@ -132,11 +125,11 @@
           floorsByBuildingId[f.building_id].push(f);
 
         });
-        Object.keys(buildings).forEach(function(bId) {
+        Object.keys(buildings).forEach(function (bId) {
           if (floorsByBuildingId[bId] === undefined) {
             return false;
           }
-          floorsByBuildingId[bId].sort(function(a, b) {
+          floorsByBuildingId[bId].sort(function (a, b) {
             return a.level > b.level;
           });
         });
@@ -181,10 +174,10 @@
         $scope.noRoomsForOrganization = true;
       }
 
-      $scope.onBuildingClick = function(bId) {
+      $scope.onBuildingClick = function (bId) {
         if ($rootScope.mapFilterByBuildingId !== undefined && $rootScope.mapFilterByBuildingId[bId] !== undefined) {
           var editors = $rootScope.mapFilterByBuildingId[bId].editors;
-          editors.forEach(function(editor) {
+          editors.forEach(function (editor) {
             editor.mapOnItems('updateTextPosition');
           });
           geoP.selectPolylineIfIsInRouteParams($scope, bId);

@@ -20,9 +20,7 @@
     "url": "https://github.com/pouyajoon/GeoPRails/issues"
   },
   "dependencies": {
-    "bower": "0.6.x",
-    "karma": ">= 0.12.16",
-    "karma-jasmine": ">= 0.2.2"
+    "bower": ">= 0.6.x"
   },
   "scripts": {
     "postinstall": "./node_modules/bower/bin/bower install"

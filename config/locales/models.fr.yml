@@ -2,21 +2,14 @@ fr:
   formtastic:
     create: 'Créer %{model}'
     update: 'Mettre à jour %{model}'
-    labels:
-      information:
-        number_of_rooms: "Nombre de pièces"
-        number_of_freedesks : "Nombre de places libres"
-        number_of_people: "Nombre de personnes"
-        total_area: "Surface"
-        presence_on_number_of_floors: "Présence sur nombre d'étages"
-        ratio_affectations: "Ratio d'affectations"
+    labels:      
       admin_user_role_to_building:
         admin_user_role: "Rôle"
         building: "Bâtiment"
       room:
         id: "Identifiant pièce"
         name: "Nom"
-        area: "Aire (m²)"
+        area: "Surface (m\xB2)"
         network: "Informatique"
         affectations: "Affectations"
         inventories: "Inventaire"
@@ -27,7 +20,7 @@ fr:
         room_type: "Type de pièce"
         organization: "Organisation"
         floor: "Etage"
-        ratio: "Ratio m²/personnes"
+        ratio: "Ratio m\xB2/personnes"
         capacity: "Capacité"
       admin_user_role:
         id: "Identifiant"

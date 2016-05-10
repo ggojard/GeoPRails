@@ -40,7 +40,7 @@ ActiveAdmin.register Room do
     end
 
     inventories = room.inventories
-    if inventories.count > 0
+    if inventories.size > 0
       panel "Inventaire (Type)" do
         table_for inventories do
           column "Item Type" do |b|
@@ -59,7 +59,7 @@ ActiveAdmin.register Room do
     end
 
     items = room.items
-    if items.count > 0
+    if items.size > 0
       panel I18n.t('activerecord.models.item.other') do
         table_for items do
           column I18n.t('formtastic.labels.item.immo_code') do |i| link_to i.name, [:admin, i] end

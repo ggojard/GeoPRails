@@ -6,6 +6,7 @@ class Room < ActiveRecord::Base
   belongs_to :evacuation_zone
 
 
+
   has_many :affectations, -> {order(:workplace_name)}, :dependent => :destroy do
     def number_of_people
       return 500
@@ -62,7 +63,19 @@ class Room < ActiveRecord::Base
   end
 
   def ratio
-    (self.area / (self.affectations.count + self.free_desk_number)).round(2)
+    (self.area / (self.affectations.size + self.free_desk_number)).round(2)
+  end
+
+  def direction_id
+    if !self.organization.nil? && !self.organization.organization.nil?
+      return self.organization.organization.id
+    end
+  end
+ 
+  def direction
+    if !self.organization.nil? && !self.organization.organization.nil?
+      return self.organization.organization
+    end
   end
 
   default_scope {order(:name)}

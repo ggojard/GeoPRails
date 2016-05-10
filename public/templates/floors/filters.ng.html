@@ -1,30 +1,27 @@
 <div class="filter-container" ng-controller="FiltersController">
   <uib-tabset justified="true" type="pills" class="nav" role="tablist">
-  <uib-tab ng-repeat="filter in filterNames" heading="{{filter.label}}" ng-if="$root.f[buildingId][filter.name].filters.sortedNames.length > 0" >
-  <div class="tab-pane" ng-class="{active : $first, in : $first}" id="{{filter.name}}_filter_{{buildingId}}" ng-if="$root.f[buildingId][filter.name].filters.sortedNames.length > 0">
+  <uib-tab ng-repeat="filter in filterNames" heading="{{filter.label}}" ng-if="$root.mapFilter[buildingId].hasFilter(filter.name) === true" >
+  <div class="tab-pane" ng-class="{active : $first, in : $first}" id="{{filter.name}}_filter_{{buildingId}}">
     <form class="form-horizontal">
       <ul class="filters">
         <li class="animated flipInX" ng-click="$root.mapFilter[buildingId].checkAll(filter.name)">
           <div class="checkbox check-all color-filter" ng-class="{'is-selected' : $root.mapFilter[buildingId].isCheckAll(filter.name)}">
             <ul class="filter-zone">
-              <!-- <li class="selection-checkbox">  <input type="checkbox" ng-model="$root.f[buildingId][filter.name].checkAll" disabled></li> -->
               <li class="selection-name">
                 <label>
-                  <span ng-if="$root.mapFilter[buildingId].isCheckAll(filter.name) == true">Tout décocher</span>
-                  <span ng-if="$root.mapFilter[buildingId].isCheckAll(filter.name) == false">Tout cocher</span>
+                  <span ng-if="$root.mapFilter[buildingId].isCheckAll(filter.name) == true">{{::i18n.ui.filters.unselect_all}}</span>
+                  <span ng-if="$root.mapFilter[buildingId].isCheckAll(filter.name) == false">{{::i18n.ui.filters.select_all}}</span>
                 </label>
               </li>
             </ul>
           </div>
         </li>
-         <!-- ng-init="filter_name=$root.references[filter.name][rt_id];filter_value=$root.f[buildingId][filter.name].filters.values[rt_id];" -->
         <li ng-repeat="(rt_id, filter_value) in filters[buildingId][filter.name]" class='color-filter animated flipInX' ng-click="$root.mapFilter[buildingId].clickOnFilter(filter.name, rt_id);">
           <div class="checkbox" style="background-color: {{::$root.references[filter.name][rt_id].color_rgba_with_opacity}}" ng-class="{'is-selected' : $root.mapFilter[buildingId].isSelected(filter.name, rt_id)}">
             <ul class="filter-zone">
-              <!-- <li class="selection-checkbox" ><input type="checkbox" ng-model="rt.state" disabled/></li> -->
               <li class="selection-organization" ng-if="filter.name === 'organization' || filter.name === 'direction' "><a href="/organizations/{{rt.id}}" class="filter-open-icon"><i class="fa fa-info-circle"></i></a></li>
               <li class="selection-name">{{::$root.references[filter.name][rt_id].name}}</li>
-              <li class="filter-kpis"><span title="Aire" class="badge ">{{filter_value.areaSum}} m²</span><span ng-if="filter_value.count > 0" title="{{::i18n.information.number_of_rooms}}" class="badge ">{{filter_value.count}} <i class="fa fa-codepen"></i></span><span ng-if="filter_value.nbPeople > 0" title="{{::i18n.information.number_of_people}}" class="badge ">{{filter_value.nbPeople}} <i class="fa fa-user"></i></span><span ng-if="filter_value.ratio > 0" title="Ratio m&#178; / personnes" class="badge ">{{filter_value.ratio}} m&#178; / <i class="fa fa-user"></i></span><span ng-if="filter_value.freeDeskNumberSum > 0" title="Nombre de places libre" class="badge">{{filter_value.freeDeskNumberSum}} <i class="fa fa-user-times"></i></span></li>
+              <li class="filter-kpis"><span title="{{::i18n.ui.information.total_area}}" class="badge ">{{filter_value.areaSum}} {{::i18n.ui.units.meter_square}}</span><span ng-if="filter_value.countRooms > 0" title="{{::i18n.ui.information.number_of_rooms}}" class="badge ">{{filter_value.count}} <i class="fa fa-codepen"></i></span><span ng-if="filter_value.nbPeople > 0" title="{{::i18n.ui.information.number_of_people}}" class="badge ">{{filter_value.nbPeople}} <i class="fa fa-user"></i></span><span ng-if="filter_value.ratio > 0" title="{{::i18n.ui.information.ratio_affectations}}" class="badge ">{{filter_value.ratio}} m&#178; / <i class="fa fa-user"></i></span><span ng-if="filter_value.freeDeskNumberSum > 0" title="{{::i18n.ui.information.number_of_freedesks}}" class="badge">{{filter_value.freeDeskNumberSum}} <i class="fa fa-user-times"></i></span></li>
             </ul>
           </div>
         </li>

@@ -1,6 +1,6 @@
 <div class="filter-container" ng-controller="ChartController">
   <uib-tabset justified="true" type="pills" class="nav" role="tablist">
-  <uib-tab ng-repeat="filter in filterNames" heading="{{filter.label}}" ng-click="chartPaneClick(filter, buildingId);">
+  <uib-tab ng-repeat="filter in filterNames" ng-if="$root.mapFilter[buildingId].hasFilter(filter.name) === true" heading="{{filter.label}}" ng-click="chartPaneClick(filter, buildingId);">
   </uib-tab>
   </uib-tabset>
   <div class="chart-zone">

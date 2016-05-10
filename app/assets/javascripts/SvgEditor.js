@@ -300,7 +300,7 @@
   SvgEditor.prototype.setOptionsForFullScreen = function () {
     var goToFullScreenMode, stopFullScreenMode, that = this;
     goToFullScreenMode = {
-      label: 'Aller en plein écran',
+      label: geoP.i18n.ui.map_options.go_fullscreen_mode,
       icon: 'fa-arrows-alt',
       action: function () {
         that.isFullscreen = true;
@@ -309,7 +309,7 @@
       classes: 'btn-default'
     };
     stopFullScreenMode = {
-      label: 'Arrêter le plein écran',
+      label: geoP.i18n.ui.map_options.stop_fullscreen_mode,
       icon: 'fa-compress',
       action: function () {
         that.isFullscreen = false;
@@ -331,7 +331,7 @@
       createPolyline, mapZoomDefault, editMode, editModeAdmin, stopEditMode, saveToImage, options;
 
     createPolyline = {
-      label: 'Créer une pièce',
+      label: geoP.i18n.ui.map_options.create_room,
       icon: 'fa-pencil',
       action: function () {
         $scope.mapMode = 'create';
@@ -344,7 +344,7 @@
     };
 
     mapZoomDefault = {
-      label: 'Centrer le plan',
+      label: geoP.i18n.ui.map_options.center_map,
       icon: 'fa-crosshairs',
       action: function () {
         that.centerMap();
@@ -353,7 +353,7 @@
     };
 
     editMode = {
-      label: 'Modifier le plan',
+      label: geoP.i18n.ui.map_options.edit_map,
       icon: 'fa-unlock',
       action: function (e) {
         that.unSelectItems();
@@ -369,7 +369,7 @@
     };
 
     editModeAdmin = {
-      label: 'Modifier l\'étage',
+      label: geoP.i18n.ui.map_options.edit_floor,
       icon: 'fa-edit',
       action: function () {
         document.location.href = '/admin/floors/' + that.json.id + '/edit';
@@ -378,7 +378,7 @@
     };
 
     stopEditMode = {
-      label: 'Arrêter la modification',
+      label: geoP.i18n.ui.map_options.stop_edit_map,
       icon: 'fa-lock',
       action: function (e) {
         that.unSelectItems();
@@ -396,14 +396,13 @@
     };
 
     saveToImage = {
-      label: 'Sauvegarder l\'étage en image',
+      label: geoP.i18n.ui.map_options.save_map_as_image,
       icon: 'fa-picture-o',
       action: function () {
         that.exportToImage();
       },
       classes: 'btn-default'
     };
-
 
     this.mapOptions = [mapZoomDefault];
     switch (this.$scope.mapMode) {
@@ -594,7 +593,7 @@
     this.paper.mousemove(this.createEvents.move);
 
     return [{
-      label: 'Fermer la pièce',
+      label:  geoP.i18n.ui.map_options.close_room,
       classes: 'btn-success',
       action: function () {
         if (that.createPolylinePolyline !== null) {
@@ -605,7 +604,7 @@
         that.finishCreateMode();
       }
     }, {
-      label: 'Annuler la création de la pièce',
+      label: geoP.i18n.ui.map_options.cancel_room_creation,
       classes: 'btn-warning',
       action: that.cancelCreateMode.bind(that)
     }];

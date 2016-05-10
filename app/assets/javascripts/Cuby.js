@@ -24,7 +24,6 @@
     }
   };
 
-
   Cuby.prototype.applyFilter = function(room3d, filterName) {
     var value;
     if (filterName === 'direction') {
