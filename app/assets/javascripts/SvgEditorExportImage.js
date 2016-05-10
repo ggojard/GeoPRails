@@ -163,19 +163,19 @@
     $c = $('<canvas id="exportCanvas"></canvas>');
 
     canvasDom = $c[0];
-    canvg(canvasDom, h);
-
-    setTimeout(function() {
-      var imgsrc, a;
-      imgsrc = canvasDom.toDataURL('image/png');
-      a = document.createElement('a');
-      a.download = imageName + '.png';
-      a.href = getBlobUrl(imgsrc);
-      $('#svgdataurl').append(a);
-      a.click();
-      $c.remove();
-      $svg.attr('width', editor.bgBox.w);
-      $svg.attr('height', editor.bgBox.h);
-    }, 500);
+    canvg(canvasDom, h, {
+      renderCallback: function() {
+        var imgsrc, a;
+        imgsrc = canvasDom.toDataURL('image/png');
+        a = document.createElement('a');
+        a.download = imageName + '.png';
+        a.href = getBlobUrl(imgsrc);
+        $('#svgdataurl').append(a);
+        a.click();
+        $c.remove();
+        $svg.attr('width', editor.bgBox.w);
+        $svg.attr('height', editor.bgBox.h);
+      }
+    });
   };
 }(GeoP, canvg, jQuery));
