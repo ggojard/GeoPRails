@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   before_action :current_ability, :set_user_globals, :except => [:logo]
   @@the_user = nil
   # protect_from_forgery
-  
+
   before_filter do
     resource = controller_name.singularize.to_sym
     method = "#{resource}_params"
@@ -16,8 +16,6 @@ class ApplicationController < ActionController::Base
   def render_404
     render file: "#{Rails.root}/public/404.html", layout: false, status: 404
   end
-
-
 
   # def current_ability
   #   @current_ability = Rails.cache.fetch("#{current_user.cache_key}::ability") do
@@ -83,7 +81,19 @@ class ApplicationController < ActionController::Base
     set_user_type_for_current_user
     gon.userType = @global_user_type
     gon.company = get_global_company_json
-    gon.item_qualities = ItemQuality.all
+
+    Rails.cache.delete('references')
+    gon.references = Rails.cache.fetch('references') do
+      puts "Fetch References".green
+      {
+        "item_qualities" => ItemQuality.all.index_by(&:id),
+        "organization" => Organization.all.index_by(&:id).as_json(:methods => [:color_rgba_with_opacity]),
+        "room_type" => RoomType.all.index_by(&:id).as_json(:methods => [:color_rgba_with_opacity]),
+        "evacuation_zone" => EvacuationZone.all.index_by(&:id).as_json(:methods => [:color_rgba_with_opacity]),
+        "room_ground_type" => RoomGroundType.all.index_by(&:id).as_json(:methods => [:color_rgba_with_opacity])
+      }
+    end
+    # gon.item_qualities = ItemQuality.all
     gon.i18n ||= I18n.t('formtastic.labels');
     gon.i18n[:ui] ||= I18n.t('surfy.ui');
   end

@@ -24,6 +24,9 @@
 
     $http.get('/floors/' + $routeParams.floorId + '.json').success(function(floor) {
       $rootScope.$emit('SetBodyColor', floor.building);
+      
+
+
       $scope.room = null;
       if ($routeParams.rid) {
         $scope.roomId = $routeParams.rid;
@@ -42,6 +45,14 @@
       $scope.information[floor.building_id] = floor.information;
       
       geoP.setFloorsMaps(floor.building_id, $scope.floorsByBuildingId[floor.building_id], $rootScope, $http);
+
+
+      // set the filters
+      $scope.filters = {};
+      $scope.filters[floor.building_id] = floor.filters;
+      $rootScope.mapFilter[floor.building_id].filters = floor.filters;
+
+
     });
 
 

@@ -9,7 +9,6 @@ class BuildingsManager
     end
   end
 
-
   def duplicate
     new_b = @building.dup
     new_b.save

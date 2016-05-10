@@ -1,4 +1,4 @@
-/*global GeoP:true, jQuery:true */
+/*global GeoP, jQuery, gon */
 
 (function(geoP, $) {
   'use strict';
@@ -428,12 +428,14 @@
   };
 
   Polyline.prototype.fillFromFilterColor = function(filterName) {
-    var value, item;
+    var value, state, item;
     if (this.json[filterName] !== null) {
       value = this.json[filterName];
       if (value !== undefined) {
-        item = this.svgEditor.mapFilter.bfilters[this.svgEditor.json.building_id].belongsToItems[filterName][value.id];
-        this.fillWithColorDependingOnState(item.color, item.state);
+         state = this.svgEditor.mapFilter.isSelected(filterName, value.id);
+         item = gon.references[filterName][value.id];
+        // item = this.svgEditor.mapFilter.bfilters[this.svgEditor.json.building_id].belongsToItems[filterName][value.id];
+        this.fillWithColorDependingOnState(item.color, state);
       }
     }
   };

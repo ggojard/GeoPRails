@@ -1,8 +1,6 @@
-/*global GeoP, Snap, jQuery */
+/*global GeoP, Snap, jQuery, gon */
 
-
-
-(function(geoP, $) {
+(function (geoP, $) {
   'use strict';
 
   var snap = Snap,
@@ -27,11 +25,12 @@
   }
 
   function mouseClick() {
+    /*jslint browser:true*/
     /*jshint validthis:true */
     var that = this,
       hash;
     if (geoP.currentEvent === null && this.$scope.mapMode !== 'create') {
-      this.$scope.$apply(function() {
+      this.$scope.$apply(function () {
         // remove rId & itemId if exists
         hash = document.location.hash;
         hash = hash.replace(/\?rId=[0-9]*/, '');
@@ -46,7 +45,7 @@
     geoP.currentEvent = null;
   }
 
-  SvgEditor = function(floorJson, mapFilter, $scope, dom) {
+  SvgEditor = function (floorJson, mapFilter, $scope, dom) {
     var that = this;
 
     this.mapFilter = mapFilter;
@@ -63,7 +62,7 @@
     this.currentOptions = [];
     this.dragPointsOptions = [];
     this.isFullscreen = false;
-    this.$rootScope.$on('FBFullscreen.change', function(e, isFullscreen) {
+    this.$rootScope.$on('FBFullscreen.change', function (e, isFullscreen) {
       /*jslint unparam:true*/
       that.isFullscreen = isFullscreen;
       that.setOptions();
@@ -84,7 +83,7 @@
     this.loadCamera();
     this.canvas = this.paper.g();
     this.canvas.node.id = 'viewport-' + floorJson.id;
-    $((function() {
+    $((function () {
       $(dom).svgPan(that.canvas.node.id, that);
     }()));
     this.setBackgroundImage();
@@ -104,7 +103,7 @@
     }
   };
 
-  SvgEditor.prototype.selectPolyline = function(roomId) {
+  SvgEditor.prototype.selectPolyline = function (roomId) {
     if (this.itemsById[roomId]) {
       this.$scope.roomId = roomId;
       this.itemsById[roomId].selectPolyline();
@@ -113,13 +112,13 @@
     return null;
   };
 
-  SvgEditor.prototype.updateDisplayNames = function(displayNames) {
+  SvgEditor.prototype.updateDisplayNames = function (displayNames) {
     this.displayProperties = displayNames;
     this.mapOnItems('removeDisplayTexts');
     this.mapOnItems('setTexts');
   };
 
-  SvgEditor.prototype.setBackgroundImage = function() {
+  SvgEditor.prototype.setBackgroundImage = function () {
     var imagePath, image, dim, bgBox, border, that = this;
 
     dim = JSON.parse(this.json.image_dimensions);
@@ -142,7 +141,7 @@
     image = new Image();
     image.src = imagePath;
 
-    image.onload = function() {
+    image.onload = function () {
       that.bg = that.paper.image(image.src, bgBox.x, bgBox.y, bgBox.w, bgBox.h);
       that.bg.node.style.cssText = 'opacity: ' + that.json.background_opacity;
       that.canvas.prepend(that.bg);
@@ -156,7 +155,7 @@
     };
   };
 
-  SvgEditor.prototype.updateMapScaleVisibility = function() {
+  SvgEditor.prototype.updateMapScaleVisibility = function () {
     switch (this.$scope.mapMode) {
       case 'show':
         this.mapScale.hide();
@@ -167,22 +166,22 @@
     }
   };
 
-  SvgEditor.prototype.setCurrentRoom = function(polyline) {
+  SvgEditor.prototype.setCurrentRoom = function (polyline) {
     this.$scope.room = polyline;
   };
 
-  SvgEditor.prototype.updateCamera = function() {
+  SvgEditor.prototype.updateCamera = function () {
     var ctm = this.canvas.node.getCTM();
     this.camera.x = ctm.e;
     this.camera.y = ctm.f;
     this.camera.scale = ctm.d;
   };
 
-  SvgEditor.prototype.cleanDragPointOptions = function() {
+  SvgEditor.prototype.cleanDragPointOptions = function () {
     this.dragPointsOptions = [];
   };
 
-  SvgEditor.prototype.removePolyline = function(polyline) {
+  SvgEditor.prototype.removePolyline = function (polyline) {
     var index = this.items.indexOf(polyline);
     if (index !== -1) {
       this.items.splice(index, 1);
@@ -193,20 +192,20 @@
 
   };
 
-  SvgEditor.prototype.cleanCurrentOptions = function() {
+  SvgEditor.prototype.cleanCurrentOptions = function () {
     this.currentOptions = [];
     if (this.$scope.mapMode === 'create') {
       this.$scope.mapMode = 'edit';
     }
   };
 
-  SvgEditor.prototype.getFloorFullName = function() {
+  SvgEditor.prototype.getFloorFullName = function () {
     var n = this.json.building.name + '-' + this.json.name;
     n = n.replace(/ /g, '_');
     return n;
   };
 
-  SvgEditor.prototype.getMousePos = function(e) {
+  SvgEditor.prototype.getMousePos = function (e) {
     if (e.hasOwnProperty('offsetX')) {
       return {
         x: e.offsetX,
@@ -225,7 +224,7 @@
     };
   };
 
-  SvgEditor.prototype.drag = function(e, node, moveMethod) {
+  SvgEditor.prototype.drag = function (e, node, moveMethod) {
     var scale, mousePos, mx, my, ctm;
     scale = this.camera.scale;
     mousePos = this.getMousePos(e);
@@ -247,7 +246,7 @@
   };
 
 
-  SvgEditor.prototype.centerOnBox = function(boxSize) {
+  SvgEditor.prototype.centerOnBox = function (boxSize) {
     var $svg, paperSize, ratioW, ratioH, ratio, scaledWidth, scaledHeight;
     $svg = $(this.paper.node);
     paperSize = {
@@ -281,7 +280,7 @@
     this.applyTransform();
   };
 
-  SvgEditor.prototype.centerMap = function() {
+  SvgEditor.prototype.centerMap = function () {
     var box = JSON.parse(JSON.stringify(this.bgBox));
     box.w += 300;
     this.centerOnBox(box);
@@ -290,7 +289,7 @@
     this.applyTransform();
   };
 
-  SvgEditor.prototype.createRoomFromJson = function(json) {
+  SvgEditor.prototype.createRoomFromJson = function (json) {
     var b = new geoP.Polyline(this);
     b.json = json;
     b.createInPaper();
@@ -298,12 +297,12 @@
     this.itemsById[b.json.id] = b;
   };
 
-  SvgEditor.prototype.setOptionsForFullScreen = function() {
+  SvgEditor.prototype.setOptionsForFullScreen = function () {
     var goToFullScreenMode, stopFullScreenMode, that = this;
     goToFullScreenMode = {
       label: 'Aller en plein écran',
       icon: 'fa-arrows-alt',
-      action: function() {
+      action: function () {
         that.isFullscreen = true;
         that.setOptions();
       },
@@ -312,7 +311,7 @@
     stopFullScreenMode = {
       label: 'Arrêter le plein écran',
       icon: 'fa-compress',
-      action: function() {
+      action: function () {
         that.isFullscreen = false;
         that.setOptions();
       },
@@ -326,7 +325,7 @@
   };
 
 
-  SvgEditor.prototype.setOptions = function() {
+  SvgEditor.prototype.setOptions = function () {
     var $scope = this.$scope,
       that = this,
       createPolyline, mapZoomDefault, editMode, editModeAdmin, stopEditMode, saveToImage, options;
@@ -334,7 +333,7 @@
     createPolyline = {
       label: 'Créer une pièce',
       icon: 'fa-pencil',
-      action: function() {
+      action: function () {
         $scope.mapMode = 'create';
         that.unSelectItems();
         var opts = that.createPolyline();
@@ -347,7 +346,7 @@
     mapZoomDefault = {
       label: 'Centrer le plan',
       icon: 'fa-crosshairs',
-      action: function() {
+      action: function () {
         that.centerMap();
       },
       classes: 'btn-default'
@@ -356,7 +355,7 @@
     editMode = {
       label: 'Modifier le plan',
       icon: 'fa-unlock',
-      action: function(e) {
+      action: function (e) {
         that.unSelectItems();
         $scope.mapMode = 'edit';
         that.setOptions();
@@ -372,7 +371,7 @@
     editModeAdmin = {
       label: 'Modifier l\'étage',
       icon: 'fa-edit',
-      action: function() {
+      action: function () {
         document.location.href = '/admin/floors/' + that.json.id + '/edit';
       },
       classes: 'btn-default'
@@ -381,7 +380,7 @@
     stopEditMode = {
       label: 'Arrêter la modification',
       icon: 'fa-lock',
-      action: function(e) {
+      action: function (e) {
         that.unSelectItems();
         that.cancelCreateMode();
         that.mapOnItems('resetActions');
@@ -399,7 +398,7 @@
     saveToImage = {
       label: 'Sauvegarder l\'étage en image',
       icon: 'fa-picture-o',
-      action: function() {
+      action: function () {
         that.exportToImage();
       },
       classes: 'btn-default'
@@ -426,7 +425,7 @@
   };
 
   // a1..N ... are facultatif
-  SvgEditor.prototype.mapOnItems = function(methodName, a1, a2) {
+  SvgEditor.prototype.mapOnItems = function (methodName, a1, a2) {
     var i = 0;
     for (i = 0; i < this.items.length; i += 1) {
       if (this.items[i].element !== undefined) {
@@ -435,7 +434,7 @@
     }
   };
 
-  SvgEditor.prototype.createRoomsPolylines = function() {
+  SvgEditor.prototype.createRoomsPolylines = function () {
     var that = this,
       i, r;
     for (i = 0; i < this.json.rooms.length; i += 1) {
@@ -444,15 +443,15 @@
     }
   };
 
-  SvgEditor.prototype.unSelectItems = function() {
-    this.mapFilter.editors.forEach(function(editor) {
+  SvgEditor.prototype.unSelectItems = function () {
+    this.mapFilter.editors.forEach(function (editor) {
       editor.$scope.room = null;
       editor.$scope.item = null;
       editor.mapOnItems('unSelect');
     });
   };
 
-  SvgEditor.prototype.createPolylineMode = function(e) {
+  SvgEditor.prototype.createPolylineMode = function (e) {
     var scale = this.camera.scale,
       tX, tY, mouse;
     tX = -this.camera.x / scale;
@@ -524,7 +523,7 @@
     }
   }
 
-  SvgEditor.prototype.drawToMousePosition = function(e) {
+  SvgEditor.prototype.drawToMousePosition = function (e) {
     var scale, tX, tY, mousePos, lastPoint;
     scale = this.camera.scale;
     tX = -this.camera.x / scale;
@@ -558,7 +557,7 @@
     }
   };
 
-  SvgEditor.prototype.finishCreateMode = function() {
+  SvgEditor.prototype.finishCreateMode = function () {
     if (this.createEvents !== undefined) {
       this.paper.unclick(this.createEvents.createMode);
       this.paper.unmousemove(this.createEvents.move);
@@ -572,21 +571,21 @@
     this.setOptions();
   };
 
-  SvgEditor.prototype.cancelCreateMode = function() {
+  SvgEditor.prototype.cancelCreateMode = function () {
     if (this.createPolylinePolyline !== null) {
       this.createPolylinePolyline.remove();
     }
     this.finishCreateMode();
   };
 
-  SvgEditor.prototype.createPolyline = function() {
+  SvgEditor.prototype.createPolyline = function () {
     var that = this;
 
     this.createEvents = {
-      createMode: function(e) {
+      createMode: function (e) {
         that.createPolylineMode(e);
       },
-      move: function(e) {
+      move: function (e) {
         that.drawToMousePosition(e);
       }
     };
@@ -597,7 +596,7 @@
     return [{
       label: 'Fermer la pièce',
       classes: 'btn-success',
-      action: function() {
+      action: function () {
         if (that.createPolylinePolyline !== null) {
           that.createPolylinePolyline.close();
           that.createPolylinePolyline.save();

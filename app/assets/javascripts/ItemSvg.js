@@ -6,7 +6,6 @@
   function ItemSvg(room, json) {
     this.room = room;
     this.svgEditor = this.room.svgEditor;
-    this.svgEditor.$scope.item_qualities = gon.item_qualities;
     this.json = json;
     this.options = [];
     this.editMode = false;

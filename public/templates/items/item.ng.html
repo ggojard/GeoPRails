@@ -36,7 +36,7 @@
                 <input type="radio" ng-model="item.json.item_quality_id" name="item_quality" value="0"/>
                 <label>Non définie</label>
               </li>
-              <li ng-repeat="iq in item_qualities">
+              <li ng-repeat="(id, iq) in $root.references.item_qualities">
                 <input type="radio" ng-model="item.json.item_quality_id"  name="item_quality" value="{{iq.id}}"/>
                 <label> {{iq.name}}</label>
               </li>

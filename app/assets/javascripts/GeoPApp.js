@@ -1,7 +1,7 @@
 /*global gon, jQuery, GeoP, angular*/
 /*jslint browser:true*/
 
-(function(geoP, gon, $, angular) {
+(function (geoP, gon, $, angular) {
   'use strict';
 
   function loadScroll(floorId) {
@@ -14,10 +14,10 @@
     return 0;
   }
 
-  $(function() {
+  $(function () {
     // rescroll if loaded scroll !== of current scroll (because of browser jump ?)
     var $w = $(window);
-    $w.on('scroll', function() {
+    $w.on('scroll', function () {
       var scrollLoaded, scrollTop;
       try {
         scrollLoaded = loadScroll(gon.floor.id);
@@ -32,8 +32,10 @@
   });
 
   var app = angular.module('GeoP', ['ngRoute', 'as.sortable', 'FBAngular', 'ui.bootstrap', 'angularFileUpload']);
-  app.run(function() { // instance-injector
+  app.run(function ($rootScope) { // instance-injector
     try {
+      $rootScope.references = gon.references;
+
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
     } catch (e) {
@@ -41,8 +43,8 @@
     }
   });
 
-  app.filter('offset', function() {
-    return function(input, start) {
+  app.filter('offset', function () {
+    return function (input, start) {
       if (input !== undefined) {
         start = parseInt(start, 10);
         return input.slice(start);
@@ -50,8 +52,8 @@
     };
   });
 
-  app.filter('highlight', function($sce) {
-    return function(text, phrase) {
+  app.filter('highlight', function ($sce) {
+    return function (text, phrase) {
       if (phrase) {
         text = text.replace(new RegExp('(' + phrase + ')', 'gi'), '<span class="highlighted">$1</span>');
       }
@@ -59,12 +61,12 @@
     };
   });
 
-  app.directive('setupEditor', function() {
+  app.directive('setupEditor', function () {
     return {
       transclude: true,
       // scope: true,
-      link: function($scope, element, attrs) {
-        setTimeout(function() {
+      link: function ($scope, element, attrs) {
+        setTimeout(function () {
           var editor, floor, floorId, mapFilter, buildingId;
           floorId = attrs.floorId;
           buildingId = attrs.buildingId;
@@ -77,7 +79,7 @@
           geoP.$apply($scope);
           $scope.$emit('editor-loaded', editor);
           $scope.$emit('editor-loaded-' + buildingId, editor);
-          setTimeout(function() {
+          setTimeout(function () {
             geoP.selectPolylineIfIsInRouteParams($scope, buildingId);
           }, 1000);
         }, 0);
@@ -88,13 +90,13 @@
   geoP.app = app;
 
   app.config(['$httpProvider',
-    function(provider) {
+    function (provider) {
       provider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
     }
   ]);
 
 
-  geoP.selectPolylineIfIsInRouteParams = function($scope, buildingId) {
+  geoP.selectPolylineIfIsInRouteParams = function ($scope, buildingId) {
     var roomId, floorId, floorEditor, room;
     roomId = $scope.$routeParams.rId;
 
@@ -111,7 +113,7 @@
     return null;
   };
 
-  geoP.setFloorsMaps = function(buildingId, floors, $rootScope, $http) {
+  geoP.setFloorsMaps = function (buildingId, floors, $rootScope, $http) {
     var i, floor, mapFilter;
     if (floors === undefined) {
       return false;
@@ -128,7 +130,7 @@
     mapFilter.setup();
   };
 
-  geoP.handleKeyEventsForScope = function($scope) {
+  geoP.handleKeyEventsForScope = function ($scope) {
     $scope.isShift = false;
     $scope.isCtrlKeyDown = false;
     $scope.isZKeyDown = false;
@@ -183,8 +185,8 @@
     document.onkeyup = keyUp;
   };
 
-  geoP.countFreeDesksFromRooms = function(rooms) {
-    return rooms && rooms.reduce(function(a, b) {
+  geoP.countFreeDesksFromRooms = function (rooms) {
+    return rooms && rooms.reduce(function (a, b) {
       var res = a;
       if (b.free_desk_number !== null) {
         res += b.free_desk_number;
@@ -193,8 +195,8 @@
     }, 0);
   };
 
-  geoP.getTotalArea = function(rooms) {
-    var res = rooms.reduce(function(a, b) {
+  geoP.getTotalArea = function (rooms) {
+    var res = rooms.reduce(function (a, b) {
       return a + b.area;
     }, 0);
     return res.toFixed(2);

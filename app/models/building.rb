@@ -19,29 +19,21 @@ class Building < ActiveRecord::Base
     "/#/buildings/%d" % self.id
   end
 
-
   def build_filters filters, filter_name, floor
     floor.filters[filter_name].each do |key, array|
-      ap key
-      ap filters[filter_name]
-      if key != 'ids'
-        if filters[filter_name][key].nil?
-          filters[filter_name][key] = Floor.initial_filter_value
-        end
-        ap filters[filter_name]
-
-        Floor.merge_filter_value(filters[filter_name][key], array)
+      if filters[filter_name][key].nil?
+        filters[filter_name][key] = Floor.initial_filter_value
       end
+      Floor.merge_filter_value(filters[filter_name][key], array)
     end
-
   end
 
   def filters
     f = {
-      'room_type' => {"ids" => {}},
-      'organization' => {"ids" => {}},
-      'evacuation_zone' => {"ids" => {}},
-      'room_ground_type' => {"ids" => {}}
+      'room_type' => {},
+      'organization' => {},
+      'evacuation_zone' => {},
+      'room_ground_type' => {}
     }
     self.floors.each do |floor|
       build_filters(f, 'room_type', floor)

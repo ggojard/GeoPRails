@@ -2,22 +2,18 @@ class ItemTypesController < GeopController
 
   @items_include = [{:inventories => {:room => [{:floor => :building}, :room_type, :organization]}}]
 
-
-
- def as_json_item
-    {:methods=> [:url, :qrcode_url], :include => 
-      [{:inventories => 
-        {:include => 
-          {:room => 
-            {:methods=> [:fullname, :url], :include => [{:floor => {:include => :building}}, :room_type]  
-            }
+  def as_json_item
+    {:methods=> [:url, :qrcode_url], :include =>
+     [{:inventories =>
+       {:include =>
+        {:room =>
+         {:methods=> [:fullname, :url], :include => [{:floor => {:include => :building}}, :room_type]
           }
+         }
         }
-      }]
-    }
+       }]
+     }
   end
-
-
 
   def show
     respond_to do |format|
@@ -49,7 +45,7 @@ class ItemTypesController < GeopController
       }
     end
   end
-  
+
   def qrcode
     @item = ItemType.find_by_id(params[:id])
     url = request.base_url + @item.url

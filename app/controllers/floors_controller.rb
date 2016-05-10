@@ -7,7 +7,7 @@ class FloorsController < GeopController
   end
 
   def self.json_selection
-    {:include => [{:building => {:methods => [:url, :fullname]}}, RoomsController.json_selection], :methods => [:filters, :information]}
+    {:include => [{:building => {:methods => [:url, :fullname]}}, RoomsController.json_selection], :methods => [:filters, :information, :fullname, :url]}
   end
 
   def show

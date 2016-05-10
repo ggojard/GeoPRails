@@ -20,6 +20,7 @@ class Floor < ActiveRecord::Base
   def url
     "/#/floors/%d" % self.id
   end
+
   def extract_dimensions
     tempfile = image.queued_for_write[:original]
     unless tempfile.nil?
@@ -30,51 +31,51 @@ class Floor < ActiveRecord::Base
 
   def update_room_for_filter f, filter_name, r
     filter_name_id = "#{filter_name}_id"
-    filter = f[filter_name][r[filter_name_id]]
-
-    if filter.nil?
-      filter = Floor.initial_filter_value
-    end
-
     if !r[filter_name_id].nil?
-      f[filter_name]["ids"][r[filter_name_id]] = true
+
+      filter = f[filter_name][r[filter_name_id]]
+
+      if filter.nil?
+        filter = Floor.initial_filter_value
+      end
+
+      if !r.area.nil?
+        filter['areaSum'] += r.area
+        filter['areaSum'] = filter['areaSum'].round(2)
+      end
+
+      filter['nbPeople'] += r.affectations_count
+      if !r.perimeter.nil?
+        filter['perimeterSum'] += r.perimeter
+      end
+      filter['count'] += 1
+      filter['freeDeskNumberSum'] += r.free_desk_number
+      if !r.capacity.nil?
+        filter['capacitySum'] += r.capacity
+      end
+      filter['ratio'] += (filter['areaSum'] / (filter['nbPeople'] + filter['freeDeskNumberSum'])).round(2)
+
+      f[filter_name][r[filter_name_id]] = filter
     end
 
-    if !r.area.nil?
-      filter['areaSum'] += r.area
-      filter['areaSum'] = filter['areaSum'].round(2)
-    end
-
-    filter['nbPerson'] += r.affectations_count
-    if !r.perimeter.nil?
-      filter['perimeterSum'] += r.perimeter
-    end
-    filter['count'] += 1
-    filter['freeDeskNumberSum'] += r.free_desk_number
-    if !r.capacity.nil?
-      filter['capacitySum'] += r.capacity
-    end
-    filter['ratio'] += (filter['areaSum'] / (filter['nbPerson'] + filter['freeDeskNumberSum'])).round(2)
-
-    f[filter_name][r[filter_name_id]] = filter
   end
 
   def self.merge_filter_value source, target
     source['areaSum'] += target['areaSum']
     source['areaSum'] = source['areaSum'].round(2)
 
-    source['nbPerson'] += target['nbPerson']
+    source['nbPeople'] += target['nbPeople']
     source['perimeterSum'] += target['perimeterSum']
     source['count'] += target['count']
     source['freeDeskNumberSum'] += target['freeDeskNumberSum']
     source['capacitySum'] += target['capacitySum']
-    source['ratio'] += (source['areaSum'] / (source['nbPerson'] + source['freeDeskNumberSum'])).round(2)
+    source['ratio'] += (source['areaSum'] / (source['nbPeople'] + source['freeDeskNumberSum'])).round(2)
   end
 
   def self.initial_filter_value
     {
       "areaSum" => 0,
-      "nbPerson" => 0,
+      "nbPeople" => 0,
       "count" => 0,
       "perimeterSum" => 0,
       "freeDeskNumberSum" => 0,
@@ -101,10 +102,10 @@ class Floor < ActiveRecord::Base
 
   def filters
     f = {
-      'room_type' => {"ids" => {}},
-      'organization' => {"ids" => {}},
-      'evacuation_zone' => {"ids" => {}},
-      'room_ground_type' => {"ids" => {}}
+      'room_type' => {},
+      'organization' => {},
+      'evacuation_zone' => {},
+      'room_ground_type' => {}
     }
     self.rooms.each do |r|
       update_room_for_filter(f, 'room_type', r)
@@ -114,11 +115,6 @@ class Floor < ActiveRecord::Base
     end
     return f
   end
-
-  # def as_json(options={})
-  #   super(:except => [:updated_at, :created_at])
-  #   #
-  # end
 
   default_scope {order(:level)}
 end
