@@ -1,7 +1,6 @@
 /*global GeoP, gon, Spinner*/
-(function(geoP) {
+(function (geoP) {
   'use strict';
-
 
   var opts = {
     lines: 15, // The number of lines to draw
@@ -22,18 +21,18 @@
     left: '50%' // Left position relative to parent
   };
 
-
-  geoP.app.controller('BodyController', function($scope, $http, $rootScope) {
+  geoP.app.controller('BodyController', function ($scope, $http, $rootScope) {
     /*jslint unparam:true*/
     var spinner, spinnerContainer;
 
-    $rootScope.$on('start-loading', function() {
+    $rootScope.$on('start-loading', function () {
+      /*jslint browser:true*/
       spinnerContainer = document.getElementById('spinner-zone');
       spinner = new Spinner(opts).spin(spinnerContainer);
       spinnerContainer.className = '';
     });
 
-    $rootScope.$on('stop-loading', function() {
+    $rootScope.$on('stop-loading', function () {
       if (spinner !== undefined) {
         spinner.stop();
         $rootScope.loading = false;
@@ -44,15 +43,17 @@
     $rootScope.geoP = geoP;
     $rootScope.userType = gon.userType;
 
-    $rootScope.$on('SetBodyColor', function(e, building) {
-      var color = building.color;
-      if ($scope.bgColor === undefined) {
-        $scope.bgColor = {};
-      }
-      if (color !== '' && color !== null) {
-        $scope.bgColor[building.id] = color;
-      }
-    });
+    // $rootScope.$on('SetBodyColor', function(e, building) {
+    //   var color = building.color;
+    //   if ($scope.bgColor === undefined) {
+    //     $scope.bgColor = {};
+    //   }
+    //   if (color !== '' && color !== null) {
+    //     $scope.bgColor[building.id] = color;
+    //   }
+    // });
+
+
   });
 
 }(GeoP));

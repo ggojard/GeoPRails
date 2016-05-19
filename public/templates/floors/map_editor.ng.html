@@ -1,6 +1,6 @@
 <div class="panel panel-default panel-map" ng-repeat="f in floorsByBuildingId[buildingId]" fullscreen="editor.isFullscreen" ng-class="{'map-fullscreen':editor.isFullscreen}">
   <ul class="map-split-vertical">
-    <li style="background-color: {{bgColor[buildingId]}}">
+    <li style="background-color: {{::$root.building_colors[buildingId]}}">
       <div class="panel-title">
         <h3 class="panel-title"><a href="{{f.url}}">Plan {{f.fullname}}</a></h3>
         <div ng-include="'/templates/floors/options.ng.html'" class='map-options-zone'></div>

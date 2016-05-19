@@ -85,13 +85,18 @@ class ApplicationController < ActionController::Base
     # Rails.cache.delete('references')
     gon.references = Rails.cache.fetch('references') do
       puts "Fetch References".green
-      {
+      {        
         "item_qualities" => ItemQuality.all.index_by(&:id),
         "organization" => Organization.all.index_by(&:id).as_json(:methods => [:color_rgba_with_opacity]),
         "room_type" => RoomType.all.index_by(&:id).as_json(:methods => [:color_rgba_with_opacity]),
         "evacuation_zone" => EvacuationZone.all.index_by(&:id).as_json(:methods => [:color_rgba_with_opacity]),
         "room_ground_type" => RoomGroundType.all.index_by(&:id).as_json(:methods => [:color_rgba_with_opacity])
       }
+    end
+    gon.building_colors = Rails.cache.fetch('buildings_colors') do
+      puts "Fetch Buildings Colors".green
+      h = Hash[@global_company.buildings.collect { |v| [v.id, v.color] }]
+      return h
     end
     # gon.item_qualities = ItemQuality.all
     gon.i18n ||= I18n.t('formtastic.labels');

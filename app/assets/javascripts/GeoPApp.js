@@ -36,6 +36,7 @@
     try {
       $rootScope.references = gon.references;
       $rootScope.references.direction = gon.references.organization;
+      $rootScope.building_colors = gon.building_colors;
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
     } catch (e) {

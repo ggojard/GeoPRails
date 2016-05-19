@@ -28,7 +28,6 @@
     ];
 
     $http.get('/buildings/' + bId + '.json').success(function (b) {
-      $rootScope.$emit('SetBodyColor', b);
       $scope.mapMode = 'show';
       $scope.building = b;
       $scope.floorsByBuildingId[b.id] = b.floors;

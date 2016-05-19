@@ -52,4 +52,11 @@ fr:
         prev: "Précédent"
       home:
         import_template : "Gabarit d'import"
+      buildings:
+        options:
+          operations: "Opérations"
+          duplicate_building: "Dupliquer le bâtiment"
+          export_building: "Exporter le bâtiment"
+          danger_zone: "Zone de danger"
+          delete_building: "Supprimer ce bâtiment et l'ensemble des étages et pièces associés"
 

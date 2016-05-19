@@ -23,9 +23,6 @@
     $scope.itemHandler = new geoP.ItemHandler($http);
 
     $http.get('/floors/' + $routeParams.floorId + '.json').success(function (floor) {
-      $rootScope.$emit('SetBodyColor', floor.building);
-
-      console.log(floor);
       $scope.room = null;
       if ($routeParams.rid) {
         $scope.roomId = $routeParams.rid;

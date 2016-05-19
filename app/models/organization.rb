@@ -63,22 +63,37 @@ class Organization < ActiveRecord::Base
 
   def data
     buildings = {}
+    buildings_floors = {}
+    buildings_filters = {}
     all_floors = []
 
     self.rooms.each {|r|
-      if !buildings[r.building_id].present?
-        buildings[r.building_id] = []
+      if !buildings_floors[r.building_id].present?
+        buildings_floors[r.building_id] = []
       end
-      buildings[r.building_id] << {"floor_id" => r.floor_id, "level" => r.floor.level}
+      if !buildings[r.building_id].present?
+        buildings[r.building_id] = r.floor.building
+      end
+      if !buildings_filters[r.building_id].present?
+        buildings_filters[r.building_id] = Floor.initial_filters_container
+      end
+      buildings_floors[r.building_id] << {"floor_id" => r.floor_id, "level" => r.floor.level}
       all_floors << r.floor_id
+
+      f = buildings_filters[r.building_id]
+      Floor.update_room_for_filter(f, 'room_type', r)
+      Floor.update_room_for_filter(f, 'organization', r)
+      Floor.update_room_for_filter(f, 'evacuation_zone', r)
+      Floor.update_room_for_filter(f, 'room_ground_type', r)
+      Floor.update_room_for_filter(f, 'direction', r,  r.direction_id)
     }
 
-    buildings.each {|k,v|
-      buildings[k] = v.uniq.sort_by{|e| e[:level]}.map{|f| f['floor_id']}
+    buildings_floors.each {|k,v|
+      buildings_floors[k] = v.uniq.sort_by{|e| e[:level]}.map{|f| f['floor_id']}
     }
     all_floors = all_floors.uniq
 
-    return {"buildings"=> buildings, "all_floors" => all_floors}
+    return {"buildings" => buildings, "buildings_floors"=> buildings_floors, "all_floors" => all_floors, "buildings_filters" => buildings_filters}
   end
 
 end

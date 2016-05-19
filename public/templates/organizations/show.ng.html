@@ -4,7 +4,7 @@
   </div>
   <h3 ng-if="noRoomsForOrganization === true">Il n'y a pas de pièce disponible pour cette organisation.</h3>
   <uib-tabset justified="true" type="pills" class="nav" role="tablist">
-  <uib-tab ng-repeat="buildingId in buildings" active="tab.active" heading="{{buildingsById[buildingId].name}}" ng-click="onBuildingClick(buildingId)">
+  <uib-tab ng-repeat="buildingId in buildings_id" active="tab.active" heading="{{o.data.buildings[buildingId].name}}" ng-click="onBuildingClick(buildingId)">
   <div ng-include="'/templates/common/tabs_main.ng.html'"></div>
   <br/>
   <div ng-include="'/templates/floors/map_editor.ng.html'"></div>

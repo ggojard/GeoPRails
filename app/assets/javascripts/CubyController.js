@@ -10,7 +10,6 @@
 
     $http.get('/buildings/' + $routeParams.buildingId + '.json').success(function(b) {
       $scope.buildings = [b.id];
-      $rootScope.$emit('SetBodyColor', b);
       $scope.building = b;
       $scope.floorsByBuildingId[b.id] = b.floors;
       geoP.setFloorsMaps(b.id, b.floors, $rootScope, $http);

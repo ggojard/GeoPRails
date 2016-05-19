@@ -29,7 +29,7 @@ class Floor < ActiveRecord::Base
     end
   end
 
-  def update_room_for_filter f, filter_name, r, value = nil
+  def self.update_room_for_filter f, filter_name, r, value = nil
     filter_name_id = "#{filter_name}_id"
     if value.nil?
       value = r[filter_name_id]
@@ -87,11 +87,21 @@ class Floor < ActiveRecord::Base
   end
 
   def self.initial_information_value
-     {
+    {
       "numberOfRooms" => 0,
       "numberOfPeople" => 0,
       "numberOfFreeDesk" => 0,
       "totalArea" => 0
+    }
+  end
+
+  def self.initial_filters_container
+    {
+      'room_type' => {},
+      'organization' => {},
+      'evacuation_zone' => {},
+      'room_ground_type' => {},
+      'direction' => {}
     }
   end
 
@@ -108,19 +118,13 @@ class Floor < ActiveRecord::Base
   end
 
   def filters
-    f = {
-      'room_type' => {},
-      'organization' => {},
-      'evacuation_zone' => {},
-      'room_ground_type' => {},
-      'direction' => {}
-    }
+    f = Floor.initial_filters_container
     self.rooms.each do |r|
-      update_room_for_filter(f, 'room_type', r)
-      update_room_for_filter(f, 'organization', r)
-      update_room_for_filter(f, 'evacuation_zone', r)
-      update_room_for_filter(f, 'room_ground_type', r)
-      update_room_for_filter(f, 'direction', r,  r.direction_id)
+      Floor.update_room_for_filter(f, 'room_type', r)
+      Floor.update_room_for_filter(f, 'organization', r)
+      Floor.update_room_for_filter(f, 'evacuation_zone', r)
+      Floor.update_room_for_filter(f, 'room_ground_type', r)
+      Floor.update_room_for_filter(f, 'direction', r,  r.direction_id)
     end
     return f
   end

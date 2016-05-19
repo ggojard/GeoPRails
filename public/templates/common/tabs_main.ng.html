@@ -1,5 +1,5 @@
-<uib-tabset justified="true" type="pills" class="nav" role="tablist"  style="border:1px solid {{bgColor[buildingId]}}">
-<uib-tab ng-click="m.onclick(this, buildingId)" ng-repeat="m in menu" active="tab.active" heading="{{m.name}}" ng-if="m.shouldDisplay()" style="background-color: {{bgColor[buildingId]}}">
-<div ng-include="m.template"  style="border-top:1px solid {{bgColor[buildingId]}}"></div>
+<uib-tabset justified="true" type="pills" class="nav" role="tablist"  style="border:1px solid {{::$root.building_colors[buildingId]}}">
+<uib-tab ng-click="m.onclick(this, buildingId)" ng-repeat="m in menu" active="tab.active" heading="{{m.name}}" ng-if="m.shouldDisplay()" style="background-color: {{::$root.building_colors[buildingId]}}">
+<div ng-include="m.template"  style="border-top:1px solid {{::$root.building_colors[buildingId]}}"></div>
 </uib-tab>
 </uib-tabset>
