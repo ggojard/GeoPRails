@@ -71,6 +71,12 @@ class Room < ActiveRecord::Base
       return self.organization.organization.id
     end
   end
+
+  def building_id
+    if self.floor.present?
+      return self.floor.building_id
+    end
+  end
  
   def direction
     if !self.organization.nil? && !self.organization.organization.nil?

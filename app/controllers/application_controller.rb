@@ -82,7 +82,7 @@ class ApplicationController < ActionController::Base
     gon.userType = @global_user_type
     gon.company = get_global_company_json
 
-    Rails.cache.delete('references')
+    # Rails.cache.delete('references')
     gon.references = Rails.cache.fetch('references') do
       puts "Fetch References".green
       {

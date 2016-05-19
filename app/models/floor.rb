@@ -86,13 +86,18 @@ class Floor < ActiveRecord::Base
     }
   end
 
-  def information
-    info = {
-      "numberOfRooms" => self.rooms.length,
+  def self.initial_information_value
+     {
+      "numberOfRooms" => 0,
       "numberOfPeople" => 0,
       "numberOfFreeDesk" => 0,
       "totalArea" => 0
     }
+  end
+
+  def information
+    info = Floor.initial_information_value
+    info['numberOfRooms'] = self.rooms.length
     self.rooms.each do |r|
       info['numberOfPeople'] += r.affectations_count
       info['numberOfFreeDesk'] += r.free_desk_number

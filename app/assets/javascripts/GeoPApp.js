@@ -35,7 +35,7 @@
   app.run(function ($rootScope) { // instance-injector
     try {
       $rootScope.references = gon.references;
-
+      $rootScope.references.direction = gon.references.organization;
       var scrollTop = loadScroll(gon.floor.id);
       $(window).scrollTop(scrollTop);
     } catch (e) {
@@ -183,23 +183,6 @@
     }
     document.onkeydown = keyDown;
     document.onkeyup = keyUp;
-  };
-
-  geoP.countFreeDesksFromRooms = function (rooms) {
-    return rooms && rooms.reduce(function (a, b) {
-      var res = a;
-      if (b.free_desk_number !== null) {
-        res += b.free_desk_number;
-      }
-      return res;
-    }, 0);
-  };
-
-  geoP.getTotalArea = function (rooms) {
-    var res = rooms.reduce(function (a, b) {
-      return a + b.area;
-    }, 0);
-    return res.toFixed(2);
   };
 
 

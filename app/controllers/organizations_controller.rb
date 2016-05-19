@@ -10,16 +10,15 @@ class OrganizationsController < GeopController
       # puts u_arm_floors_id
 
       # query the org
-      o = Organization.includes(:rooms => {:floor => :building}).where(:rooms => {floor: u_arm_floors_id}).find_by_id(params[:id])
-  
+      o = Organization.includes(:rooms => [{:floor => :building}, :affectations]).where(:rooms => {floor: u_arm_floors_id}).find_by_id(params[:id])
 
       puts o
 
       if o.nil?
         o = Organization.find_by_id(params[:id])
       end
-
-      org = o.as_json(:include => [{ :rooms => {:include => {:floor => {:include => :building}}}}], :methods => [:url]) 
+# { :rooms => {:include => [{:floor => {:include => :building}}]}}
+      org = o.as_json(:include => [], :methods => [:url, :information, :data]) 
 
       # query org to org children
       o_rec = Organization.includes(:organizations => {:rooms => {:floor => :building}}).where(:rooms => {floor_id:u_arm_floors_id}).find_by_id(params[:id])
@@ -30,8 +29,9 @@ class OrganizationsController < GeopController
         org[:organizations] = []
       end 
 
-    end
+      # org[:buildingsById] = load_rooms o, o_rec
 
+    end
 
     respond_to do |format|
       format.json{
@@ -39,4 +39,18 @@ class OrganizationsController < GeopController
       }
     end
   end
+
+  private
+
+  require 'awesome_print'
+  def load_rooms org, org_children
+    ap org_children
+    data = ap org.get_buildings_from_room
+    return data;
+    # org_children.each {|o|
+    #   ap o.get_floors_from_room
+    # }
+    # .rooms.each
+  end
+
 end
