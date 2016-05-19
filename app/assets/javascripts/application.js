@@ -22,6 +22,7 @@
 //= require threejs-trackball
 //= require moment
 //= require moment-locale-fr
+//= require canvg
 //= require_tree ./vendor
 //= require angular-file-upload
 //= require GeoP
