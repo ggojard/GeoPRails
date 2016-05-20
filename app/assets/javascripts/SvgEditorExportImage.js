@@ -162,6 +162,7 @@
     canvasDom = $c[0];
     canvg(canvasDom, h, {
       renderCallback: function() {
+        /*jslint browser:true*/
         var imgsrc, a;
         imgsrc = canvasDom.toDataURL('image/png');
         a = document.createElement('a');
