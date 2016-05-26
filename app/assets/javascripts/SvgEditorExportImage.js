@@ -75,7 +75,6 @@
       text = editor.canvas.text(leftMarginSpace, y, txt[i].text);
       text.node.style.cssText = 'font-size: ' + txt[i].lineSpacing + 'px; font-family: arial; dominant-baseline: text-before-edge;';
       text.addClass('cartouche');
-      // svgElements.push(text);
     }
   }
 
