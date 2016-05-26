@@ -58,7 +58,7 @@
     return texts;
   }
 
-  function setCartouche(editor, legendWidth, svgElements) {
+  function setCartouche(editor, legendWidth) {
     var leftMarginSpace = editor.bgBox.w + 10,
      lineSpacing = 16, lineSpacing2 = 12,
      txt = [], y, i, text;
@@ -75,8 +75,13 @@
       text = editor.canvas.text(leftMarginSpace, y, txt[i].text);
       text.node.style.cssText = 'font-size: ' + txt[i].lineSpacing + 'px; font-family: arial; dominant-baseline: text-before-edge;';
       text.addClass('cartouche');
-      svgElements.push(text);
+      // svgElements.push(text);
     }
+  }
+
+
+  SvgEditor.prototype.setCartouche = function() {
+    setCartouche(this, legendWidth);
   }
 
   SvgEditor.prototype.setLegend = function() {
@@ -86,8 +91,6 @@
       bg, svgElements = [],
       fontSize = 16,
       heightOfLine = fontSize;
-
-    setCartouche(editor, legendWidth, svgElements);
 
     if (editor.paper === null) {
       return;

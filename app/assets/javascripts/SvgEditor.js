@@ -102,6 +102,8 @@
     if (this.camera.scale === geoP.DefaultCamera.scale) {
       this.centerMap();
     }
+
+    this.setCartouche();
   };
 
   SvgEditor.prototype.selectPolyline = function(roomId) {
