@@ -58,6 +58,27 @@
     return texts;
   }
 
+  function setCartouche(editor, legendWidth, svgElements) {
+    var leftMarginSpace = editor.bgBox.w + 10,
+     lineSpacing = 16, lineSpacing2 = 12,
+     txt = [], y, i, text;
+
+    txt.push({'text': geoP.format('{0}: {1} m²', gon.i18n.information.total_area, editor.$scope.information[editor.json.building_id].totalArea), 'lineSpacing': lineSpacing2});
+    txt.push({'text': geoP.format('{0}: {1}', gon.i18n.information.number_of_people, editor.$scope.information[editor.json.building_id].numberOfPeople), 'lineSpacing': lineSpacing2});
+    txt.push({'text': geoP.format('{0}: {1}', gon.i18n.information.number_of_freedesks, editor.$scope.information[editor.json.building_id].numberOfFreeDesk), 'lineSpacing': lineSpacing2});
+    txt.push({'text': geoP.format('{0}: {1}', gon.i18n.information.number_of_rooms, editor.json.rooms.length), 'lineSpacing': lineSpacing2});
+    txt.push({'text': editor.json.name, 'lineSpacing': lineSpacing});
+    txt.push({'text': editor.json.building.name, 'lineSpacing': lineSpacing});
+
+    for (i = txt.length-1; i >= 0; i -= 1) {
+      y = editor.bgBox.h - 20 - (txt[i].lineSpacing + 2) * i;
+      text = editor.canvas.text(leftMarginSpace, y, txt[i].text);
+      text.node.style.cssText = 'font-size: ' + txt[i].lineSpacing + 'px; font-family: arial; dominant-baseline: text-before-edge;';
+      text.addClass('cartouche');
+      svgElements.push(text);
+    }
+  }
+
   SvgEditor.prototype.setLegend = function() {
     var filters, filtersStatus,
       editor = this,
@@ -65,6 +86,8 @@
       bg, svgElements = [],
       fontSize = 16,
       heightOfLine = fontSize;
+
+    setCartouche(editor, legendWidth, svgElements);
 
     if (editor.paper === null) {
       return;
